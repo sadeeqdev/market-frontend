@@ -1,0 +1,49 @@
+<ion-content>
+  <ion-segment>
+    <ion-segment-button value="defi">
+      <ion-label>DeFi</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="nfts">
+      <ion-label>NFTs</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="gaming">
+      <ion-label>Gaming</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-grid>
+    <ion-row class="ion-justify-center">
+      <ion-col size-sm="6" size-md="4" size-lg="3" size-xl="2" *ngFor="let dapp of dapps; let i=index">
+        <ion-card class="ion-text-center ion-center">
+          <ion-card-header class="centered-content">
+            <ion-avatar>
+              <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+            </ion-avatar>
+            <br>
+          </ion-card-header>
+
+          <ion-card-content>
+            <ion-card-title>{{ dapp.name }}</ion-card-title>
+            <ion-text class="truncate-overflow">
+              {{ dapp.summary }}
+            </ion-text>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+  <ion-card size="2">
+    <ion-card-header>
+      <ion-card-subtitle>Another card Subtitle</ion-card-subtitle>
+      <ion-card-title>Card Title</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      Keep close to Nature's heart... and break clear away, once in awhile,
+      and climb a mountain or spend a week in the woods. Wash your spirit clean.
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

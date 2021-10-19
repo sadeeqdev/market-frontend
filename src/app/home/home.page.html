@@ -1,20 +1,41 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
+<ion-header [translucent]="false">
+  <ion-toolbar color="primary">
+    <ion-row>
+      <ion-col></ion-col>
+    </ion-row>
+
+    <ion-buttons slot="start">
+      <ion-button>
+        <img src="../../assets/images/chedda-logo-128.png" width="30px" />
+      </ion-button>
+      <ion-button fill="solid">Select Network</ion-button>
+      <ion-button fill="solid" (click)="toggleDarkTheme(isDark)">
+        <ion-icon name="sunny-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title class="ion-text-center ion-center">
+      <ion-buttons class="center">
+        <ion-button routerLink="/home/dapps">Dappstore</ion-button>
+        <ion-button routerLink="/home/nfts">NFT Market</ion-button>
+        <ion-button routerLink="/home/governance">Governance</ion-button>
+      </ion-buttons>
     </ion-title>
+
+    <ion-buttons slot="end" *ngIf="!connected">
+      <ion-button fill="outline" color="light">
+        <ion-icon name="wallet-outline" class="connect-icon"></ion-icon>
+        <ion-text>Connect Wallet</ion-text>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end" *ngIf="connected">
+      <ion-button fill="outline">0</ion-button>
+      <ion-button fill="outline">0x90240...482424</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+<ion-content>
+  <ion-router-outlet></ion-router-outlet>
 </ion-content>

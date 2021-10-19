@@ -1,0 +1,46 @@
+  [
+    {
+      "name": "Sushi Swap",
+      "tagline": "String",
+      "summary": "The SushiSwap protocol realigns incentives for network participants by introducing revenue sharing and forum-driven network efforts to the popular AMM model.",
+      "description": "String",
+      "logoURI": "String",
+      "homePageURI": "String",
+      "bannerImageURI": "String",
+      "backgroundImageURI": "String",
+      "primaryColor": "String",
+      "secondaryColor": "String",
+      "socials": [{
+        "name": "String",
+        "profileURI": "String",
+        "iconURI": "String"
+      }],
+      "screenshots": [{
+        "text": "String",
+        "imageURI": "String"
+      }],
+      "category": "defi"
+    },
+    {
+      "name": "Quickswap",
+      "tagline": "The leadind AMM on Polygon",
+      "summary": "Next-gen Layer 2 DEX. Trade at lightning-fast speeds with near-zero gas fees.",
+      "description": "String",
+      "logoURI": "String",
+      "homePageURI": "String",
+      "bannerImageURI": "String",
+      "backgroundImageURI": "String",
+      "primaryColor": "String",
+      "secondaryColor": "String",
+      "socials": [{
+        "name": "String",
+        "profileURI": "String",
+        "iconURI": "String"
+      }],
+      "screenshots": [{
+        "text": "String",
+        "imageURI": "String"
+      }],
+      "category": "defi"
+    }
+  ]

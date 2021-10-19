@@ -1,0 +1,36 @@
+ion-content {
+  background-color: red;
+}
+
+.centered-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+ion-avatar {
+  max-width: 200px;
+}
+
+ion-card {
+  height: 300px;
+}
+
+.truncate-text {
+  display: block; /* Fallback for non-webkit */
+  display: -webkit-box;
+  height: 6.5em; /* Fallback for non-webkit, line-height * 2 */
+  line-height: 1.3em;
+  -webkit-line-clamp: 5; /* if you change this, make sure to change the fallback line-height and height */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.truncate-overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 7; /* number of lines to show */
+  -webkit-box-orient: vertical;
+}
