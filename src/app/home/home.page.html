@@ -23,7 +23,7 @@
     </ion-title>
 
     <ion-buttons slot="end" *ngIf="!connected">
-      <ion-button fill="outline" color="light">
+      <ion-button fill="outline" color="light" (click)="onConnectTapped()">
         <ion-icon name="wallet-outline" class="connect-icon"></ion-icon>
         <ion-text>Connect Wallet</ion-text>
       </ion-button>

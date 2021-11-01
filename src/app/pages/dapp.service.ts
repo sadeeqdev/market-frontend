@@ -15,7 +15,6 @@ export class DappService {
 
   loadDapps() {
     this.dapps = dapplist;
-    console.log('dapps are: ', dapplist);
     return this.dapps;
   }
 }

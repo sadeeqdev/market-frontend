@@ -7,7 +7,15 @@ const routes: Routes = [
   {
     path: '',
     component: DappsPage
-  }
+  },
+  {
+    path: 'details/:address',
+    loadChildren: () => import('./dapp-details/dapp-details.module').then( m => m.DappDetailsPageModule)
+  },
+  {
+    path: 'dapp-category',
+    loadChildren: () => import('./dapp-category/dapp-category.module').then( m => m.DappCategoryPageModule)
+  },
 ];
 
 @NgModule({

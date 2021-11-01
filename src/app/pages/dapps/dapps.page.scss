@@ -2,6 +2,10 @@ ion-content {
   background-color: red;
 }
 
+.full-image {
+  width: 100%;
+}
+
 .centered-content {
   display: flex;
   align-items: center;
@@ -9,7 +13,8 @@ ion-content {
 }
 
 ion-avatar {
-  max-width: 200px;
+  width: 160px;
+  height: 160px;
 }
 
 ion-card {
@@ -31,6 +36,24 @@ ion-card {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 7; /* number of lines to show */
+  height: 42px;
+  -webkit-line-clamp: 2; /* number of lines to show */
   -webkit-box-orient: vertical;
+}
+
+.scrolling-wrapper-flex {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+
+  .card {
+    width: 200px;
+    flex: 0 0 auto;
+  }
+}
+
+.dapp-category {
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 2.2em;
 }

@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { CheddaDappStoreService } from '../contracts/chedda-dapp-store.service';
+import { DefaultProviderService } from '../providers/default-provider.service';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +13,7 @@ export class HomePage {
   connected = false
   isDark = false;
 
-  constructor() {}
+  constructor(private provider: DefaultProviderService, private dappStore: CheddaDappStoreService) {}
 
   // toggleDarkTheme(prefersDark.matches);
 
@@ -26,5 +28,14 @@ export class HomePage {
     } else {
       document.body.setAttribute('color-theme', 'light');
     }
+    this.isDappStore()
+  }
+
+  onConnectTapped() {
+    this.provider.getBlockNumber();
+  }
+
+  async isDappStore() {
+    console.log('is isCheddaStore = ', await this.dappStore.isCheddaStore());
   }
 }
