@@ -5,11 +5,22 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
-
   },
+    {
+      path: 'dapps',
+      loadChildren: () => import('./pages/dapps/dapps.module').then( m => m.DappsPageModule)
+    },
+    {
+      path: 'nfts',
+      loadChildren: () => import('./pages/nfts/nfts.module').then( m => m.NftsPageModule)
+    },
+    {
+      path: 'governance',
+      loadChildren: () => import('./pages/governance/governance.module').then( m => m.GovernancePageModule)
+    },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'dapps',
     pathMatch: 'full'
   },
 
