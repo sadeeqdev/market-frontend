@@ -10,7 +10,7 @@ export class DefaultProviderService {
   provider: ethers.providers.JsonRpcProvider
 
   constructor() {
-    this.provider = new ethers.providers.JsonRpcProvider(environment.jsonRpc.testnet.local);
+    this.provider = new ethers.providers.JsonRpcProvider(environment.jsonRpc.testnet.polygon);
     console.log('provider is ', this.provider);
   }
 

@@ -15,6 +15,18 @@ export const AVALANCHE_TESTNET_PARAMS = {
   blockExplorerUrls: ['https://cchain.explorer.avax-test.network/']
 }
 
+export const POLYGON_TESTNET_PARAMS = {
+  chainId: '80001',
+  chainName: 'Polygon Mumbai Testnet',
+  nativeCurrency: {
+      name: 'Matic',
+      symbol: 'MATIC',
+      decimals: 18
+  },
+  rpcUrls: ['https://rpc-mumbai.maticvigil.com/'],
+  blockExplorerUrls: ['https://mumbai.polygonscan.com/']
+}
+
 @Injectable({
   providedIn: 'root'
 })

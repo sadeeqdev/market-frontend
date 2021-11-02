@@ -18,12 +18,12 @@ export class CheddaMarketService {
 
   constructor(private provider: DefaultProviderService, private http: HttpClient) {
     this.marketContract = new ethers.Contract(
-      environment.contracts.testnet.CheddaDappstore.local,
+      environment.contracts.testnet.CheddaDappstore.polygon,
       ChedaMarket.abi,
       provider.provider
       );
       this.nftContract = new ethers.Contract(
-        environment.contracts.testnet.CheddaNFTMarket.local,
+        environment.contracts.testnet.CheddaNFTMarket.polygon,
         CheddaNFT.abi,
         provider.provider
       )

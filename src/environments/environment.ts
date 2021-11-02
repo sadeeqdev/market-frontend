@@ -22,7 +22,7 @@ export const environment = {
       CheddaDappstore: {
         iotex: '',
         harmony: '',
-        polygon: '0xE345C0A49C81B959CA602bFa66A4052776237E9f',
+        polygon: '0xeE3d15Bd630E5Dd0eEE5eB321878cc19E4bB6CA6',
         local: '0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6'
       },
       CheddaNFTMarket: {
