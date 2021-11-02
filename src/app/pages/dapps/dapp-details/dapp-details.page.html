@@ -1,72 +1,80 @@
 <ion-content>
-<ion-grid>
-    <ion-row>
-        <ion-col size-xl="6" offset-xl="3" size-lg="8" offset-lg="2" size-md="10" offset-md="1" size-sm=12 *ngIf="dapp">
-            <ion-card class="dapp-details-card">
-                <ion-row>
-                    <ion-col size="3">
-                        <img [src]="dapp.metadata.logoURI">
-                    </ion-col>
-                    <ion-col size="9">
-                        <ion-row>
-                            <h1>{{ dapp.name }}</h1>
-                        </ion-row>
-                        <ion-row>
-                            <ion-col size="3">
-                                <ion-text> Developer </ion-text>
-                            </ion-col>
-                            <ion-col size="3">
-                                <ion-text>
-                                    {{ dapp.metadata.category | uppercase }}
-                                </ion-text>
-                            </ion-col>
-                            <ion-col size="6"   >
-                                <ionic-rating-component #rating activeColor="#ebdb34" defaultColor="#c4c4c4" readonly="false"
-                  rating={{dapp.rating}} fontSize="16px" (ratingChanged)="onRatingChange($event)">
-                </ionic-rating-component>
-                            </ion-col>
-                        </ion-row>
-                    </ion-col>
+    <ion-grid>
+        <ion-row>
+            <ion-col size-xl="6" offset-xl="3" size-lg="8" offset-lg="2" size-md="10" offset-md="1" size-sm=12
+                *ngIf="dapp">
+                <ion-card class="dapp-details-card">
+                    <ion-row>
+                        <ion-col size="3">
+                            <img [src]="dapp.metadata.logoURI">
+                        </ion-col>
+                        <ion-col size="9">
+                            <ion-row>
+                                <h1>{{ dapp.name }}</h1>
+                            </ion-row>
+                            <ion-row>
+                                <ion-col size="3">
+                                    <ion-text> Developer </ion-text>
+                                </ion-col>
+                                <ion-col size="3">
+                                    <ion-text>
+                                        {{ dapp.metadata.category | uppercase }}
+                                    </ion-text>
+                                </ion-col>
+                                <ion-col size="6">
+                                    <ionic-rating-component #rating activeColor="#ebdb34" defaultColor="#c4c4c4"
+                                        readonly="false" rating={{dapp.rating}} fontSize="16px"
+                                        (ratingChanged)="onRatingChange($event)">
+                                    </ionic-rating-component>
+                                </ion-col>
+                            </ion-row>
+                        </ion-col>
 
-                </ion-row>
-                
-                <ion-row class="dapp-details-row">
-                    <h4>
-                        Screenshots
-                    </h4>
-                </ion-row>
-                <ion-row>
-<swiper
-[config]="config"
-(swiper)="onSwiper($event)"
-(slideChange)="onSlideChange()"
->
-<ng-template swiperSlide>Slide 1</ng-template>
-<ng-template swiperSlide>Slide 2</ng-template>
-<ng-template swiperSlide>Slide 3</ng-template>
-</swiper>
-                </ion-row>
-                <ion-row class="dapp-details-row">
-                    <h4>
-                        Description
-                    </h4>
-                </ion-row>
-                <ion-row>
-                    <p>
-                       {{ dapp.metadata.description }}
-                    </p>
-                </ion-row>
-                <ion-row class="dapp-details-row">
-                    <h4>
-                        Reviews
-                    </h4>
-                    <dapp-review *ngFor="let review of reviews" [review]="review"></dapp-review>
-                </ion-row>  
-            </ion-card>
+                    </ion-row>
 
-        </ion-col>
-    </ion-row>
-    
-</ion-grid>
+                    <ion-row class="dapp-details-row">
+                        <h4>
+                            Screenshots
+                        </h4>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col>
+                            <swiper [config]="config" (swiper)="onSwiper($event)" (slideChange)="onSlideChange()" #swiper>
+                                <ng-template swiperSlide *ngFor="let screenshot of dapp.metadata.screenshots" >
+                                    <ion-img [src]="screenshot.imageURI"></ion-img>
+                                </ng-template>
+                            </swiper>
+                        </ion-col>
+                    </ion-row>
+
+                    <ion-row>
+                        <ion-col>
+                            <ion-slides>
+                                <ion-slide></ion-slide>
+                            </ion-slides>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row class="dapp-details-row">
+                        <h4>
+                            Description
+                        </h4>
+                    </ion-row>
+                    <ion-row>
+                        <p>
+                            {{ dapp.metadata.description }}
+                        </p>
+                    </ion-row>
+                    <ion-row class="dapp-details-row">
+                        <h4>
+                            Reviews
+                        </h4>
+                        <dapp-review *ngFor="let review of reviews" [review]="review"></dapp-review>
+                    </ion-row>
+                </ion-card>
+
+            </ion-col>
+        </ion-row>
+
+    </ion-grid>
 
 </ion-content>

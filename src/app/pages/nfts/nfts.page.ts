@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NFT } from './nft.model';
 
 @Component({
   selector: 'app-nfts',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NftsPage implements OnInit {
 
+  nfts: NFT[] = [
+
+  ]
+
   constructor() { }
 
   ngOnInit() {
   }
+
+  onNFTSelected(nft: NFT) {}
 
 }

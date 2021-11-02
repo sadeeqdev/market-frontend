@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { AlertController, PopoverController } from '@ionic/angular';
 import { CheddaDappStoreService } from './contracts/chedda-dapp-store.service';
 import { DefaultProviderService } from './providers/default-provider.service';
 import { WalletProviderService } from './providers/wallet-provider.service';
@@ -20,7 +20,8 @@ export class AppComponent implements OnInit {
   constructor(
     private provider: WalletProviderService, 
     private dappStore: CheddaDappStoreService,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private popoverController: PopoverController,
     ) {}
 
   // toggleDarkTheme(prefersDark.matches);
@@ -57,9 +58,6 @@ export class AppComponent implements OnInit {
     } else {
       this.presentNoConnectionAlert()
     }
-    console.log('about to connect');
-    // let signer = await this.provider.openMetamask()
-    // console.log('signer = ', signer)
   }
 
   async presentNoConnectionAlert() {
@@ -73,11 +71,12 @@ export class AppComponent implements OnInit {
         role: 'cancel',
         cssClass: 'secondary',
         handler: (blah) => {
-          console.log('Confirm Cancel: blah');
+          console.log('Confirm Canceled');
         }
       }, {
         text: 'Go To Metamask',
         handler: () => {
+          window.open('https://metamask.io/', '_blank').focus()
           console.log('Confirm Okay');
         }
       }]

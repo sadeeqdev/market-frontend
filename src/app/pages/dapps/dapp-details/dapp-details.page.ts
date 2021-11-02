@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { AfterContentChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
+import { SwiperComponent } from 'swiper/angular';
 import { CheddaDappStoreService } from 'src/app/contracts/chedda-dapp-store.service';
 import SwiperCore, { SwiperOptions, Navigation, Pagination, Scrollbar, } from 'swiper';
 import { Dapp } from '../dapp.model';
@@ -12,7 +13,7 @@ SwiperCore.use([Navigation, Pagination, Scrollbar]);
   templateUrl: './dapp-details.page.html',
   styleUrls: ['./dapp-details.page.scss'],
 })
-export class DappDetailsPage implements OnInit {
+export class DappDetailsPage implements OnInit, AfterContentChecked {
   reviews = []
   dapp?: Dapp
 
@@ -23,6 +24,15 @@ export class DappDetailsPage implements OnInit {
     pagination: { clickable: true },
     scrollbar: { draggable: true },
   };
+  slideOptions = {
+    slidesPerView: 1.2,
+    centeredSlides: false,
+    loop: false,
+    spaceBetween: 10,
+    autoPlay: true,
+    navigation: true,
+  }
+
   constructor(
     private http: HttpClient, 
     private router: Router, 
@@ -30,6 +40,8 @@ export class DappDetailsPage implements OnInit {
     private navController: NavController,
     private dappStoreService: CheddaDappStoreService) { 
   }
+
+  @ViewChild('swiper') swiper: SwiperComponent
 
   ngOnInit() {
     this.route.paramMap.subscribe(async paramMap => {
@@ -45,7 +57,12 @@ export class DappDetailsPage implements OnInit {
         this.navigateToDapps()
       }
     })
+  }
 
+  ngAfterContentChecked() {
+    if (this.swiper) {
+      this.swiper.updateSwiper({})
+    }
   }
 
   async loadDapp(address: string) {
