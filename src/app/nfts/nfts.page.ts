@@ -25,9 +25,9 @@ export class NftsPage implements OnInit {
     ) { }
 
   async ngOnInit() {
-    this.nfts = await this.explorerService.getMarketItems()
-    this.collections = await this.explorerService.getCollections()
-    console.log('nfts are: ', this.nfts)
+    // this.nfts = await this.explorerService.getMarketItems()
+    // this.collections = await this.explorerService.getCollections()
+    // console.log('nfts are: ', this.nfts)
   }
 
   onNFTSelected(nft: NFT) {

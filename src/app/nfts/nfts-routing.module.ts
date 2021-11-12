@@ -9,12 +9,12 @@ const routes: Routes = [
     component: NftsPage,
     children: [
       {
-        path: 'details',
-        loadChildren: () => import('./pages/nft-details/nft-details.module').then( m => m.NftDetailsPageModule)
+        path: '',
+        loadChildren: () => import('./pages/nft-landing/nft-landing.module').then( m => m.NftLandingPageModule)
       },
       {
-        path: 'landing',
-        loadChildren: () => import('./pages/nft-landing/nft-landing.module').then( m => m.NftLandingPageModule)
+        path: 'details',
+        loadChildren: () => import('./pages/nft-details/nft-details.module').then( m => m.NftDetailsPageModule)
       },
       {
         path: 'collection/:id',

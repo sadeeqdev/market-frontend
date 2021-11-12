@@ -1,47 +1,5 @@
-<ion-header [translucent]="false">
-  <ion-toolbar color="dark">
-    <ion-row>
-      <ion-col></ion-col>
-    </ion-row>
-
-    <ion-buttons slot="start">
-      <ion-button>
-        <img src="../../assets/images/chedda-logo-128.png" width="30px" />
-      </ion-button>
-      <ion-button fill="solid">Select Network</ion-button>
-      <ion-button fill="solid" (click)="toggleDarkTheme(isDark)">
-        <ion-icon name="sunny-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-
-    <ion-title class="ion-text-center ion-center">
-      <ion-buttons class="center">
-        <ion-button routerLink="/dapps">Dappstore</ion-button>
-        <ion-button routerLink="/nfts">NFT Market</ion-button>
-        <ion-button routerLink="/governance">Governance</ion-button>
-      </ion-buttons>
-    </ion-title>
-
-    <ion-buttons slot="end" *ngIf="!account">
-      <ion-button fill="outline" color="light" (click)="onConnectTapped()">
-        <ion-icon name="wallet-outline" class="connect-icon"></ion-icon>
-        <ion-text>Connect Wallet</ion-text>
-      </ion-button>
-    </ion-buttons>
-    <ion-buttons slot="end" *ngIf="account">
-
-      <ion-button fill="outline">0</ion-button>
-      <ion-button fill="outline">
-        <ion-avatar class="wallet-avatar">
-          <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" class="wallet-avatar">
-        </ion-avatar>
-        {{account | truncateMiddle:[6, '...', 4] }}
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
 
 
-<ion-content>
+<ion-app>
   <ion-router-outlet></ion-router-outlet>
-</ion-content>
+</ion-app>
