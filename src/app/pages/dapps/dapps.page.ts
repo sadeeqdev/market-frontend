@@ -26,10 +26,15 @@ export class DappsPage implements OnInit {
   }
 
   private async loadDapps() {
-    this.dapps = await this.dappStore.getDapps()
-    this.defiDapps = await this.dappStore.loadDappsInCategory('defi')
-    this.nftDapps = await this.dappStore.loadDappsInCategory('nft')
-    this.gamingDapps = await this.dappStore.loadDappsInCategory('gaming')
+    try {
+      // this.dapps = await this.dappStore.getDapps()
+      this.defiDapps = await this.dappStore.loadDappsInCategory('defi')
+      this.nftDapps = await this.dappStore.loadDappsInCategory('nft')
+      this.gamingDapps = await this.dappStore.loadDappsInCategory('gaming')
+    } catch (error) {
+      console.log('caught error => ', error)
+    }
+
   }
 
   onSegmentChanged($event) {

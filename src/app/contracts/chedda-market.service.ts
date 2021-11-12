@@ -18,21 +18,17 @@ export class CheddaMarketService {
 
   constructor(private provider: DefaultProviderService, private http: HttpClient) {
     this.marketContract = new ethers.Contract(
-      environment.contracts.testnet.CheddaDappstore.polygon,
+      environment.networks.local.addresses.CheddaMarket,
       ChedaMarket.abi,
       provider.provider
       );
-      this.nftContract = new ethers.Contract(
-        environment.contracts.testnet.CheddaNFTMarket.polygon,
-        CheddaNFT.abi,
-        provider.provider
-      )
       console.log('NFT market contract is ', this.marketContract);
       console.log('at address: ', this.marketContract.address)
   }
 
-  getMarketItems() {
-    let items = this.marketContract.loadItems()
+  async getMarketItems(): Promise<NFT[]> {
+    let items = await this.marketContract.getAllListings()
+    return items
   }
 
   getMarketItemsInCollection(address: string) {

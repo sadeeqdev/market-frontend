@@ -31,6 +31,83 @@ export const environment = {
         polygon: '0xE345C0A49C81B959CA602bFa66A4052776237E9f',
         local: '0xB0f05d25e41FbC2b52013099ED9616f1206Ae21B'
       }
+    },
+  },
+  networks: {
+    local: {
+      addresses: {
+        Chedda: '',
+        CheddaDappStore: '0x322813Fd9A801c5507c9de605d63CEA4f2CE6c44',
+        CheddaDappMetrics: '0xa85233C63b9Ee964Add6F2cffe00Fd84eb32338f',
+        CheddaMarket: '0x4A679253410272dd5232B3Ff7cF5dbB88f295319',
+        CheddaMarketExplorer: '0x7a2088a1bFc9d81c55368AE168C2C02570cB814F'
+      },
+      params: {
+        chainId: '80001',
+        chainName: 'Hardhat',
+        nativeCurrency: {
+            name: 'Ether',
+            symbol: 'ETH',
+            decimals: 18
+        },
+        rpcUrls: ['http://localhost:8545'],
+        blockExplorerUrls: []
+      }
+    },
+    harmony_one_mainnet_0: {
+      addresses: {
+        Chedda: '',
+        CheddaDappStore: '',
+        CheddaMarket: '0x851356ae760d987E095750cCeb3bC6014560891C',
+        CheddamarketExplorer: '0xf5059a5D33d5853360D16C683c16e67980206f36'
+      },
+      params: {
+        chainId: '80001',
+        chainName: 'Polygon Mumbai Testnet',
+        nativeCurrency: {
+            name: 'Matic',
+            symbol: 'MATIC',
+            decimals: 18
+        },
+        rpcUrls: ['https://rpc-mumbai.maticvigil.com/'],
+        blockExplorerUrls: ['https://mumbai.polygonscan.com/']
+      }
+    },
+    polygon_mainnnet: {
+      addresses: {
+        Chedda: '',
+        CheddaDappStore: '',
+        CheddaMarket: '',
+      },
+      params: {
+        chainId: '80001',
+        chainName: 'Polygon Mumbai Testnet',
+        nativeCurrency: {
+            name: 'Matic',
+            symbol: 'MATIC',
+            decimals: 18
+        },
+        rpcUrls: ['https://rpc-mumbai.maticvigil.com/'],
+        blockExplorerUrls: ['https://mumbai.polygonscan.com/']
+      }
+    },
+    polygon_mumbai_testnet: {
+      addresses: {
+        Chedda: '',
+        CheddaDappStore: '0xeE3d15Bd630E5Dd0eEE5eB321878cc19E4bB6CA6',
+        CheddaMarket: '',
+      },
+      params: {
+        chainId: '80001',
+        chainName: 'Polygon Mumbai Testnet',
+        nativeCurrency: {
+            name: 'Matic',
+            symbol: 'MATIC',
+            decimals: 18
+        },
+        rpcUrls: ['https://rpc-mumbai.maticvigil.com/'],
+        blockExplorerUrls: ['https://mumbai.polygonscan.com/']
+      }
     }
   }
 };

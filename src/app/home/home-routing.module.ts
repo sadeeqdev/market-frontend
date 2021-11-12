@@ -13,7 +13,7 @@ const routes: Routes = [
       },
       {
         path: 'nfts',
-        loadChildren: () => import('../pages/nfts/nfts.module').then( m => m.NftsPageModule)
+        loadChildren: () => import('../nfts/nfts.module').then( m => m.NftsPageModule)
       },
       {
         path: 'governance',

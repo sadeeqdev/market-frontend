@@ -47,8 +47,13 @@ export class WalletProviderService {
   constructor() { }
 
   async isConected(): Promise<boolean> {
-    this.provider = await detectEthereumProvider();
-    this.startApp(this.provider)
+    try {
+      this.provider = await detectEthereumProvider();
+      this.startApp(this.provider)
+    } catch (error) {
+      console.error('unable to detect ethereum provider: ', error)
+    }
+
     return this.provider && await this.provider.isConnected();
   }
 
