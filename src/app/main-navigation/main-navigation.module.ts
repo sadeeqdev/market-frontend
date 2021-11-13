@@ -8,12 +8,14 @@ import { MainNavigationPageRoutingModule } from './main-navigation-routing.modul
 
 import { MainNavigationPage } from './main-navigation.page';
 import { TopNavComponent } from './top-nav/top-nav.component';
+import { SharedComponentsModule } from '../components/shared-components.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    SharedComponentsModule,
     MainNavigationPageRoutingModule
   ],
   declarations: [MainNavigationPage, TopNavComponent]

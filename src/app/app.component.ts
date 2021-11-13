@@ -24,10 +24,6 @@ export class AppComponent implements OnInit {
     private popoverController: PopoverController,
     ) {}
 
-  // toggleDarkTheme(prefersDark.matches);
-
-  // // Listen for changes to the prefers-color-scheme media query
-  // prefersDark.addListener((mediaQuery) => toggleDarkTheme(mediaQuery.matches));
 
   async ngOnInit() {
     this.setupListeners()

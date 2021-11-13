@@ -7,12 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { DappsPageRoutingModule } from './dapps-routing.module';
 
 import { DappsPage } from './dapps.page';
+import { IonicRatingModule } from '../external/ionic-rating/ionic-rating.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    IonicRatingModule,
     DappsPageRoutingModule
   ],
   declarations: [DappsPage]

@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { CheddaDappStoreService } from 'src/app/contracts/chedda-dapp-store.service';
+import { DappService } from 'src/app/pages/dapp.service';
+import { Dapp } from 'src/app/pages/dapps/dapp.model';
 
 @Component({
   selector: 'app-dapp-landing',
@@ -6,10 +10,44 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dapp-landing.page.scss'],
 })
 export class DappLandingPage implements OnInit {
+  dapps: Dapp[] = [];
+  defiDapps: Dapp[] = []
+  nftDapps: Dapp[] = []
+  gamingDapps: Dapp[] = []
 
-  constructor() { }
+  constructor(
+    private dappService: DappService, 
+    private dappStore: CheddaDappStoreService,
+    private router: Router) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.loadDapps()
+  }
+
+  private async loadDapps() {
+    try {
+      // this.dapps = await this.dappStore.getDapps()
+      this.defiDapps = await this.dappStore.loadDappsInCategory('defi')
+      this.nftDapps = await this.dappStore.loadDappsInCategory('nft')
+      this.gamingDapps = await this.dappStore.loadDappsInCategory('gaming')
+    } catch (error) {
+      console.log('caught error => ', error)
+    }
+
+  }
+
+  onSegmentChanged($event) {
+    console.log($event);
+  }
+
+  onRatingChange($event) {}
+
+  onDappSelected(dapp: Dapp) {
+    this.naviagteToDapp(dapp)
+  }
+
+  naviagteToDapp(dapp: Dapp) {
+    this.router.navigate(['/dapps', 'details', dapp.contractAddress])
   }
 
 }
