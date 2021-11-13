@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { NFTCollection } from '../../models/collection.model';
 
 @Component({
   selector: 'app-collection-card',
@@ -7,8 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CollectionCardComponent implements OnInit {
 
-  constructor() { }
+  @Input() collection: any
+
+  constructor(private router: Router) { }
 
   ngOnInit() {}
 
+
+  onCollectionSelected(collection: NFTCollection) {
+    console.log('collection selected: ', collection)
+    this.router.navigate(['./', 'nfts', 'collection', collection.nftContract])
+  }
 }

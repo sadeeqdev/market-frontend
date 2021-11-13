@@ -1,0 +1,33 @@
+
+.collection-card {
+    cursor: pointer;
+    background-image: linear-gradient(to bottom, #ffffff, #e5e5e5);
+}
+.collection-card-image {
+    box-shadow: 0px 5px 6px 0px grey;
+}
+.collection-card-content {
+    padding: 16px;
+}
+
+
+.icon-middle {
+    display: inline-block;
+    font-size: 25px;
+    vertical-align: middle;
+}
+   
+.text-middle {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+
+.text-likes {
+    font-weight: 600;
+}
+ 
+.likes-dislikes {
+    text-align: end;
+}
+ 

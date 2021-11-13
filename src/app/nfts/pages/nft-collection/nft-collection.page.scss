@@ -1,0 +1,78 @@
+/* Container holding the image and the text */
+.container {
+    position: relative;
+    text-align: center;
+    color: white;
+  }
+  
+  /* Bottom left text */
+  .bottom-left {
+    position: absolute;
+    bottom: 8px;
+    left: 16px;
+  }
+  
+  /* Top left text */
+  .top-left {
+    position: absolute;
+    top: 8px;
+    left: 16px;
+  }
+  
+  /* Top right text */
+  .top-right {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+  }
+  
+  /* Bottom right text */
+  .bottom-right {
+    position: absolute;
+    bottom: 8px;
+    right: 16px;
+  }
+
+  .bottom-center {
+      position: absolute;
+      // top: 80%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+  }
+  
+  /* Centered text */
+  .centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .collection-avatar {
+      margin: 20px;
+      border-radius: 10px;
+  }
+
+  ion-avatar {
+    width: 150px !important;
+    height: 150px !important;
+    border-radius: 50% !important;
+    overflow: hidden !important;
+
+    border: 5px solid black !important;
+    box-shadow: 0px 3px 4px 0px grey;
+  }
+
+.collection-banner {
+    box-shadow: 0px 5px 6px 0px grey;
+    margin: 16px;
+}
+
+ion-img::part(image) {
+  border-radius: 10px !important;
+}
+
+
+.collection-metadata {
+  margin-top: 80px;
+}

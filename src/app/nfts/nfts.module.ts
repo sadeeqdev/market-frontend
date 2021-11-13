@@ -15,6 +15,7 @@ import { NftsPage } from './nfts.page';
     IonicModule,
     NftsPageRoutingModule
   ],
-  declarations: [NftsPage]
+  declarations: [NftsPage],
+  exports: []
 })
-export class NftsPageModule {}
+export class NftsModule {}

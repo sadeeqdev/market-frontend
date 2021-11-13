@@ -17,7 +17,7 @@ const routes: Routes = [
         loadChildren: () => import('./pages/nft-details/nft-details.module').then( m => m.NftDetailsPageModule)
       },
       {
-        path: 'collection/:id',
+        path: 'collection/:contractAddress',
         loadChildren: () => import('./pages/nft-collection/nft-collection.module').then( m => m.NftCollectionPageModule)
       },
     ]

@@ -1,4 +1,5 @@
 export interface NFTCollection {
+    nftContract: string
     name: string
     description: string
     metadataURI: string
@@ -13,4 +14,8 @@ export interface CollectionMetadata {
     logo: string
     banner: string
     tags: string[]
+}
+
+export interface CollectionStats {
+
 }

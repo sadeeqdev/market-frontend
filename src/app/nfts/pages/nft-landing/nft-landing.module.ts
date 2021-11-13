@@ -7,12 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { NftLandingPageRoutingModule } from './nft-landing-routing.module';
 
 import { NftLandingPage } from './nft-landing.page';
+import { SharedComponentsModule } from 'src/app/components/shared-components.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    SharedComponentsModule,
     NftLandingPageRoutingModule
   ],
   declarations: [NftLandingPage]

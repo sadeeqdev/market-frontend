@@ -31,65 +31,17 @@
 
     <h3>Popular Collections</h3>
     <ion-row *ngIf="collections">
-
       <ion-col *ngFor="let collection of collections; let i=index" size-sm="6" size-md="4" size-lg="4" size-xl="4">
-        <ion-card class="ion-center card" (click)="onCollectionSelected(collection)" class="collection-card">
-          <ion-card-header class="centered-content">
-            <ion-img [src]="collection.metadata.image" class="collection-card-image">
-            </ion-img>
-            <br>
-          </ion-card-header>
-
-          <ion-card-content class="collection-card-content">
-            <ion-row>
-              <ion-col size="2">
-                <ion-thumbnail>
-                  <ion-img [src]="collection.metadata.logo"></ion-img>
-                </ion-thumbnail>
-              </ion-col>
-              <ion-col size="6" offset="4" class="likes-dislikes">
-                <ion-icon name="heart-dislike" class="icon-middle"></ion-icon> 
-                <span class="text-middle text-likes">17</span>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                <ion-icon name="heart" color="danger" class="icon-middle"></ion-icon>
-                <span class="text-middle text-likes">25</span>
-              </ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col>
-                <ion-card-title class="nft-card-title">{{ collection.metadata.name }}</ion-card-title>
-              </ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col>
-                <ion-text class="truncate-overflow">
-                  {{ collection.metadata.description}}
-                </ion-text>
-              </ion-col>
-            </ion-row>
-
-            <ion-row>
-              <ion-col size="4" class="dapp-category">
-                {{collection.metadata.type| uppercase}}
-              </ion-col>
-              <ion-col size="6" offset="2">
-
-              </ion-col>
-            </ion-row>
-            <p></p>
-          </ion-card-content>
-        </ion-card>
+        <app-collection-card [collection]="collection"></app-collection-card>
       </ion-col>
 
     </ion-row>
     <!-- nfts -->
     <ion-row>
       <ion-col size=6>
-        <h4>Explorer</h4>
       </ion-col>
       <ion-col>
         <ion-row>
-
         </ion-row>
       </ion-col>
     </ion-row>
@@ -98,47 +50,7 @@
 
     <ion-row *ngIf="nfts && nfts.length > 0" class="main-content">
       <ion-col *ngFor="let nft of nfts; let i=index" size-sm="6" size-xs="12" size-md="4" size-lg="3" size-xl="2">
-        <ion-card class="ion-center card" (click)="onNFTSelected(nft)">
-          <!-- <ion-card-header class="centered-content"> -->
-          <ion-img [src]="nft.metadata.image">
-          </ion-img>
-          <br>
-          <!-- </ion-card-header> -->
-
-          <ion-card-content class="nft-card-content">
-            <ion-row>
-              <ion-col size="8">
-                <ion-card-title class="nft-card-title">{{ nft.metadata.name }}</ion-card-title>
-              </ion-col>
-              <ion-col offset="1" size=3>
-                  <ion-icon name="diamond"></ion-icon>
-                  <span>{{formattedPrice(nft.price)}}</span>
-              </ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col>
-                <ion-text class="truncate-overflow">
-                  {{ nft.metadata.description}}
-                </ion-text>
-              </ion-col>
-            </ion-row>
-
-            <ion-row>
-              <ion-col size="4" class="dapp-category">
-                {{nft.metadata.type| uppercase}}
-              </ion-col>
-              <ion-col size="6" offset="2">
-
-              </ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col size="12">
-                <ion-button expand="block">Buy Now</ion-button>
-              </ion-col>
-            </ion-row>
-            <p></p>
-          </ion-card-content>
-        </ion-card>
+        <app-nft-card [nft]="nft"></app-nft-card>
       </ion-col>
     </ion-row>
     <!-- </div> -->

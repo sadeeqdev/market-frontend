@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { IonSegment, NavController } from '@ionic/angular';
+import { MarketExplorerService } from 'src/app/contracts/market-explorer.service';
+import { CollectionStats, NFTCollection } from '../../models/collection.model';
+import { NFT } from '../../models/nft.model';
 
 @Component({
   selector: 'app-nft-collection',
@@ -7,9 +12,51 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NftCollectionPage implements OnInit {
 
-  constructor() { }
+  @ViewChild('segmentControl') segmentControl: IonSegment
+  collection: NFTCollection
+  items: NFT[] = []
+  stats: CollectionStats
 
-  ngOnInit() {
+  currentSegment = 'items'
+
+  constructor(
+    private explorer: MarketExplorerService,
+    private router: Router,
+    private navController: NavController,
+    private route: ActivatedRoute) { }
+
+  async ngOnInit() {
+    this.route.paramMap.subscribe(async paramMap => {
+      if (!paramMap.has('contractAddress')) {
+        this.navController.navigateBack('/nfts')
+        return
+      }
+      try {
+        const address = paramMap.get('contractAddress')
+        this.collection = await this.loadCollection(address)
+        this.items = await this.fetchItems(address)
+        console.log('collection is ', this.collection)
+        console.log('items are: ', this.items)
+      } catch (error) {
+        //todo: show error before navigating back
+        this.navController.navigateBack('/nfts')
+      }
+    })
+  }
+
+  async loadCollection(address: string) {
+    return await this.explorer.loadCollection(address)
+  }
+
+  async fetchCollectionStats(address: string) {}
+
+  async fetchItems(address: string) {
+    return await this.explorer.loadCollectionItems(address)
+  }
+
+  async onSegmentChanged($event: any) {
+    console.log('segment changed: ', $event)
+    this.currentSegment = this.segmentControl.value
   }
 
 }

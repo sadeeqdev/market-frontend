@@ -37,7 +37,7 @@ export class NftLandingPage implements OnInit {
 
   onCollectionSelected(collection: NFTCollection) {
     console.log('collection selected: ', collection)
-    this.router.navigate(['./', 'nfts', 'collection', 'id'])
+    this.router.navigate(['./', 'nfts', 'collection', collection.nftContract])
   }
 
   formattedPrice(price: BigNumber) {

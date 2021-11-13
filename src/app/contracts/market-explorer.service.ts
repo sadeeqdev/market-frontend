@@ -26,44 +26,68 @@ export class MarketExplorerService {
       console.log('at address: ', this.explorerContract.address)
   }
 
+  // All Items
   async getMarketItems(): Promise<any[]> {
     let items = await this.explorerContract.getAllItems()
-    items = await this.populateNftMetadata(items)
+    items = await this.populateMultipleNftsMetadata(items)
     return items
-  }
-
-  async populateNftMetadata(nfts: NFT[]) {
-    let populated = await Promise.all(nfts.map(async n => {
-      let metadata = await this.http.get<NFTMetadata>(n.tokenURI).toPromise()
-      let nft = {
-        ...n,
-        metadata
-      }
-      return nft
-    }))
-    return populated
   }
 
   async getCollections() {
     let collections = await this.explorerContract.getCollections()
-    collections = await this.populateCollectionMetadata(collections)
+    collections = await this.populateMultipleCollectionsMetadata(collections)
     console.log('collections are ', collections)
     return collections
+  
   }
 
-  async populateCollectionMetadata(collections: NFTCollection[]) {
-    let populated = await Promise.all(collections.map(async c => {
-      let metadata = await this.http.get<CollectionMetadata>(c.metadataURI).toPromise()
-      let collection = {
-        ...c,
+  async loadCollection(address: string): Promise<NFTCollection> {
+    const collection = await this.explorerContract.collections(address);
+    return await this.populateCollectionMetadata(collection)
+  }
+
+  // specific collection
+  async loadCollectionDetails(address: string) {
+  }
+
+  async loadCollectionStats(address: string) {
+
+  }
+
+  async loadCollectionItems(address: string) {
+    const items =  await this.explorerContract.itemsInCollection(address)
+    return this.populateMultipleNftsMetadata(items)
+  }
+
+  private async populateCollectionMetadata(collection: NFTCollection) {
+    let metadata = await this.http.get<CollectionMetadata>(collection.metadataURI).toPromise()
+      let c = {
+        ...collection,
         metadata
       }
-      return collection
-    }))
+      return c 
+  }
+
+  private async populateMultipleCollectionsMetadata(collections: NFTCollection[]) {
+    let populated = await Promise.all(collections.map(async c => 
+      this.populateCollectionMetadata(c)
+    ))
     return populated
   }
 
-  getMarketItemsInCollection(address: string) {
+  private async populateNFTMetadata(nft: NFT) {
+    let metadata = await this.http.get<NFTMetadata>(nft.tokenURI).toPromise()
+    let n = {
+      ...nft,
+      metadata
+    }
+    return n
   }
 
+  private async populateMultipleNftsMetadata(nfts: NFT[]) {
+    let populated = await Promise.all(nfts.map(async n => 
+        await this.populateNFTMetadata(n)
+    ))
+    return populated
+  }
 }
