@@ -2,10 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ethers } from 'ethers';
 import { environment } from 'src/environments/environment';
-import { NFT, NFTMetadata } from '../pages/nfts/nft.model';
 import { DefaultProviderService } from '../providers/default-provider.service';
 import MarketExplorer from '../../artifacts/CheddaMarketExplorer.json'
-import { CollectionMetadata, NFTCollection } from '../nfts/collection.model';
+import { CollectionMetadata, NFTCollection } from '../nfts/models/collection.model';
+import { NFT, NFTMetadata } from '../nfts/models/nft.model';
 
 @Injectable({
   providedIn: 'root'

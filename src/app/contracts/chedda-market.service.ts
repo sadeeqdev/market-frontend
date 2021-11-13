@@ -2,10 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ethers } from 'ethers';
 import { environment } from 'src/environments/environment';
-import { NFT } from '../pages/nfts/nft.model';
 import { DefaultProviderService } from '../providers/default-provider.service';
 import ChedaMarket from '../../artifacts/CheddaMarket.json'
 import CheddaNFT from '../../artifacts/CheddaNFT.json'
+import { NFT } from '../nfts/models/nft.model';
 
 @Injectable({
   providedIn: 'root'

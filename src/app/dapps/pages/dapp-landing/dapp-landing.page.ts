@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CheddaDappStoreService } from 'src/app/contracts/chedda-dapp-store.service';
-import { DappService } from 'src/app/pages/dapp.service';
-import { Dapp } from 'src/app/pages/dapps/dapp.model';
+import { Dapp } from '../../models/dapp.model';
 
 @Component({
   selector: 'app-dapp-landing',
@@ -16,7 +15,6 @@ export class DappLandingPage implements OnInit {
   gamingDapps: Dapp[] = []
 
   constructor(
-    private dappService: DappService, 
     private dappStore: CheddaDappStoreService,
     private router: Router) { }
 
@@ -49,5 +47,4 @@ export class DappLandingPage implements OnInit {
   naviagteToDapp(dapp: Dapp) {
     this.router.navigate(['/dapps', 'details', dapp.contractAddress])
   }
-
 }

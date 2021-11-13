@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ethers } from 'ethers';
 import { environment } from 'src/environments/environment';
-import { Dapp, DappMetadata } from '../pages/dapps/dapp.model';
 import { DefaultProviderService } from '../providers/default-provider.service';
 import { HttpClient } from '@angular/common/http';
 import CheddaDapStore from '../../artifacts/CheddaDappStore.json'
+import { Dapp, DappMetadata } from '../dapps/models/dapp.model';
 
 @Injectable({
   providedIn: 'root'

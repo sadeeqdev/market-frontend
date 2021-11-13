@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { BigNumber, ethers } from 'ethers';
 import { CheddaMarketService } from 'src/app/contracts/chedda-market.service';
 import { MarketExplorerService } from 'src/app/contracts/market-explorer.service';
-import { NFTCollection } from './collection.model';
-import { NFT } from './nft.model';
+import { NFTCollection } from './models/collection.model';
+import { NFT } from './models/nft.model';
 
 @Component({
   selector: 'app-nfts',
