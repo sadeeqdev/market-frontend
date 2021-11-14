@@ -1,6 +1,5 @@
-<ion-content class="main-content">
+<ion-content>
   <!-- header featured section -->
-  <h1>NFT Landing</h1>
   <ion-grid>
     <ion-row class="nft-featured">
       <ion-col class="no-margin-padding" size-sm="12" size-lg="7" size-md="12" size-xl="5" offset-xl="2">
@@ -29,31 +28,46 @@
     </ion-row>
     <!-- Top collections -->
 
-    <h3>Popular Collections</h3>
+    <ion-row class="section-header">
+      <ion-col>
+      <ion-text>
+        <h3 class="section-title">Most Popular NFT Collections</h3>
+      </ion-text>
+      </ion-col>
+    </ion-row>
     <ion-row *ngIf="collections">
-      <ion-col *ngFor="let collection of collections; let i=index" size-sm="6" size-md="4" size-lg="4" size-xl="4">
+      <ion-col *ngFor="let collection of collections; let i=index" size-sm="6" size-xs="12" size-md="5" size-lg="4" size-xl="3">
         <app-collection-card [collection]="collection"></app-collection-card>
       </ion-col>
 
     </ion-row>
     <!-- nfts -->
-    <ion-row>
-      <ion-col size=6>
-      </ion-col>
-      <ion-col>
-        <ion-row>
-        </ion-row>
-      </ion-col>
-    </ion-row>
 
-    <!-- <div *ngIf="nfts && nfts.length > 0" class="main-content"> -->
-
-    <ion-row *ngIf="nfts && nfts.length > 0" class="main-content">
-      <ion-col *ngFor="let nft of nfts; let i=index" size-sm="6" size-xs="12" size-md="4" size-lg="3" size-xl="2">
-        <app-nft-card [nft]="nft"></app-nft-card>
-      </ion-col>
-    </ion-row>
-    <!-- </div> -->
+    <div *ngIf="nfts && nfts.length > 0">
+      <ion-row class="section-header">
+        <ion-col>
+        <ion-text>
+          <h3 class="section-title">Explore</h3>
+        </ion-text>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size=6>
+        </ion-col>
+        <ion-col>
+          <ion-row>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+  
+  
+      <ion-row *ngIf="nfts && nfts.length > 0" class="main-content">
+        <ion-col *ngFor="let nft of nfts; let i=index" size-sm="6" size-xs="12" size-md="3" size-lg="3" size-xl="2">
+          <app-nft-card [nft]="nft"></app-nft-card>
+        </ion-col>
+      </ion-row>
+    </div>
+    
 
     <div *ngIf="!nfts || nfts.length == 0">
       <ion-row>

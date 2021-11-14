@@ -57,7 +57,6 @@
 
 
 .main-content {
-  background-color: rgb(244, 244, 244);
   padding-bottom: 50px;
 }
 
@@ -70,4 +69,17 @@
 
 .centered-text {
   text-align: center;
+}
+
+.truncate-overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  height: 42px;
+  -webkit-line-clamp: 2; /* number of lines to show */
+  -webkit-box-orient: vertical;
+}
+
+.no-padding {
+  padding: 0;
 }

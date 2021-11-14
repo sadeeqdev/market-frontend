@@ -5,6 +5,9 @@
 :root {
   --ion-font-family:  'Open Sans'!important;
   font-family: 'Open Sans', sans-serif;
+
+  --ion-background-color: #f4f4f4;
+  --ion-background-color-rgb: 244, 244, 244;
   /** primary **/
   --ion-color-primary: #f73d4a;
   --ion-color-primary-rgb: 247, 61, 74;
@@ -90,12 +93,12 @@
     --ion-font-family:  'Open Sans'!important;
     font-family: 'Open Sans', sans-serif;
 
-    --ion-color-primary: #428cff;
-    --ion-color-primary-rgb: 66,140,255;
+    --ion-color-primary: #f73d4a;
+    --ion-color-primary-rgb: 247, 61, 73;
     --ion-color-primary-contrast: #ffffff;
     --ion-color-primary-contrast-rgb: 255,255,255;
-    --ion-color-primary-shade: #3a7be0;
-    --ion-color-primary-tint: #5598ff;
+    --ion-color-primary-shade: #db3641;
+    --ion-color-primary-tint: #f7525e;
 
     --ion-color-secondary: #50c8ff;
     --ion-color-secondary-rgb: 80,200,255;

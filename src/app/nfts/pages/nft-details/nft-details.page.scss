@@ -1,0 +1,25 @@
+
+ion-img::part(image) {
+    border-radius: 10px !important;
+}
+
+ion-img {
+    margin: 20px;
+}
+
+.nft-image {
+    box-shadow: 0px 3px 4px 0px grey;
+}
+
+ion-img::part(image) {
+    border-radius: 10px !important;
+}
+
+.section-title {
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.text-middle {
+    vertical-align: middle;
+}
