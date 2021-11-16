@@ -24,7 +24,7 @@ export class DappLandingPage implements OnInit {
 
   private async loadDapps() {
     try {
-      // this.dapps = await this.dappStore.getDapps()
+      this.dapps = await this.dappStore.getDapps()
       this.defiDapps = await this.dappStore.loadDappsInCategory('defi')
       this.nftDapps = await this.dappStore.loadDappsInCategory('nft')
       this.gamingDapps = await this.dappStore.loadDappsInCategory('gaming')
