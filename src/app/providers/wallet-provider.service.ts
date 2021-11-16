@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { ethers, providers, Signer,  } from 'ethers'
 import detectEthereumProvider from '@metamask/detect-provider';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { NetworkParams } from './network-params.interface';
+import { CheddaConfig } from './chedda-config.interface';
 
 export const AVALANCHE_TESTNET_PARAMS = {
   chainId: '0xA869',
@@ -31,25 +34,29 @@ export const POLYGON_TESTNET_PARAMS = {
   providedIn: 'root'
 })
 export class WalletProviderService {
-
   
   provider: any
   web3
   signer: Signer
 
   currentAccount
-  currentNetwork
+  currentNetwork: NetworkParams
+  currentConfig: CheddaConfig
   isConnected: boolean = false
   connectedSubject: BehaviorSubject<boolean> = new BehaviorSubject(false)
   accountSubject: BehaviorSubject<any> = new BehaviorSubject(null)
   networkSubject: BehaviorSubject<any> = new BehaviorSubject(null)
 
-  constructor() { }
+  constructor() {
+    this.initializeNetworkConnection()
+  }
 
   async isConected(): Promise<boolean> {
     try {
       this.provider = await detectEthereumProvider();
-      this.startApp(this.provider)
+      if (this.provider) {
+        await this.startApp(this.provider)
+      }
     } catch (error) {
       console.error('unable to detect ethereum provider: ', error)
     }
@@ -58,6 +65,11 @@ export class WalletProviderService {
   }
 
   async startApp(provider: any) {
+    let eth: any = window.ethereum
+    if (eth.selectedAddress) {
+      this.setCurrentAccount(eth.selectedAddress)
+      console.log('selected address is ', eth.selectedAddress)
+    }
     if (provider !== window.ethereum) {
       console.error('multiple wallets installed')
     } else {
@@ -67,13 +79,13 @@ export class WalletProviderService {
 
 
   async addNetwork() {
-    if (!this.provider) {
+    if (!this.provider || !this.currentNetwork) {
       return
     }
     this.provider
     .request({
       method: 'wallet_addEthereumChain',
-      params: [AVALANCHE_TESTNET_PARAMS]
+      params: [this.currentNetwork]
     })
     .catch((error: any) => {
       console.log(error)
@@ -88,66 +100,70 @@ export class WalletProviderService {
     console.log('getting accounts')
     const accounts = await this.provider.request({ method: 'eth_requestAccounts' });
     if (accounts.length > 0) {
-      this.currentAccount = accounts[0]
-      this.accountSubject.next(this.currentAccount)
+      this.setCurrentAccount(accounts[0])
     } else {
       let accounts = await this.enableEthereum()
       if (accounts.length > 0) {
-        this.currentAccount = accounts[0]
-        this.accountSubject.next(this.currentAccount)
+        this.setCurrentAccount(accounts[0])
+      } else {
+        this.setCurrentAccount(null)
       }
     }
     return accounts
   }
-  
+
   async enableEthereum(): Promise<any> {
     return await this.provider.enable()
   }
 
   private async registerHandlers() {
-    this.provider.on('connect', this.handleAccountConnected)
-    this.provider.on('disconnect', this.handleAccountDisconnected)
-    this.provider.on('chainChanged', this.handledChainChanged)
-    this.provider.on('accountsChanged', this.handleAccountChanged)
+    this.provider.on('connect', this.handleAccountConnected.bind(this))
+    this.provider.on('disconnect', this.handleAccountDisconnected.bind(this))
+    this.provider.on('chainChanged', this.handledChainChanged.bind(this))
+    this.provider.on('accountsChanged', this.handleAccountChanged.bind(this))
   }
 
   private handleAccountConnected(accounts) {
-    console.log('account connected: ', accounts)
+    console.log('>>> Account connected: ', accounts)
   }
 
   private handleAccountDisconnected(accounts) {
-    console.log('account disconnected: ', accounts)
+    console.log('>>> Account disconnected: ', accounts)
   }
 
   private handledChainChanged(chainId) {
-    console.log('chain changed to: ', chainId)
+    console.log('>>> Chain changed to: ', chainId)
+    this.networkSubject.next(chainId)
   }
 
   private handleAccountChanged(accounts) {
-    console.log('account changed to: ', accounts)
+    console.log('this is ', this)
+    if (accounts.length > 0) {
+      this.setCurrentAccount(accounts[0])
+    } else {
+      this.setCurrentAccount(null)
+    }
+    console.log('>>> Account changed to: ', accounts)
   }
 
+  private setCurrentAccount(account: string | null) {
+    this.currentAccount = account
+    this.accountSubject.next(account)
+  }
 
-  // async openMetamask() {
-  //   this.window.web3 = new Web3(this.window.ethereum);
-  //   let addresses = await this.getAccounts();
-  //   console.log("service",addresses)
-  //   if (!addresses.length) {
-  //       try {
-  //           addresses = await this.window.ethereum.enable();
-  //       } catch (e) {
-  //           return false;
-  //       }
-  //   }
-  // }
-
-  // private async enableMetaMaskAccount(): Promise<any> {
-  //   let enable = false;
-  //   await new Promise((resolve, reject) => {
-  //     enable = window.ethereum.enable();
-  //   });
-  //   return Promise.resolve(enable);
-  // }
+  private initializeNetworkConnection() {
+    let eth: any = window.ethereum
+    if (eth) {
+      console.log('current network version is: ', eth.networkVersion)
+    }
+    let currentNetwork: NetworkParams = environment.config.networkParams
+    console.log('**** current network is: ', currentNetwork)
+    if (currentNetwork && currentNetwork.chainId) {
+      this.handledChainChanged(currentNetwork.chainId)
+    }
+    this.currentNetwork = currentNetwork
+    this.currentConfig = environment.config
+  }
 
   onboard() {}
 }

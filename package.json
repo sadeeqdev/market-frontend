@@ -7,6 +7,9 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "dev": "ng build --configuration testnet.hardhat",
+    "build.testnet.polygon": "ng build --configuration testnet.polygon",
+    "build.testnet.hardhat": "ng build --configuration testnet.hardhat",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
