@@ -16,7 +16,7 @@ export class CheddaDappStoreService {
 
   constructor(private provider: DefaultProviderService, private http: HttpClient) {
     this.dappStoreContract = new ethers.Contract(
-      environment.networks.local.addresses.CheddaDappStore,
+      environment.networks.polygon_mumbai_testnet.addresses.CheddaDappStore,
       CheddaDapStore.abi,
       provider.provider
       );

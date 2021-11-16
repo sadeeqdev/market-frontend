@@ -37,10 +37,10 @@ export const environment = {
     local: {
       addresses: {
         Chedda: '',
-        CheddaDappStore: '0x322813Fd9A801c5507c9de605d63CEA4f2CE6c44',
-        CheddaDappMetrics: '0xa85233C63b9Ee964Add6F2cffe00Fd84eb32338f',
-        CheddaMarket: '0x4A679253410272dd5232B3Ff7cF5dbB88f295319',
-        CheddaMarketExplorer: '0x7a2088a1bFc9d81c55368AE168C2C02570cB814F'
+        CheddaDappStore: '0x73C68f1f41e4890D06Ba3e71b9E9DfA555f1fb46',
+        CheddaDappMetrics: '0xD2D5e508C82EFc205cAFA4Ad969a4395Babce026',
+        CheddaMarket: '0xdB012DD3E3345e2f8D23c0F3cbCb2D94f430Be8C',
+        CheddaMarketExplorer: '0xd977422c9eE9B646f64A4C4389a6C98ad356d8C4'
       },
       params: {
         chainId: '80001',
@@ -94,8 +94,10 @@ export const environment = {
     polygon_mumbai_testnet: {
       addresses: {
         Chedda: '',
-        CheddaDappStore: '0xeE3d15Bd630E5Dd0eEE5eB321878cc19E4bB6CA6',
-        CheddaMarket: '',
+        CheddaDappStore: '0xC674307d98625034C557907c7a628EffccFF1278',
+        CheddaDappMetrics: '0x88e81dCdD8fdbEFfACa606e59e9d26876bfFb181',
+        CheddaMarket: '0x1916022D451D4D6083bE60072c9CeD86E95C7e3b',
+        CheddaMarketExplorer: '0xFCabEc24F9A3daE2fA8e3b34E82254ad42f1E9De'
       },
       params: {
         chainId: '80001',

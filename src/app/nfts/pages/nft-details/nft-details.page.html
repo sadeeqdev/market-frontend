@@ -35,20 +35,21 @@
           </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col>
-            <ion-chip *ngFor="let attr of nft.metadata.attributes">
-              <ion-row>
+          <!-- <ion-col> -->
+            <span class="attribute-box" *ngFor="let attr of nft.metadata.attributes">
+              <ion-row class="property">
                 <ion-col>
                   <ion-text>{{attr.trait_type | titlecase}}</ion-text>
                 </ion-col>
               </ion-row>
-              <ion-row>
+              <ion-row class="value">
                 <ion-col>
                   <ion-text>{{attr.value | titlecase}}</ion-text>
                 </ion-col>
               </ion-row>
-            </ion-chip>
-          </ion-col>
+            </span>
+
+          <!-- </ion-col> -->
         </ion-row>
 
         <ion-row>
@@ -59,18 +60,27 @@
           </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col size="2">
+          <!-- <ion-col size="2">
             <ion-avatar>
               <ion-img src="/assets/svg/matic-token-icon.png"></ion-img>
             </ion-avatar>
           </ion-col>
           <ion-col>
             <ion-text class="text-middle">Polygon</ion-text>
+          </ion-col> -->
+
+          <ion-col>
+          <ion-chip>
+            <ion-avatar>
+              <ion-img src="/assets/svg/matic-token-icon.png"></ion-img>
+            </ion-avatar>
+            <ion-label>Polygon</ion-label>
+          </ion-chip>
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col>
-            <ion-button>Buy for 100 MATIC</ion-button>
+            <ion-button #buyButton>{{priceString}}</ion-button>
           </ion-col>
         </ion-row>
       </ion-col>

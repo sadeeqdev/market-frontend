@@ -18,7 +18,7 @@ export class MarketExplorerService {
 
   constructor(private provider: DefaultProviderService, private http: HttpClient) {
     this.explorerContract = new ethers.Contract(
-      environment.networks.local.addresses.CheddaMarketExplorer,
+      environment.networks.polygon_mumbai_testnet.addresses.CheddaMarketExplorer,
       MarketExplorer.abi,
       provider.provider
       );
@@ -52,6 +52,12 @@ export class MarketExplorerService {
 
   async loadCollectionStats(address: string) {
 
+  }
+
+  async loadMarketItem(address: string, tokenID: string) {
+    let marketItem = await this.explorerContract.getMarketItem(address, tokenID);
+    marketItem = await this.populateNFTMetadata(marketItem)
+    return marketItem
   }
 
   async loadCollectionItems(address: string) {

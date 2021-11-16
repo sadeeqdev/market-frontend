@@ -136,7 +136,7 @@
     </ion-row>
     <ion-row>
       <div class="scrolling-wrapper-flex">
-        <ion-card class="ion-center card" *ngFor="let dapp of nftDapps; let i=index">
+        <ion-card class="ion-center card" *ngFor="let dapp of nftDapps; let i=index" (click)="onDappSelected(dapp)">
           <ion-card-header class="centered-content">
             <ion-avatar>
               <ion-img [src]="dapp.metadata.logoURI"></ion-img>

@@ -2,10 +2,10 @@
   <!-- header featured section -->
   <ion-grid>
     <ion-row class="nft-featured">
-      <ion-col class="no-margin-padding" size-sm="12" size-lg="7" size-md="12" size-xl="5" offset-xl="2">
+      <ion-col class="no-margin-padding" size-sm="12" size-xs="12" size-lg="7" size-md="6" size-xl="5" offset-xl="2">
         <ion-img [src]="'./assets/images/Image 26.png'" class="no-margin-padding img-fit"></ion-img>
       </ion-col>
-      <ion-col class="inverse featured-box" size-lg="5" size-md="12" size-sm="12" size-xl="4">
+      <ion-col class="inverse featured-box" size-lg="5" size-md="6" size-sm="12" size-xl="4">
         <h3>Create your NFTs with us</h3>
         <h3>Let's make some Chedda</h3>
         <ion-row>
@@ -28,19 +28,21 @@
     </ion-row>
     <!-- Top collections -->
 
-    <ion-row class="section-header">
-      <ion-col>
-      <ion-text>
-        <h3 class="section-title">Most Popular NFT Collections</h3>
-      </ion-text>
-      </ion-col>
-    </ion-row>
-    <ion-row *ngIf="collections">
-      <ion-col *ngFor="let collection of collections; let i=index" size-sm="6" size-xs="12" size-md="5" size-lg="4" size-xl="3">
-        <app-collection-card [collection]="collection"></app-collection-card>
-      </ion-col>
-
-    </ion-row>
+    <div *ngIf="collections">
+      <ion-row class="section-header">
+        <ion-col>
+        <ion-text>
+          <h3 class="section-title">Most Popular NFT Collections</h3>
+        </ion-text>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col *ngFor="let collection of collections; let i=index" size-sm="6" size-xs="12" size-md="5" size-lg="4" size-xl="3">
+          <app-collection-card [collection]="collection"></app-collection-card>
+        </ion-col>
+      </ion-row>
+    </div>
+    
     <!-- nfts -->
 
     <div *ngIf="nfts && nfts.length > 0">

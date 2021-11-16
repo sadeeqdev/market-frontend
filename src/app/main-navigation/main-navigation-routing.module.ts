@@ -9,6 +9,10 @@ const routes: Routes = [
     component: MainNavigationPage,
     children: [
       {
+        path: '',
+        redirectTo: 'dapps'
+      },
+      {
         path: 'dapps',
         loadChildren: () => import('../dapps/dapps.module').then( m => m.DappsPageModule)
       },

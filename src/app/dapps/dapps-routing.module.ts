@@ -13,7 +13,7 @@ const routes: Routes = [
         loadChildren: () => import('./pages/dapp-landing/dapp-landing.module').then(m => m.DappLandingPageModule)
       },
       {
-        path: 'details/:id',
+        path: 'details/:address',
         loadChildren: () => import('./pages/dapp-details/dapp-details.module').then(m => m.DappDetailsPageModule)
       },
       {

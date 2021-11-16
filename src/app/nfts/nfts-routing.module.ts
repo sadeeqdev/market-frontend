@@ -13,7 +13,7 @@ const routes: Routes = [
         loadChildren: () => import('./pages/nft-landing/nft-landing.module').then( m => m.NftLandingPageModule)
       },
       {
-        path: 'details',
+        path: 'details/:contractAddress/:tokenID',
         loadChildren: () => import('./pages/nft-details/nft-details.module').then( m => m.NftDetailsPageModule)
       },
       {

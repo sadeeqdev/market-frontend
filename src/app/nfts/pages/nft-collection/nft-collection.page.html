@@ -24,7 +24,7 @@
     <!-- address -->
     <ion-row>
       <ion-col class="centered-text">
-      <ion-chip>
+      <ion-chip (click)="copyAddress()">
         <ion-icon name="newspaper"></ion-icon>
         <ion-label>{{collection.nftContract}}</ion-label>
       </ion-chip>

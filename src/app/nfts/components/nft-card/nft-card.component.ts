@@ -19,7 +19,7 @@ export class NftCardComponent implements OnInit {
 
   onNFTSelected(nft: NFT) {
     console.log('nft selected: ', nft)
-    this.router.navigate(['/', 'nfts', 'details'])
+    this.router.navigate(['/', 'nfts', 'details', nft.nftContract, nft.tokenID.toString()])
   }
 
   onCollectionSelected(collection: NFTCollection) {

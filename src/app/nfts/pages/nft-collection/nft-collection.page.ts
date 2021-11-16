@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IonSegment, NavController } from '@ionic/angular';
+import { IonSegment, NavController, ToastController } from '@ionic/angular';
 import { MarketExplorerService } from 'src/app/contracts/market-explorer.service';
 import { CollectionStats, NFTCollection } from '../../models/collection.model';
 import { NFT } from '../../models/nft.model';
+import { Clipboard } from '@angular/cdk/clipboard';
 
 @Component({
   selector: 'app-nft-collection',
@@ -23,6 +24,8 @@ export class NftCollectionPage implements OnInit {
     private explorer: MarketExplorerService,
     private router: Router,
     private navController: NavController,
+    private toastController: ToastController,
+    private clipboard: Clipboard,
     private route: ActivatedRoute) { }
 
   async ngOnInit() {
@@ -59,4 +62,16 @@ export class NftCollectionPage implements OnInit {
     this.currentSegment = this.segmentControl.value
   }
 
+  copyAddress() {
+    this.clipboard.copy(this.collection.nftContract)
+    this.showToast()
+  }
+  
+  async showToast() {
+    const toast = await this.toastController.create({
+      message: 'Address copied',
+      duration: 3000
+    });
+    toast.present();
+  }
 }

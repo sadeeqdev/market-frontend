@@ -18,7 +18,7 @@ export class CheddaMarketService {
 
   constructor(private provider: DefaultProviderService, private http: HttpClient) {
     this.marketContract = new ethers.Contract(
-      environment.networks.local.addresses.CheddaMarket,
+      environment.networks.polygon_mumbai_testnet.addresses.CheddaMarket,
       ChedaMarket.abi,
       provider.provider
       );

@@ -1,6 +1,7 @@
 export interface NFT {
     name: string
-    tokenId: string
+    nftContract: string
+    tokenID: string
     metadata: NFTMetadata
     price: number
     currency: string
