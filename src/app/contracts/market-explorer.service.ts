@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ethers } from 'ethers';
-import { environment } from 'src/environments/environment';
 import { DefaultProviderService } from '../providers/default-provider.service';
 import MarketExplorer from '../../artifacts/CheddaMarketExplorer.json'
 import { CollectionMetadata, NFTCollection } from '../nfts/models/collection.model';
 import { NFT, NFTMetadata } from '../nfts/models/nft.model';
+import { WalletProviderService } from '../providers/wallet-provider.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,9 +16,9 @@ export class MarketExplorerService {
   nftContract: any
   nfts: NFT[]
 
-  constructor(private provider: DefaultProviderService, private http: HttpClient) {
+  constructor(provider: DefaultProviderService, wallet: WalletProviderService, private http: HttpClient) {
     this.explorerContract = new ethers.Contract(
-      environment.networks.polygon_mumbai_testnet.addresses.CheddaMarketExplorer,
+      wallet.currentConfig.contracts.CheddaMarketExplorer,
       MarketExplorer.abi,
       provider.provider
       );

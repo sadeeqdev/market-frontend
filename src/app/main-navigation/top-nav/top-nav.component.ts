@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { AlertController, PopoverController } from '@ionic/angular';
 import { CheddaDappStoreService } from 'src/app/contracts/chedda-dapp-store.service';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
@@ -13,12 +13,14 @@ export class TopNavComponent implements OnInit {
   prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
   connected = false
   isDark = false;
-  account: string
+  account?: string
+  isCorrectNetwork = true
 
   constructor(
     private provider: WalletProviderService, 
     private dappStore: CheddaDappStoreService,
     private alertController: AlertController,
+    private zone: NgZone,
     private popoverController: PopoverController,
     ) {}
 
@@ -28,9 +30,14 @@ export class TopNavComponent implements OnInit {
     let isConnected = await this.provider.isConected()
     console.log('onInit, isConnected = ', isConnected)
     if (isConnected) {
-      this.provider.getAccounts()
+      try {
+        // this.provider.getAccounts()
+      } catch (error) {
+        console.warn('failed to get accounts: ', error)
+      }
     }
   }
+
   // Add or remove the "dark" class based on if the media query matches
   toggleDarkTheme(shouldAdd: boolean) {
     this.isDark = !this.isDark;
@@ -64,7 +71,7 @@ export class TopNavComponent implements OnInit {
         text: 'Cancel',
         role: 'cancel',
         cssClass: 'secondary',
-        handler: (blah) => {
+        handler: () => {
           console.log('Confirm Canceled');
         }
       }, {
@@ -88,11 +95,22 @@ export class TopNavComponent implements OnInit {
 
   async setupListeners() {
     this.provider.accountSubject.subscribe(account => {
+      console.log('>>> top nav got account: ', account);
+      
       this.account = account
     })
-    this.provider.networkSubject.subscribe(network => {
-      console.log('App component got network: ', network)
+    this.provider.networkSubject.subscribe(chainId => {
+      this.zone.run(() => {
+        console.log('Got network: ', chainId)
+        this.isCorrectNetwork = chainId == this.provider.currentNetwork.chainId
+        console.log('**** isCorrectNetwork = ', this.isCorrectNetwork)
+        console.log(`${chainId} <=> ${this.provider.currentNetwork.chainId}`)
+      })
+
     })
   }
 
+  async switchNetwork() {
+    await this.provider.addNetwork()
+  }
 }

@@ -3,6 +3,7 @@ export interface Dapp {
     name: string;
     metadataURI: string;
     metadata: DappMetadata;
+    rating: number;
   }
   
   export interface DappMetadata {

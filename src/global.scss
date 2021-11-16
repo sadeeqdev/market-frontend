@@ -71,6 +71,11 @@
   text-align: center;
 }
 
+.text-middle {
+  display: inline-block;
+  vertical-align: middle;
+}
+
 .truncate-overflow {
   overflow: hidden;
   text-overflow: ellipsis;

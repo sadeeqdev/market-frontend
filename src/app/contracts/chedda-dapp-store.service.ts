@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ethers } from 'ethers';
-import { environment } from 'src/environments/environment';
 import { DefaultProviderService } from '../providers/default-provider.service';
 import { HttpClient } from '@angular/common/http';
 import CheddaDapStore from '../../artifacts/CheddaDappStore.json'
 import { Dapp, DappMetadata } from '../dapps/models/dapp.model';
+import { WalletProviderService } from '../providers/wallet-provider.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +14,9 @@ export class CheddaDappStoreService {
   dappStoreContract: any
   dapps: Dapp[]
 
-  constructor(private provider: DefaultProviderService, private http: HttpClient) {
+  constructor(provider: DefaultProviderService, wallet: WalletProviderService, private http: HttpClient) {
     this.dappStoreContract = new ethers.Contract(
-      environment.networks.polygon_mumbai_testnet.addresses.CheddaDappStore,
+      wallet.currentConfig.contracts.CheddaDappStore,
       CheddaDapStore.abi,
       provider.provider
       );

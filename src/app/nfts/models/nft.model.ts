@@ -6,6 +6,7 @@ export interface NFT {
     price: number
     currency: string
     tokenURI: string
+    created: string
 }
 
 export interface NFTAttribute {
@@ -18,6 +19,7 @@ export interface NFTMetadata {
     image: string
     edition: number
     date: Date
+    created: string
     attributes: NFTAttribute[]
 }
 

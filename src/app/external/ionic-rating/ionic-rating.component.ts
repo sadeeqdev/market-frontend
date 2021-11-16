@@ -7,7 +7,7 @@ import { IonicRatingService } from '../ionic-rating.service';
   template: `
     <div class="ionic5-star-rating">
       <ion-button size="large" fill="clear" class="rate-button" [ngStyle]="{'width' : fontSize, 'height' : fontSize}" *ngFor="let index of iconsArray" id="{{index}}" (click)="changeRating($event)">
-        <ion-icon [ngStyle]="{'color': ((halfStar === 'false' && index < this.Math.round(this.parseFloat(rating))) || (halfStar === 'true' && index < this.parseFloat(rating))) ? activeColor : defaultColor, 'font-size' : fontSize }" name="{{(halfStar ==='true' && (rating - index > 0) && (rating - index <= 0.5)) ? halfIcon : (index < this.Math.round(this.parseFloat(rating))) ? activeIcon : defaultIcon}}"></ion-icon>
+        <ion-icon [ngStyle]="{'color': ((halfStar === 'false' && index < this.Math.round(this.parseFloat(rating))) || (halfStar === 'true' && index < this.parseFloat(rating))) ? activeColor : defaultColor, 'font-size' : fontSize }" name="{{(halfStar ==='true' && (+rating - index > 0) && (+rating - index <= 0.5)) ? halfIcon : (index < this.Math.round(this.parseFloat(rating))) ? activeIcon : defaultIcon}}"></ion-icon>
       </ion-button>
     </div>
   `, styles: [`
@@ -28,15 +28,16 @@ import { IonicRatingService } from '../ionic-rating.service';
 })
 export class IonicRatingComponent implements ControlValueAccessor, OnInit {
   @Input()
-  public set rating(val: number) {
-    this._rating = val;
+  public set rating(val: number|string) {
+    let ratingNumber = this.parseFloat(val)
+    this._rating = ratingNumber;
     if (this.onChange) {
-      this.onChange(val);
+      this.onChange(ratingNumber);
     }
   }
 
 
-  public get rating(): number {
+  public get rating(): number | string {
     return this._rating;
   }
 
@@ -109,7 +110,7 @@ export class IonicRatingComponent implements ControlValueAccessor, OnInit {
     // event is different for firefox and chrome
     let id = event.target.id ? parseInt(event.target.id) : parseInt(event.target.parentElement.id);
     if (this.halfStar && this.halfStar === 'true') {
-      this.rating = ((this.rating - id > 0) && (this.rating - id <= 0.5)) ? id + 1 : id + .5;
+      this.rating = ((+this.rating - id > 0) && (+this.rating - id <= 0.5)) ? id + 1 : id + .5;
     } else {
       this.rating = id + 1;
     }
