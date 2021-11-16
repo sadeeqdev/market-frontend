@@ -99,6 +99,7 @@ export class WalletProviderService {
     }
     return accounts
   }
+  
   async enableEthereum(): Promise<any> {
     return await this.provider.enable()
   }
