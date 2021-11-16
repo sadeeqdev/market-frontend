@@ -96,8 +96,9 @@ export class TopNavComponent implements OnInit {
   async setupListeners() {
     this.provider.accountSubject.subscribe(account => {
       console.log('>>> top nav got account: ', account);
-      
-      this.account = account
+      this.zone.run(() => {
+        this.account = account
+      })
     })
     this.provider.networkSubject.subscribe(chainId => {
       this.zone.run(() => {
