@@ -16,7 +16,7 @@
         <img src="../../assets/images/chedda-logo-128.png" width="30px" />
       </ion-button>
       <ion-button fill="solid">Select Network</ion-button>
-      <ion-button fill="solid" (click)="toggleDarkTheme(isDark)">
+      <ion-button fill="solid" (click)="toggleDarkTheme(isDark)" class="darkmode-button">
         <ion-icon name="sunny-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -37,8 +37,8 @@
     </ion-buttons>
     
     <ion-buttons slot="end" *ngIf="account">
-      <ion-button fill="outline">0</ion-button>
-      <ion-button fill="outline">
+      <ion-button fill="solid">0</ion-button>
+      <ion-button fill="solid" class="account-button">
         <ion-avatar class="wallet-avatar">
           <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" class="wallet-avatar">
         </ion-avatar>
