@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonButton, NavController } from '@ionic/angular';
 import { BigNumber, ethers } from 'ethers';
+import { CheddaMarketService } from 'src/app/contracts/chedda-market.service';
 import { MarketExplorerService } from 'src/app/contracts/market-explorer.service';
 import { NFT } from '../../models/nft.model';
 
@@ -19,6 +20,7 @@ export class NftDetailsPage implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private navController: NavController,
+    private market: CheddaMarketService,
     private explorer: MarketExplorerService) { }
 
   ngOnInit() {
@@ -48,4 +50,8 @@ export class NftDetailsPage implements OnInit {
     this.priceString = `BUY for ${price} MATIC`
   }
 
+  async buyButtonClicked() {
+    let result = await this.market.buyItem(this.nft.nftContract, this.nft.tokenID)
+    console.log('buyItem result = ', result)
+  }
 }

@@ -31,6 +31,11 @@ export class CheddaMarketService {
     return items
   }
 
+  async buyItem(nftContract: string, itemId: string) {
+    let result = await this.marketContract.buyItem(nftContract, itemId)
+    console.log('result of purchase = ', result)
+  }
+
   getMarketItemsInCollection(address: string) {
 
   }

@@ -6,30 +6,6 @@ import { environment } from 'src/environments/environment';
 import { NetworkParams } from './network-params.interface';
 import { CheddaConfig } from './chedda-config.interface';
 
-export const AVALANCHE_TESTNET_PARAMS = {
-  chainId: '0xA869',
-  chainName: 'Avalanche Testnet C-Chain',
-  nativeCurrency: {
-      name: 'Avalanche',
-      symbol: 'AVAX',
-      decimals: 18
-  },
-  rpcUrls: ['https://api.avax-test.network/ext/bc/C/rpc'],
-  blockExplorerUrls: ['https://cchain.explorer.avax-test.network/']
-}
-
-export const POLYGON_TESTNET_PARAMS = {
-  chainId: '80001',
-  chainName: 'Polygon Mumbai Testnet',
-  nativeCurrency: {
-      name: 'Matic',
-      symbol: 'MATIC',
-      decimals: 18
-  },
-  rpcUrls: ['https://rpc-mumbai.maticvigil.com/'],
-  blockExplorerUrls: ['https://mumbai.polygonscan.com/']
-}
-
 @Injectable({
   providedIn: 'root'
 })
@@ -54,6 +30,7 @@ export class WalletProviderService {
   async isConected(): Promise<boolean> {
     try {
       this.provider = await detectEthereumProvider();
+      console.log('connected provider is ', this.provider)
       if (this.provider) {
         await this.startApp(this.provider)
       }
@@ -67,8 +44,10 @@ export class WalletProviderService {
   async startApp(provider: any) {
     let eth: any = window.ethereum
     if (eth.selectedAddress) {
+      eth.enable()
       this.setCurrentAccount(eth.selectedAddress)
       console.log('selected address is ', eth.selectedAddress)
+    } else {
     }
     if (provider !== window.ethereum) {
       console.error('multiple wallets installed')
@@ -76,7 +55,6 @@ export class WalletProviderService {
       this.registerHandlers()
     }
   }
-
 
   async addNetwork() {
     if (!this.provider || !this.currentNetwork) {
@@ -109,6 +87,8 @@ export class WalletProviderService {
         this.setCurrentAccount(null)
       }
     }
+    this.signer =this.provider.getSigner()
+    console.log('signer is now ', this.signer)
     return accounts
   }
 
@@ -157,7 +137,6 @@ export class WalletProviderService {
       console.log('current network version is: ', eth.networkVersion)
     }
     let currentNetwork: NetworkParams = environment.config.networkParams
-    console.log('**** current network is: ', currentNetwork)
     if (currentNetwork && currentNetwork.chainId) {
       this.handledChainChanged(currentNetwork.chainId)
     }

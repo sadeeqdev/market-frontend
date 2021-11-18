@@ -11,7 +11,6 @@ export class DefaultProviderService {
 
   constructor() {
     this.provider = new ethers.providers.JsonRpcProvider(environment.jsonRpcUrl);
-    console.log('provider is ', this.provider);
   }
 
   async getBlockNumber() {

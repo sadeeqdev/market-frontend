@@ -9,10 +9,10 @@ export const environment = {
     config: {
         contracts: {
             Chedda: '',
-            CheddaDappStore: '0x73C68f1f41e4890D06Ba3e71b9E9DfA555f1fb46',
-            CheddaDappMetrics: '0xD2D5e508C82EFc205cAFA4Ad969a4395Babce026',
-            CheddaMarket: '0xdB012DD3E3345e2f8D23c0F3cbCb2D94f430Be8C',
-            CheddaMarketExplorer: '0xd977422c9eE9B646f64A4C4389a6C98ad356d8C4'
+            CheddaDappStore: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+            CheddaDappMetrics: '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512',
+            CheddaMarket: '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0',
+            CheddaMarketExplorer: '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9'
           },
           networkParams: {
             chainId: '0x7A69',
