@@ -101,9 +101,10 @@ export class TopNavComponent implements OnInit {
       })
     })
     this.provider.networkSubject.subscribe(chainId => {
+      console.log('networkSubject got chainID: ', chainId)
       this.zone.run(() => {
-        console.log('Got network: ', chainId)
-        this.isCorrectNetwork = chainId == this.provider.currentNetwork.chainId
+        console.log('In Zone chainID: ', chainId)
+        this.isCorrectNetwork = chainId.toString(16) == this.provider.currentNetwork.chainId
         console.log('**** isCorrectNetwork = ', this.isCorrectNetwork)
         console.log(`${chainId} <=> ${this.provider.currentNetwork.chainId}`)
       })

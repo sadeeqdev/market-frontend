@@ -16,7 +16,7 @@ export class CheddaMarketService {
   nftContract: any
   nfts: NFT[]
 
-  constructor(provider: DefaultProviderService, wallet: WalletProviderService, private http: HttpClient) {
+  constructor(provider: DefaultProviderService, private wallet: WalletProviderService, private http: HttpClient) {
     this.marketContract = new ethers.Contract(
       wallet.currentConfig.contracts.CheddaMarket,
       ChedaMarket.abi,
@@ -31,8 +31,8 @@ export class CheddaMarketService {
     return items
   }
 
-  async buyItem(nftContract: string, itemId: string) {
-    let result = await this.marketContract.buyItem(nftContract, itemId)
+  async buyItem(nft: NFT) {
+    let result = await this.marketContract.connect(this.wallet.signer).buyItem(nft.nftContract, nft.tokenID, {value: nft.price})
     console.log('result of purchase = ', result)
   }
 

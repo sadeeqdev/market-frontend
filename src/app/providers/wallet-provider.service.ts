@@ -26,45 +26,47 @@ export class WalletProviderService {
   constructor() {
     this.initializeNetworkConnection()
   }
-
   async isConected(): Promise<boolean> {
     try {
-      this.provider = await detectEthereumProvider();
-      console.log('connected provider is ', this.provider)
-      if (this.provider) {
-        await this.startApp(this.provider)
+      let ethereum = await detectEthereumProvider();
+      if (ethereum) {
+        await this.startApp(ethereum)
+        return ethereum != undefined
       }
     } catch (error) {
       console.error('unable to detect ethereum provider: ', error)
     }
-
-    return this.provider && await this.provider.isConnected();
   }
 
-  async startApp(provider: any) {
-    let eth: any = window.ethereum
-    if (eth.selectedAddress) {
-      eth.enable()
-      this.setCurrentAccount(eth.selectedAddress)
-      console.log('selected address is ', eth.selectedAddress)
+  async startApp(ethereum: any) {
+    this.provider = new ethers.providers.Web3Provider(ethereum, 'any')
+    this.signer = await this.provider.getSigner()
+    console.log('Signer = ', this.signer)
+    this.registerHandlers()
+    if (ethereum.selectedAddress) {
+      ethereum.enable()
+      this.setCurrentAccount(ethereum.selectedAddress)
+      console.log('selected address is ', ethereum.selectedAddress)
     } else {
     }
-    if (provider !== window.ethereum) {
-      console.error('multiple wallets installed')
-    } else {
-      this.registerHandlers()
-    }
+    // if (provider !== window.ethereum) {
+    //   console.error('multiple wallets installed')
+    // } else {
+    //   let trySigner = await eth.getSigner()
+    //   console.log('trySigner = ', trySigner)
+    // }
   }
 
   async addNetwork() {
     if (!this.provider || !this.currentNetwork) {
       return
     }
+    console.log('about to add: ', this.currentNetwork)
     this.provider
-    .request({
-      method: 'wallet_addEthereumChain',
-      params: [this.currentNetwork]
-    })
+    .send(
+      'wallet_addEthereumChain',
+      [this.currentNetwork]
+    )
     .catch((error: any) => {
       console.log(error)
     })
@@ -76,7 +78,7 @@ export class WalletProviderService {
     }
 
     console.log('getting accounts')
-    const accounts = await this.provider.request({ method: 'eth_requestAccounts' });
+    const accounts = await this.provider.send('eth_requestAccounts', []);
     if (accounts.length > 0) {
       this.setCurrentAccount(accounts[0])
     } else {
@@ -87,7 +89,7 @@ export class WalletProviderService {
         this.setCurrentAccount(null)
       }
     }
-    this.signer =this.provider.getSigner()
+    this.signer = this.provider.getSigner()
     console.log('signer is now ', this.signer)
     return accounts
   }
@@ -97,9 +99,10 @@ export class WalletProviderService {
   }
 
   private async registerHandlers() {
+    console.log('registering handlers')
     this.provider.on('connect', this.handleAccountConnected.bind(this))
     this.provider.on('disconnect', this.handleAccountDisconnected.bind(this))
-    this.provider.on('chainChanged', this.handledChainChanged.bind(this))
+    this.provider.on('network', this.handledChainChanged.bind(this))
     this.provider.on('accountsChanged', this.handleAccountChanged.bind(this))
   }
 
@@ -111,9 +114,9 @@ export class WalletProviderService {
     console.log('>>> Account disconnected: ', accounts)
   }
 
-  private handledChainChanged(chainId) {
-    console.log('>>> Chain changed to: ', chainId)
-    this.networkSubject.next(chainId)
+  private handledChainChanged(network) {
+    console.log('>>> Chain changed to: ', network)
+    this.networkSubject.next(this.getHexString(network.chainId))
   }
 
   private handleAccountChanged(accounts) {
@@ -134,15 +137,21 @@ export class WalletProviderService {
   private initializeNetworkConnection() {
     let eth: any = window.ethereum
     if (eth) {
-      console.log('current network version is: ', eth.networkVersion)
-    }
+      let hexVersion = this.getHexString(eth.networkVersion)
+      console.log('current network version is: ', hexVersion)
+      this.handledChainChanged(hexVersion)
+    } else [
+      console.log('no ethereum')
+    ]
     let currentNetwork: NetworkParams = environment.config.networkParams
     if (currentNetwork && currentNetwork.chainId) {
-      this.handledChainChanged(currentNetwork.chainId)
     }
     this.currentNetwork = currentNetwork
     this.currentConfig = environment.config
   }
 
+  private getHexString(networkCode) {
+    return `0x${(+networkCode).toString(16)}`
+  }
   onboard() {}
 }

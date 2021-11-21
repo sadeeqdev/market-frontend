@@ -51,7 +51,7 @@ export class NftDetailsPage implements OnInit {
   }
 
   async buyButtonClicked() {
-    let result = await this.market.buyItem(this.nft.nftContract, this.nft.tokenID)
+    let result = await this.market.buyItem(this.nft)
     console.log('buyItem result = ', result)
   }
 }
