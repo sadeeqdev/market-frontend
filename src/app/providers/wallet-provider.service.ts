@@ -12,13 +12,14 @@ import { CheddaConfig } from './chedda-config.interface';
 export class WalletProviderService {
   
   provider: any
-  web3
+  ethereum
   signer: Signer
 
   currentAccount
   currentNetwork: NetworkParams
   currentConfig: CheddaConfig
   isConnected: boolean = false
+
   connectedSubject: BehaviorSubject<boolean> = new BehaviorSubject(false)
   accountSubject: BehaviorSubject<any> = new BehaviorSubject(null)
   networkSubject: BehaviorSubject<any> = new BehaviorSubject(null)
@@ -153,5 +154,10 @@ export class WalletProviderService {
   private getHexString(networkCode) {
     return `0x${(+networkCode).toString(16)}`
   }
+
+  currencyName(): string {
+    return environment.config.networkParams.nativeCurrency.symbol
+  }
+
   onboard() {}
 }
