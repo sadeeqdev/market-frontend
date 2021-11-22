@@ -1,0 +1,27 @@
+<div>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="3">
+        <ion-avatar class="profile-avatar" border-radius="10px" *ngIf="false">
+          <ion-img [src]="'https://gravatar.com/avatar/8d2e250e973968ddb37d8f866be200ca?s=400&d=robohash&r=x'"></ion-img>
+        </ion-avatar>
+        <div *ngIf="true" class="circle">
+          <div class="initials">
+            {{ initials }}
+          </div>
+        </div>
+      </ion-col>
+      <ion-col size="8" offset="1" class="address-col">
+        <ion-text>{{address | truncateMiddle:[6, '...', 4]}}</ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-item-divider></ion-item-divider>
+    <ion-row>
+      <ion-col>
+        <ion-text class="profile-link">
+          <a (click)="navigateToProfile()" class="profile-link">View Profile</a>
+        </ion-text>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>

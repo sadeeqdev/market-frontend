@@ -1,0 +1,32 @@
+.profile-link {
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+ion-img {
+    border: 3px black solid;
+}
+
+.address-col {
+    vertical-align: middle;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.circle {
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #d03323;
+    width: 60px;
+    height: 60px;
+    border: 3px solid black !important;
+    font-size: 24px;
+    font-weight: 500;
+  }
