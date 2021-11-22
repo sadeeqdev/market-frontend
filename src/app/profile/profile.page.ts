@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonSegment } from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
+import { IonSegment, NavController } from '@ionic/angular';
 import { MarketExplorerService } from '../contracts/market-explorer.service';
 import { Profile } from './profile.interface';
+import { accountInitials } from './profile.utils';
 
 @Component({
   selector: 'app-profile',
@@ -25,10 +27,29 @@ export class ProfilePage implements OnInit {
   items = []
   initials = ''
   collectionAddress = '0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1'
+  address: string
 
-  constructor(private explorer: MarketExplorerService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private navController: NavController,
+    private explorer: MarketExplorerService
+    ) { }
 
   async ngOnInit() {
+    this.route.paramMap.subscribe(async paramMap => {
+      if (!paramMap.has('address')) {
+        this.navController.navigateBack('/')
+        return
+      }
+      try {
+        this.address = paramMap.get('address')
+        this.profile.address = this.address
+        await this.loadProfile(this.address)
+      } catch (err) {
+        console.error('navigation error: ', err)
+        this.navController.navigateBack('/')
+      }
+    })
     this.initials = this.createInitials('')
     this.items = await this.fetchItems(this.collectionAddress)
   }
@@ -43,19 +64,11 @@ export class ProfilePage implements OnInit {
     return await this.explorer.loadCollectionItems(address)
   }
 
+  private async loadProfile(address: string) {
+
+  }
+
   private createInitials(address: string) {
-    let first = ''
-    let last = ''
-    if (address.toLowerCase().startsWith('0x') && address.length > 2) {
-      first = address[2]
-    }
-    if (address.length > 0) {
-      last = address[address.length-1]
-    }
-    if (first && last) {
-      return `${first}${last}`
-    } else {
-      return '0X'
-    }
+   return accountInitials(address) 
   }
 }

@@ -10,7 +10,6 @@
   </ion-avatar>
   <div *ngIf="!profile.metadata.avatar" class="circle">
     <div class="initials">
-
       {{ initials }}
     </div>
   </div>
@@ -46,7 +45,11 @@
       <ion-segment (ionChange)="onSegmentChanged($event)" value="items" #segmentControl>
         <ion-segment-button value="items">
           <ion-icon name="apps"></ion-icon>
-          <ion-label>Items</ion-label>
+          <ion-label>Owned</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="created">
+          <ion-icon name="create-outline"></ion-icon>
+          <ion-label>Created</ion-label>
         </ion-segment-button>
         <ion-segment-button value="activity">
           <ion-icon name="analytics"></ion-icon>

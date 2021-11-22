@@ -1,6 +1,8 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { AlertController, PopoverController } from '@ionic/angular';
 import { CheddaDappStoreService } from 'src/app/contracts/chedda-dapp-store.service';
+import { ProfilePopoverComponent } from 'src/app/profile/components/profile-popover/profile-popover.component';
+import { Profile } from 'src/app/profile/profile.interface';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 
 @Component({
@@ -15,6 +17,8 @@ export class TopNavComponent implements OnInit {
   isDark = false;
   account?: string
   isCorrectNetwork = true
+  popover: any
+  profile: Profile
 
   constructor(
     private provider: WalletProviderService, 
@@ -108,11 +112,20 @@ export class TopNavComponent implements OnInit {
         console.log('**** isCorrectNetwork = ', this.isCorrectNetwork)
         console.log(`${chainId} <=> ${this.provider.currentNetwork.chainId}`)
       })
-
     })
   }
 
   async switchNetwork() {
     await this.provider.addNetwork()
+  }
+
+  async presentProfilePopover(event: any) {
+    this.popover = await this.popoverController.create({
+      component: ProfilePopoverComponent,
+      componentProps: {address: this.account},
+      event: event,
+      translucent: true
+    })
+    await this.popover.present()
   }
 }

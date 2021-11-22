@@ -38,7 +38,7 @@
     
     <ion-buttons slot="end" *ngIf="account">
       <ion-button fill="solid">0</ion-button>
-      <ion-button fill="solid" class="account-button">
+      <ion-button fill="solid" class="account-button" (click)="presentProfilePopover($event)">
         <ion-avatar class="wallet-avatar">
           <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" class="wallet-avatar">
         </ion-avatar>

@@ -25,7 +25,7 @@ const routes: Routes = [
         loadChildren: () => import('../governance/governance.module').then( m => m.GovernancePageModule)
       },
       {
-        path: 'profile',
+        path: 'profile/:address',
         loadChildren: () => import('../profile/profile.module').then( m => m.ProfilePageModule)
       },
     ]
