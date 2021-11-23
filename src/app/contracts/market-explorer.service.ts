@@ -65,6 +65,11 @@ export class MarketExplorerService {
     return this.populateMultipleNftsMetadata(items)
   }
 
+  async loadItemsOwned(address: string) {
+    const items = await this.explorerContract.getItemsOwned(address)
+    return this.populateMultipleNftsMetadata(items)
+  }
+
   private async populateCollectionMetadata(collection: NFTCollection) {
     let metadata = await this.http.get<CollectionMetadata>(collection.metadataURI).toPromise()
       let c = {

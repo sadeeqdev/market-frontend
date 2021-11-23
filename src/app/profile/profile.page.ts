@@ -51,7 +51,7 @@ export class ProfilePage implements OnInit {
       }
     })
     this.initials = this.createInitials('')
-    this.items = await this.fetchItems(this.collectionAddress)
+    this.items = await this.fetchItems(this.address)
   }
 
   copyAddress() {}
@@ -61,7 +61,7 @@ export class ProfilePage implements OnInit {
     this.currentSegment = this.segmentControl.value
   }  
   async fetchItems(address: string) {
-    return await this.explorer.loadCollectionItems(address)
+    return await this.explorer.loadItemsOwned(address)
   }
 
   private async loadProfile(address: string) {
