@@ -1,0 +1,58 @@
+
+<ion-grid class="centered-text grid">
+  <ion-row *ngIf="dapp">
+    <ion-col class="avatar-wrapper">
+      <ion-avatar class="ion-center app-avatar">
+        <ion-img [src]="dapp.metadata.logoURI"></ion-img>
+      </ion-avatar>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-row>
+        <ion-col class="ion-center">
+
+        <ion-text>
+          <h2>Rate {{dapp.name}}</h2>
+        </ion-text>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="ion-center">
+          <ion-text>Earn Chedda XP by leaving a rating. Chedda XP gives you access to win NFTs in the marketplace.</ion-text>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="ion-center">
+          <ion-text><span class="reward">Reward:</span>&nbsp;<span class="reward-amount">+10 Chedda XP</span></ion-text>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+
+  </ion-row>
+  <!-- <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-textarea placeholder="Add a review to let other users know what you think. Earn even more Chedda XP by leaving a review."></ion-textarea>
+      </ion-item>
+    </ion-col>
+  </ion-row> -->
+  <ion-row>
+    <ion-col>
+      <ionic-rating-component #ratingComponent  activeColor="#ebdb34" defaultColor="#c4c4c4"
+      readonly="false" rating={{dapp.rating}} fontSize="36px"
+      (ratingChanged)="onRatingChange($event)"></ionic-rating-component>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-button (click)="cancelClicked()" color="light">Cancel</ion-button>
+      <ion-button (click)="rateDapp()">Submit</ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-text class="subtext">Note: Ratings are recorded on the blockchain which costs gas. You earn Chedda XP in the process.</ion-text>
+    </ion-col>
+  </ion-row>
+</ion-grid>

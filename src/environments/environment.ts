@@ -10,7 +10,7 @@ export const environment = {
       contracts: {
           Chedda: '',
           CheddaDappStore: '',
-          CheddaDappMetrics: '',
+          CheddaDappExplorer: '',
           CheddaMarket: '',
           CheddaMarketExplorer: ''
         },

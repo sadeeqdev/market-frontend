@@ -6,11 +6,11 @@ import { IonicModule } from '@ionic/angular';
 
 
 @NgModule({
-  declarations: [IonicRatingComponent],
+  declarations: [],
   imports: [
     CommonModule,
     IonicModule,
   ],
-  exports: [IonicRatingComponent]
+  exports: []
 })
 export class IonicRatingModule { }

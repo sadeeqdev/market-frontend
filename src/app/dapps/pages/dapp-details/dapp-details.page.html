@@ -22,10 +22,22 @@
                                   </ion-text>
                               </ion-col>
                               <ion-col size="6">
-                                  <ionic-rating-component #rating activeColor="#ebdb34" defaultColor="#c4c4c4"
-                                      readonly="false" rating={{dapp.rating}} fontSize="16px"
-                                      (ratingChanged)="onRatingChange($event)">
-                                  </ionic-rating-component>
+                                  <ion-row>
+                                      <ion-col>
+                                        <ionic-rating-component #rating activeColor="#ebdb34" defaultColor="#c4c4c4"
+                                        readonly="true" rating={{dapp.rating}} fontSize="16px"
+                                        (ratingChanged)="onRatingChange($event)">
+                                    </ionic-rating-component>
+                                      </ion-col>
+                                  </ion-row>
+                                  <ion-row>
+                                      <ion-col>
+                                          <ion-row>
+                                              <ion-button (click)="showRatingsModal()">Leave a rating</ion-button>
+                                          </ion-row>
+                                          <ion-row><ion-text>Earn Chedda XP</ion-text></ion-row>
+                                      </ion-col>
+                                  </ion-row>
                               </ion-col>
                           </ion-row>
                       </ion-col>

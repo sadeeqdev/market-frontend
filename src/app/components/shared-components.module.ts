@@ -7,14 +7,20 @@ import { NftCardComponent } from '../nfts/components/nft-card/nft-card.component
 import { CollectionCardComponent } from '../nfts/components/collection-card/collection-card.component';
 import { ProfilePopoverComponent } from '../profile/components/profile-popover/profile-popover.component';
 import { RouterModule } from '@angular/router';
+import { WelcomeModalComponent } from './welcome-modal/welcome-modal.component';
+import { DappRatingModalComponent } from './dapp-rating-modal/dapp-rating-modal.component';
+import { IonicRatingComponent } from '../external/ionic-rating/ionic-rating.component';
 
 @NgModule({
   declarations: [
     DappReviewComponent, 
     TruncateMiddlePipe, 
     NftCardComponent, 
+    IonicRatingComponent,
+    DappRatingModalComponent,
     CollectionCardComponent, 
-    ProfilePopoverComponent
+    ProfilePopoverComponent,
+    WelcomeModalComponent,
   ],
   imports: [
     CommonModule,
@@ -25,8 +31,10 @@ import { RouterModule } from '@angular/router';
     DappReviewComponent, 
     TruncateMiddlePipe, 
     NftCardComponent, 
+    IonicRatingComponent,
     CollectionCardComponent, 
-    ProfilePopoverComponent
+    ProfilePopoverComponent,
+    WelcomeModalComponent
   ]
 })
 export class SharedComponentsModule { }

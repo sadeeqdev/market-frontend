@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { AfterContentChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { SwiperComponent } from 'swiper/angular';
 import { CheddaDappStoreService } from 'src/app/contracts/chedda-dapp-store.service';
 import SwiperCore, { SwiperOptions, Navigation, Pagination, Scrollbar, } from 'swiper';
 import { Dapp } from '../../models/dapp.model';
+import { DappRatingModalComponent } from 'src/app/components/dapp-rating-modal/dapp-rating-modal.component';
 SwiperCore.use([Navigation, Pagination, Scrollbar]);
 
 @Component({
@@ -16,6 +17,7 @@ SwiperCore.use([Navigation, Pagination, Scrollbar]);
 export class DappDetailsPage implements OnInit, AfterContentChecked {
   reviews = []
   dapp?: Dapp
+  @ViewChild('swiper') swiper: SwiperComponent
 
   config: SwiperOptions = {
     slidesPerView: 1,
@@ -38,10 +40,9 @@ export class DappDetailsPage implements OnInit, AfterContentChecked {
     private router: Router, 
     private route: ActivatedRoute,
     private navController: NavController,
+    private modalController: ModalController,
     private dappStoreService: CheddaDappStoreService) { 
   }
-
-  @ViewChild('swiper') swiper: SwiperComponent
 
   ngOnInit() {
     this.route.paramMap.subscribe(async paramMap => {
@@ -89,5 +90,16 @@ export class DappDetailsPage implements OnInit, AfterContentChecked {
 
   private navigateToDapps() {
     this.navController.navigateBack('/dapps')
+  }
+
+  async showRatingsModal() {
+    const modal = await this.modalController.create({
+      component: DappRatingModalComponent,
+      showBackdrop: true,
+      componentProps: {
+        dapp: this.dapp
+      }
+    })
+    await modal.present()
   }
 }

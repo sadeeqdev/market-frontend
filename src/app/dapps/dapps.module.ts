@@ -7,14 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { DappsPageRoutingModule } from './dapps-routing.module';
 
 import { DappsPage } from './dapps.page';
-import { IonicRatingModule } from '../external/ionic-rating/ionic-rating.module';
+import { SharedComponentsModule } from '../components/shared-components.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    IonicRatingModule,
+    SharedComponentsModule,
     DappsPageRoutingModule
   ],
   declarations: [DappsPage]

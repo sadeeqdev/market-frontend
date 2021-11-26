@@ -4,7 +4,7 @@ export interface CheddaConfig {
     contracts: {
         Chedda: string
         CheddaDappStore: string
-        CheddaDappMetrics: string
+        CheddaDappExplorer: string
         CheddaMarket: string
         CheddaMarketExplorer: string
     }

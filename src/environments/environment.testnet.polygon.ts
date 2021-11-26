@@ -10,7 +10,7 @@ export const environment = {
         contracts: {
             Chedda: '',
             CheddaDappStore: '0xC674307d98625034C557907c7a628EffccFF1278',
-            CheddaDappMetrics: '0x88e81dCdD8fdbEFfACa606e59e9d26876bfFb181',
+            CheddaDappExplorer: '0x88e81dCdD8fdbEFfACa606e59e9d26876bfFb181',
             CheddaMarket: '0x1916022D451D4D6083bE60072c9CeD86E95C7e3b',
             CheddaMarketExplorer: '0xFCabEc24F9A3daE2fA8e3b34E82254ad42f1E9De'
           },
@@ -25,7 +25,14 @@ export const environment = {
             },
             rpcUrls: ['https://rpc-mumbai.maticvigil.com/'],
             blockExplorerUrls: ['https://mumbai.polygonscan.com/']
-          }
+          },
+          faucets: [
+            {
+              name: 'Polygon Mumbai Faucet',
+              icon: '',
+              url: '',
+            }
+          ],
     },
 }
   
