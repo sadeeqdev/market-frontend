@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { AfterContentChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ModalController, NavController } from '@ionic/angular';
+import { ModalController, NavController, ToastController } from '@ionic/angular';
 import { SwiperComponent } from 'swiper/angular';
 import { CheddaDappStoreService } from 'src/app/contracts/chedda-dapp-store.service';
 import SwiperCore, { SwiperOptions, Navigation, Pagination, Scrollbar, } from 'swiper';
@@ -41,6 +41,7 @@ export class DappDetailsPage implements OnInit, AfterContentChecked {
     private route: ActivatedRoute,
     private navController: NavController,
     private modalController: ModalController,
+    private toastController: ToastController,
     private dappStoreService: CheddaDappStoreService) { 
   }
 
@@ -95,11 +96,29 @@ export class DappDetailsPage implements OnInit, AfterContentChecked {
   async showRatingsModal() {
     const modal = await this.modalController.create({
       component: DappRatingModalComponent,
+      cssClass: 'stack-modal',
       showBackdrop: true,
       componentProps: {
         dapp: this.dapp
       }
     })
+    modal.onDidDismiss().then((result) => {
+      console.log('amount is ', result)
+      if (result && result.data) {
+        this.showToast(result.data)
+      }
+    })
     await modal.present()
+  }
+
+  private async showToast(amount) {
+    const toast =  await this.toastController.create({
+      header: 'Chedda XP earned',
+      message: `You just earned ${amount} XP`,
+      position: 'bottom',
+      duration: 5000
+    })
+
+    await toast.present()
   }
 }

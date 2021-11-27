@@ -19,11 +19,11 @@ export class DappRatingModalComponent implements OnInit {
   ngOnInit() {}
 
   async cancelClicked() {
-    await this.modalController.dismiss()
+    await this.modalController.dismiss(0)
   }
-  
+
   async rateDapp() {
-    await this.modalController.dismiss()
+    await this.modalController.dismiss(10)
   }
 
   onRatingChange($event) {}
