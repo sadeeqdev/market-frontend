@@ -1,0 +1,24 @@
+
+.prize-card {
+    height: 360px;
+    background-color: var(--chedda-color-clean);
+    color: var(--ion-color-dark);
+    ion-thumbnail {
+        background-color: black;
+        padding: 5px;
+        height: 40px;
+        width: 40px;
+    }
+}
+.rewards-content {
+    color: var(--ion-color-dark);
+}
+
+.table-wrapper {
+    margin: 20px;
+}
+
+.top-prize-image {
+    max-height: 280px;
+}
+

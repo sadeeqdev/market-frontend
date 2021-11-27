@@ -21,6 +21,10 @@ const routes: Routes = [
         loadChildren: () => import('../nfts/nfts.module').then( m => m.NftsModule)
       },
       {
+        path: 'rewards',
+        loadChildren: () => import('../rewards/rewards.module').then( m => m.RewardsPageModule)
+      },
+      {
         path: 'governance',
         loadChildren: () => import('../governance/governance.module').then( m => m.GovernancePageModule)
       },

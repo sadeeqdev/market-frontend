@@ -81,6 +81,7 @@
   --ion-color-light-tint: #f5f6f9;
 
   --ion-color-contrast: #000000;
+  --chedda-color-clean: #ffffff;
 }
 
 // @media (prefers-color-scheme: dark) {
@@ -157,6 +158,7 @@
     --ion-color-light-tint: #383a3e;
 
     --ion-color-contrast: #ffffff;
+    --chedda-color-clean: #000000;
   }
 
   /*
@@ -199,6 +201,7 @@
     --ion-card-background: #1c1c1d;
 
     --ion-color-contrast: #ffffff;
+    --chedda-color-clean: #000000;
   }
 
   .ios ion-modal {
@@ -251,5 +254,6 @@
     --ion-card-background: #1e1e1e;
 
     --ion-color-contrast: #ffffff;
+    --chedda-color-clean: #000000;
   }
 // }

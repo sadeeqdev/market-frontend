@@ -1,0 +1,75 @@
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col class="top-prize" size-xs="12" size-sm="12" size-md="12" size-lg="5" size-xl="4" offset-xl="2" offset-lg="1">
+        <ion-card class="prize-card">
+          <ion-card-header>
+            <ion-card-title>Top Prize</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-img src="assets/images/chedda-banner.png" class="top-prize-image"></ion-img>
+            <ion-label>
+              <ion-text>Winner:</ion-text>
+              <ion-text>TBD</ion-text>
+            </ion-label>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col class="other-prizes" size-xs="12" size-sm="12" size-md="12" size-lg="6" size-xl="4" size-lg="5">
+        <ion-card class="prize-card">
+          <ion-card-header>
+            <ion-card-title>Prizes</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-list>
+                <ion-item *ngFor="let prize of prizes">
+                  <ion-thumbnail slot="start">
+
+                    <ion-img [src]="prize.image"></ion-img>
+                  </ion-thumbnail>
+                  <ion-label>
+                    <h4>{{prize.name}}</h4>
+                    <p>Quantity: {{prize.quantity}}</p>
+                  </ion-label>
+                  <ion-button slot="end" disabled="true">Claim</ion-button>
+                </ion-item>
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-xs="12" size-sm="12" size-md="12" size-lg="10" size-xl="8" offset-lg="1" offset-xl="2">
+        <div class="table-wrapper">
+          <div>
+            <ion-text>
+              <h3>Leaderboard</h3>
+            </ion-text>
+          </div>
+          <ngx-datatable class="material dark" [limit]="10" [rows]="users" [columns]="columns" [rowHeight]="80"
+            [columnMode]="'flex'" [headerHeight]="50" [footerHeight]="50">
+            <ngx-datatable-column name="Address" [flexGrow]="3">
+              <ng-template let-value="value" ngx-datatable-cell-template>
+                {{ value }}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Points" [flexGrow]="1">
+              <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                {{ value }}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="NFT Prize" prop="prize" [flexGrow]="1">
+              <ng-template let-value="value" ngx-datatable-cell-template>
+                <!-- {{ value }} -->
+                <ion-thumbnail>
+                  <ion-img src="/assets/icon/favicon.png"></ion-img>
+                </ion-thumbnail>
+              </ng-template>
+            </ngx-datatable-column>
+          </ngx-datatable>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>
