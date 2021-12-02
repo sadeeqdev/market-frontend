@@ -21,7 +21,6 @@ export class MainNavigationPage implements OnInit, AfterViewInit {
   async presentWelcomeModal() {
     const modal = await this.modalController.create({
       component: WelcomeModalComponent,
-      cssClass: 'myClass',
     })
     // return await modal.present()
   }

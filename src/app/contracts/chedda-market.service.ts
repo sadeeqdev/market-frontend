@@ -22,8 +22,6 @@ export class CheddaMarketService {
       ChedaMarket.abi,
       provider.provider
       );
-      console.log('NFT market contract is ', this.marketContract);
-      console.log('at address: ', this.marketContract.address)
   }
 
   async getMarketItems(): Promise<NFT[]> {

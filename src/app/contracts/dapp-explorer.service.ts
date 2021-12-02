@@ -22,10 +22,6 @@ export class DappExplorerService {
       DappExplorer.abi,
       provider.provider
       );
-
-      console.log('wallet provider is ', this.wallet.provider)
-      console.log('Explorer contract is ', this.dappExplorerContract);
-      console.log('at address: ', this.dappExplorerContract.address)
   }
 
   async addRating(rating: number, dapp: Dapp) {

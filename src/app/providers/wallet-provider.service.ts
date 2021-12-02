@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ethers, providers, Signer,  } from 'ethers'
+import { BigNumber, ethers, providers, Signer,  } from 'ethers'
 import detectEthereumProvider from '@metamask/detect-provider';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -18,7 +18,6 @@ export class WalletProviderService {
   currentAccount
   currentNetwork: NetworkParams
   currentConfig: CheddaConfig
-  isConnected: boolean = false
 
   connectedSubject: BehaviorSubject<boolean> = new BehaviorSubject(false)
   accountSubject: BehaviorSubject<any> = new BehaviorSubject(null)
@@ -27,16 +26,23 @@ export class WalletProviderService {
   constructor() {
     this.initializeNetworkConnection()
   }
-  async isConected(): Promise<boolean> {
+  async connect(): Promise<boolean> {
     try {
       let ethereum = await detectEthereumProvider();
       if (ethereum) {
         await this.startApp(ethereum)
         return ethereum != undefined
+      } else {
+        return false
       }
     } catch (error) {
       console.error('unable to detect ethereum provider: ', error)
+      return false
     }
+  }
+
+  isConnected(): boolean {
+    return this.currentAccount != null && this.currentAccount != undefined
   }
 
   async startApp(ethereum: any) {
@@ -95,6 +101,24 @@ export class WalletProviderService {
     return accounts
   }
 
+  async checkBalance(): Promise<BigNumber | BigNumber> {
+    if (this.currentAccount) {
+      return await this.provider.getBalance(this.currentAccount)
+    } else {
+      return BigNumber.from(0)
+    }
+  }
+
+  async balanceIsOver(value: BigNumber): Promise<boolean | boolean> {
+    if (this.currentAccount) {
+      const balance: BigNumber = await this.provider.getBalance(this.currentAccount)
+      console.log(`Balance=${balance}, value=${value}`)
+      return balance.gt(value) // must be strictly > to account for gas cost.
+    } else {
+      return false
+    }
+  }
+
   async enableEthereum(): Promise<any> {
     return await this.provider.enable()
   }
@@ -121,7 +145,6 @@ export class WalletProviderService {
   }
 
   private handleAccountChanged(accounts) {
-    console.log('this is ', this)
     if (accounts.length > 0) {
       this.setCurrentAccount(accounts[0])
     } else {
@@ -141,9 +164,9 @@ export class WalletProviderService {
       let hexVersion = this.getHexString(eth.networkVersion)
       console.log('current network version is: ', hexVersion)
       this.handledChainChanged(hexVersion)
-    } else [
+    } else {
       console.log('no ethereum')
-    ]
+    }
     let currentNetwork: NetworkParams = environment.config.networkParams
     if (currentNetwork && currentNetwork.chainId) {
     }

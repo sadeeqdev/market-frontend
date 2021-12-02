@@ -1,9 +1,11 @@
+import { BigNumber } from "ethers";
+
 export interface NFT {
     name: string
     nftContract: string
     tokenID: string
     metadata: NFTMetadata
-    price: number
+    price: BigNumber
     currency: string
     tokenURI: string
     created: string

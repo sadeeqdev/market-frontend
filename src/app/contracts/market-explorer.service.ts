@@ -22,8 +22,6 @@ export class MarketExplorerService {
       MarketExplorer.abi,
       provider.provider
       );
-      console.log('Explorer contract is ', this.explorerContract);
-      console.log('at address: ', this.explorerContract.address)
   }
 
   // All Items

@@ -9,6 +9,7 @@ import { Dapp } from '../../models/dapp.model';
 import { DappRatingModalComponent } from 'src/app/components/dapp-rating-modal/dapp-rating-modal.component';
 import { DappExplorerService } from 'src/app/contracts/dapp-explorer.service';
 import { IonicRatingComponent } from 'src/app/external/ionic-rating/ionic-rating.component';
+import { GlobalAlertService } from 'src/app/shared/global-alert.service';
 SwiperCore.use([Navigation, Pagination, Scrollbar]);
 
 @Component({
@@ -46,6 +47,7 @@ export class DappDetailsPage implements OnInit, AfterContentChecked {
     private modalController: ModalController,
     private toastController: ToastController,
     private dappStoreService: CheddaDappStoreService,
+    private globalAlert: GlobalAlertService,
     private dappExplorer: DappExplorerService) { 
   }
 

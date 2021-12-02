@@ -24,7 +24,6 @@ export class CheddaRewardsService {
       CheddaRewards.abi,
       provider.provider
       );
-      console.log('Rewards address: ', this.rewardsContract.address)
   }
 
   async leaderboard() {

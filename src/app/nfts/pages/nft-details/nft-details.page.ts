@@ -4,6 +4,8 @@ import { IonButton, NavController } from '@ionic/angular';
 import { BigNumber, ethers } from 'ethers';
 import { CheddaMarketService } from 'src/app/contracts/chedda-market.service';
 import { MarketExplorerService } from 'src/app/contracts/market-explorer.service';
+import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
+import { GlobalAlertService } from 'src/app/shared/global-alert.service';
 import { NFT } from '../../models/nft.model';
 
 @Component({
@@ -20,6 +22,8 @@ export class NftDetailsPage implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private navController: NavController,
+    private wallet: WalletProviderService,
+    private alert: GlobalAlertService,
     private market: CheddaMarketService,
     private explorer: MarketExplorerService) { }
 
@@ -51,7 +55,17 @@ export class NftDetailsPage implements OnInit {
   }
 
   async buyButtonClicked() {
-    let result = await this.market.buyItem(this.nft)
-    console.log('buyItem result = ', result)
+    if (this.wallet.isConnected()) {
+      const hasSufficient = await this.wallet.balanceIsOver(this.nft.price)
+      if (hasSufficient) {
+        let result = await this.market.buyItem(this.nft)
+        console.log('buy result is: ', result)
+      } else {
+        this.alert.showInsufficientBalanceAlert()
+      }
+    } else {
+      // show error
+      this.alert.showConnectAlert()
+    }
   }
 }

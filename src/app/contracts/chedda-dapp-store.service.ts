@@ -20,8 +20,6 @@ export class CheddaDappStoreService {
       CheddaDapStore.abi,
       provider.provider
       );
-      console.log('contract is ', this.dappStoreContract);
-      console.log('at address: ', this.dappStoreContract.address)
   }
 
   isCheddaStore() {
