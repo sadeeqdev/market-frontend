@@ -11,6 +11,7 @@ import { WelcomeModalComponent } from './welcome-modal/welcome-modal.component';
 import { DappRatingModalComponent } from './dapp-rating-modal/dapp-rating-modal.component';
 import { IonicRatingComponent } from '../external/ionic-rating/ionic-rating.component';
 import { RankRewardPipe } from '../rewards/rank-reward.pipe';
+import { FeaturedCollectionCardComponent } from '../nfts/components/featured-collection-card/featured-collection-card.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { RankRewardPipe } from '../rewards/rank-reward.pipe';
     NftCardComponent, 
     IonicRatingComponent,
     DappRatingModalComponent,
+    FeaturedCollectionCardComponent,
     CollectionCardComponent, 
     ProfilePopoverComponent,
     WelcomeModalComponent,
@@ -35,6 +37,7 @@ import { RankRewardPipe } from '../rewards/rank-reward.pipe';
     RankRewardPipe,
     NftCardComponent, 
     IonicRatingComponent,
+    FeaturedCollectionCardComponent,
     CollectionCardComponent, 
     ProfilePopoverComponent,
     WelcomeModalComponent
