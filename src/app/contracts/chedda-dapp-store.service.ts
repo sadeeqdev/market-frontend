@@ -53,7 +53,7 @@ export class CheddaDappStoreService {
 
       let dapp = {
         ...d,
-        rating: this.randomRating(),
+        rating: 0, //this.randomRating(),
         metadata
       }
       return dapp

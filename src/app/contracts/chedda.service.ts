@@ -5,7 +5,7 @@ import { ethers } from 'ethers';
   providedIn: 'root'
 })
 export class CheddaService {
-  cheddaContract: any
+  private cheddaContract: any
 
   constructor() {
    }

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { CheddaDappStoreService } from 'src/app/contracts/chedda-dapp-store.service';
+import { DappExplorerService } from 'src/app/contracts/dapp-explorer.service';
 import { Dapp } from 'src/app/dapps/models/dapp.model';
 import { IonicRatingComponent } from 'src/app/external/ionic-rating/ionic-rating.component';
 
@@ -14,7 +15,7 @@ export class DappRatingModalComponent implements OnInit {
   @Input() dapp: Dapp
   @ViewChild('ratingComponent') ratingComponent: IonicRatingComponent
 
-  constructor(private dappExplorer: CheddaDappStoreService, private modalController: ModalController) { }
+  constructor(private dappExplorer: DappExplorerService, private modalController: ModalController) { }
 
   ngOnInit() {}
 
@@ -23,6 +24,7 @@ export class DappRatingModalComponent implements OnInit {
   }
 
   async rateDapp() {
+    await this.dappExplorer.addRating(1, this.dapp)
     await this.modalController.dismiss(10)
   }
 

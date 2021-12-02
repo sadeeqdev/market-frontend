@@ -8,11 +8,12 @@ export const environment = {
     jsonRpcUrl: 'https://polygon-mumbai.g.alchemy.com/v2/-7eaLgpDD6dzJaDq2J2FlKM46uEzatAs',
     config: {
         contracts: {
-            Chedda: '',
-            CheddaDappStore: '0xC674307d98625034C557907c7a628EffccFF1278',
-            CheddaDappExplorer: '0x88e81dCdD8fdbEFfACa606e59e9d26876bfFb181',
+            CheddaXP: '0x30c54E9c99147620BD6fBC2D9b0CE90b4FBc80eF',
+            CheddaDappStore: '0xc0B3a48DBe196ECfb14A65a2FA6aD5DaD07C866f',
+            CheddaDappExplorer: '0x2c01212f051A59D88A1361db1E2041896dB4af64',
             CheddaMarket: '0x1916022D451D4D6083bE60072c9CeD86E95C7e3b',
-            CheddaMarketExplorer: '0xFCabEc24F9A3daE2fA8e3b34E82254ad42f1E9De'
+            CheddaMarketExplorer: '0xFCabEc24F9A3daE2fA8e3b34E82254ad42f1E9De',
+            CheddaRewards: '0x0fFD5fB4B3160A2709E120A7484AEE03500c55b3',
           },
           networkParams: {
             chainId: '0x13881',

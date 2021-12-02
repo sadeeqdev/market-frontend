@@ -10,11 +10,13 @@ import { RouterModule } from '@angular/router';
 import { WelcomeModalComponent } from './welcome-modal/welcome-modal.component';
 import { DappRatingModalComponent } from './dapp-rating-modal/dapp-rating-modal.component';
 import { IonicRatingComponent } from '../external/ionic-rating/ionic-rating.component';
+import { RankRewardPipe } from '../rewards/rank-reward.pipe';
 
 @NgModule({
   declarations: [
     DappReviewComponent, 
     TruncateMiddlePipe, 
+    RankRewardPipe,
     NftCardComponent, 
     IonicRatingComponent,
     DappRatingModalComponent,
@@ -30,6 +32,7 @@ import { IonicRatingComponent } from '../external/ionic-rating/ionic-rating.comp
   exports: [
     DappReviewComponent, 
     TruncateMiddlePipe, 
+    RankRewardPipe,
     NftCardComponent, 
     IonicRatingComponent,
     CollectionCardComponent, 

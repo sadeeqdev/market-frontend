@@ -12,9 +12,9 @@ import { WalletProviderService } from '../providers/wallet-provider.service';
 })
 export class MarketExplorerService {
 
-  explorerContract: any
-  nftContract: any
-  nfts: NFT[]
+  private explorerContract: any
+  private nftContract: any
+  private nfts: NFT[]
 
   constructor(provider: DefaultProviderService, wallet: WalletProviderService, private http: HttpClient) {
     this.explorerContract = new ethers.Contract(

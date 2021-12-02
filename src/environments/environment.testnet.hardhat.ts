@@ -8,11 +8,12 @@ export const environment = {
     jsonRpcUrl: 'http://localhost:8545',
     config: {
         contracts: {
-            Chedda: '',
-            CheddaDappStore: '0x7A5EC257391817ef241ef8451642cC6b222d4f8C',
-            CheddaDappExplorer: '0x90E75f390332356426B60FB440DF23f860F6A113',
+            CheddaXP: '0x30c54E9c99147620BD6fBC2D9b0CE90b4FBc80eF',
+            CheddaDappStore: '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707',
+            CheddaDappExplorer: '0x0165878A594ca255338adfa4d48449f69242Eb8F',
             CheddaMarket: '0x6c383Ef7C9Bf496b5c847530eb9c49a3ED6E4C56',
-            CheddaMarketExplorer: '0xAAF0F531b7947e8492f21862471d61d5305f7538'
+            CheddaMarketExplorer: '0xAAF0F531b7947e8492f21862471d61d5305f7538',
+            CheddaRewards: '',
           },
           networkParams: {
             chainId: '0x7a69',

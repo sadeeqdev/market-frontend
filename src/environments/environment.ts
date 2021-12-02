@@ -8,11 +8,12 @@ export const environment = {
   jsonRpcUrl: '',
   config: {
       contracts: {
-          Chedda: '',
+          CheddaXP: '',
           CheddaDappStore: '',
           CheddaDappExplorer: '',
           CheddaMarket: '',
-          CheddaMarketExplorer: ''
+          CheddaMarketExplorer: '',
+          CheddaRewards: '',
         },
         networkParams: {
           chainId: '',

@@ -20,5 +20,65 @@
 
 .top-prize-image {
     max-height: 280px;
+    height: auto;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
 }
 
+.top-prize-text {
+    font-size: 20px;
+    font-weight: 700;
+    margin-top: 20px;
+}
+
+.top-prize-subtext {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.prize-title {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.prize-subtext {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.prize-thumb {
+    width: 50px;
+    height: 50px;
+    padding: 5px;
+    background-color: black;
+    margin-right: 10px;
+    border-radius: 4px;
+}
+ion-img::part(image) {
+    width: auto;
+    max-height: 200px;
+    object-fit: contain;
+}
+
+
+.row-content {
+    height: 100%;
+    line-height: 60px;
+    display: flex !important;
+    align-items: center !important;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.ngx-datatable .datatable-body .datatable-body-row > div {
+    align-items: center !important;
+   display: flex !important;
+ }
+
+.datatable-body-cell
+{
+   display: flex !important;
+   align-items: center !important;
+}

@@ -46,14 +46,13 @@ export class TopNavComponent implements OnInit {
   toggleDarkTheme(shouldAdd: boolean) {
     this.isDark = !this.isDark;
     if (shouldAdd) {
-      // document.body.setAttribute('prefers-color-scheme', 'dark');
-
       document.body.setAttribute('color-theme', 'dark');
+      document.body.setAttribute('prefers-color-scheme', 'dark');
     } else {
       document.body.setAttribute('color-theme', 'light');
-      // document.body.setAttribute('prefers-color-scheme', 'light');
+      document.body.setAttribute('prefers-color-scheme', 'light');
     }
-    this.isDappStore()
+    document.body.classList.toggle('dark', shouldAdd)
   }
 
   async onConnectTapped() {

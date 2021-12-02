@@ -7,6 +7,8 @@ import { CheddaDappStoreService } from 'src/app/contracts/chedda-dapp-store.serv
 import SwiperCore, { SwiperOptions, Navigation, Pagination, Scrollbar, } from 'swiper';
 import { Dapp } from '../../models/dapp.model';
 import { DappRatingModalComponent } from 'src/app/components/dapp-rating-modal/dapp-rating-modal.component';
+import { DappExplorerService } from 'src/app/contracts/dapp-explorer.service';
+import { IonicRatingComponent } from 'src/app/external/ionic-rating/ionic-rating.component';
 SwiperCore.use([Navigation, Pagination, Scrollbar]);
 
 @Component({
@@ -18,6 +20,7 @@ export class DappDetailsPage implements OnInit, AfterContentChecked {
   reviews = []
   dapp?: Dapp
   @ViewChild('swiper') swiper: SwiperComponent
+  @ViewChild('ratingComponent') ratingComponent: IonicRatingComponent
 
   config: SwiperOptions = {
     slidesPerView: 1,
@@ -42,7 +45,8 @@ export class DappDetailsPage implements OnInit, AfterContentChecked {
     private navController: NavController,
     private modalController: ModalController,
     private toastController: ToastController,
-    private dappStoreService: CheddaDappStoreService) { 
+    private dappStoreService: CheddaDappStoreService,
+    private dappExplorer: DappExplorerService) { 
   }
 
   ngOnInit() {
@@ -55,6 +59,7 @@ export class DappDetailsPage implements OnInit, AfterContentChecked {
       console.log('dapp is ', this.dapp)
       if (this.dapp) {
         this.loadReviews()
+        this.loadRating()
       } else {
         this.navigateToDapps()
       }
@@ -111,6 +116,14 @@ export class DappDetailsPage implements OnInit, AfterContentChecked {
     await modal.present()
   }
 
+
+  async loadRating() {
+      const rating = await this.dappExplorer.averageRating(this.dapp)
+      console.log('ratingsComponent = ', this.ratingComponent)
+      this.ratingComponent.rating = rating / 100
+      console.log('got rating: ', rating)
+  }
+
   private async showToast(amount) {
     const toast =  await this.toastController.create({
       header: 'Chedda XP earned',
@@ -118,6 +131,7 @@ export class DappDetailsPage implements OnInit, AfterContentChecked {
       position: 'bottom',
       duration: 5000
     })
+
 
     await toast.present()
   }

@@ -6,9 +6,16 @@
           <ion-card-header>
             <ion-card-title>Top Prize</ion-card-title>
           </ion-card-header>
-          <ion-card-content>
-            <ion-img src="assets/images/chedda-banner.png" class="top-prize-image"></ion-img>
-            <ion-label>
+          <ion-card-content class="ion-text-center">
+            <div>
+              <ion-img src="assets/images/badges/small/Godfather.png" class="top-prize-image"></ion-img>
+            </div>
+            <div>
+              <ion-text class="top-prize-text">
+                <span>Chedda Godfather NFT</span>
+              </ion-text>
+            </div>
+            <ion-label class="top-prize-subtext">
               <ion-text>Winner:</ion-text>
               <ion-text>TBD</ion-text>
             </ion-label>
@@ -21,19 +28,18 @@
             <ion-card-title>Prizes</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            <ion-list>
+            <!-- <ion-list> -->
                 <ion-item *ngFor="let prize of prizes">
-                  <ion-thumbnail slot="start">
-
-                    <ion-img [src]="prize.image"></ion-img>
-                  </ion-thumbnail>
+                  <!-- <ion-thumbnail slot="start" class="prize-thumb"> -->
+                    <ion-img [src]="prize.image" class="prize-thumb"></ion-img>
+                  <!-- </ion-thumbnail> -->
                   <ion-label>
-                    <h4>{{prize.name}}</h4>
-                    <p>Quantity: {{prize.quantity}}</p>
+                    <h4 class="prize-title">{{prize.name}}</h4>
+                    <span class="prize-subtext">Quantity: {{prize.quantity}}</span>
                   </ion-label>
                   <ion-button slot="end" disabled="true">Claim</ion-button>
                 </ion-item>
-            </ion-list>
+            <!-- </ion-list> -->
           </ion-card-content>
         </ion-card>
       </ion-col>
@@ -46,24 +52,31 @@
               <h3>Leaderboard</h3>
             </ion-text>
           </div>
-          <ngx-datatable class="material dark" [limit]="10" [rows]="users" [columns]="columns" [rowHeight]="80"
+          <ngx-datatable [ngClass]="theme === 'light' ? 'material' : 'dark'" [limit]="10" [rows]="leaderboard" [columns]="columns" [rowHeight]="80"
             [columnMode]="'flex'" [headerHeight]="50" [footerHeight]="50">
-            <ngx-datatable-column name="Address" [flexGrow]="3">
+            <ngx-datatable-column name="Address" prop="user" [flexGrow]="3">
               <ng-template let-value="value" ngx-datatable-cell-template>
-                {{ value }}
+                <span class="row-content">
+                  {{ value }}
+                </span>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column name="Points" [flexGrow]="1">
-              <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                {{ value }}
+            <ngx-datatable-column name="Points" prop="points" [flexGrow]="1">
+              <ng-template let-row="row" let-value="value" class="row-content" ngx-datatable-cell-template>
+                <span class="row-content">
+                  {{ value }}
+                </span>
               </ng-template>
             </ngx-datatable-column>
-            <ngx-datatable-column name="NFT Prize" prop="prize" [flexGrow]="1">
+            <ngx-datatable-column name="NFT Prize" prop="rank" [flexGrow]="1">
               <ng-template let-value="value" ngx-datatable-cell-template>
                 <!-- {{ value }} -->
-                <ion-thumbnail>
-                  <ion-img src="/assets/icon/favicon.png"></ion-img>
-                </ion-thumbnail>
+                <span class="row-content">
+                  <ion-thumbnail>
+                    <ion-img [src]="(value | rankReward).url" [alt]="(value | rankReward).name"></ion-img>
+                  </ion-thumbnail>
+                </span>
+                
               </ng-template>
             </ngx-datatable-column>
           </ngx-datatable>

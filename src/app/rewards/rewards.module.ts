@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { RewardsPageRoutingModule } from './rewards-routing.module';
 
 import { RewardsPage } from './rewards.page';
+import { SharedComponentsModule } from '../components/shared-components.module';
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import { RewardsPage } from './rewards.page';
     FormsModule,
     IonicModule,
     NgxDatatableModule,
+    SharedComponentsModule,
     RewardsPageRoutingModule
   ],
   declarations: [RewardsPage]
