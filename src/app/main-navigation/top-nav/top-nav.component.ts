@@ -6,6 +6,7 @@ import { ProfilePopoverComponent } from 'src/app/profile/components/profile-popo
 import { Profile } from 'src/app/profile/profile.interface';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
+import { NetworksPopoverComponent } from '../networks-popover/networks-popover.component';
 
 @Component({
   selector: 'app-top-nav',
@@ -153,6 +154,15 @@ export class TopNavComponent implements OnInit {
       translucent: true
     })
     await this.popover.present()
+  }
+
+  async presentNetworksPopver(event: any) {
+    const popover = await this.popoverController.create({
+      component: NetworksPopoverComponent,
+      event: event,
+      translucent: true
+    })
+    await popover.present()
   }
 
   async navigateToProfile() {

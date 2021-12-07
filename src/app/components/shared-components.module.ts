@@ -14,6 +14,7 @@ import { RankRewardPipe } from '../rewards/rank-reward.pipe';
 import { FeaturedCollectionCardComponent } from '../nfts/components/featured-collection-card/featured-collection-card.component';
 import { DappCardComponent } from '../dapps/components/dapp-card/dapp-card.component';
 import { FeaturedDappComponent } from '../dapps/components/featured-dapp/featured-dapp.component';
+import { NetworksPopoverComponent } from '../main-navigation/networks-popover/networks-popover.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { FeaturedDappComponent } from '../dapps/components/featured-dapp/feature
     FeaturedCollectionCardComponent,
     CollectionCardComponent, 
     ProfilePopoverComponent,
+    NetworksPopoverComponent,
     WelcomeModalComponent,
   ],
   imports: [
@@ -46,6 +48,7 @@ import { FeaturedDappComponent } from '../dapps/components/featured-dapp/feature
     FeaturedCollectionCardComponent,
     CollectionCardComponent, 
     ProfilePopoverComponent,
+    NetworksPopoverComponent,
     WelcomeModalComponent
   ]
 })

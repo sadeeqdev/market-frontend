@@ -15,22 +15,9 @@
       <ion-button>
         <img src="../../assets/images/chedda-logo-128.png" width="30px" />
       </ion-button>
-      <ion-button fill="solid" #networkBtn (mouseenter)="dropdown=true" (mouseleave)="hideDropdown($event)">Select Network</ion-button>
-      <div *ngIf="dropdown" class="dropdown" (mouseleave)="dropdown = false" #dropdownbox>
-        <ion-item (click)="dropdown = false" routerLink="/products" [queryParams]="{ category: 'popular'}" lines="none" routerDirection="root" >
-          Popular
-        </ion-item>
-        <ion-item (click)="dropdown = false" button routerLink="/products" [queryParams]="{ category: 'cloth'}"
-          lines="none" routerDirection="root" >
-          Cloth
-        </ion-item>
-        <ion-item (click)="dropdown = false" button routerLink="/products" [queryParams]="{ category: 'gadgets'}"
-          lines="none" routerDirection="root">
-          Gadgets
-        </ion-item>
-      </div>
+      <ion-button fill="solid" #networkBtn (click)="presentNetworksPopver($event)">Select Network</ion-button>
       <ion-button fill="solid" (click)="toggleDarkTheme(!isDark)" class="darkmode-button">
-        <ion-icon name="sunny-outline"></ion-icon>
+        <ion-icon [name]="isDark ? 'sunny-outline' : 'moon-outline'"></ion-icon>
       </ion-button>
     </ion-buttons>
 
@@ -81,7 +68,7 @@
           <ion-title>Chedda</ion-title>
           <ion-buttons slot="end">
             <ion-button fill="solid" (click)="toggleDarkTheme(!isDark)" class="darkmode-button">
-              <ion-icon name="sunny-outline"></ion-icon>
+              <ion-icon [name]="isDark ? 'sunny-outline' : 'moon-outline'"></ion-icon>            
             </ion-button>
           </ion-buttons>
       </ion-toolbar>
