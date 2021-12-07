@@ -1,5 +1,5 @@
-import { ApplicationRef, Component, OnInit } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { ApplicationRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { CheddaRewardsService } from '../contracts/chedda-rewards.service';
 import { ThemingService } from '../shared/theming.service';
 
@@ -8,9 +8,10 @@ import { ThemingService } from '../shared/theming.service';
   templateUrl: './rewards.page.html',
   styleUrls: ['./rewards.page.scss'],
 })
-export class RewardsPage implements OnInit {
+export class RewardsPage implements OnInit, OnDestroy {
 
   theme = 'light-theme'
+  private themeSubscription?: Subscription
 
   columns = [
     {
@@ -62,13 +63,17 @@ export class RewardsPage implements OnInit {
     await this.loadLeaderboard()
   }
 
+  ngOnDestroy(): void {
+      this.themeSubscription?.unsubscribe()
+  }
+
   async loadLeaderboard() {
     this.leaderboard = await this.rewardsService.leaderboard()
     console.log('leaderboard is ', this.leaderboard)
   }
 
   private registerThemeListener() {
-    this.theming.theme.subscribe(theme => {
+    this.themeSubscription = this.theming.theme.subscribe(theme => {
       console.log('*** theme is now ', theme)
       this.theme = theme
     })

@@ -1,6 +1,7 @@
-import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, IonButton, PopoverController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 import { CheddaDappStoreService } from 'src/app/contracts/chedda-dapp-store.service';
 import { ProfilePopoverComponent } from 'src/app/profile/components/profile-popover/profile-popover.component';
 import { Profile } from 'src/app/profile/profile.interface';
@@ -13,7 +14,7 @@ import { NetworksPopoverComponent } from '../networks-popover/networks-popover.c
   templateUrl: './top-nav.component.html',
   styleUrls: ['./top-nav.component.scss'],
 })
-export class TopNavComponent implements OnInit {
+export class TopNavComponent implements OnInit, OnDestroy {
 
   @ViewChild('networkBtn', { read: ElementRef }) networkBtn: ElementRef
   prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
@@ -25,7 +26,8 @@ export class TopNavComponent implements OnInit {
   profile: Profile
   title = 'Dapps'
   dropdown = false
-
+  private accountSubscription?: Subscription
+  private networkSubscription?: Subscription
 
   menuItems = [
     {
@@ -68,6 +70,11 @@ export class TopNavComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+      this.accountSubscription?.unsubscribe()
+      this.networkSubscription?.unsubscribe()
+  }
+
   // Add or remove the "dark" class based on if the media query matches
   toggleDarkTheme(shouldAdd: boolean) {
     this.isDark = !this.isDark;
@@ -91,12 +98,12 @@ export class TopNavComponent implements OnInit {
   }
 
   async setupListeners() {
-    this.provider.accountSubject.subscribe(account => {
+    this.accountSubscription = this.provider.accountSubject.subscribe(account => {
       this.zone.run(() => {
         this.account = account
       })
     })
-    this.provider.networkSubject.subscribe(chainId => {
+    this.networkSubscription = this.provider.networkSubject.subscribe(chainId => {
       if (chainId) {
         this.zone.run(() => {
           this.isCorrectNetwork = chainId.toString(16) == this.provider.currentNetwork.chainId

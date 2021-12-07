@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonSegment, NavController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 import { MarketExplorerService } from '../contracts/market-explorer.service';
 import { Profile } from './profile.interface';
 import { accountInitials } from './profile.utils';
@@ -10,9 +11,10 @@ import { accountInitials } from './profile.utils';
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
 })
-export class ProfilePage implements OnInit {
+export class ProfilePage implements OnInit, OnDestroy {
   @ViewChild('segmentControl') 
   segmentControl: IonSegment
+  private routeSubscription?: Subscription
 
   // profile info to come from metadata json file
   profile: Profile = {
@@ -84,7 +86,7 @@ export class ProfilePage implements OnInit {
     ) { }
 
   async ngOnInit() {
-    this.route.paramMap.subscribe(async paramMap => {
+    this.routeSubscription = this.route.paramMap.subscribe(async paramMap => {
       if (!paramMap.has('address')) {
         this.navController.navigateBack('/')
         return
@@ -100,6 +102,10 @@ export class ProfilePage implements OnInit {
         this.navController.navigateBack('/')
       }
     })
+  }
+
+  ngOnDestroy(): void {
+    this.routeSubscription?.unsubscribe()
   }
 
   copyAddress() {}

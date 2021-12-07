@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonButton, NavController } from '@ionic/angular';
 import { BigNumber, ethers } from 'ethers';
+import { Subscription } from 'rxjs';
 import { CheddaMarketService } from 'src/app/contracts/chedda-market.service';
 import { MarketExplorerService } from 'src/app/contracts/market-explorer.service';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
@@ -13,11 +14,12 @@ import { NFT } from '../../models/nft.model';
   templateUrl: './nft-details.page.html',
   styleUrls: ['./nft-details.page.scss'],
 })
-export class NftDetailsPage implements OnInit {
+export class NftDetailsPage implements OnInit, OnDestroy {
 
   @ViewChild('buyButton') buyButton: IonButton
   priceString = ''
   nft: NFT
+  private routeSubscription?: Subscription
 
   constructor(
     private route: ActivatedRoute,
@@ -28,7 +30,7 @@ export class NftDetailsPage implements OnInit {
     private explorer: MarketExplorerService) { }
 
   ngOnInit() {
-    this.route.paramMap.subscribe(async paramMap => {
+    this.routeSubscription = this.route.paramMap.subscribe(async paramMap => {
       if (!paramMap.has('contractAddress')) {
         this.navController.navigateBack('/nfts')
         return
@@ -47,6 +49,10 @@ export class NftDetailsPage implements OnInit {
         this.navController.navigateBack('/nfts')
       }
     })
+  }
+
+  ngOnDestroy(): void {
+      this.routeSubscription?.unsubscribe()
   }
 
   setPrice() {

@@ -1,22 +1,24 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonSegment, NavController, ToastController } from '@ionic/angular';
 import { MarketExplorerService } from 'src/app/contracts/market-explorer.service';
 import { CollectionStats, NFTCollection } from '../../models/collection.model';
 import { NFT } from '../../models/nft.model';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-nft-collection',
   templateUrl: './nft-collection.page.html',
   styleUrls: ['./nft-collection.page.scss'],
 })
-export class NftCollectionPage implements OnInit {
+export class NftCollectionPage implements OnInit, OnDestroy {
 
   @ViewChild('segmentControl') segmentControl: IonSegment
   collection: NFTCollection
   items: NFT[] = []
   stats: CollectionStats
+  private routeSuscription?: Subscription
 
   currentSegment = 'items'
 
@@ -29,7 +31,7 @@ export class NftCollectionPage implements OnInit {
     private route: ActivatedRoute) { }
 
   async ngOnInit() {
-    this.route.paramMap.subscribe(async paramMap => {
+    this.routeSuscription = this.route.paramMap.subscribe(async paramMap => {
       if (!paramMap.has('contractAddress')) {
         this.navController.navigateBack('/nfts')
         return
@@ -45,6 +47,10 @@ export class NftCollectionPage implements OnInit {
         this.navController.navigateBack('/nfts')
       }
     })
+  }
+
+  ngOnDestroy(): void {
+      this.routeSuscription?.unsubscribe()
   }
 
   async loadCollection(address: string) {

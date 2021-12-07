@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 import { WalletProviderService } from '../providers/wallet-provider.service';
 
 @Injectable({
@@ -10,6 +10,7 @@ export class GlobalAlertService {
 
   constructor(
     private alertController: AlertController,
+    private toastController: ToastController,
     private provider: WalletProviderService,
     ) { }
 
@@ -100,6 +101,32 @@ export class GlobalAlertService {
     });
 
     await alert.present(); 
+  }
+
+  async showRewardConfirmationAlert(amount) {
+    const alert = await this.alertController.create({
+      header: 'Reward!',
+      message: `Thanks for rating. 
+      Your reward of ${amount} Chedda XP will be posted to your account once the transaction confirms on the blockchain.`,
+      buttons: [
+        {
+          text: 'Okay',
+          role: 'okay',
+        }
+      ]
+    });
+
+    await alert.present(); 
+  }
+  async showRewardReceivedToast(amount) {
+    const toast =  await this.toastController.create({
+      header: 'Chedda XP earned',
+      message: `You just earned ${amount} XP`,
+      position: 'bottom',
+      duration: 5000
+    })
+
+    await toast.present()
   }
 
   async connect() {

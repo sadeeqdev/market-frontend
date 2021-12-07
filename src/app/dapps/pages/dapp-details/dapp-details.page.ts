@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { AfterContentChecked, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterContentChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ModalController, NavController, ToastController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { SwiperComponent } from 'swiper/angular';
 import { CheddaDappStoreService } from 'src/app/contracts/chedda-dapp-store.service';
 import SwiperCore, { SwiperOptions, Navigation, Pagination, Scrollbar, } from 'swiper';
@@ -10,6 +10,7 @@ import { DappRatingModalComponent } from 'src/app/components/dapp-rating-modal/d
 import { DappExplorerService } from 'src/app/contracts/dapp-explorer.service';
 import { IonicRatingComponent } from 'src/app/external/ionic-rating/ionic-rating.component';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
+import { Subscription } from 'rxjs';
 SwiperCore.use([Navigation, Pagination, Scrollbar]);
 
 @Component({
@@ -17,11 +18,13 @@ SwiperCore.use([Navigation, Pagination, Scrollbar]);
   templateUrl: './dapp-details.page.html',
   styleUrls: ['./dapp-details.page.scss'],
 })
-export class DappDetailsPage implements OnInit, AfterContentChecked {
+export class DappDetailsPage implements OnInit, OnDestroy, AfterContentChecked {
   reviews = []
   dapp?: Dapp
   @ViewChild('swiper') swiper: SwiperComponent
   @ViewChild('ratingComponent') ratingComponent: IonicRatingComponent
+  private routeSubscription?: Subscription
+  private reviewSubscription?: Subscription
 
   config: SwiperOptions = {
     slidesPerView: 1,
@@ -45,14 +48,13 @@ export class DappDetailsPage implements OnInit, AfterContentChecked {
     private route: ActivatedRoute,
     private navController: NavController,
     private modalController: ModalController,
-    private toastController: ToastController,
     private dappStoreService: CheddaDappStoreService,
     private globalAlert: GlobalAlertService,
     private dappExplorer: DappExplorerService) { 
   }
 
   ngOnInit() {
-    this.route.paramMap.subscribe(async paramMap => {
+    this.routeSubscription = this.route.paramMap.subscribe(async paramMap => {
       if (!paramMap.has('address')) {
         this.navigateToDapps()
         return
@@ -68,6 +70,11 @@ export class DappDetailsPage implements OnInit, AfterContentChecked {
     })
   }
 
+  ngOnDestroy(): void {
+      this.routeSubscription?.unsubscribe()
+      this.reviewSubscription?.unsubscribe()
+  }
+
   ngAfterContentChecked() {
     if (this.swiper) {
       this.swiper.updateSwiper({})
@@ -79,7 +86,7 @@ export class DappDetailsPage implements OnInit, AfterContentChecked {
   }
 
   async loadReviews() {
-    this.http.get('https://devdactic.fra1.digitaloceanspaces.com/twitter-ui/tweets.json').subscribe((data: any) => {
+    this.routeSubscription = this.http.get('https://devdactic.fra1.digitaloceanspaces.com/twitter-ui/tweets.json').subscribe((data: any) => {
       this.reviews = data.tweets;
     });
   }
@@ -112,7 +119,7 @@ export class DappDetailsPage implements OnInit, AfterContentChecked {
     modal.onDidDismiss().then((result) => {
       console.log('amount is ', result)
       if (result && result.data) {
-        this.showToast(result.data)
+        this.showConfirmAlert(result.data)
       }
     })
     await modal.present()
@@ -126,15 +133,7 @@ export class DappDetailsPage implements OnInit, AfterContentChecked {
       console.log('got rating: ', rating)
   }
 
-  private async showToast(amount) {
-    const toast =  await this.toastController.create({
-      header: 'Chedda XP earned',
-      message: `You just earned ${amount} XP`,
-      position: 'bottom',
-      duration: 5000
-    })
-
-
-    await toast.present()
+  private async showConfirmAlert(amount) {
+    await this.globalAlert.showRewardConfirmationAlert(amount)
   }
 }
