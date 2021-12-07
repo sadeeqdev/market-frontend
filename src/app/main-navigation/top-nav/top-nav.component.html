@@ -35,7 +35,7 @@
     </ion-buttons>
     
     <ion-buttons slot="end" *ngIf="account">
-      <ion-button fill="solid">0</ion-button>
+      <ion-button fill="solid">{{balance}}</ion-button>
       <ion-button fill="solid" class="account-button" (click)="presentProfilePopover($event)">
         <ion-avatar class="wallet-avatar">
           <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" class="wallet-avatar">
@@ -87,7 +87,7 @@
         </ion-row>
         <div *ngIf="account">
           <ion-row class="centered-content balance-row">
-            XP Balance: <span class="xp-balance">240 XP</span>
+            XP Balance: <span class="xp-balance">{{balance}} XP</span>
           </ion-row>
           <ion-row class="centered-content">
             <ion-menu-toggle>

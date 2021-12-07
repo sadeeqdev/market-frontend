@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonSegment, NavController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
+import { CheddaXpService } from '../contracts/chedda-xp.service';
 import { MarketExplorerService } from '../contracts/market-explorer.service';
 import { Profile } from './profile.interface';
 import { accountInitials } from './profile.utils';
@@ -15,6 +16,8 @@ export class ProfilePage implements OnInit, OnDestroy {
   @ViewChild('segmentControl') 
   segmentControl: IonSegment
   private routeSubscription?: Subscription
+  private balanceSubscription?: Subscription
+  balance: any
 
   // profile info to come from metadata json file
   profile: Profile = {
@@ -82,7 +85,8 @@ export class ProfilePage implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private navController: NavController,
-    private explorer: MarketExplorerService
+    private explorer: MarketExplorerService,
+    private cheddaXP: CheddaXpService,
     ) { }
 
   async ngOnInit() {
@@ -102,10 +106,15 @@ export class ProfilePage implements OnInit, OnDestroy {
         this.navController.navigateBack('/')
       }
     })
+    this.balanceSubscription = this.cheddaXP.balanceSubject.subscribe(balance => {
+      this.balance = balance
+    })
+    this.balance = await this.cheddaXP.balanceOf(this.address)
   }
 
   ngOnDestroy(): void {
     this.routeSubscription?.unsubscribe()
+    this.balanceSubscription?.unsubscribe()
   }
 
   copyAddress() {}

@@ -1,8 +1,9 @@
 import { Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AlertController, IonButton, PopoverController } from '@ionic/angular';
+import {  Router } from '@angular/router';
+import { PopoverController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
-import { CheddaDappStoreService } from 'src/app/contracts/chedda-dapp-store.service';
+import { CheddaRewardsService } from 'src/app/contracts/chedda-rewards.service';
+import { CheddaXpService } from 'src/app/contracts/chedda-xp.service';
 import { ProfilePopoverComponent } from 'src/app/profile/components/profile-popover/profile-popover.component';
 import { Profile } from 'src/app/profile/profile.interface';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
@@ -21,6 +22,7 @@ export class TopNavComponent implements OnInit, OnDestroy {
   connected = false
   isDark = false;
   account?: string
+  balance = 0
   isCorrectNetwork = true
   popover: any
   profile: Profile
@@ -28,6 +30,7 @@ export class TopNavComponent implements OnInit, OnDestroy {
   dropdown = false
   private accountSubscription?: Subscription
   private networkSubscription?: Subscription
+  private balanceSubscription?: Subscription
 
   menuItems = [
     {
@@ -48,11 +51,13 @@ export class TopNavComponent implements OnInit, OnDestroy {
   ]
 
   constructor(
-    private provider: WalletProviderService, 
     private router: Router,
     private zone: NgZone,
+    private provider: WalletProviderService, 
+    private cheddaXP: CheddaXpService,
     private alertService: GlobalAlertService,
     private popoverController: PopoverController,
+    private rewardService: CheddaRewardsService, // not used locally needed to listen to global rewards events
     ) {}
 
 
@@ -73,6 +78,7 @@ export class TopNavComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
       this.accountSubscription?.unsubscribe()
       this.networkSubscription?.unsubscribe()
+      this.balanceSubscription?.unsubscribe()
   }
 
   // Add or remove the "dark" class based on if the media query matches
@@ -98,9 +104,13 @@ export class TopNavComponent implements OnInit, OnDestroy {
   }
 
   async setupListeners() {
+    console.log('**** Setting up listeners in top nav')
     this.accountSubscription = this.provider.accountSubject.subscribe(account => {
-      this.zone.run(() => {
+      this.zone.run(async () => {
         this.account = account
+        if (account) {
+          this.balance = await this.cheddaXP.balanceOf(account)
+        }
       })
     })
     this.networkSubscription = this.provider.networkSubject.subscribe(chainId => {
@@ -109,6 +119,12 @@ export class TopNavComponent implements OnInit, OnDestroy {
           this.isCorrectNetwork = chainId.toString(16) == this.provider.currentNetwork.chainId
           console.log(`Networks: ${chainId} <=> ${this.provider.currentNetwork.chainId}`)
         })
+      }
+    })
+    this.balanceSubscription = this.cheddaXP.balanceSubject.subscribe(balance => {
+      console.log('In top nav balance subscription registered: balance = ', balance)
+      if (balance) {
+        this.balance = balance
       }
     })
   }
@@ -139,19 +155,6 @@ export class TopNavComponent implements OnInit, OnDestroy {
     this.title = title
   }
 
-  hideDropdown(event) {
-    const xTouch = event.clientX;
-    const yTouch = event.clientY;
-
-    const rect = this.networkBtn.nativeElement.getBoundingClientRect();
-    const topBoundary = rect.top+2;
-    const leftBoundary = rect.left+2;
-    const rightBoundary = rect.right-2;
-
-    if (xTouch < leftBoundary || xTouch > rightBoundary || yTouch < topBoundary) {
-      this.dropdown = false;
-    }
-  }
   
   async presentProfilePopover(event: any) {
     this.popover = await this.popoverController.create({

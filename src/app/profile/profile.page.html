@@ -25,6 +25,11 @@
       </ion-chip>
     </ion-col>
   </ion-row>
+  <ion-row *ngIf="balance">
+    <ion-col class="centered-text">
+      <ion-text class="balance-text">{{balance}} XP</ion-text>
+    </ion-col>
+  </ion-row>
   <ion-row>
     <ion-col class="centered-content">
       <ion-text><h3>NFT Badges</h3></ion-text>
@@ -46,7 +51,7 @@
   </ion-row>
   <ion-row>
     <ion-col class="centered-content">
-        <ion-text>Earn Chedda XP to rank on leaderboard and unlock badges.</ion-text>
+        <ion-text class="centered-text">Earn Chedda XP to rank on leaderboard and unlock badges.</ion-text>
     </ion-col>
   </ion-row>
 
@@ -79,10 +84,10 @@
       </ion-col>
       <ion-col *ngIf="items && items.length == 0">
         <ion-row class="centered-content owned-title">
-          <ion-text>You do not own any NFTs</ion-text>
+          <ion-text class="centered-text">You do not own any NFTs</ion-text>
         </ion-row>
         <ion-row class="centered-content">
-          <ion-text>You can purchase NFTs in the market or win Chedda NFTs by ranking on the leaderboard</ion-text>
+          <ion-text class="centered-text">You can purchase NFTs in the market or win Chedda NFTs by ranking on the leaderboard</ion-text>
         </ion-row>
       </ion-col>
   </ion-row>

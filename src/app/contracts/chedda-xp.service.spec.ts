@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CheddaService } from './chedda.service';
+import { CheddaXpService } from './chedda-xp.service';
 
-describe('CheddaService', () => {
-  let service: CheddaService;
+describe('CheddaXpService', () => {
+  let service: CheddaXpService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(CheddaService);
+    service = TestBed.inject(CheddaXpService);
   });
 
   it('should be created', () => {

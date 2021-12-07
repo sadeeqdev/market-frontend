@@ -32,7 +32,6 @@ export class CheddaDappStoreService {
     let dapps = await this.dappStoreContract.dappsWithRatings()
     console.log('dapps are: ', dapps)
     dapps = await this.populateMetadata(dapps)
-    console.log('populated dapps are: ', dapps)
     return dapps
   }
 
@@ -46,7 +45,6 @@ export class CheddaDappStoreService {
   async loadDappsInCategory(category: string): Promise<Dapp[]> {
     console.log('loading dapps in category: ', category)
     let dapps = await this.dappStoreContract.dappsInCategory(category)
-    console.log('loaded dapps: ', dapps)
     let populated = this.populateMetadata(dapps)
     return populated
   }
@@ -71,9 +69,7 @@ export class CheddaDappStoreService {
   }
 
   async populateMetadata(dapps: DappWithRating[]) {
-    console.log('populatign****** dapps: ', dapps)
     let populated = await Promise.all(dapps.map(async d => {
-      console.log('about to fetch: ', d.dapp.name, d.dapp.metadataURI)
       try {
         let metadata = await this.http.get<DappMetadata>(d.dapp.metadataURI).toPromise()
 
@@ -94,7 +90,6 @@ export class CheddaDappStoreService {
       }
 
     }))
-    console.log('*****Populated = ', populated)
     return populated
   }
 

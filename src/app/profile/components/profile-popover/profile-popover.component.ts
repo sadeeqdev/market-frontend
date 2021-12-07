@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
+import { CheddaXpService } from 'src/app/contracts/chedda-xp.service';
 import { Profile } from '../../profile.interface';
 import { accountInitials } from '../../profile.utils';
 
@@ -13,16 +14,24 @@ export class ProfilePopoverComponent implements OnInit {
 
   address: string
   profile: Profile
+  balance = 0
   initials
 
   constructor(
     private router: Router,
+    private cheddaXP: CheddaXpService,
     private popoverController: PopoverController
   ) { }
 
   ngOnInit() {
-    console.log('in popover address is ', this.address)
     this.initials = accountInitials(this.address)
+    this.checkBalance()
+  }
+
+  private async checkBalance() {
+    if (this.address) {
+      this.balance = await this.cheddaXP.balanceOf(this.address)
+    }
   }
 
   async navigateToProfile() {

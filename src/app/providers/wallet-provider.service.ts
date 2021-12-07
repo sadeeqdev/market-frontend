@@ -48,12 +48,10 @@ export class WalletProviderService {
   async startApp(ethereum: any) {
     this.provider = new ethers.providers.Web3Provider(ethereum, 'any')
     this.signer = await this.provider.getSigner()
-    console.log('Signer = ', this.signer)
     this.registerHandlers()
     if (ethereum.selectedAddress) {
       ethereum.enable()
       this.setCurrentAccount(ethereum.selectedAddress)
-      console.log('selected address is ', ethereum.selectedAddress)
     } else {
     }
     // if (provider !== window.ethereum) {

@@ -60,7 +60,6 @@ export class DappDetailsPage implements OnInit, OnDestroy, AfterContentChecked {
         return
       }
       this.dapp = await this.loadDapp(paramMap.get('address'))
-      console.log('dapp is ', this.dapp)
       if (this.dapp) {
         this.loadReviews()
         this.loadRating()
@@ -116,10 +115,12 @@ export class DappDetailsPage implements OnInit, OnDestroy, AfterContentChecked {
         dapp: this.dapp
       }
     })
-    modal.onDidDismiss().then((result) => {
-      console.log('amount is ', result)
+    modal.onDidDismiss().then(async (result) => {
       if (result && result.data) {
-        this.showConfirmAlert(result.data)
+        await this.showConfirmAlert(result.data)
+        setTimeout(() => {
+          this.loadRating()
+        }, 3000)
       }
     })
     await modal.present()
@@ -128,7 +129,6 @@ export class DappDetailsPage implements OnInit, OnDestroy, AfterContentChecked {
 
   async loadRating() {
       const rating = await this.dappExplorer.averageRating(this.dapp)
-      console.log('ratingsComponent = ', this.ratingComponent)
       this.ratingComponent.rating = rating / 100
       console.log('got rating: ', rating)
   }

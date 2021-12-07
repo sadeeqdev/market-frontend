@@ -8,12 +8,13 @@ export const environment = {
     jsonRpcUrl: 'http://localhost:8545',
     config: {
         contracts: {
-            CheddaXP: '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512',
-            CheddaDappStore: '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707',
-            CheddaDappExplorer: '0xa513E6E4b8f2a923D98304ec87F64353C4D5C853',
-            CheddaMarket: '0x8A791620dd6260079BF849Dc5567aDC3F2FdC318',
-            CheddaMarketExplorer: '0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e',
-            CheddaRewards: '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9',
+            CheddaAddressRegistry: '0xE3011A37A904aB90C8881a99BD1F6E21401f1522',
+            CheddaXP: '0x1f10F3Ba7ACB61b2F50B9d6DdCf91a6f787C0E82',
+            CheddaDappStore: '0x5fc748f1FEb28d7b76fa1c6B07D8ba2d5535177c',
+            CheddaDappExplorer: '0x2a810409872AfC346F9B5b26571Fd6eC42EA4849',
+            CheddaMarket: '0x8A93d247134d91e0de6f96547cB0204e5BE8e5D8',
+            CheddaMarketExplorer: '0xF32D39ff9f6Aa7a7A64d7a4F00a54826Ef791a55',
+            CheddaRewards: '0x525C7063E7C20997BaaE9bDa922159152D0e8417',
           },
           networkParams: {
             chainId: '0x7a69',

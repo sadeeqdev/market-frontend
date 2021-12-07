@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ethers } from 'ethers';
 import ChedaMarket from '../../artifacts/CheddaMarket.json'
-import CheddaNFT from '../../artifacts/CheddaNFT.json'
 import { NFT } from '../nfts/models/nft.model';
 import { DefaultProviderService } from '../providers/default-provider.service';
 import { WalletProviderService } from '../providers/wallet-provider.service';

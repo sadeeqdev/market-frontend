@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, OnInit } from '@angular/core';
 import { ethers } from 'ethers';
 import { DefaultProviderService } from '../providers/default-provider.service';
 import { WalletProviderService } from '../providers/wallet-provider.service';
@@ -16,10 +16,10 @@ export interface UserRewards {
 @Injectable({
   providedIn: 'root'
 })
-export class CheddaRewardsService implements OnDestroy {
+export class CheddaRewardsService implements OnInit, OnDestroy {
 
   private rewardsContract: any
-  private acount
+  private account
   private accountSubscription?: Subscription
 
   constructor(
@@ -34,6 +34,9 @@ export class CheddaRewardsService implements OnDestroy {
     this.registerEventListener()
   }
 
+  ngOnInit(): void {
+      
+  }
   ngOnDestroy(): void {
       this.accountSubscription?.unsubscribe()
   }
@@ -44,15 +47,11 @@ export class CheddaRewardsService implements OnDestroy {
   }
 
   async registerEventListener() {
-    console.log('**** registereing event listener')
     this.accountSubscription = this.wallet.accountSubject.subscribe(newAccount => {
-      this.acount = newAccount
-      console.log('listening for events on account: ', this.acount)
+      this.account = newAccount
     })
     this.rewardsContract.on('RewardsIssued', (actionType, amount, address) => {
-      console.log('**** rewards action fired: ', actionType, amount, address)
-      console.log(`${address} <==> ${this.acount}`)
-      if (address.toLowerCase() == this.acount.toLowerCase()) {
+      if (address.toLowerCase() == this.account.toLowerCase()) {
         this.alert.showRewardReceivedToast(amount)
       }
     })
