@@ -45,13 +45,13 @@ export class ProfilePage implements OnInit {
         this.address = paramMap.get('address')
         this.profile.address = this.address
         await this.loadProfile(this.address)
+        this.initials = this.createInitials('')
+        this.items = await this.fetchItems(this.address)
       } catch (err) {
         console.error('navigation error: ', err)
         this.navController.navigateBack('/')
       }
     })
-    this.initials = this.createInitials('')
-    this.items = await this.fetchItems(this.address)
   }
 
   copyAddress() {}

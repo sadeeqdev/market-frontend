@@ -3,12 +3,14 @@ import { ethers } from 'ethers';
 import { DefaultProviderService } from '../providers/default-provider.service';
 import { HttpClient } from '@angular/common/http';
 import CheddaDapStore from '../../artifacts/CheddaDappStore.json'
-import { Dapp, DappMetadata } from '../dapps/models/dapp.model';
+import { Dapp, DappMetadata, DappWithRating } from '../dapps/models/dapp.model';
 import { WalletProviderService } from '../providers/wallet-provider.service';
+import moment from 'moment'
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class CheddaDappStoreService {
 
   dappStoreContract: any
@@ -26,9 +28,11 @@ export class CheddaDappStoreService {
     return this.dappStoreContract.isCheddaStore();
   }
 
-  async getDapps() {
-    let dapps = await this.dappStoreContract.dapps()
+  async loadDapps() {
+    let dapps = await this.dappStoreContract.dappsWithRatings()
+    console.log('dapps are: ', dapps)
     dapps = await this.populateMetadata(dapps)
+    console.log('populated dapps are: ', dapps)
     return dapps
   }
 
@@ -40,22 +44,57 @@ export class CheddaDappStoreService {
   }
 
   async loadDappsInCategory(category: string): Promise<Dapp[]> {
-    let dapps = await this.dappStoreContract.getDappsInCategory(category)
+    console.log('loading dapps in category: ', category)
+    let dapps = await this.dappStoreContract.dappsInCategory(category)
+    console.log('loaded dapps: ', dapps)
     let populated = this.populateMetadata(dapps)
     return populated
   }
 
-  async populateMetadata(dapps: Dapp[]) {
-    let populated = await Promise.all(dapps.map(async d => {
-      let metadata = await this.http.get<DappMetadata>(d.metadataURI).toPromise()
+  async loadFeaturedDapps(): Promise<Dapp[]> {
+    let dapps = await this.dappStoreContract.featuredDapps()
+    let populated = this.populateMetadata(dapps)
+    return populated
+  }  
+  
+  async loadNewDapps(): Promise<Dapp[]> {
+    const last30days = moment().subtract(30, 'days').unix()
+    let dapps = await this.dappStoreContract.newDapps(last30days)
+    let populated = this.populateMetadata(dapps)
+    return populated
+  }
 
-      let dapp = {
-        ...d,
-        rating: 0, //this.randomRating(),
-        metadata
+  async loadPopularDapps(): Promise<Dapp[]> {
+    let dapps = await this.dappStoreContract.popularDapps()
+    let populated = this.populateMetadata(dapps)
+    return populated
+  }
+
+  async populateMetadata(dapps: DappWithRating[]) {
+    console.log('populatign****** dapps: ', dapps)
+    let populated = await Promise.all(dapps.map(async d => {
+      console.log('about to fetch: ', d.dapp.name, d.dapp.metadataURI)
+      try {
+        let metadata = await this.http.get<DappMetadata>(d.dapp.metadataURI).toPromise()
+
+        let dapp = {
+          ...d.dapp,
+          rating: d.rating.averageRating.div(100).toNumber(),
+          averageRating: d.rating.averageRating,
+          numerOfRatings: d.rating.numberOfRatings,
+          metadata
+        }
+        return dapp
+      } catch (error) {
+        return {
+          ...d.dapp,
+          averageRating: d.rating.averageRating,
+          numerOfRatings: d.rating.numberOfRatings,
+        }
       }
-      return dapp
+
     }))
+    console.log('*****Populated = ', populated)
     return populated
   }
 

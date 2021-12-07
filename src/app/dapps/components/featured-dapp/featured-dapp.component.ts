@@ -3,12 +3,11 @@ import { Router } from '@angular/router';
 import { Dapp } from '../../models/dapp.model';
 
 @Component({
-  selector: 'app-dapp-card',
-  templateUrl: './dapp-card.component.html',
-  styleUrls: ['./dapp-card.component.scss'],
+  selector: 'app-featured-dapp',
+  templateUrl: './featured-dapp.component.html',
+  styleUrls: ['./featured-dapp.component.scss'],
 })
-export class DappCardComponent implements OnInit {
-
+export class FeaturedDappComponent implements OnInit {
   @Input() dapp: Dapp
 
   constructor(private router: Router) { }
@@ -23,5 +22,4 @@ export class DappCardComponent implements OnInit {
   naviagteToDapp(dapp: Dapp) {
     this.router.navigate(['/dapps', 'details', dapp.contractAddress])
   }
-
 }

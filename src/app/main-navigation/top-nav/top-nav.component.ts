@@ -1,4 +1,5 @@
 import { Component, NgZone, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, PopoverController } from '@ionic/angular';
 import { CheddaDappStoreService } from 'src/app/contracts/chedda-dapp-store.service';
 import { ProfilePopoverComponent } from 'src/app/profile/components/profile-popover/profile-popover.component';
@@ -20,9 +21,31 @@ export class TopNavComponent implements OnInit {
   isCorrectNetwork = true
   popover: any
   profile: Profile
+  title = 'Dapps'
+
+
+  menuItems = [
+    {
+      name: 'Dapps',
+      path: '/dapps',
+      icon: 'apps',
+    },
+    {
+      name: 'NFT Market',
+      path: '/nfts',
+      icon: 'bag',
+    }, 
+    {
+      name: 'Rewards',
+      path: '/rewards',
+      icon: 'trophy',
+    },
+  ]
 
   constructor(
     private provider: WalletProviderService, 
+    private router: Router,
+    private route: ActivatedRoute,
     private zone: NgZone,
     private alertService: GlobalAlertService,
     private popoverController: PopoverController,
@@ -31,6 +54,7 @@ export class TopNavComponent implements OnInit {
 
   async ngOnInit() {
     this.setupListeners()
+    this.checkRoute()
     let isConnected = await this.provider.connect()
     console.log('onInit, isConnected = ', isConnected)
     if (isConnected) {
@@ -80,8 +104,30 @@ export class TopNavComponent implements OnInit {
     })
   }
 
+  async checkRoute() {
+    let url = this.router.url
+    switch (url) {
+      case url.match(/\/dapps/)?.input:
+        this.title = 'Dapps'
+        break
+      case url.match(/\/nft/)?.input:
+        this.title = 'NFT Market'
+        break
+      case url.match(/\/rewards/)?.input:
+        this.title = 'Rewards'
+        break
+      case url.match(/\/profile/)?.input:
+        this.title = 'Profile'
+        break
+    }
+  }
+
   async switchNetwork() {
     await this.provider.addNetwork()
+  }
+
+  setTitle(title) {
+    this.title = title
   }
 
   async presentProfilePopover(event: any) {
@@ -92,5 +138,10 @@ export class TopNavComponent implements OnInit {
       translucent: true
     })
     await this.popover.present()
+  }
+
+  async navigateToProfile() {
+    this.setTitle('Profile')
+    this.router.navigate(['/', 'profile', this.account])
   }
 }

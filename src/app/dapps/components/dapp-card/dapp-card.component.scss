@@ -1,0 +1,32 @@
+
+.centered-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+  
+ion-avatar {
+    width: 160px;
+    height: 160px;
+}
+  
+ion-card {
+    height: 300px;
+    background-color: var(--chedda-color-clean);
+    cursor: pointer;
+}
+
+.dapp-name {
+    text-align: center;
+}
+
+.dapp-category {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 2.2em;
+}
+
+.rating-field {
+    display: flex;
+    justify-content: flex-end;
+}

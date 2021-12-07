@@ -59,6 +59,9 @@ export class NftDetailsPage implements OnInit {
       const hasSufficient = await this.wallet.balanceIsOver(this.nft.price)
       if (hasSufficient) {
         let result = await this.market.buyItem(this.nft)
+        if (result && result.hash) {
+          this.alert.showPurchaseConfirmationAlert(result.hash)
+        }
         console.log('buy result is: ', result)
       } else {
         this.alert.showInsufficientBalanceAlert()

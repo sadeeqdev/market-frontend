@@ -82,6 +82,26 @@ export class GlobalAlertService {
     await alert.present();
   }
 
+  async showPurchaseConfirmationAlert(txHash: string) {
+    const alert = await this.alertController.create({
+      header: 'Transaction sent',
+      message: 'Your purchased NFT will show up in your owned items once the transaction is confirmed.',
+      buttons: [
+        {
+          text: 'Okay',
+          role: 'okay',
+        }, {
+          text: 'View transaction',
+          handler: () => {
+            window.open('https://mumbai.polygonscan.com/tx/' + txHash, '_blank').focus
+          }
+        }
+      ]
+    });
+
+    await alert.present(); 
+  }
+
   async connect() {
     let isConected = await this.provider.connect()
     console.log('connect clicked with result: ', isConected)

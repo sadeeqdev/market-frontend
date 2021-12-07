@@ -1,156 +1,45 @@
 <ion-content>
+  <ion-row class="title-row">
+    <ion-col>
+      <ion-text class="row-title">
+        Featured
+      </ion-text>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <div class="scrolling-wrapper-flex">
+      <ion-col *ngFor="let dapp of featuredDapps" size-xs="11" size-sm="10" size-md="9" size-lg="7" size-xl="5">
+        <app-featured-dapp [dapp]="dapp"></app-featured-dapp>
+      </ion-col>
+    </div>
+  </ion-row>
 
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Featured</ion-card-title>
-    </ion-card-header>
-
-    <ion-card-content>
-      <img src="./assets/images/lucas-benjamin.jpeg" alt="" class="full-image">
-    </ion-card-content>
-    <ion-row></ion-row>
-  </ion-card>
-
+  <ion-row class="explore-section-header"></ion-row>
+  <ion-row class="title-row">
+    <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="4" size-xl="4">
+      <ion-text class="row-title">
+        Explore
+      </ion-text>
+    </ion-col>
+    <ion-col size-xs="12" size-sm="4" size-md="3" size-lg="2" size-xl="2" offset-sm="2" offset-md="5" offset-lg="6"
+      offset-xl="6">
+      <ion-select value="all" interface="popover" class="dropdown-select" (ionChange)="dropdownValueChanged($event)"
+        #filterSelect>
+        <ion-select-option value="all">All</ion-select-option>
+        <ion-select-option value="popular">Popular</ion-select-option>
+        <ion-select-option value="new">New</ion-select-option>
+        <ion-select-option value="defi">DeFi</ion-select-option>
+        <ion-select-option value="nft">NFTs</ion-select-option>
+        <ion-select-option value="gaming">Gaming</ion-select-option>
+      </ion-select>
+    </ion-col>
+  </ion-row>
 
   <ion-grid>
-    <!-- Popular  -->
-    <ion-row>
-      <h3>Popular Dapps</h3>
-    </ion-row>
-    <ion-row>
-      <div class="scrolling-wrapper-flex">
-        <ion-card class="ion-center card" *ngFor="let dapp of dapps; let i=index" (click)="onDappSelected(dapp)">
-          <ion-card-header class="centered-content">
-            <ion-avatar>
-              <ion-img [src]="dapp.metadata.logoURI"></ion-img>
-            </ion-avatar>
-            <br>
-          </ion-card-header>
-    
-          <ion-card-content>
-            <ion-card-title>{{ dapp.name }}</ion-card-title>
-            <ion-text class="truncate-overflow">
-              {{ dapp.metadata.summary }}
-            </ion-text>
-            <ion-row>
-              <ion-col size="4" class="dapp-category">
-                {{dapp.metadata.category | uppercase}}
-              </ion-col>
-              <ion-col size="6" offset="2">
-                <ionic-rating-component #rating activeColor="#ebdb34" defaultColor="#c4c4c4" readonly="true"
-                  rating={{dapp.rating}} fontSize="0px" (ratingChanged)="onRatingChange($event)">
-                </ionic-rating-component>
-              </ion-col>
-            </ion-row>
-            <p></p>
-          </ion-card-content>
-        </ion-card>
-      </div>
-    </ion-row>
-    
-    <!-- DeFi -->
-    <ion-row>
-      <h3>DeFi</h3>
-    </ion-row>
-    <ion-row>
-      <div class="scrolling-wrapper-flex">
-        <ion-card class="ion-center card" *ngFor="let dapp of defiDapps; let i=index" (click)="onDappSelected(dapp)">
-          <ion-card-header class="centered-content">
-            <ion-avatar>
-              <ion-img [src]="dapp.metadata.logoURI"></ion-img>
-            </ion-avatar>
-            <br>
-          </ion-card-header>
-    
-          <ion-card-content>
-            <ion-card-title>{{ dapp.name }}</ion-card-title>
-            <ion-text class="truncate-overflow">
-              {{ dapp.metadata.summary }}
-            </ion-text>
-            <ion-row>
-              <ion-col size="4" class="dapp-category">
-                {{dapp.metadata.category | uppercase}}
-              </ion-col>
-              <ion-col size="6" offset="2">
-                <ionic-rating-component #rating activeColor="#ebdb34" defaultColor="#c4c4c4" readonly="true"
-                  rating={{dapp.rating}} fontSize="10px" (ratingChanged)="onRatingChange($event)">
-                </ionic-rating-component>
-              </ion-col>
-            </ion-row>
-            <p></p>
-          </ion-card-content>
-        </ion-card>
-      </div>
-    </ion-row>
-    
-    <!-- Gaming -->
-    <ion-row>
-      <h3>Gaming</h3>
-    </ion-row>
-    <ion-row>
-      <div class="scrolling-wrapper-flex">
-        <ion-card class="ion-center card" *ngFor="let dapp of gamingDapps; let i=index" (click)="onDappSelected(dapp)">
-          <ion-card-header class="centered-content">
-            <ion-avatar>
-              <ion-img [src]="dapp.metadata.logoURI"></ion-img>
-            </ion-avatar>
-            <br>
-          </ion-card-header>
-    
-          <ion-card-content>
-            <ion-card-title>{{ dapp.name }}</ion-card-title>
-            <ion-text class="truncate-overflow">
-              {{ dapp.metadata.summary }}
-            </ion-text>
-            <ion-row>
-              <ion-col size="4" class="dapp-category">
-                {{dapp.metadata.category | uppercase}}
-              </ion-col>
-              <ion-col size="6" offset="2">
-                <ionic-rating-component #rating activeColor="#ebdb34" defaultColor="#c4c4c4" readonly="true"
-                  rating={{dapp.rating}} fontSize="10px" (ratingChanged)="onRatingChange($event)">
-                </ionic-rating-component>
-              </ion-col>
-            </ion-row>
-            <p></p>
-          </ion-card-content>
-        </ion-card>
-      </div>
-    </ion-row>
-    
-     <!-- NFTs -->
-     <ion-row>
-      <h3>NFTs</h3>
-    </ion-row>
-    <ion-row>
-      <div class="scrolling-wrapper-flex">
-        <ion-card class="ion-center card" *ngFor="let dapp of nftDapps; let i=index" (click)="onDappSelected(dapp)">
-          <ion-card-header class="centered-content">
-            <ion-avatar>
-              <ion-img [src]="dapp.metadata.logoURI"></ion-img>
-            </ion-avatar>
-            <br>
-          </ion-card-header>
-    
-          <ion-card-content>
-            <ion-card-title>{{ dapp.name }}</ion-card-title>
-            <ion-text class="truncate-overflow">
-              {{ dapp.metadata.summary }}
-            </ion-text>
-            <ion-row>
-              <ion-col size="4" class="dapp-category">
-                {{dapp.metadata.category | uppercase}}
-              </ion-col>
-              <ion-col size="6" offset="2">
-                <ionic-rating-component #rating activeColor="#ebdb34" defaultColor="#c4c4c4" readonly="true"
-                  rating={{dapp.rating}} fontSize="10px" (ratingChanged)="onRatingChange($event)">
-                </ionic-rating-component>
-              </ion-col>
-            </ion-row>
-            <p></p>
-          </ion-card-content>
-        </ion-card>
-      </div>
+    <ion-row *ngIf="dapps && dapps.length > 0">
+      <ion-col *ngFor="let dapp of dapps" size-xs="6" size-sm="4" size-md="4" size-lg="3" size-xl="2">
+        <app-dapp-card [dapp]="dapp"></app-dapp-card>
+      </ion-col>
     </ion-row>
   </ion-grid>
 

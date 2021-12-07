@@ -98,3 +98,43 @@ ion-modal.stack-modal {
 .no-padding {
   padding: 0;
 }
+
+.scrolling-wrapper-flex {
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+
+  .card {
+    // width: 200px;
+    flex: 0 0 auto;
+  }
+}
+
+.title-row {
+  background-color: var(--chedda-color-clean);
+  margin: 0;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  vertical-align: middle;
+  box-shadow: 0 0 2px 0px grey;
+}
+
+.row-title {
+  margin: 12px 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.dropdown-select {
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid gray;
+  padding-right: 4px;
+}
+
+.explore-section-header {
+  margin: 20px 0;
+}
+

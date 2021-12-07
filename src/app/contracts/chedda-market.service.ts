@@ -29,9 +29,10 @@ export class CheddaMarketService {
     return items
   }
 
-  async buyItem(nft: NFT) {
+  async buyItem(nft: NFT): Promise<any> {
     let result = await this.marketContract.connect(this.wallet.signer).buyItem(nft.nftContract, nft.tokenID, {value: nft.price})
     console.log('result of purchase = ', result)
+    return result
   }
 
   getMarketItemsInCollection(address: string) {

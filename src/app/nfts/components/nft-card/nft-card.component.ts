@@ -41,6 +41,9 @@ export class NftCardComponent implements OnInit {
       const hasSufficient = await this.wallet.balanceIsOver(nft.price)
       if (hasSufficient) {
         let result = await this.market.buyItem(nft)
+        if (result && result.hash) {
+          this.alert.showPurchaseConfirmationAlert(result.hash)
+        }
         console.log('buy result is: ', result)
       } else {
         this.alert.showInsufficientBalanceAlert()
@@ -53,6 +56,11 @@ export class NftCardComponent implements OnInit {
 
 
   formattedPrice(price: BigNumber) {
-    return ethers.utils.formatEther(price)
+    console.log('formatting price; ', price)
+    if (price) {
+      return ethers.utils.formatEther(price)
+    } else {
+      return '-'
+    }
   }
 }

@@ -1,0 +1,13 @@
+.banner-image {
+    width: 100%;
+}
+
+.rating-field {
+    display: flex;
+    justify-content: flex-end;
+}
+
+ion-card {
+    background-color: var(--chedda-color-clean);
+    cursor: pointer;
+}

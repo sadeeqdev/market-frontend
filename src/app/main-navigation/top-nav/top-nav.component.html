@@ -1,4 +1,4 @@
-<ion-header [translucent]="false">
+<ion-header [translucent]="false" class="main-nav">
   <ion-toolbar *ngIf="!isCorrectNetwork" color="danger" class="centered-text text-middle">
     <ion-text class="text-middle">
       <ion-icon name="warning"></ion-icon>
@@ -23,10 +23,7 @@
 
     <ion-title class="ion-text-center ion-center">
       <ion-buttons class="center">
-        <ion-button routerLink="/dapps">Dappstore</ion-button>
-        <ion-button routerLink="/nfts">NFT Market</ion-button>
-        <ion-button routerLink="/rewards">Rewards</ion-button>
-        <ion-button routerLink="/governance">Governance</ion-button>
+        <ion-button *ngFor="let item of menuItems" [routerLink]="item.path" routerLinkActive="top-nav-active" class="top-nav-button">{{item.name}}</ion-button>
       </ion-buttons>
     </ion-title>
 
@@ -48,3 +45,74 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
+<div class="mobile-nav">
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-menu-toggle>
+        <ion-button>
+          <ion-icon name="menu"></ion-icon>
+        </ion-button>
+      </ion-menu-toggle>
+    </ion-buttons>
+    <ion-title>{{title}}</ion-title>
+  </ion-toolbar>
+  <ion-menu contentId="main" menuId="mainMenu" slot="start">
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button>
+            <ion-img src="../../assets/images/chedda-logo-128.png" class="mobile-chedda-logo"></ion-img>
+          </ion-button>
+        </ion-buttons>
+          <ion-title>Chedda</ion-title>
+          <ion-buttons slot="end">
+            <ion-button fill="solid" (click)="toggleDarkTheme(!isDark)" class="darkmode-button">
+              <ion-icon name="sunny-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+      </ion-toolbar>
+      <ion-toolbar *ngIf="!isCorrectNetwork" color="danger" class="centered-text text-middle">
+        <ion-text class="text-middle">
+          <ion-icon name="warning"></ion-icon>
+          Connect to the Polygon Mumbai Testnet
+        </ion-text>
+        <ion-button size="small" color="secondary" class="switch-button" (click)="switchNetwork()">Switch Network</ion-button>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <div>
+        <ion-row class="profile-avatar-row centered-content">
+          <ion-img [src]="account ? '/assets/images/anonymous-mobster-512.png' : '/assets/images/anonymous-user.png'" class="circle"></ion-img>
+        </ion-row>
+        <div *ngIf="account">
+          <ion-row class="centered-content balance-row">
+            XP Balance: <span class="xp-balance">240 XP</span>
+          </ion-row>
+          <ion-row class="centered-content">
+            <ion-menu-toggle>
+              <ion-button color="medium" (click)="navigateToProfile()">My Profile</ion-button>
+            </ion-menu-toggle>
+          </ion-row>
+        </div>
+        <div *ngIf="!account">
+          <ion-row class="centered-content">
+            Not Connected
+          </ion-row>
+          <ion-row class="centered-content">
+            <ion-button color="primary">Connect Wallet</ion-button>
+          </ion-row>
+        </div>
+      </div>
+  
+      <ion-item-divider></ion-item-divider>
+  
+      <ion-menu-toggle *ngFor="let item of menuItems">
+        <ion-item [routerLink]="item.path" routerDirection="root" routerLinkActive="side-nav-active" class="side-nav-item" (click)="setTitle(item.name)">
+          <ion-icon [name]="item.icon" routerLinkActive="side-nav-active"></ion-icon>
+          <ion-text class="side-nav-text">{{ item.name}}</ion-text>
+        </ion-item>
+      </ion-menu-toggle>
+    </ion-content>
+  </ion-menu>
+</div>

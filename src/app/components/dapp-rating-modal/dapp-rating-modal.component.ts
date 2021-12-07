@@ -32,7 +32,7 @@ export class DappRatingModalComponent implements OnInit {
 
   async rateDapp() {
     if (this.wallet.isConnected()) {
-      await this.dappExplorer.addRating(1, this.dapp)
+      await this.dappExplorer.addRating(+this.ratingComponent.rating, this.dapp)
       await this.modalController.dismiss(10)
     } else {
       this.globalAlert.presentNoConnectionAlert()

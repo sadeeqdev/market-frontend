@@ -1,8 +1,8 @@
 <ion-content>
   <ion-row class="title-row">
-    <div class="row-title">
-      <h3>Spotlight</h3>
-    </div>
+    <ion-text class="row-title">
+      Spotlight
+    </ion-text>
   </ion-row>
   <!-- header featured section -->
 
@@ -27,17 +27,19 @@
   <!-- nfts -->
   <ion-row class="explore-section-header"></ion-row>
   <ion-row class="title-row">
-    <ion-col size-xs="12" size-sm="12" size-md="4" size-lg="3" size-xl="4">
-      <h2>Explore</h2>
+    <ion-col size-xs="12" size-sm="12" size-md="4" size-lg="4" size-xl="4">
+      <ion-text class="row-title">
+        Explore
+      </ion-text>
     </ion-col>
-    <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="3" size-xl="2" offset-lg="3" offset-xl="4">
+    <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="2" size-xl="2" offset-lg="4" offset-xl="4">
       <ion-select value="all" interface="popover" class="dropdown-select">
         <ion-select-option value="all">All Items</ion-select-option>
         <ion-select-option value="popular">Popular</ion-select-option>
         <ion-select-option value="new">New</ion-select-option>
       </ion-select>
     </ion-col>
-    <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="3" size-xl="2">
+    <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="2" size-xl="2">
       <ion-select value="recent" interface="popover" class="dropdown-select">
         <ion-select-option value="recent">Recently listed</ion-select-option>
         <ion-select-option value="lowest">Lowest Price</ion-select-option>
@@ -45,16 +47,9 @@
       </ion-select>
     </ion-col>
   </ion-row>
+
   <ion-grid>
     <div *ngIf="nfts && nfts.length > 0">
-      <ion-row>
-        <ion-col size=6>
-        </ion-col>
-        <ion-col>
-          <ion-row>
-          </ion-row>
-        </ion-col>
-      </ion-row>
       <ion-row *ngIf="nfts && nfts.length > 0" class="main-content">
         <ion-col *ngFor="let nft of nfts; let i=index" size-sm="6" size-xs="12" size-md="3" size-lg="3" size-xl="2">
           <app-nft-card [nft]="nft"></app-nft-card>
