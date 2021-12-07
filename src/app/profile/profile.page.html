@@ -18,22 +18,35 @@
 <ion-grid *ngIf="profile" class="profile-metadata">
   <!-- name -->
   <ion-row>
-    <ion-col class="centered-text" size-lg="12">
-      <ion-text>
-        <h2 *ngIf="profile.username">{{profile.username}}</h2>
-        <h2 *ngIf="!profile.username">Unamed user</h2>
-        <ion-label class="text-center twitter-handle">{{ profile.metadata.twitterHandle }}</ion-label>
-      </ion-text>
+    <ion-col class="centered-text">
       <ion-chip (click)="copyAddress()" class="address-chip">
         <ion-icon name="newspaper"></ion-icon>
-        <ion-label>{{profile.address | truncateMiddle:[6, '...', 4 ]}}</ion-label>
+        <ion-label>{{profile.address | truncateMiddle:[12, '...', 8 ]}}</ion-label>
       </ion-chip>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col class="centered-content">
+      <ion-text><h3>NFT Badges</h3></ion-text>
     </ion-col>
   </ion-row>
 
   <ion-row>
-    <ion-col class="centered-text">
-      <ion-text>{{profile.metadata.about}}</ion-text>
+    <div class="scrolling-wrapper-flex">
+      <ion-col *ngFor="let badge of availableBadges">
+        <div class="centered-text badge-wrapper">
+          <div class="centered-content">
+            <ion-img [src]="badge.imageGrayscale" class="profile-badge"></ion-img>
+            <ion-icon name="lock-closed" class="centered badge-lock"></ion-icon>    
+          </div>
+          <ion-text class="badge-name">{{badge.name}}</ion-text>
+        </div>
+      </ion-col>
+    </div>
+  </ion-row>
+  <ion-row>
+    <ion-col class="centered-content">
+        <ion-text>Earn Chedda XP to rank on leaderboard and unlock badges.</ion-text>
     </ion-col>
   </ion-row>
 
@@ -47,10 +60,10 @@
           <ion-icon name="apps"></ion-icon>
           <ion-label>Owned</ion-label>
         </ion-segment-button>
-        <ion-segment-button value="created">
+        <!-- <ion-segment-button value="created">
           <ion-icon name="create-outline"></ion-icon>
           <ion-label>Created</ion-label>
-        </ion-segment-button>
+        </ion-segment-button> -->
         <ion-segment-button value="activity">
           <ion-icon name="analytics"></ion-icon>
           <ion-label>Activity</ion-label>
@@ -61,8 +74,16 @@
 
   <!-- Items segment content -->
   <ion-row *ngIf="currentSegment == 'items'">
-      <ion-col *ngFor="let nft of items; let i=index" size-sm="6" size-xs="12" size-md="4" size-lg="3" size-xl="2">
+      <ion-col *ngFor="let nft of items; let i=index" size-xs="12" size-sm="6" size-md="4" size-lg="3" size-xl="2">
         <app-nft-card [nft]="nft"></app-nft-card>
+      </ion-col>
+      <ion-col *ngIf="items && items.length == 0">
+        <ion-row class="centered-content owned-title">
+          <ion-text>You do not own any NFTs</ion-text>
+        </ion-row>
+        <ion-row class="centered-content">
+          <ion-text>You can purchase NFTs in the market or win Chedda NFTs by ranking on the leaderboard</ion-text>
+        </ion-row>
       </ion-col>
   </ion-row>
 

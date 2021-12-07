@@ -7,14 +7,21 @@
 }
 
 ion-img {
-    border: 3px black solid;
+    border: 2px black solid;
 }
 
-.address-col {
+.address-row {
     vertical-align: middle;
     text-align: center;
     font-size: 20px;
     font-weight: 500;
+}
+
+.balance-row {
+    vertical-align: middle;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500; 
 }
 
 .circle {
@@ -26,7 +33,13 @@ ion-img {
     background-color: #d03323;
     width: 60px;
     height: 60px;
-    border: 3px solid black !important;
+    border: 2px solid black !important;
     font-size: 24px;
     font-weight: 500;
   }
+
+  .xp-balance {
+    font-weight: 700;
+    color: var(--ion-color-primary);
+    margin-left: 4px;
+}

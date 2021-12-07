@@ -1,6 +1,6 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertController, PopoverController } from '@ionic/angular';
+import { AlertController, IonButton, PopoverController } from '@ionic/angular';
 import { CheddaDappStoreService } from 'src/app/contracts/chedda-dapp-store.service';
 import { ProfilePopoverComponent } from 'src/app/profile/components/profile-popover/profile-popover.component';
 import { Profile } from 'src/app/profile/profile.interface';
@@ -14,6 +14,7 @@ import { GlobalAlertService } from 'src/app/shared/global-alert.service';
 })
 export class TopNavComponent implements OnInit {
 
+  @ViewChild('networkBtn', { read: ElementRef }) networkBtn: ElementRef
   prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
   connected = false
   isDark = false;
@@ -22,6 +23,7 @@ export class TopNavComponent implements OnInit {
   popover: any
   profile: Profile
   title = 'Dapps'
+  dropdown = false
 
 
   menuItems = [
@@ -45,7 +47,6 @@ export class TopNavComponent implements OnInit {
   constructor(
     private provider: WalletProviderService, 
     private router: Router,
-    private route: ActivatedRoute,
     private zone: NgZone,
     private alertService: GlobalAlertService,
     private popoverController: PopoverController,
@@ -130,6 +131,20 @@ export class TopNavComponent implements OnInit {
     this.title = title
   }
 
+  hideDropdown(event) {
+    const xTouch = event.clientX;
+    const yTouch = event.clientY;
+
+    const rect = this.networkBtn.nativeElement.getBoundingClientRect();
+    const topBoundary = rect.top+2;
+    const leftBoundary = rect.left+2;
+    const rightBoundary = rect.right-2;
+
+    if (xTouch < leftBoundary || xTouch > rightBoundary || yTouch < topBoundary) {
+      this.dropdown = false;
+    }
+  }
+  
   async presentProfilePopover(event: any) {
     this.popover = await this.popoverController.create({
       component: ProfilePopoverComponent,

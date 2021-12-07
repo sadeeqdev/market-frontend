@@ -61,11 +61,6 @@
     color: var(--ion-color-primary);
 }
 
-.centered-content {
-    display: flex;
-    justify-content: center;
-}
-
 .mobile-chedda-logo {
     width: 34px;
     height: 34px;
@@ -96,4 +91,18 @@ ion-img.circle::part(image) {
     font-weight: 700;
     color: var(--ion-color-primary);
     margin-left: 4px;
+}
+
+
+.dropdown {
+    width: 136px;
+    height: 150px;
+    background: #fff;
+    position: absolute;
+    top: 40px;
+    left: 87px;
+    z-index: 100;
+    ion-item:hover {
+        --ion-item-color: var(--ion-color-primary);
+    }
 }
