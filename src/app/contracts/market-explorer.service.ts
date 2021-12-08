@@ -15,7 +15,7 @@ export class MarketExplorerService {
 
   private explorerContract: any
 
-  constructor(provider: DefaultProviderService, wallet: WalletProviderService, private http: HttpClient) {
+  constructor(provider: DefaultProviderService, private wallet: WalletProviderService, private http: HttpClient) {
     this.explorerContract = new ethers.Contract(
       wallet.currentConfig.contracts.CheddaMarketExplorer,
       MarketExplorer.abi,
@@ -32,6 +32,7 @@ export class MarketExplorerService {
 
   async loadPopularItems(): Promise<any[]> {
     let items = await this.explorerContract.popularItems()
+    console.log('popular items are: ', items)
     items = await this.populateMultipleNftsMetadata(items)
     return items
   }
@@ -48,7 +49,6 @@ export class MarketExplorerService {
     collections = await this.populateMultipleCollectionsMetadata(collections)
     console.log('collections are ', collections)
     return collections
-  
   }
 
   async loadCollection(address: string): Promise<NFTCollection> {
@@ -56,6 +56,22 @@ export class MarketExplorerService {
     return await this.populateCollectionMetadata(collection)
   }
 
+  async likeItem(address: string, tokenID: string) {
+    return await this.explorerContract.connect(this.wallet.signer).likeItem(address, tokenID)
+  }
+
+  async dislikeItem(address: string, tokenID: string) {
+    return await this.explorerContract.connect(this.wallet.signer).dislikeItem(address, tokenID)
+  }
+
+  async getItemLikes(address: string, tokenID: string) {
+    return await this.explorerContract.itemLikes(address, tokenID)
+  }
+
+  async getItemDislikes(address: string, tokenID: string) {
+    return await this.explorerContract.itemDislikes(address, tokenID)
+  }
+  
   // specific collection
   async loadCollectionDetails(address: string) {
   }

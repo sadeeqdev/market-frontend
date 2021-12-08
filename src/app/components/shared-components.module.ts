@@ -16,6 +16,7 @@ import { DappCardComponent } from '../dapps/components/dapp-card/dapp-card.compo
 import { FeaturedDappComponent } from '../dapps/components/featured-dapp/featured-dapp.component';
 import { NetworksPopoverComponent } from '../main-navigation/networks-popover/networks-popover.component';
 import { EthFormattingPipe } from '../pipes/eth-formatting.pipe';
+import { NftLikeModalComponent } from './nft-like-modal/nft-like-modal.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { EthFormattingPipe } from '../pipes/eth-formatting.pipe';
     FeaturedDappComponent,
     IonicRatingComponent,
     DappRatingModalComponent,
+    NftLikeModalComponent,
     FeaturedCollectionCardComponent,
     CollectionCardComponent, 
     ProfilePopoverComponent,
@@ -46,6 +48,8 @@ import { EthFormattingPipe } from '../pipes/eth-formatting.pipe';
     RankRewardPipe,
     NftCardComponent,
     DappCardComponent,
+    DappRatingModalComponent,
+    NftLikeModalComponent,
     FeaturedDappComponent,
     IonicRatingComponent,
     FeaturedCollectionCardComponent,

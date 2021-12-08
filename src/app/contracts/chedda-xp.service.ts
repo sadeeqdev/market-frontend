@@ -59,7 +59,7 @@ export class CheddaXpService implements OnInit, OnDestroy {
       }
     })
     this.xpContract.on('Minted', async (address, amount) => {
-      if (address.toLowerCase() == this.account.toLowerCase()) {
+      if (address && this.account && address.toLowerCase() == this.account.toLowerCase()) {
         const newBalance = await this.balanceOf(address)
         this.notifyBalance(newBalance)
       }

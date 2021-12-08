@@ -12,8 +12,8 @@ export const environment = {
             CheddaXP: '0xF66CfDf074D2FFD6A4037be3A669Ed04380Aef2B',
             CheddaDappStore: '0x90b97E83e22AFa2e6A96b3549A0E495D5Bae61aF',
             CheddaDappExplorer: '0xDDa0648FA8c9cD593416EC37089C2a2E6060B45c',
-            CheddaMarket: '0xc6B407503dE64956Ad3cF5Ab112cA4f56AA13517',
-            CheddaMarketExplorer: '0x6A47346e722937B60Df7a1149168c0E76DD6520f',
+            CheddaMarket: '0x837a41023CF81234f89F956C94D676918b4791c1',
+            CheddaMarketExplorer: '0xd9abC93F81394Bd161a1b24B03518e0a570bDEAd',
             CheddaRewards: '0x20d7B364E8Ed1F4260b5B90C41c2deC3C1F6D367',
           },
           networkParams: {

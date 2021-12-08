@@ -9,9 +9,17 @@
       <!-- details -->
       <ion-col size-lg="5" size-xl="5" size-md="5" offset-lg="1" offset-xl="1" offset-md="1" size-sm="12" size-xs="12">
         <ion-row>
-          <ion-text>
-            <h1>{{nft.metadata.name}}</h1>
-          </ion-text>
+          <ion-col size-xs="12" size-sm="12" size-md="8" size-lg="8" size-xl="10">
+            <ion-text>
+              <h1>{{nft.metadata.name}}</h1>
+            </ion-text>
+          </ion-col>
+          <ion-col class="likes-column">
+            <ion-chip outline="true" color="primary" class="likes-chip" (click)="showLikeModal()">
+              <ion-icon name="heart" color="primary" class="likes-icon"></ion-icon>
+              <ion-text class="likes-count">{{numberOfLikes}}</ion-text>
+            </ion-chip>
+          </ion-col>
         </ion-row>
         <ion-row>
           <ion-col>

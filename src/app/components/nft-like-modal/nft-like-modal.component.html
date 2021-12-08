@@ -1,0 +1,53 @@
+
+<ion-grid class="centered-text grid">
+  <ion-row *ngIf="nft">
+    <ion-col class="avatar-wrapper">
+      <ion-avatar class="ion-center app-avatar">
+        <ion-img [src]="nft.metadata.image"></ion-img>
+      </ion-avatar>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-row>
+        <ion-col class="ion-center">
+
+        <ion-text>
+          <h2>Show your love for {{nft.metadata.name}}</h2>
+        </ion-text>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="ion-center">
+          <ion-text>Earn Chedda XP by liking / disliking. Chedda XP gives you access to win NFTs in the marketplace.</ion-text>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="ion-center">
+          <ion-text><span class="reward">Reward:</span>&nbsp;<span class="reward-amount">+10 Chedda XP</span></ion-text>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+
+  </ion-row>
+  <ion-row>
+    <ion-col class="dislike-column">
+      <ion-icon name="heart-dislike-outline" class="heart-icon" [ngClass]="userChoice == 'dislike' ? 'red-heart': ''" (click)="onDislike()"></ion-icon>    
+    </ion-col>
+    <ion-col class="like-column">
+      <ion-icon name="heart-outline" class="heart-icon" [ngClass]="userChoice == 'like' ? 'red-heart': ''" (click)="onLike()"></ion-icon>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-button (click)="cancelClicked()" color="light">Cancel</ion-button>
+      <ion-button (click)="submitClicked()" [disabled]="!userChoice">Submit</ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-text class="subtext">Note: Likes are recorded on the blockchain which costs gas. You earn Chedda XP in the process.</ion-text><br/>
+      <ion-text class="subtext">You can only like or dislike an item once.</ion-text>
+    </ion-col>
+  </ion-row>
+</ion-grid>

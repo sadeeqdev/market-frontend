@@ -1,7 +1,7 @@
 export function accountInitials(address: string) {
     let first = ''
     let last = ''
-    if (address.toLowerCase().startsWith('0x') && address.length > 2) {
+    if (address && address.toLowerCase().startsWith('0x') && address.length > 2) {
       first = address[2]
     }
     if (address.length > 0) {

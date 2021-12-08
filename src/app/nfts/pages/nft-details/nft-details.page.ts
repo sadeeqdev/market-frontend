@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { IonButton, NavController } from '@ionic/angular';
+import { IonButton, ModalController, NavController } from '@ionic/angular';
 import { ethers } from 'ethers';
 import { Subscription } from 'rxjs';
+import { NftLikeModalComponent } from 'src/app/components/nft-like-modal/nft-like-modal.component';
 import { CheddaMarketService } from 'src/app/contracts/chedda-market.service';
 import { MarketExplorerService } from 'src/app/contracts/market-explorer.service';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
@@ -19,11 +20,13 @@ export class NftDetailsPage implements OnInit, OnDestroy {
   @ViewChild('buyButton') buyButton: IonButton
   priceString = ''
   nft: NFT
+  numberOfLikes
   private routeSubscription?: Subscription
 
   constructor(
     private route: ActivatedRoute,
     private navController: NavController,
+    private modalController: ModalController,
     private wallet: WalletProviderService,
     private alert: GlobalAlertService,
     private market: CheddaMarketService,
@@ -44,6 +47,7 @@ export class NftDetailsPage implements OnInit, OnDestroy {
         }
         this.nft = await this.explorer.loadMarketItem(address, tokenID)
         this.setPrice()
+        this.loadLikes()
       } catch (error) {
         //todo: show error before navigating back
         console.error('caught error: ', error)
@@ -59,6 +63,10 @@ export class NftDetailsPage implements OnInit, OnDestroy {
   setPrice() {
     let price = ethers.utils.formatEther(this.nft.price)
     this.priceString = `BUY for ${price} MATIC`
+  }
+
+  async loadLikes() {
+    this.numberOfLikes = await this.explorer.getItemLikes(this.nft.nftContract, this.nft.tokenID)
   }
 
   async buyButtonClicked() {
@@ -77,5 +85,30 @@ export class NftDetailsPage implements OnInit, OnDestroy {
       // show error
       this.alert.showConnectAlert()
     }
+  }
+
+  async showLikeModal() {
+    const modal = await this.modalController.create({
+      component: NftLikeModalComponent,
+      cssClass: 'stack-modal',
+      showBackdrop: true,
+      componentProps: {
+        nft: this.nft
+      }
+    })
+    modal.onDidDismiss().then(async (result) => {
+      if (result && result.data) {
+        await this.showConfirmAlert(result.data)
+        setTimeout(() => {
+          this.loadLikes()
+        }, 3000)
+      }
+    })
+    await modal.present()
+  }
+
+
+  private async showConfirmAlert(amount) {
+    await this.alert.showRewardConfirmationAlert(amount)
   }
 }

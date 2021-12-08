@@ -30,13 +30,6 @@
     </ion-col>
 
   </ion-row>
-  <!-- <ion-row>
-    <ion-col>
-      <ion-item>
-        <ion-textarea placeholder="Add a review to let other users know what you think. Earn even more Chedda XP by leaving a review."></ion-textarea>
-      </ion-item>
-    </ion-col>
-  </ion-row> -->
   <ion-row>
     <ion-col>
       <ionic-rating-component #ratingComponent  activeColor="#ebdb34" defaultColor="#c4c4c4"
@@ -47,12 +40,13 @@
   <ion-row>
     <ion-col>
       <ion-button (click)="cancelClicked()" color="light">Cancel</ion-button>
-      <ion-button (click)="rateDapp()">Submit</ion-button>
+      <ion-button (click)="rateDapp()" [disabled]="!ratingComponent.rating">Submit</ion-button>
     </ion-col>
   </ion-row>
   <ion-row>
     <ion-col>
-      <ion-text class="subtext">Note: Ratings are recorded on the blockchain which costs gas. You earn Chedda XP in the process.</ion-text>
+      <ion-text class="subtext">Note: Ratings are recorded on the blockchain which costs gas. You earn Chedda XP in the process.</ion-text><br/>
+      <ion-text class="subtext">You can only rate an item once.</ion-text>
     </ion-col>
   </ion-row>
 </ion-grid>

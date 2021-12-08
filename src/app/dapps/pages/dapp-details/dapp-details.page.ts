@@ -10,6 +10,7 @@ import { DappRatingModalComponent } from 'src/app/components/dapp-rating-modal/d
 import { DappExplorerService } from 'src/app/contracts/dapp-explorer.service';
 import { IonicRatingComponent } from 'src/app/external/ionic-rating/ionic-rating.component';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
+import SampleReviews from 'src/assets/json/sample-reviews.json'
 import { Subscription } from 'rxjs';
 SwiperCore.use([Navigation, Pagination, Scrollbar]);
 
@@ -85,9 +86,10 @@ export class DappDetailsPage implements OnInit, OnDestroy, AfterContentChecked {
   }
 
   async loadReviews() {
-    this.routeSubscription = this.http.get('https://devdactic.fra1.digitaloceanspaces.com/twitter-ui/tweets.json').subscribe((data: any) => {
-      this.reviews = data.tweets;
-    });
+    // this.routeSubscription = this.http.get('https://devdactic.fra1.digitaloceanspaces.com/twitter-ui/tweets.json').subscribe((data: any) => {
+    //   this.reviews = data.tweets;
+    // });
+    this.reviews = SampleReviews.tweets
   }
 
   onSwiper($event) {

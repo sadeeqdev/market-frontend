@@ -51,7 +51,7 @@ export class CheddaRewardsService implements OnInit, OnDestroy {
       this.account = newAccount
     })
     this.rewardsContract.on('RewardsIssued', (actionType, amount, address) => {
-      if (address.toLowerCase() == this.account.toLowerCase()) {
+      if (address && this.account && address.toLowerCase() == this.account.toLowerCase()) {
         this.alert.showRewardReceivedToast(amount)
       }
     })

@@ -31,3 +31,25 @@ ion-img.nft-image::part(image) {
         font-size: 13px;
     }
 }
+
+.likes-chip {
+    border-width: 2px;
+}
+
+.likes-column {
+    display: flex;
+    vertical-align: middle;
+    justify-content: end;
+    align-items: center;
+}
+
+.likes-icon {
+    font-size: 22px;
+    font-weight: 500;
+    margin-right: 4px;
+}
+
+.likes-count {
+    font-weight: 700;
+    color: var(--ion-color-dark);
+}

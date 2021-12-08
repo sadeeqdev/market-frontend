@@ -54,3 +54,19 @@
 .dapp-details-row {
     margin: 20px 0 20px 0;
 }
+
+.rating-column {
+  display: flex;
+  flex-direction: column;
+  @media(min-width: 768px) {
+    align-items: end;
+  }
+  @media(max-width: 768) {
+    align-items: center;
+  }
+}
+
+.earn-row {
+  display: flex;
+  justify-content: center;
+}

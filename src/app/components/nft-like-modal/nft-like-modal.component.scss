@@ -14,6 +14,24 @@
     border-radius: 50%;
 }
 
+.dislike-column {
+    display: flex;
+    justify-content: end;
+}
+
+.like-column {
+    display: flex;
+    justify-content: start;
+}
+.heart-icon {
+    cursor: pointer;
+    font-size: 80px;
+    font-weight: 600;
+}
+
+.red-heart {
+    color: var(--ion-color-danger);
+}
 .reward {
     font-size: 2em;
     font-weight: 500;
