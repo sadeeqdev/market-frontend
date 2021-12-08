@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonButton, NavController } from '@ionic/angular';
-import { BigNumber, ethers } from 'ethers';
+import { ethers } from 'ethers';
 import { Subscription } from 'rxjs';
 import { CheddaMarketService } from 'src/app/contracts/chedda-market.service';
 import { MarketExplorerService } from 'src/app/contracts/market-explorer.service';
@@ -46,6 +46,7 @@ export class NftDetailsPage implements OnInit, OnDestroy {
         this.setPrice()
       } catch (error) {
         //todo: show error before navigating back
+        console.error('caught error: ', error)
         this.navController.navigateBack('/nfts')
       }
     })

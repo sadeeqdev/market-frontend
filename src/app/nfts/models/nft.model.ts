@@ -1,4 +1,5 @@
 import { BigNumber } from "ethers";
+import { LikesDislikes } from "./collection.model";
 
 export interface NFT {
     name: string
@@ -9,6 +10,11 @@ export interface NFT {
     currency: string
     tokenURI: string
     created: string
+}
+
+export interface NFTWithLikes {
+    item: NFT
+    likesDislikes: LikesDislikes
 }
 
 export interface NFTAttribute {

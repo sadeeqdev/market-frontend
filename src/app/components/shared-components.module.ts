@@ -15,11 +15,13 @@ import { FeaturedCollectionCardComponent } from '../nfts/components/featured-col
 import { DappCardComponent } from '../dapps/components/dapp-card/dapp-card.component';
 import { FeaturedDappComponent } from '../dapps/components/featured-dapp/featured-dapp.component';
 import { NetworksPopoverComponent } from '../main-navigation/networks-popover/networks-popover.component';
+import { EthFormattingPipe } from '../pipes/eth-formatting.pipe';
 
 @NgModule({
   declarations: [
     DappReviewComponent, 
     TruncateMiddlePipe, 
+    EthFormattingPipe,
     RankRewardPipe,
     NftCardComponent, 
     DappCardComponent,
@@ -40,6 +42,7 @@ import { NetworksPopoverComponent } from '../main-navigation/networks-popover/ne
   exports: [
     DappReviewComponent, 
     TruncateMiddlePipe, 
+    EthFormattingPipe,
     RankRewardPipe,
     NftCardComponent,
     DappCardComponent,

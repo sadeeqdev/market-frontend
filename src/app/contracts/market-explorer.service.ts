@@ -3,9 +3,10 @@ import { Injectable } from '@angular/core';
 import { ethers } from 'ethers';
 import { DefaultProviderService } from '../providers/default-provider.service';
 import MarketExplorer from '../../artifacts/CheddaMarketExplorer.json'
-import { CollectionMetadata, NFTCollection } from '../nfts/models/collection.model';
-import { NFT, NFTMetadata } from '../nfts/models/nft.model';
+import { CollectionMetadata, NFTCollection, NFTCollectionWithLikes } from '../nfts/models/collection.model';
+import { NFTMetadata, NFTWithLikes } from '../nfts/models/nft.model';
 import { WalletProviderService } from '../providers/wallet-provider.service';
+import moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,6 @@ import { WalletProviderService } from '../providers/wallet-provider.service';
 export class MarketExplorerService {
 
   private explorerContract: any
-  private nftContract: any
-  private nfts: NFT[]
 
   constructor(provider: DefaultProviderService, wallet: WalletProviderService, private http: HttpClient) {
     this.explorerContract = new ethers.Contract(
@@ -31,6 +30,19 @@ export class MarketExplorerService {
     return items
   }
 
+  async loadPopularItems(): Promise<any[]> {
+    let items = await this.explorerContract.popularItems()
+    items = await this.populateMultipleNftsMetadata(items)
+    return items
+  }
+
+  async loadNewItems(): Promise<any[]> {
+    const last30days = moment().subtract(30, 'days').unix()
+    let items = await this.explorerContract.newlyListedItems(last30days)
+    items = await this.populateMultipleNftsMetadata(items)
+    return items
+  }
+
   async getCollections() {
     let collections = await this.explorerContract.getCollections()
     collections = await this.populateMultipleCollectionsMetadata(collections)
@@ -40,7 +52,7 @@ export class MarketExplorerService {
   }
 
   async loadCollection(address: string): Promise<NFTCollection> {
-    const collection = await this.explorerContract.collections(address);
+    const collection = await this.explorerContract.getCollectionDetails(address);
     return await this.populateCollectionMetadata(collection)
   }
 
@@ -53,7 +65,7 @@ export class MarketExplorerService {
   }
 
   async loadMarketItem(address: string, tokenID: string) {
-    let marketItem = await this.explorerContract.getMarketItem(address, tokenID);
+    let marketItem = await this.explorerContract.getMarketItemWithLikes(address, tokenID);
     marketItem = await this.populateNFTMetadata(marketItem)
     return marketItem
   }
@@ -68,32 +80,36 @@ export class MarketExplorerService {
     return this.populateMultipleNftsMetadata(items)
   }
 
-  private async populateCollectionMetadata(collection: NFTCollection) {
-    let metadata = await this.http.get<CollectionMetadata>(collection.metadataURI).toPromise()
+  private async populateCollectionMetadata(collection: NFTCollectionWithLikes) {
+    let metadata = await this.http.get<CollectionMetadata>(collection.collection.metadataURI).toPromise()
       let c = {
-        ...collection,
+        ...collection.collection,
+        likes: collection.likesDislikes.likes,
+        dislikes: collection.likesDislikes.dislikes,
         metadata
       }
       return c 
   }
 
-  private async populateMultipleCollectionsMetadata(collections: NFTCollection[]) {
+  private async populateMultipleCollectionsMetadata(collections: NFTCollectionWithLikes[]) {
     let populated = await Promise.all(collections.map(async c => 
       this.populateCollectionMetadata(c)
     ))
     return populated
   }
 
-  private async populateNFTMetadata(nft: NFT) {
-    let metadata = await this.http.get<NFTMetadata>(nft.tokenURI).toPromise()
+  private async populateNFTMetadata(nft: NFTWithLikes) {
+    let metadata = await this.http.get<NFTMetadata>(nft.item.tokenURI).toPromise()
     let n = {
-      ...nft,
+      ...nft.item,
+      likes: nft.likesDislikes.likes,
+      dislikes: nft.likesDislikes.dislikes,
       metadata
     }
     return n
   }
 
-  private async populateMultipleNftsMetadata(nfts: NFT[]) {
+  private async populateMultipleNftsMetadata(nfts: NFTWithLikes[]) {
     let populated = await Promise.all(nfts.map(async n => 
         await this.populateNFTMetadata(n)
     ))

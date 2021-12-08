@@ -33,14 +33,14 @@
       </ion-text>
     </ion-col>
     <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="2" size-xl="2" offset-lg="4" offset-xl="4">
-      <ion-select value="all" interface="popover" class="dropdown-select">
+      <ion-select value="all" interface="popover" class="dropdown-select" #filterSelect (ionChange)="onFilterChanged($event)">
         <ion-select-option value="all">All Items</ion-select-option>
         <ion-select-option value="popular">Popular</ion-select-option>
         <ion-select-option value="new">New</ion-select-option>
       </ion-select>
     </ion-col>
     <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="2" size-xl="2">
-      <ion-select value="recent" interface="popover" class="dropdown-select">
+      <ion-select value="recent" interface="popover" class="dropdown-select" #sortSelect (ionChange)="onSortChanged($event)">
         <ion-select-option value="recent">Recently listed</ion-select-option>
         <ion-select-option value="lowest">Lowest Price</ion-select-option>
         <ion-select-option value="highest">Highest Price</ion-select-option>

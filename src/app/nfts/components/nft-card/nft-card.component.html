@@ -22,7 +22,7 @@
     <ion-row>
       <ion-col>
           <ion-text class="nft-price">
-            <span>{{formattedPrice(nft.price)}}</span>&nbsp;<span>MATIC</span>
+            <span>{{nft.price | formatEth }}</span>&nbsp;<span>MATIC</span>
           </ion-text>
       </ion-col>
     </ion-row>

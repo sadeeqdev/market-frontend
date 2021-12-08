@@ -40,10 +40,9 @@ export class NftCollectionPage implements OnInit, OnDestroy {
         const address = paramMap.get('contractAddress')
         this.collection = await this.loadCollection(address)
         this.items = await this.fetchItems(address)
-        console.log('collection is ', this.collection)
-        console.log('items are: ', this.items)
       } catch (error) {
         //todo: show error before navigating back
+        console.error('caught error: ', error)
         this.navController.navigateBack('/nfts')
       }
     })

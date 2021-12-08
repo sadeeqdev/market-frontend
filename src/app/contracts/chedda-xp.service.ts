@@ -42,7 +42,6 @@ export class CheddaXpService implements OnInit, OnDestroy {
 
   async checkBalance(address) {
     let balance = await this.balanceOf(address)
-    console.log('*** XP Service got balance: ', balance)
     if (balance) {
       this.notifyBalance(balance)
     }
@@ -54,14 +53,12 @@ export class CheddaXpService implements OnInit, OnDestroy {
 
   registerEventListener() {
     this.accountSubscription = this.wallet.accountSubject.subscribe(account => {
-      console.log('**** Chedda XP, account = ', account)
       this.account = account
       if (account) {
         this.checkBalance(account)
       }
     })
     this.xpContract.on('Minted', async (address, amount) => {
-      console.log('***** Chedda XP onMinted event fired on address', address, amount)
       if (address.toLowerCase() == this.account.toLowerCase()) {
         const newBalance = await this.balanceOf(address)
         this.notifyBalance(newBalance)

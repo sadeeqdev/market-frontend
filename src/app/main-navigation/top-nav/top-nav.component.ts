@@ -104,7 +104,6 @@ export class TopNavComponent implements OnInit, OnDestroy {
   }
 
   async setupListeners() {
-    console.log('**** Setting up listeners in top nav')
     this.accountSubscription = this.provider.accountSubject.subscribe(account => {
       this.zone.run(async () => {
         this.account = account
