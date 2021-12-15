@@ -1,6 +1,6 @@
 
 .prize-card {
-    height: 360px;
+    height: 440px;
     background-color: var(--chedda-color-clean);
     color: var(--ion-color-dark);
     ion-thumbnail {
@@ -8,6 +8,10 @@
         padding: 5px;
         height: 40px;
         width: 40px;
+    }
+    .top-prize-image::part(image) {
+        height: 240px;
+        max-height: 240px;
     }
 }
 .rewards-content {
@@ -19,11 +23,12 @@
 }
 
 .top-prize-image {
-    max-height: 280px;
+    max-height: 300px;
     height: auto;
     overflow: hidden;
     display: flex;
     justify-content: center;
+    margin-top: 20px;
     margin-bottom: 20px;
 }
 
@@ -31,6 +36,11 @@
     font-size: 20px;
     font-weight: 700;
     margin-top: 20px;
+}
+
+ion-label {
+    margin-top: 6px;
+    margin-bottom: 5px;
 }
 
 .top-prize-subtext {
@@ -81,4 +91,8 @@ ion-img::part(image) {
 {
    display: flex !important;
    align-items: center !important;
+}
+
+.prize-list {
+    overflow: scroll;
 }

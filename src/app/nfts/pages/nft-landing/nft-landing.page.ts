@@ -34,7 +34,6 @@ export class NftLandingPage implements OnInit {
   async loadAllNFTs() {
     let nfts = await this.explorerService.getMarketItems()
     this.nfts = this.shuffle(nfts)
-    console.log('nfts are: ', this.nfts)
   }
 
   async loadPopularNFTs() {

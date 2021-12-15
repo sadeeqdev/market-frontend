@@ -33,8 +33,13 @@ export class RewardsPage implements OnInit, OnDestroy {
 
   prizes = [
     {
-      name: 'Chedda Underboss NFT',
+      name: 'Chedda Boss NFT',
       quantity: 1,
+      image: '/assets/images/badges/svg/Boss.svg'
+    },
+    {
+      name: 'Chedda Underboss NFT',
+      quantity: 3,
       image: '/assets/images/badges/svg/Underboss.svg'
     },
     {
@@ -51,6 +56,11 @@ export class RewardsPage implements OnInit, OnDestroy {
       name: 'Chedda Soldier NFT',
       quantity: 20,
       image: '/assets/images/badges/svg/Soldier.svg'
+    },
+    {
+      name: 'Chedda Associate NFT',
+      quantity: 100,
+      image: '/assets/images/badges/svg/Associate.svg'
     },
   ]
 

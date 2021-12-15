@@ -26,6 +26,7 @@ export class MarketExplorerService {
   // All Items
   async getMarketItems(): Promise<any[]> {
     let items = await this.explorerContract.getAllItems()
+    console.log('allItems are: ', items)
     items = await this.populateMultipleNftsMetadata(items)
     return items
   }
@@ -116,7 +117,12 @@ export class MarketExplorerService {
   }
 
   private async populateNFTMetadata(nft: NFTWithLikes) {
-    let metadata = await this.http.get<NFTMetadata>(nft.item.tokenURI).toPromise()
+    let metadata: any = {}
+    try {
+      metadata = await this.http.get<NFTMetadata>(nft.item.tokenURI).toPromise()
+    } catch (error) {
+      console.error('caught error processing nft: ', nft)
+    }
     let n = {
       ...nft.item,
       likes: nft.likesDislikes.likes,

@@ -8,6 +8,7 @@ import { ProfilePopoverComponent } from 'src/app/profile/components/profile-popo
 import { Profile } from 'src/app/profile/profile.interface';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
+import { LocalStorageService } from 'src/app/shared/local-storage.service';
 import { NetworksPopoverComponent } from '../networks-popover/networks-popover.component';
 
 @Component({
@@ -57,11 +58,15 @@ export class TopNavComponent implements OnInit, OnDestroy {
     private cheddaXP: CheddaXpService,
     private alertService: GlobalAlertService,
     private popoverController: PopoverController,
+    private storageService: LocalStorageService,
     private rewardService: CheddaRewardsService, // not used locally needed to listen to global rewards events
     ) {}
 
 
   async ngOnInit() {
+    const colorTheme = this.storageService.colorTheme
+    this.toggleDarkTheme(colorTheme == 'dark')
+
     this.setupListeners()
     this.checkRoute()
     let isConnected = await this.provider.connect()
@@ -83,13 +88,15 @@ export class TopNavComponent implements OnInit, OnDestroy {
 
   // Add or remove the "dark" class based on if the media query matches
   toggleDarkTheme(shouldAdd: boolean) {
-    this.isDark = !this.isDark;
+    this.isDark = shouldAdd
     if (shouldAdd) {
       document.body.setAttribute('color-theme', 'dark');
       document.body.setAttribute('prefers-color-scheme', 'dark');
+      this.storageService.colorTheme = 'dark'
     } else {
       document.body.setAttribute('color-theme', 'light');
       document.body.setAttribute('prefers-color-scheme', 'light');
+      this.storageService.colorTheme = 'light'
     }
     document.body.classList.toggle('dark', shouldAdd)
   }
@@ -121,7 +128,6 @@ export class TopNavComponent implements OnInit, OnDestroy {
       }
     })
     this.balanceSubscription = this.cheddaXP.balanceSubject.subscribe(balance => {
-      console.log('In top nav balance subscription registered: balance = ', balance)
       if (balance) {
         this.balance = balance
       }
