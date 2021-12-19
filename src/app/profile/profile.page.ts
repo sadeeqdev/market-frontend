@@ -100,7 +100,9 @@ export class ProfilePage implements OnInit, OnDestroy {
         this.profile.address = this.address
         await this.loadProfile(this.address)
         this.initials = this.createInitials('')
-        this.items = await this.fetchItems(this.address)
+        let items = await this.fetchItems(this.address)
+        this.items = items
+        console.log('itemsOwned are ', items)
       } catch (err) {
         console.error('navigation error: ', err)
         this.navController.navigateBack('/')

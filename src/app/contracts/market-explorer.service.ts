@@ -26,8 +26,8 @@ export class MarketExplorerService {
   // All Items
   async getMarketItems(): Promise<any[]> {
     let items = await this.explorerContract.getAllItems()
-    console.log('allItems are: ', items)
     items = await this.populateMultipleNftsMetadata(items)
+    console.log('allItems are: ', items)
     return items
   }
 
@@ -94,8 +94,7 @@ export class MarketExplorerService {
 
   async loadItemsOwned(address: string) {
     const items = await this.explorerContract.getItemsOwned(address)
-    return items;
-    // return this.populateMultipleNftsMetadata(items)
+    return this.populateMultipleNftsMetadata(items)
   }
 
   private async populateCollectionMetadata(collection: NFTCollectionWithLikes) {

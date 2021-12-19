@@ -80,7 +80,7 @@
   <!-- Items segment content -->
   <ion-row *ngIf="currentSegment == 'items'">
       <ion-col *ngFor="let nft of items; let i=index" size-xs="12" size-sm="6" size-md="4" size-lg="3" size-xl="2">
-        <app-nft-card [nft]="nft"></app-nft-card>
+        <my-nft-card [nft]="nft"></my-nft-card>
       </ion-col>
       <ion-col *ngIf="items && items.length == 0">
         <ion-row class="centered-content owned-title">

@@ -34,6 +34,23 @@ export class CheddaMarketService {
     return result
   }
 
+  async listItem(nft: NFT, price: string): Promise<any> {
+    let priceInEth = ethers.utils.parseEther(price)
+    let result = await this.marketContract.connect(this.wallet.signer).listItemForSale(nft.nftContract, nft.tokenID, priceInEth)
+    return result
+  }
+
+  async cancelListing(nft): Promise<any> {
+    let result = await this.marketContract.connect(this.wallet.signer).cancelListing(nft.nftContract, nft.tokenID)
+    return result
+  }
+
+  async listingForItem(contractAddress: string, tokenID: string) {
+    let result = await this.marketContract.listings(contractAddress, tokenID)
+    console.log('got listing = ', result)
+    return result
+  }
+
   getMarketItemsInCollection(address: string) {
 
   }

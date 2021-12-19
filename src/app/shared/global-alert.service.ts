@@ -118,6 +118,7 @@ export class GlobalAlertService {
 
     await alert.present(); 
   }
+  
   async showRewardReceivedToast(amount) {
     const toast =  await this.toastController.create({
       header: 'Chedda XP earned',
