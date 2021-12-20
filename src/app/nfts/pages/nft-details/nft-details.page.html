@@ -88,13 +88,13 @@
         </ion-row>
         <ion-row *ngIf="!iAmOwner">
           <ion-col>
-            <ion-button *ngIf="listingExists" #buyButton (click)="onBuyButtonClicked()">{{priceString}}</ion-button>
+            <ion-button *ngIf="listingExists" #buyButton [disabled]="txPending" (click)="onBuyButtonClicked()">{{priceString}}</ion-button>
           </ion-col>
         </ion-row>
         <ion-row *ngIf="iAmOwner">
           <ion-col>
-            <ion-button *ngIf="listingExists" (click)="onCancelListingClicked()">Cancel Listing</ion-button>
-            <ion-button *ngIf="!listingExists" (click)="presentAlertPrompt()">List For Sale</ion-button>
+            <ion-button *ngIf="listingExists" [disabled]="txPending" (click)="onCancelListingClicked()">Cancel Listing</ion-button>
+            <ion-button *ngIf="!listingExists" [disabled]="txPending" (click)="presentAlertPrompt()">List For Sale</ion-button>
           </ion-col>
         </ion-row>
       </ion-col>

@@ -9,7 +9,6 @@ import { MarketExplorerService } from 'src/app/contracts/market-explorer.service
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { ZeroAddress } from 'src/app/shared/constants';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
-import { ListNftModalComponent } from '../../components/list-nft-modal/list-nft-modal.component';
 import { NFT } from '../../models/nft.model';
 
 @Component({
@@ -23,11 +22,17 @@ export class NftDetailsPage implements OnInit, OnDestroy {
   priceString = ''
   nft: NFT
   numberOfLikes
-  iAmOwner = false
   account
+
   listingExists = false
+  iAmOwner = false
+  txPending = false
+
   private routeSubscription?: Subscription
   private accountSubscription?: Subscription
+  private itemListingSubscription?: Subscription
+  private listingCancelledSubscription?: Subscription
+  private itemSoldSubscription?: Subscription
 
   constructor(
     private route: ActivatedRoute,
@@ -47,64 +52,41 @@ export class NftDetailsPage implements OnInit, OnDestroy {
   ngOnDestroy(): void {
       this.routeSubscription?.unsubscribe()
       this.accountSubscription?.unsubscribe()
+      this.itemListingSubscription?.unsubscribe()
+      this.itemSoldSubscription?.unsubscribe()
+      this.listingCancelledSubscription?.unsubscribe()
   }
-
 
   async onBuyButtonClicked() {
     if (this.wallet.isConnected()) {
       const hasSufficient = await this.wallet.balanceIsOver(this.nft.price)
       if (hasSufficient) {
+        this.txPending = true
         let result = await this.market.buyItem(this.nft)
         if (result && result.hash) {
           this.alert.showPurchaseConfirmationAlert(result.hash)
-          setTimeout(() => {
-            this.checkListing()
-            this.checkOwner()
-          }, 3000)
+        } else {
+          this.txPending = false
         }
-        console.log('buy result is: ', result)
       } else {
         this.alert.showInsufficientBalanceAlert()
       }
     } else {
       // show error
+      this.txPending = false
       this.alert.showConnectAlert()
     }
   }
 
   async onCancelListingClicked() {
     if (this.wallet.isConnected) {
+      this.txPending = true
       let result = await this.market.cancelListing(this.nft)
       if (result) {
         this.showToast('Listing Cancelled', 'Your listing has been cancled')
-        setTimeout(() => {
-          this.checkListing()
-        }, 3000)
+      } else {
+        this.txPending = false
       }
-    } else {
-      this.alert.showConnectAlert()
-    }
-  }
-
-  async onListForSaleClicked() {
-    if (this.wallet.isConnected) {
-      const modal = await this.modalController.create({
-        component: ListNftModalComponent,
-        cssClass: 'stack-modal',
-        showBackdrop: true,
-        componentProps: {
-          nft: this.nft
-        }
-      })
-      modal.onDidDismiss().then(async (result) => {
-        if (result && result.data) {
-          await this.showConfirmAlert(result.data)
-          setTimeout(() => {
-            this.loadLikes()
-          }, 3000)
-        }
-      })
-      await modal.present() 
     } else {
       this.alert.showConnectAlert()
     }
@@ -143,7 +125,6 @@ export class NftDetailsPage implements OnInit, OnDestroy {
             } else {
               this.showInvalidPriceToast()
             }
-            console.log('Confirm Ok price = ', data.price);
           }
         }
       ]
@@ -203,8 +184,29 @@ export class NftDetailsPage implements OnInit, OnDestroy {
     // set initially to remove race condition in checking NFT ownership
     this.accountSubscription = this.wallet.accountSubject.subscribe(async account => {
         this.account = account
-        console.log('setting account to ', account)
         this.checkOwner()
+    })
+
+    this.itemListingSubscription = this.market.itemListedSubject.subscribe(async result => {
+      if (result.contractAddress == this.nft.nftContract) {
+        this.txPending = false
+        this.checkListing()
+      }
+    })
+
+    this.itemSoldSubscription = this.market.itemSoldSubject.subscribe(async result => {
+      if (result.contractAddress == this.nft.nftContract) {
+        this.txPending = false
+        this.checkListing()
+        this.checkOwner()
+      }
+    })
+
+    this.listingCancelledSubscription = this.market.listingCancelledSubject.subscribe(async result => {
+      if (result.contractAddress == this.nft.nftContract) {
+        this.txPending = false
+        this.checkListing()
+      }
     })
   }
 
@@ -225,7 +227,6 @@ export class NftDetailsPage implements OnInit, OnDestroy {
   private async checkOwner() {
     if (this.account) {
       let items = await this.explorer.loadItemsOwned(this.account)
-      console.log('items owned are: ', items)
       for (const item of items) {
         if (item.nftContract == this.nft.nftContract && item.tokenID.toString() == this.nft.tokenID) {
           this.iAmOwner = true
@@ -237,16 +238,13 @@ export class NftDetailsPage implements OnInit, OnDestroy {
 
   private async listItem(price: string) {
     try {
+      this.txPending = true
       let result = await this.market.listItem(this.nft, price)
-      console.log('item listed witih result: ', result)
       if (result) {
         this.showListingConfirmationToast()
-        setTimeout(() => {
-          this.checkListing()
-        }, 3000)
       }
     } catch (error) {
-      
+      this.txPending = false
     }
 
   }

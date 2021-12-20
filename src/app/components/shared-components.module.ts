@@ -18,7 +18,6 @@ import { NetworksPopoverComponent } from '../main-navigation/networks-popover/ne
 import { EthFormattingPipe } from '../pipes/eth-formatting.pipe';
 import { NftLikeModalComponent } from './nft-like-modal/nft-like-modal.component';
 import { MyNftCardComponent } from '../nfts/components/my-nft-card/my-nft-card.component';
-import { ListNftModalComponent } from '../nfts/components/list-nft-modal/list-nft-modal.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +32,6 @@ import { ListNftModalComponent } from '../nfts/components/list-nft-modal/list-nf
     DappRatingModalComponent,
     MyNftCardComponent,
     NftLikeModalComponent,
-    ListNftModalComponent,
     FeaturedCollectionCardComponent,
     CollectionCardComponent, 
     ProfilePopoverComponent,
@@ -54,7 +52,6 @@ import { ListNftModalComponent } from '../nfts/components/list-nft-modal/list-nf
     DappCardComponent,
     DappRatingModalComponent,
     NftLikeModalComponent,
-    ListNftModalComponent,
     MyNftCardComponent,
     FeaturedDappComponent,
     IonicRatingComponent,

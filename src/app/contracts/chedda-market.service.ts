@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ethers } from 'ethers';
+import { Subject } from 'rxjs';
 import ChedaMarket from '../../artifacts/CheddaMarket.json'
 import { NFT } from '../nfts/models/nft.model';
 import { DefaultProviderService } from '../providers/default-provider.service';
@@ -14,6 +15,9 @@ export class CheddaMarketService {
   marketContract: any
   nftContract: any
   nfts: NFT[]
+  itemListedSubject: Subject<any> = new Subject()
+  listingCancelledSubject: Subject<any> = new Subject()
+  itemSoldSubject: Subject<any> = new Subject()
 
   constructor(provider: DefaultProviderService, private wallet: WalletProviderService, private http: HttpClient) {
     this.marketContract = new ethers.Contract(
@@ -21,6 +25,7 @@ export class CheddaMarketService {
       ChedaMarket.abi,
       provider.provider
       );
+      this.registerEventListener()
   }
 
   async getMarketItems(): Promise<NFT[]> {
@@ -53,5 +58,30 @@ export class CheddaMarketService {
 
   getMarketItemsInCollection(address: string) {
 
+  }
+
+  private registerEventListener() {
+    this.marketContract.on('ItemListed', async (contractAddress, tokenId, price) => {
+      this.itemListedSubject.next({
+        contractAddress,
+        tokenId,
+        price
+      })
+    })
+
+    this.marketContract.on('ItemSold', async (contractAddress, tokenId, price) => {
+      this.itemSoldSubject.next({
+        contractAddress,
+        tokenId,
+        price
+      })
+    })
+
+    this.marketContract.on('ListingCancelled', async (contractAddress, tokenId) => {
+      this.listingCancelledSubject.next({
+        contractAddress,
+        tokenId,
+      })
+    })
   }
 }
