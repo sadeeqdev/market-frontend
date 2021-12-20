@@ -1,11 +1,6 @@
 import { Injectable } from '@angular/core'
 import { Subject } from 'rxjs'
 
-
-enum StorageKeys {
-  colorTheme = 'colorTheme'
-}
-
 @Injectable({
   providedIn: 'root'
 })
@@ -18,15 +13,6 @@ export class LocalStorageService {
     this.localStorage   = window.localStorage
   }
 
-  
-  public get colorTheme() : string {
-    return this.get(StorageKeys.colorTheme)
-  }
-
-  public set colorTheme(v : string) {
-    this.set(StorageKeys.colorTheme, v)
-  }
-  
   get(key: string): any {
     if (this.isLocalStorageSupported) {
       return JSON.parse(this.localStorage.getItem(key))

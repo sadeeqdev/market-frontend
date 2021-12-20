@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { WelcomeModalComponent } from '../components/welcome-modal/welcome-modal.component';
+import { PreferencesService } from '../shared/preferences.service';
 
 @Component({
   selector: 'app-main-navigation',
@@ -9,20 +10,25 @@ import { WelcomeModalComponent } from '../components/welcome-modal/welcome-modal
 })
 export class MainNavigationPage implements OnInit, AfterViewInit {
 
-  constructor(private modalController: ModalController) { }
+  constructor(
+    private modalController: ModalController, 
+    private preferences: PreferencesService) { }
 
   ngOnInit() {
   }
 
   async ngAfterViewInit() {
-    await this.presentWelcomeModal()
+    if (!this.preferences.welcomeModalShown) {
+      await this.presentWelcomeModal()
+    }
   }
 
   async presentWelcomeModal() {
     const modal = await this.modalController.create({
       component: WelcomeModalComponent,
     })
-    // return await modal.present()
+    this.preferences.welcomeModalShown = true
+    return await modal.present()
   }
 
 }

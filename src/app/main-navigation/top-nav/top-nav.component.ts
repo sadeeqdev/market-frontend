@@ -8,7 +8,7 @@ import { ProfilePopoverComponent } from 'src/app/profile/components/profile-popo
 import { Profile } from 'src/app/profile/profile.interface';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
-import { LocalStorageService } from 'src/app/shared/local-storage.service';
+import { PreferencesService } from 'src/app/shared/preferences.service';
 import { NetworksPopoverComponent } from '../networks-popover/networks-popover.component';
 
 @Component({
@@ -58,13 +58,13 @@ export class TopNavComponent implements OnInit, OnDestroy {
     private cheddaXP: CheddaXpService,
     private alertService: GlobalAlertService,
     private popoverController: PopoverController,
-    private storageService: LocalStorageService,
+    private preferences: PreferencesService,
     private rewardService: CheddaRewardsService, // not used locally needed to listen to global rewards events
     ) {}
 
 
   async ngOnInit() {
-    const colorTheme = this.storageService.colorTheme
+    const colorTheme = this.preferences.colorTheme
     this.toggleDarkTheme(colorTheme == 'dark')
 
     this.setupListeners()
@@ -92,11 +92,11 @@ export class TopNavComponent implements OnInit, OnDestroy {
     if (shouldAdd) {
       document.body.setAttribute('color-theme', 'dark');
       document.body.setAttribute('prefers-color-scheme', 'dark');
-      this.storageService.colorTheme = 'dark'
+      this.preferences.colorTheme = 'dark'
     } else {
       document.body.setAttribute('color-theme', 'light');
       document.body.setAttribute('prefers-color-scheme', 'light');
-      this.storageService.colorTheme = 'light'
+      this.preferences.colorTheme = 'light'
     }
     document.body.classList.toggle('dark', shouldAdd)
   }
