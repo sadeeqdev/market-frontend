@@ -86,10 +86,9 @@ export class DappDetailsPage implements OnInit, OnDestroy, AfterContentChecked {
   }
 
   async loadReviews() {
-    // this.routeSubscription = this.http.get('https://devdactic.fra1.digitaloceanspaces.com/twitter-ui/tweets.json').subscribe((data: any) => {
-    //   this.reviews = data.tweets;
-    // });
-    this.reviews = SampleReviews.tweets
+    let reviews = await this.dappExplorer.loadReviews(this.dapp)
+    await this.dappExplorer.loadReviewsWithVotes(this.dapp)
+    this.reviews = reviews // SampleReviews.tweets
   }
 
   onSwiper($event) {
@@ -111,7 +110,7 @@ export class DappDetailsPage implements OnInit, OnDestroy, AfterContentChecked {
   async showRatingsModal() {
     const modal = await this.modalController.create({
       component: DappRatingModalComponent,
-      cssClass: 'stack-modal',
+      cssClass: 'dapp-review-modal',
       showBackdrop: true,
       componentProps: {
         dapp: this.dapp
@@ -132,7 +131,6 @@ export class DappDetailsPage implements OnInit, OnDestroy, AfterContentChecked {
   async loadRating() {
       const rating = await this.dappExplorer.averageRating(this.dapp)
       this.ratingComponent.rating = rating / 100
-      console.log('got rating: ', rating)
   }
 
   private async showConfirmAlert(amount) {

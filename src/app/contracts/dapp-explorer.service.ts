@@ -1,10 +1,22 @@
 import { Injectable } from '@angular/core';
-import { ethers } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import { DefaultProviderService } from '../providers/default-provider.service';
 import { WalletProviderService } from '../providers/wallet-provider.service';
 import DappExplorer from '../../artifacts/CheddaDappExplorer.json'
 import { Dapp } from '../dapps/models/dapp.model';
+import { HttpClient } from '@angular/common/http';
 
+export interface Review {
+  author: string
+  contentURI: string
+  credibility: BigNumber
+  spamCount: BigNumber
+  timestamp: BigNumber
+  review: string
+}
+export interface ReviewContent {
+  review: string
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -15,7 +27,8 @@ export class DappExplorerService {
 
   constructor(
     private provider: DefaultProviderService,
-    private wallet: WalletProviderService
+    private wallet: WalletProviderService,
+    private http: HttpClient
   ) { 
     this.dappExplorerContract = new ethers.Contract(
       wallet.currentConfig.contracts.CheddaDappExplorer,
@@ -30,8 +43,9 @@ export class DappExplorerService {
     await this.dappExplorerContract.connect(this.wallet.signer).addRating(dapp.contractAddress, weightedRating)
   }
 
-  async addReview(review: string, rating: number, dapp: Dapp) {
-    await this.dappExplorerContract.addReview()
+  async addReview(reviewUri: string, rating: number, dapp: Dapp) {
+    const weightedRating = rating * this.RatingMultiplier
+    await this.dappExplorerContract.connect(this.wallet.signer).addReview(dapp.contractAddress, reviewUri, weightedRating)
   }
 
   async averageRating(dapp: Dapp) {
@@ -42,5 +56,40 @@ export class DappExplorerService {
   async numberOfRatings(dapp: Dapp) {
     let numberOfRatings = await this.dappExplorerContract.numberOfRatings(dapp.contractAddress)
     return numberOfRatings
+  }
+
+  async loadReviews(dapp: Dapp) {
+    let reviews = await this.dappExplorerContract.getReviews(dapp.contractAddress)
+    reviews = await this.loadReviewsContent(reviews)
+    console.log('reviews = ', reviews)
+    return reviews
+  }
+
+  async loadReviewsWithVotes(dapp: Dapp) {
+    let reviews = await this.dappExplorerContract.getReviewsWithVotes(dapp.contractAddress)
+    reviews = reviews.map(r => {
+      return {
+        ...r.review,
+        vote: r.myVote
+      }
+    })
+    reviews = await this.loadReviewsContent(reviews)
+    console.log('reviewsWithVotes = ', reviews)
+    return reviews
+  }
+
+  private async loadReviewsContent(reviews: Review[]) {
+    let populated = Promise.all(reviews.map(async r => {
+      return await this.downloadContent(r)
+    }))
+    return populated
+  }
+
+  private async downloadContent(review: Review): Promise<Review> {
+    let content = await this.http.get<ReviewContent>(review.contentURI).toPromise()
+    return {
+      ...review,
+      review: content.review
+    }
   }
 }

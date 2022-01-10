@@ -83,9 +83,16 @@
                   </ion-row>
                   <ion-row class="dapp-details-row">
                       <h4>
-                          Reviews (Sample)
+                          Reviews
                       </h4>
-                      <dapp-review *ngFor="let review of reviews" [review]="review"></dapp-review>
+                  </ion-row>
+                  <ion-row>
+                      <div *ngIf="reviews.length > 0">
+                        <dapp-review *ngFor="let review of reviews" [review]="review"></dapp-review>
+                      </div>
+                      <div *ngIf="reviews.length == 0">
+                          <p>This dapp has no reviews</p>
+                      </div>
                   </ion-row>
               </ion-card>
 

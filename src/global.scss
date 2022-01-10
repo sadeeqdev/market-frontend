@@ -144,3 +144,14 @@ ion-modal.stack-modal {
   margin: 20px 0;
 }
 
+.dapp-review-modal .modal-wrapper{
+  min-height: 660px;
+  height: auto;
+}
+
+
+ion-card.main-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 30px 45px -15px rgba(255,16,39,0.57);
+  // background-color: transparentize($color: 000000, $amount: 0.5);
+}

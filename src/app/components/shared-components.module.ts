@@ -18,6 +18,7 @@ import { NetworksPopoverComponent } from '../main-navigation/networks-popover/ne
 import { EthFormattingPipe } from '../pipes/eth-formatting.pipe';
 import { NftLikeModalComponent } from './nft-like-modal/nft-like-modal.component';
 import { MyNftCardComponent } from '../nfts/components/my-nft-card/my-nft-card.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { MyNftCardComponent } from '../nfts/components/my-nft-card/my-nft-card.c
   imports: [
     CommonModule,
     IonicModule,
+    FormsModule,
     RouterModule
   ],
   exports: [
