@@ -10,6 +10,7 @@ import { WalletProviderService } from 'src/app/providers/wallet-provider.service
 import { ZeroAddress } from 'src/app/shared/constants';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
 import { NFT } from '../../models/nft.model';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-nft-details',
@@ -27,6 +28,7 @@ export class NftDetailsPage implements OnInit, OnDestroy {
   listingExists = false
   iAmOwner = false
   txPending = false
+  env = environment
 
   private routeSubscription?: Subscription
   private accountSubscription?: Subscription
@@ -93,15 +95,16 @@ export class NftDetailsPage implements OnInit, OnDestroy {
   }
 
   async presentAlertPrompt() {
+    const currency = environment.config.networkParams.nativeCurrency.symbol
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'List Your Item!',
-      message: 'Enter the price in MATIC to list your item for sale',
+      message: `Enter the price in ${currency} to list your item for sale`,
       inputs: [
         {
           name: 'price',
           type: 'number',
-          placeholder: 'Price (MATIC)',
+          placeholder: `Price (${currency})`,
           min: 0,
           max: 10000000000,
           attributes: {
@@ -212,7 +215,8 @@ export class NftDetailsPage implements OnInit, OnDestroy {
 
   private setPrice() {
     let price = ethers.utils.formatEther(this.nft.price)
-    this.priceString = `BUY for ${price} MATIC`
+    let currency = this.env.config.networkParams.nativeCurrency.symbol
+    this.priceString = `BUY for ${price} ${currency}`
   }
 
   private async loadLikes() {

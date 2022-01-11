@@ -4,7 +4,7 @@
       <ion-img [src]="review.img"></ion-img>
     </ion-avatar>
   </ion-col>
-  <ion-col size="10">
+  <ion-col size="9">
     <ion-row class="review-info">
       <ion-col size="12">
         <span class="name">{{ review.author | truncateMiddle:[6, '...', 4] }}</span>
@@ -20,7 +20,7 @@
     </ion-row>
     <ion-row class="ion-justify-content-start">
       <ion-col size="1">
-        <ion-button fill="clear" color="medium" size="small" [color]="review.vote == 1 ? 'primary' : 'medium'" size="small">
+        <ion-button fill="clear" color="medium" size="small" [color]="review.vote == 1 ? 'primary' : 'medium'" size="small" (click)="onThumbUp()">
           <ion-icon name="thumbs-up-outline" slot="start"></ion-icon>
         </ion-button>
       </ion-col>
@@ -30,7 +30,7 @@
         </ion-button>
       </ion-col>
       <ion-col size="1">
-        <ion-button (click)="review.retweet = !review.retweet" fill="clear" [color]="review.vote == -1 ? 'primary' : 'medium'" size="small">
+        <ion-button (click)="onThumbDown()" fill="clear" [color]="review.vote == -1 ? 'primary' : 'medium'" size="small">
           <ion-icon name="thumbs-down-outline" slot="start"></ion-icon>
         </ion-button>
       </ion-col>

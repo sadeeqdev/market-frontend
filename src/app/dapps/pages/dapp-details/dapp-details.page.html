@@ -87,12 +87,15 @@
                       </h4>
                   </ion-row>
                   <ion-row>
-                      <div *ngIf="reviews.length > 0">
-                        <dapp-review *ngFor="let review of reviews" [review]="review"></dapp-review>
-                      </div>
-                      <div *ngIf="reviews.length == 0">
-                          <p>This dapp has no reviews</p>
-                      </div>
+                      <ion-col>
+                        <div *ngIf="reviews.length > 0">
+                            <dapp-review *ngFor="let review of reviews" [review]="review" [dapp]="dapp"></dapp-review>
+                          </div>
+                          <div *ngIf="reviews.length == 0">
+                              <p>This dapp has no reviews</p>
+                          </div>
+                      </ion-col>
+ 
                   </ion-row>
               </ion-card>
 

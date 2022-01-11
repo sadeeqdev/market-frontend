@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
 import { WalletProviderService } from '../providers/wallet-provider.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -94,7 +95,7 @@ export class GlobalAlertService {
         }, {
           text: 'View transaction',
           handler: () => {
-            window.open('https://mumbai.polygonscan.com/tx/' + txHash, '_blank').focus
+            window.open(environment.config.ui.txUrlPrefix + txHash, '_blank').focus
           }
         }
       ]

@@ -7,6 +7,7 @@ import { Dapp } from '../dapps/models/dapp.model';
 import { HttpClient } from '@angular/common/http';
 
 export interface Review {
+  id: BigNumber
   author: string
   contentURI: string
   credibility: BigNumber
@@ -63,6 +64,11 @@ export class DappExplorerService {
     reviews = await this.loadReviewsContent(reviews)
     console.log('reviews = ', reviews)
     return reviews
+  }
+
+  async voteOnReview(dapp: Dapp, reviewId: string, vote: number) {
+    let response = await this.dappExplorerContract.connect(this.wallet.signer).voteOnReview(dapp.contractAddress, reviewId, vote)
+    return response
   }
 
   async loadReviewsWithVotes(dapp: Dapp) {

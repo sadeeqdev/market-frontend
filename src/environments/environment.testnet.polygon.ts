@@ -35,6 +35,11 @@ export const environment = {
               url: '',
             }
           ],
+          ui: {
+            chainName: 'Polygon',
+            logo: '/assets/logos/matic-token-icon.png',
+            txUrlPrefix: 'https://mumbai.polygonscan.com/tx/'
+          }
     },
 }
   

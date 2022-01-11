@@ -9,6 +9,7 @@
     "build": "ng build",
     "dev": "ng build --configuration testnet.hardhat",
     "build.testnet.polygon": "ng build --configuration testnet.polygon",
+    "build.testnet.harmony": "ng build --configuration testnet.harmony",
     "build.testnet.hardhat": "ng build --configuration testnet.hardhat",
     "test": "ng test",
     "lint": "ng lint",

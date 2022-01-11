@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class ThemingService {
   themes = ["dark-theme", "light-theme"]; // <- list all themes in this array
-  theme = new BehaviorSubject("light-theme"); // <- initial theme
+  theme = new BehaviorSubject("dark-theme"); // <- initial theme
   colorSchemeQueryList = window.matchMedia('(prefers-color-scheme: dark)')
 
   constructor(private ref: ApplicationRef) {
@@ -30,7 +30,6 @@ o
 
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
       const newColorScheme = e.matches ? "dark" : "light";
-      console.log('mic check 1 2')
   });
 
     // Watch for changes of the preference

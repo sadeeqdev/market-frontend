@@ -25,7 +25,12 @@ export const environment = {
           },
           rpcUrls: [],
           blockExplorerUrls: []
-        }
+        },
+        ui: {
+          chainName: '',
+          logo: '',
+          txUrlPrefix: '',
+      }
   },
 }
 /*

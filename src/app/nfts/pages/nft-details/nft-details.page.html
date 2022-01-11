@@ -80,9 +80,9 @@
           <ion-col>
           <ion-chip>
             <ion-avatar>
-              <ion-img src="/assets/svg/matic-token-icon.png"></ion-img>
+              <ion-img [src]="env.config.ui.logo"></ion-img>
             </ion-avatar>
-            <ion-label>Polygon</ion-label>
+            <ion-label>{{env.config.ui.chainName}}</ion-label>
           </ion-chip>
           </ion-col>
         </ion-row>

@@ -22,37 +22,37 @@ export class RankRewardPipe implements PipeTransform {
         },
         1: {
             name: 'Associate',
-            url: '/assets/images/badges/svg/Associate.svg',
+            url: '/assets/images/badges/png/Associate.png',
             rank: 1
         },
         2: {
             name: 'Soldier',
-            url: '/assets/images/badges/svg/Soldier.svg',
+            url: '/assets/images/badges/png/Soldier.png',
             rank: 2
         },
         3: {
             name: 'Caporegime',
-            url: '/assets/images/badges/svg/Capo.svg',
+            url: '/assets/images/badges/png/Capo.png',
             rank: 3
         },
         4: {
             name: 'Consigliere',
-            url: 'assets/images/badges/svg/Consigliere.svg',
+            url: 'assets/images/badges/png/Consigliere.png',
             rank: 4
         },
         5: {
             name: 'Underboss',
-            url: 'assets/images/badges/svg/Underboss.svg',
+            url: 'assets/images/badges/png/Underboss.png',
             rank: 5
         },
         6: {
             name: 'Boss',
-            url: '/assets/images/badges/svg/Boss.svg',
+            url: '/assets/images/badges/png/Boss.png',
             rank: 6
         },
         7: {
             name: 'Godfather',
-            url: '/assets/images/badges/svg/Godfather.svg',
+            url: '/assets/images/badges/png/Godfather.png',
             rank: 7
         }
     }

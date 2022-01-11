@@ -7,6 +7,7 @@ import { WalletProviderService } from 'src/app/providers/wallet-provider.service
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
 import { NFTCollection } from '../../models/collection.model';
 import { NFT } from '../../models/nft.model';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-nft-card',
@@ -16,6 +17,7 @@ import { NFT } from '../../models/nft.model';
 export class NftCardComponent implements OnInit {
 
   @Input() nft: any
+  currency
 
   constructor(
     private router: Router, 
@@ -23,7 +25,9 @@ export class NftCardComponent implements OnInit {
     private market: CheddaMarketService,
     private alert: GlobalAlertService,) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.currency = environment.config.networkParams.nativeCurrency.symbol
+  }
 
   onNFTSelected(nft: NFT) {
     console.log('nft selected: ', nft)

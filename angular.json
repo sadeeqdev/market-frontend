@@ -73,6 +73,14 @@
                 }
               ]
             },
+            "testnet.harmony": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.testnet.harmony.ts"
+                }
+              ]
+            },
             "testnet.hardhat": {
               "fileReplacements": [
                 {
@@ -110,6 +118,9 @@
             },
             "testnet.polygon": {
               "browserTarget": "app:build:testnet.polygon"
+            },
+            "testnet.harmony": {
+              "browserTarget": "app:build:testnet.harmony"
             },
             "testnet.hardhat": {
               "browserTarget": "app:build:testnet.hardhat"

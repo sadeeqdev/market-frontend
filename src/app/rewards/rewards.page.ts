@@ -35,32 +35,32 @@ export class RewardsPage implements OnInit, OnDestroy {
     {
       name: 'Chedda Boss NFT',
       quantity: 1,
-      image: '/assets/images/badges/svg/Boss.svg'
+      image: '/assets/images/badges/png/Boss.png'
     },
     {
       name: 'Chedda Underboss NFT',
       quantity: 3,
-      image: '/assets/images/badges/svg/Underboss.svg'
+      image: '/assets/images/badges/png/Underboss.png'
     },
     {
       name: 'Chedda Consigliere NFT',
       quantity: 5,
-      image: '/assets/images/badges/svg/Consigliere.svg'
+      image: '/assets/images/badges/png/Consigliere.png'
     }, 
     {
       name: 'Chedda Capo NFT',
       quantity: 10,
-      image: '/assets/images/badges/svg/Capo.svg'
+      image: '/assets/images/badges/png/Capo.png'
     },
     {
       name: 'Chedda Soldier NFT',
       quantity: 20,
-      image: '/assets/images/badges/svg/Soldier.svg'
+      image: '/assets/images/badges/png/Soldier.png'
     },
     {
       name: 'Chedda Associate NFT',
       quantity: 100,
-      image: '/assets/images/badges/svg/Associate.svg'
+      image: '/assets/images/badges/png/Associate.png'
     },
   ]
 

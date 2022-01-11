@@ -1,5 +1,5 @@
 import { Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import {  Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { CheddaRewardsService } from 'src/app/contracts/chedda-rewards.service';
@@ -10,6 +10,7 @@ import { WalletProviderService } from 'src/app/providers/wallet-provider.service
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
 import { PreferencesService } from 'src/app/shared/preferences.service';
 import { NetworksPopoverComponent } from '../networks-popover/networks-popover.component';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-top-nav',
@@ -25,6 +26,7 @@ export class TopNavComponent implements OnInit, OnDestroy {
   account?: string
   balance = 0
   isCorrectNetwork = true
+  environmentName = environment.environmentName
   popover: any
   profile: Profile
   title = 'Dapps'
@@ -60,7 +62,8 @@ export class TopNavComponent implements OnInit, OnDestroy {
     private popoverController: PopoverController,
     private preferences: PreferencesService,
     private rewardService: CheddaRewardsService, // not used locally needed to listen to global rewards events
-    ) {}
+    ) {
+    }
 
 
   async ngOnInit() {
@@ -70,6 +73,7 @@ export class TopNavComponent implements OnInit, OnDestroy {
     this.setupListeners()
     this.checkRoute()
     let isConnected = await this.provider.connect()
+    // this.networkName = environment.environmentName
     console.log('onInit, isConnected = ', isConnected)
     if (isConnected) {
       try {
@@ -122,7 +126,7 @@ export class TopNavComponent implements OnInit, OnDestroy {
     this.networkSubscription = this.provider.networkSubject.subscribe(chainId => {
       if (chainId) {
         this.zone.run(() => {
-          this.isCorrectNetwork = chainId.toString(16) == this.provider.currentNetwork.chainId
+          this.isCorrectNetwork = chainId.toString(16).toLowerCase() == this.provider.currentNetwork.chainId.toLocaleLowerCase()
           console.log(`Networks: ${chainId} <=> ${this.provider.currentNetwork.chainId}`)
         })
       }
