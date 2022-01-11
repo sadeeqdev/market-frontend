@@ -4,7 +4,7 @@
 
 export const environment = {
     production: false,
-    environmentName: 'Hardhat', 
+    environmentName: 'Hardhat Network', 
     jsonRpcUrl: 'http://localhost:8545',
     config: {
         contracts: {
@@ -29,7 +29,7 @@ export const environment = {
           },
           faucets: [],
           ui: {
-            chainName: 'Harmony',
+            chainName: 'Hardhat',
             logo: '/assets/logos/harmony-logo.png',
             txUrlPrefix: 'http://localhost:8545/tx/'
         }

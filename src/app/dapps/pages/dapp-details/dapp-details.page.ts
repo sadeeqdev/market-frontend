@@ -133,6 +133,10 @@ export class DappDetailsPage implements OnInit, OnDestroy, AfterContentChecked {
       this.ratingComponent.rating = rating / 100
   }
 
+  openUrl(url: string) {
+    window.open(url, '_blank')
+  }
+  
   private async showConfirmAlert(amount) {
     await this.globalAlert.showRewardConfirmationAlert(amount)
   }

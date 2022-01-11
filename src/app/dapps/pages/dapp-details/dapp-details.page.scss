@@ -59,7 +59,7 @@
   display: flex;
   flex-direction: column;
   @media(min-width: 768px) {
-    align-items: end;
+    align-items: start;
   }
   @media(max-width: 768) {
     align-items: center;
@@ -68,5 +68,13 @@
 
 .earn-row {
   display: flex;
-  justify-content: center;
+  justify-content: start;
+}
+
+.round-button {
+  border-radius: 50%;
+}
+
+.dapp-category {
+  font-weight: 500;
 }

@@ -75,7 +75,7 @@
       <ion-toolbar *ngIf="!isCorrectNetwork" color="danger" class="centered-text text-middle">
         <ion-text class="text-middle">
           <ion-icon name="warning"></ion-icon>
-          Connect to the Polygon Mumbai Testnet
+          Connect to the {{ environmentName }}
         </ion-text>
         <ion-button size="small" color="secondary" class="switch-button" (click)="switchNetwork()">Switch Network</ion-button>
       </ion-toolbar>
