@@ -11,7 +11,7 @@ export class NetworksPopoverComponent implements OnInit {
   networkList = [
     {
       name: 'Harmony Testnet',
-      url: 'http://localhost:8100',
+      url: 'https://testnet-harmony.chedda.store',
       icon: '/assets/logos/harmony-logo.png'
     },
     {
