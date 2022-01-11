@@ -14,7 +14,7 @@ export class PreferencesService {
   constructor(private storage: LocalStorageService) { }
 
   public get colorTheme() : string {
-    return this.storage.get(PreferenceKeys.colorTheme)
+    return this.storage.get(PreferenceKeys.colorTheme) || 'dark'
   }
 
   public set colorTheme(v : string) {
