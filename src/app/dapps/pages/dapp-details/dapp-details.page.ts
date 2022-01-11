@@ -10,7 +10,6 @@ import { DappRatingModalComponent } from 'src/app/components/dapp-rating-modal/d
 import { DappExplorerService } from 'src/app/contracts/dapp-explorer.service';
 import { IonicRatingComponent } from 'src/app/external/ionic-rating/ionic-rating.component';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
-import SampleReviews from 'src/assets/json/sample-reviews.json'
 import { Subscription } from 'rxjs';
 SwiperCore.use([Navigation, Pagination, Scrollbar]);
 
@@ -26,6 +25,8 @@ export class DappDetailsPage implements OnInit, OnDestroy, AfterContentChecked {
   @ViewChild('ratingComponent') ratingComponent: IonicRatingComponent
   private routeSubscription?: Subscription
   private reviewSubscription?: Subscription
+  private ratingSubscription?: Subscription
+  private voteSubscription?: Subscription
 
   config: SwiperOptions = {
     slidesPerView: 1,
@@ -64,6 +65,7 @@ export class DappDetailsPage implements OnInit, OnDestroy, AfterContentChecked {
       if (this.dapp) {
         this.loadReviews()
         this.loadRating()
+        this.registerEventHandlers()
       } else {
         this.navigateToDapps()
       }
@@ -73,6 +75,8 @@ export class DappDetailsPage implements OnInit, OnDestroy, AfterContentChecked {
   ngOnDestroy(): void {
       this.routeSubscription?.unsubscribe()
       this.reviewSubscription?.unsubscribe()
+      this.ratingSubscription?.unsubscribe()
+      this.voteSubscription?.unsubscribe()
   }
 
   ngAfterContentChecked() {
@@ -86,9 +90,9 @@ export class DappDetailsPage implements OnInit, OnDestroy, AfterContentChecked {
   }
 
   async loadReviews() {
-    let reviews = await this.dappExplorer.loadReviews(this.dapp)
-    await this.dappExplorer.loadReviewsWithVotes(this.dapp)
-    this.reviews = reviews // SampleReviews.tweets
+    // let reviews = await this.dappExplorer.loadReviews(this.dapp)
+    this.reviews = await this.dappExplorer.loadReviewsWithVotes(this.dapp)
+    // this.reviews = reviews
   }
 
   onSwiper($event) {
@@ -119,9 +123,6 @@ export class DappDetailsPage implements OnInit, OnDestroy, AfterContentChecked {
     modal.onDidDismiss().then(async (result) => {
       if (result && result.data) {
         await this.showConfirmAlert(result.data)
-        setTimeout(() => {
-          this.loadRating()
-        }, 3000)
       }
     })
     await modal.present()
@@ -139,5 +140,25 @@ export class DappDetailsPage implements OnInit, OnDestroy, AfterContentChecked {
   
   private async showConfirmAlert(amount) {
     await this.globalAlert.showRewardConfirmationAlert(amount)
+  }
+
+  private async registerEventHandlers() {
+    this.ratingSubscription = this.dappExplorer.ratingSubject.subscribe(result => {
+      if (result.contractAddress == this.dapp.contractAddress) {
+        this.loadRating()
+      }
+    })
+
+    this.reviewSubscription = this.dappExplorer.reviewSubject.subscribe(result => {
+      if (result.contractAddress = this.dapp.contractAddress) {
+        this.loadReviews()
+      }
+    })
+
+    this.voteSubscription = this.dappExplorer.reviewVoteSubject.subscribe(result => {
+      if (result.contractAddress == this.dapp.contractAddress) {
+        this.loadReviews()
+      }
+    })
   }
 }

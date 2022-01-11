@@ -5,6 +5,7 @@ import { WalletProviderService } from '../providers/wallet-provider.service';
 import DappExplorer from '../../artifacts/CheddaDappExplorer.json'
 import { Dapp } from '../dapps/models/dapp.model';
 import { HttpClient } from '@angular/common/http';
+import { Subject } from 'rxjs';
 
 export interface Review {
   id: BigNumber
@@ -23,6 +24,10 @@ export interface ReviewContent {
 })
 export class DappExplorerService {
 
+  ratingSubject = new Subject<any>()
+  reviewSubject = new Subject<any>()
+  reviewVoteSubject = new Subject<any>()
+
   private dappExplorerContract: any
   private RatingMultiplier = 100
 
@@ -36,6 +41,7 @@ export class DappExplorerService {
       DappExplorer.abi,
       provider.provider
       );
+      this.registerEventListeners()
   }
 
   async addRating(rating: number, dapp: Dapp) {
@@ -97,5 +103,29 @@ export class DappExplorerService {
       ...review,
       review: content.review
     }
+  }
+
+  private registerEventListeners() {
+    this.dappExplorerContract.on('RatingAdded',async (contractAddress, user) => {
+      this.ratingSubject.next({
+        contractAddress,
+        user
+      })
+    })
+    this.dappExplorerContract.on('ReviewAdded',async (contractAddress, user, rating) => {
+      this.reviewSubject.next({
+        contractAddress,
+        user,
+        rating
+      }) 
+    })
+    this.dappExplorerContract.on('ReviewVoted',async (contractAddress, user, reviewId, vote) => {
+      this.reviewVoteSubject.next({
+        contractAddress,
+        user,
+        reviewId,
+        vote
+      })
+    })
   }
 }
