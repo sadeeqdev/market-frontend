@@ -12,6 +12,8 @@ import { PreferencesService } from 'src/app/shared/preferences.service';
 import { NetworksPopoverComponent } from '../networks-popover/networks-popover.component';
 import { environment } from 'src/environments/environment';
 
+declare const blockies
+
 @Component({
   selector: 'app-top-nav',
   templateUrl: './top-nav.component.html',
@@ -26,11 +28,12 @@ export class TopNavComponent implements OnInit, OnDestroy {
   account?: string
   balance = 0
   isCorrectNetwork = true
-  environmentName = environment.environmentName
+  env = environment
   popover: any
   profile: Profile
   title = 'Dapps'
-  dropdown = false
+
+  imageDataUrl = ''
   private accountSubscription?: Subscription
   private networkSubscription?: Subscription
   private balanceSubscription?: Subscription
@@ -73,7 +76,6 @@ export class TopNavComponent implements OnInit, OnDestroy {
     this.setupListeners()
     this.checkRoute()
     let isConnected = await this.provider.connect()
-    // this.networkName = environment.environmentName
     console.log('onInit, isConnected = ', isConnected)
     if (isConnected) {
       try {
@@ -121,6 +123,7 @@ export class TopNavComponent implements OnInit, OnDestroy {
         if (account) {
           this.balance = await this.cheddaXP.balanceOf(account)
         }
+        this.createBlockie()
       })
     })
     this.networkSubscription = this.provider.networkSubject.subscribe(chainId => {
@@ -182,6 +185,15 @@ export class TopNavComponent implements OnInit, OnDestroy {
       translucent: true
     })
     await popover.present()
+  }
+
+  private createBlockie() {
+    var blockie = blockies.create({
+      seed: this.account,
+      size: 4,
+      scale: 1
+    })
+    this.imageDataUrl = blockie.toDataURL()
   }
 
   async navigateToProfile() {

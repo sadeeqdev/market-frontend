@@ -70,26 +70,30 @@
 
                     <!-- Screenshots -->
 
-                    <ion-row class="dapp-details-row">
-                        <h4>
-                            Screenshots
-                        </h4>
-                    </ion-row>
-                    <ion-row>
+                    <ion-row *ngIf="dapp.metadata && dapp.metadata.screenshots && dapp.metadata.screenshots.length > 0">
                         <ion-col>
-                            <swiper [config]="config" (swiper)="onSwiper($event)" (slideChange)="onSlideChange()"
-                                #swiper>
-                                <ng-template swiperSlide *ngFor="let screenshot of dapp.metadata.screenshots">
-                                    <ion-img [src]="screenshot.imageURI"></ion-img>
-                                </ng-template>
-                            </swiper>
-                        </ion-col>
-                    </ion-row>
-                    <ion-row>
-                        <ion-col>
-                            <ion-slides>
-                                <ion-slide></ion-slide>
-                            </ion-slides>
+                            <ion-row class="dapp-details-row">
+                                <h4>
+                                    Screenshots
+                                </h4>
+                            </ion-row>
+                            <ion-row>
+                                <ion-col>
+                                    <swiper [config]="config" (swiper)="onSwiper($event)" (slideChange)="onSlideChange()"
+                                        #swiper>
+                                        <ng-template swiperSlide *ngFor="let screenshot of dapp.metadata.screenshots">
+                                            <ion-img [src]="screenshot.imageURI"></ion-img>
+                                        </ng-template>
+                                    </swiper>
+                                </ion-col>
+                            </ion-row>
+                            <ion-row>
+                                <ion-col>
+                                    <ion-slides>
+                                        <ion-slide></ion-slide>
+                                    </ion-slides>
+                                </ion-col>
+                            </ion-row>
                         </ion-col>
                     </ion-row>
 
@@ -111,9 +115,11 @@
 
                     <!-- Reviews -->
                     <ion-row class="dapp-details-row">
-                        <h4>
-                            Reviews
-                        </h4>
+                        <ion-col>
+                            <h4>
+                                Reviews
+                            </h4>
+                        </ion-col>
                     </ion-row>
                     <ion-row>
                         <ion-col>

@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
 import { CheddaXpService } from 'src/app/contracts/chedda-xp.service';
 import { Profile } from '../../profile.interface';
-import { accountInitials } from '../../profile.utils';
 
 @Component({
   selector: 'app-profile-popover',
@@ -15,7 +14,6 @@ export class ProfilePopoverComponent implements OnInit {
   address: string
   profile: Profile
   balance = 0
-  initials
 
   constructor(
     private router: Router,
@@ -24,7 +22,6 @@ export class ProfilePopoverComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.initials = accountInitials(this.address)
     this.checkBalance()
   }
 

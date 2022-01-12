@@ -57,6 +57,7 @@
             <ngx-datatable-column name="Address" prop="user" [flexGrow]="3">
               <ng-template let-value="value" ngx-datatable-cell-template>
                 <span class="row-content">
+                <ion-img [src]="value | blockie:[10, 2]" class="blockie"></ion-img>
                   {{ value }}
                 </span>
               </ng-template>

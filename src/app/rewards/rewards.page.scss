@@ -80,7 +80,7 @@ ion-img::part(image) {
     display: flex !important;
     align-items: center !important;
     font-weight: 500;
-    font-size: 14px;
+    font-size: 15px;
 }
 
 .ngx-datatable .datatable-body .datatable-body-row > div {
@@ -96,4 +96,8 @@ ion-img::part(image) {
 
 .prize-list {
     overflow: scroll;
+}
+
+.blockie {
+    margin-right: 8px;
 }

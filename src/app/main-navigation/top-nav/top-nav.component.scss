@@ -106,3 +106,18 @@ ion-img.circle::part(image) {
         --ion-item-color: var(--ion-color-primary);
     }
 }
+
+.network-logo {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    margin: 4px 4px 4px;
+}
+
+.title-row {
+    vertical-align: middle;
+}
+
+.connect-icon {
+    margin-right: 8px;
+}

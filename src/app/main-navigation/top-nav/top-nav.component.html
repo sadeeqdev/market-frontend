@@ -2,7 +2,7 @@
   <ion-toolbar *ngIf="!isCorrectNetwork" color="danger" class="centered-text text-middle">
     <ion-text class="text-middle">
       <ion-icon name="warning"></ion-icon>
-      Please switch to the {{ environmentName }}
+      Please switch to the {{ env.environmentName }}
     </ion-text>
     <ion-button size="small" color="secondary" class="switch-button" (click)="switchNetwork()">Switch Network</ion-button>
   </ion-toolbar>
@@ -13,9 +13,13 @@
 
     <ion-buttons slot="start">
       <ion-button>
-        <img src="../../assets/images/chedda-logo-128.png" width="30px" />
+        <img src="/assets/images/chedda-logo-128.png" width="30px" />
       </ion-button>
-      <ion-button fill="solid" #networkBtn (click)="presentNetworksPopver($event)">Select Network</ion-button>
+      <ion-button fill="solid" #networkBtn (click)="presentNetworksPopver($event)">
+          <ion-img [src]="env.config.ui.logo" class="network-logo"></ion-img>
+        {{ env.config.ui.chainName }}
+        <ion-icon name="chevron-down"></ion-icon>
+      </ion-button>
       <ion-button fill="solid" (click)="toggleDarkTheme(!isDark)" class="darkmode-button">
         <ion-icon [name]="isDark ? 'sunny-outline' : 'moon-outline'"></ion-icon>
       </ion-button>
@@ -38,7 +42,7 @@
       <ion-button fill="solid">{{balance}}</ion-button>
       <ion-button fill="solid" class="account-button" (click)="presentProfilePopover($event)">
         <ion-avatar class="wallet-avatar">
-          <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" class="wallet-avatar">
+          <ion-img [src]="imageDataUrl" class="wallet-avatar"></ion-img>
         </ion-avatar>
         {{account | truncateMiddle:[6, '...', 4] }}
       </ion-button>
@@ -75,7 +79,7 @@
       <ion-toolbar *ngIf="!isCorrectNetwork" color="danger" class="centered-text text-middle">
         <ion-text class="text-middle">
           <ion-icon name="warning"></ion-icon>
-          Connect to the {{ environmentName }}
+          Connect to the {{ env.environmentName }}
         </ion-text>
         <ion-button size="small" color="secondary" class="switch-button" (click)="switchNetwork()">Switch Network</ion-button>
       </ion-toolbar>

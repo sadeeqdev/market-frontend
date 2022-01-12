@@ -1,6 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { IonImg } from '@ionic/angular';
 import { DappExplorerService, Review } from 'src/app/contracts/dapp-explorer.service';
 import { Dapp } from 'src/app/dapps/models/dapp.model';
+
+declare const blockies
 
 @Component({
   selector: 'dapp-review',
@@ -14,7 +17,9 @@ export class DappReviewComponent implements OnInit {
 
   constructor(private explorer: DappExplorerService) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
+
 
   async onThumbUp() {
     await this.explorer.voteOnReview(this.dapp, this.review.id.toString(), 1)
@@ -23,5 +28,4 @@ export class DappReviewComponent implements OnInit {
   async onThumbDown() {
     await this.explorer.voteOnReview(this.dapp, this.review.id.toString(), -1)
   }
-
 }

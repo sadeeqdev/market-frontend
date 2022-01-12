@@ -19,12 +19,14 @@ import { EthFormattingPipe } from '../pipes/eth-formatting.pipe';
 import { NftLikeModalComponent } from './nft-like-modal/nft-like-modal.component';
 import { MyNftCardComponent } from '../nfts/components/my-nft-card/my-nft-card.component';
 import { FormsModule } from '@angular/forms';
+import { BlockiePipe } from '../pipes/blockie.pipe';
 
 @NgModule({
   declarations: [
     DappReviewComponent, 
     TruncateMiddlePipe, 
     EthFormattingPipe,
+    BlockiePipe,
     RankRewardPipe,
     NftCardComponent, 
     DappCardComponent,
@@ -49,6 +51,7 @@ import { FormsModule } from '@angular/forms';
     DappReviewComponent, 
     TruncateMiddlePipe, 
     EthFormattingPipe,
+    BlockiePipe,
     RankRewardPipe,
     NftCardComponent,
     DappCardComponent,

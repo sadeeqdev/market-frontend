@@ -1,7 +1,7 @@
 <ion-row class="wrapper">
   <ion-col size="2">
     <ion-avatar>
-      <ion-img [src]="review.img"></ion-img>
+      <ion-img [src]="review.author | blockie:[16, 2]" #avatarImg></ion-img>
     </ion-avatar>
   </ion-col>
   <ion-col size="9">
