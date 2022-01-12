@@ -76,8 +76,12 @@ export class NftLandingPage implements OnInit {
       return
     }
     switch (this.sortSelect.value) {
+
+      case 'random':
+        this.shuffle(this.nfts)
+        break
       case 'recent':
-        this.quickSort(this.nfts, 0, this.nfts.length - 1, 'listingTime', 1)
+        this.quickSort(this.nfts, 0, this.nfts.length - 1, 'listingTime', -1)
         break
       case 'lowest':
         this.quickSort(this.nfts, 0, this.nfts.length - 1, 'price', 1)

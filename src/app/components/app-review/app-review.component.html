@@ -8,14 +8,16 @@
     <ion-row class="review-info">
       <ion-col size="12">
         <span class="name">{{ review.author | truncateMiddle:[6, '...', 4] }}</span>
-        <!-- <span class="handle">@{{ review.handle }}</span> -->
         <span class="handle">- {{ review.timestamp *1000 | date: 'shortDate' }}</span>
       </ion-col>
     </ion-row>
     <ion-row>
+      <ionic-rating-component  #rating activeColor="#ebdb34" defaultColor="#c4c4c4" readonly="true"
+      rating={{review.rating.div(100)}} fontSize="16px"></ionic-rating-component>
+    </ion-row>
+    <ion-row>
       <ion-col size="12">
         <div [innerHtml]="review.review"></div>
-        <!-- <img class="preview-img" [src]="review.attachment" *ngIf="review.attachment"> -->
       </ion-col>
     </ion-row>
     <ion-row class="ion-justify-content-start">
