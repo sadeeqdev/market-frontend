@@ -26,6 +26,10 @@ export const environment = {
           rpcUrls: [],
           blockExplorerUrls: []
         },
+        faucets: [{
+          name: '',
+          url: ''
+        }],
         ui: {
           chainName: '',
           logo: '',

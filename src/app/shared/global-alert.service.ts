@@ -75,7 +75,11 @@ export class GlobalAlertService {
         }, {
           text: 'Get More Tokens',
           handler: () => {
-            window.open('https://faucet.polygon.technology/', '_blank').focus()
+            const faucets = environment.config.faucets
+            if (faucets.length > 0) {
+              const url = faucets[0].url
+              window.open(url, '_blank').focus()
+            }
           }
         }
       ]

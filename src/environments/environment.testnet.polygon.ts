@@ -31,8 +31,8 @@ export const environment = {
           faucets: [
             {
               name: 'Polygon Mumbai Faucet',
-              icon: '',
-              url: '',
+              logo: '',
+              url: 'https://faucet.polygon.technology/',
             }
           ],
           ui: {
