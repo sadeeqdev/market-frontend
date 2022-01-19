@@ -8,6 +8,7 @@ export interface CheddaConfig {
         CheddaMarket: string
         CheddaMarketExplorer: string
         CheddaRewards: string
+        CheddaDropManager: string
     }
     networkParams: NetworkParams
 }

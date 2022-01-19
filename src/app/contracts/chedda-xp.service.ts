@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy, OnInit } from '@angular/core';
-import { ethers } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import { DefaultProviderService } from '../providers/default-provider.service';
 import { WalletProviderService } from '../providers/wallet-provider.service';
 import CheddaXP from '../../artifacts/CheddaXP.json'
@@ -47,7 +47,7 @@ export class CheddaXpService implements OnInit, OnDestroy {
     }
   }
 
-  async balanceOf(address: string) {
+  async balanceOf(address: string): Promise<BigNumber> {
     return await this.xpContract.balanceOf(address)
   }
 

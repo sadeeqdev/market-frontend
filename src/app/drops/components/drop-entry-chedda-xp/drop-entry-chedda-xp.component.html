@@ -1,0 +1,44 @@
+
+<ion-grid class="centered-text normal-text-color" *ngIf="drop">
+  <ion-row class="top-image-row">
+    <ion-col class="avatar-wrapper top-image-col">
+        <ion-img [src]="drop.metadata.image" class="drop-image"></ion-img>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-text><h1>Enter to win</h1></ion-text>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      Up to 10 whitelist spots available in lottery.
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col>
+      <ion-text>
+        You currently have 1 ticket.
+      </ion-text>
+      <ion-text>
+        Get more tickets by winning Chedda NFTs in the dappstore and NFT Market
+      </ion-text>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-button (click)="onSubmitClicked()" [disabled]="!canEnter || pending" expand="block">Enter</ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-button (click)="onCancelClicked()" color="light" expand="block">Cancel</ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-text class="subtext">Note: It is free to enter draws but you network gas fees will be incurred.</ion-text><br/>
+    </ion-col>
+  </ion-row>
+</ion-grid>

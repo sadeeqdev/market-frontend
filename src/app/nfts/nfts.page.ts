@@ -1,10 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { BigNumber, ethers } from 'ethers';
-import { CheddaMarketService } from 'src/app/contracts/chedda-market.service';
-import { MarketExplorerService } from 'src/app/contracts/market-explorer.service';
-import { NFTCollection } from './models/collection.model';
-import { NFT } from './models/nft.model';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-nfts',

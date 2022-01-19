@@ -76,7 +76,6 @@ ion-modal.stack-modal {
   // height: 400px;
 }
 
-
 .centered-text {
   text-align: center;
 }
@@ -154,4 +153,16 @@ ion-card.main-card:hover {
   transform: scale(1.05);
   box-shadow: 0 30px 45px -15px rgba(255,16,39,0.57);
   // background-color: transparentize($color: 000000, $amount: 0.5);
+}
+.subtext {
+  font-size: 0.6em;
+  color: var(--ion-color-medium);
+}
+
+.white-text {
+  color: white;
+}
+
+.normal-text-color {
+  color: var(--ion-color-dark);
 }

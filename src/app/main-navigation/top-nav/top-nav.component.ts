@@ -54,6 +54,11 @@ export class TopNavComponent implements OnInit, OnDestroy {
       path: '/rewards',
       icon: 'trophy',
     },
+    {
+      name: 'Drops',
+      path: '/drops',
+      icon: 'gift'
+    }
   ]
 
   constructor(
@@ -121,7 +126,7 @@ export class TopNavComponent implements OnInit, OnDestroy {
       this.zone.run(async () => {
         this.account = account
         if (account) {
-          this.balance = await this.cheddaXP.balanceOf(account)
+          this.balance = await (await this.cheddaXP.balanceOf(account)).toNumber()
         }
         this.createBlockie()
       })
@@ -152,6 +157,9 @@ export class TopNavComponent implements OnInit, OnDestroy {
         break
       case url.match(/\/rewards/)?.input:
         this.title = 'Rewards'
+        break
+      case url.match('/\/drops/')?.input:
+        this.title = 'Drops'
         break
       case url.match(/\/profile/)?.input:
         this.title = 'Profile'
@@ -190,8 +198,8 @@ export class TopNavComponent implements OnInit, OnDestroy {
   private createBlockie() {
     var blockie = blockies.create({
       seed: this.account,
-      size: 4,
-      scale: 1
+      size: 8,
+      scale: 2
     })
     this.imageDataUrl = blockie.toDataURL()
   }

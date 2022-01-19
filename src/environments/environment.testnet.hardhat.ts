@@ -15,6 +15,7 @@ export const environment = {
             CheddaMarket: '0xE6E340D132b5f46d1e472DebcD681B2aBc16e57E',
             CheddaMarketExplorer: '0x9E545E3C0baAB3E08CdfD552C960A1050f373042',
             CheddaRewards: '0x9A9f2CCfdE556A7E9Ff0848998Aa4a0CFD8863AE',
+            CheddaDropManager: '',
           },
           networkParams: {
             chainId: '0x7a69',

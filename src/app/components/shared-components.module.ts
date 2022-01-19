@@ -20,6 +20,9 @@ import { NftLikeModalComponent } from './nft-like-modal/nft-like-modal.component
 import { MyNftCardComponent } from '../nfts/components/my-nft-card/my-nft-card.component';
 import { FormsModule } from '@angular/forms';
 import { BlockiePipe } from '../pipes/blockie.pipe';
+import { DropCardComponent } from '../drops/components/drop-card/drop-card.component';
+import { DropEntryCheddaXpComponent } from '../drops/components/drop-entry-chedda-xp/drop-entry-chedda-xp.component';
+import { DropEntryTwitterComponent } from '../drops/components/drop-entry-twitter/drop-entry-twitter.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +31,10 @@ import { BlockiePipe } from '../pipes/blockie.pipe';
     EthFormattingPipe,
     BlockiePipe,
     RankRewardPipe,
+    DropEntryCheddaXpComponent,
+    DropEntryTwitterComponent,
     NftCardComponent, 
+    DropCardComponent,
     DappCardComponent,
     FeaturedDappComponent,
     IonicRatingComponent,
@@ -54,6 +60,9 @@ import { BlockiePipe } from '../pipes/blockie.pipe';
     BlockiePipe,
     RankRewardPipe,
     NftCardComponent,
+    DropCardComponent,
+    DropEntryCheddaXpComponent,
+    DropEntryTwitterComponent,
     DappCardComponent,
     DappRatingModalComponent,
     NftLikeModalComponent,

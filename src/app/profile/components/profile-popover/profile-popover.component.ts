@@ -27,7 +27,7 @@ export class ProfilePopoverComponent implements OnInit {
 
   private async checkBalance() {
     if (this.address) {
-      this.balance = await this.cheddaXP.balanceOf(this.address)
+      this.balance = await (await this.cheddaXP.balanceOf(this.address)).toNumber()
     }
   }
 

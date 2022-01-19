@@ -25,6 +25,10 @@ const routes: Routes = [
         loadChildren: () => import('../rewards/rewards.module').then( m => m.RewardsPageModule)
       },
       {
+        path:'drops',
+        loadChildren: () => import('../drops/drops.module').then(m => m.DropsPageModule)
+      },
+      {
         path: 'governance',
         loadChildren: () => import('../governance/governance.module').then( m => m.GovernancePageModule)
       },

@@ -13,6 +13,7 @@ export class GlobalAlertService {
     private alertController: AlertController,
     private toastController: ToastController,
     private provider: WalletProviderService,
+    private router: Router,
     ) { }
 
   async presentNoConnectionAlert() {
@@ -55,6 +56,27 @@ export class GlobalAlertService {
           handler: () => {
             console.log('Confirm Okay')
             this.connect()
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  async showNoCheddaXPAlert() {
+    const alert = await this.alertController.create({
+      header: 'No Chedda XP',
+      message: 'Your Chedda XP balance less than the required amount to proceed.\nEarn Chedda XP in the Dappstore and NFT Market by participating.',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+        }, {
+          text: 'Earn Chedda XP',
+          handler: () => {
+            this.router.navigate(['/', 'dapps'])
           }
         }
       ]

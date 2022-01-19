@@ -1,0 +1,15 @@
+.drop-title {
+  margin-left: 12px;
+  color: var(--ion-color-step-550);
+}
+
+.truncate-text {
+    display: block; /* Fallback for non-webkit */
+    display: -webkit-box;
+    height: 4.5em; /* Fallback for non-webkit, line-height * 2 */
+    line-height: 1.5em;
+    -webkit-line-clamp: 3; /* if you change this, make sure to change the fallback line-height and height */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  } 
