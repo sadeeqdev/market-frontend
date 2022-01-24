@@ -2,19 +2,19 @@
   <ion-grid *ngIf="nft">
     <ion-row>
       <!-- image -->
-      <ion-col size-lg="5" size-xl="4" size-md="6" size-sm="12" size-xs="12">
+      <ion-col size-xs="12" size-sm="10" offset-sm="1" size-md="8" offset-md="2" size-lg="5" offset-lg="1" size-xl="4" offset-xl="2" >
         <ion-img [src]="nft.metadata.image" class="nft-image"></ion-img>
       </ion-col>
 
       <!-- details -->
-      <ion-col size-lg="5" size-xl="5" size-md="5" offset-lg="2" offset-xl="2" offset-md="1" size-sm="12" size-xs="12">
+      <ion-col size-xs="12" size-sm="10" offset-sm="1" size-md="8" offset-md="2" size-lg="5" offset-lg="0" size-xl="4">
         <ion-row>
-          <ion-col size-xs="12" size-sm="12" size-md="8" size-lg="8" size-xl="10">
+          <ion-col size-xs="10" size-sm="10" size-md="9" size-lg="10" size-xl="10">
             <ion-text>
               <h1>{{nft.metadata.name}}</h1>
             </ion-text>
           </ion-col>
-          <ion-col class="likes-column">
+          <ion-col class="likes-column" size-xs="2" size-sm="2" size-md="3" size-lg="2" size-xl="2">
             <ion-chip outline="true" color="primary" class="likes-chip" (click)="onLikeClicked()">
               <ion-icon name="heart" color="primary" class="likes-icon"></ion-icon>
               <ion-text class="likes-count">{{numberOfLikes}}</ion-text>
