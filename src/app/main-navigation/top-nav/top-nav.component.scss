@@ -17,9 +17,8 @@
     } 
 }
 .wallet-avatar {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     border-color: black;
     border-width: 2px;
@@ -38,8 +37,7 @@
 }
 
 .top-nav-active {
-    background-color: var(--ion-color-primary);
-    border-radius: 16px;
+    border-bottom: 2px solid var(--ion-color-primary);
     font-weight: 700;
 }
 
@@ -120,4 +118,11 @@ ion-img.circle::part(image) {
 
 .connect-icon {
     margin-right: 8px;
+}
+
+.profile-button {
+    width: 32px;
+    height: 32px;
+    margin-right: 20px;
+    margin-left: 20px;
 }

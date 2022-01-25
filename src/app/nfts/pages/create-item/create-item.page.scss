@@ -1,0 +1,22 @@
+
+.media-box {
+    min-width: 120px;
+    max-width: 240px;
+    min-height: 120px;
+}
+
+.bordered-input {
+    border-radius: 5px;
+    border: 1px var(--ion-color-light-shade) solid;
+    padding-left: 6px;
+    padding-right: 6px;
+}
+
+.wide-popover {
+    width: 100%;
+}
+::ng-deep .wide-popover
+{
+  --width: 95%;
+  --max-width: 400px;
+}

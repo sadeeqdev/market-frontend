@@ -32,6 +32,7 @@
     </ion-title>
 
     <ion-buttons slot="end" *ngIf="!account">
+
       <ion-button fill="outline" color="light" (click)="onConnectTapped()">
         <ion-icon name="wallet-outline" class="connect-icon"></ion-icon>
         <ion-text>Connect Wallet</ion-text>
@@ -39,13 +40,14 @@
     </ion-buttons>
     
     <ion-buttons slot="end" *ngIf="account">
-      <ion-button fill="solid">{{balance}}</ion-button>
-      <ion-button fill="solid" class="account-button" (click)="presentProfilePopover($event)">
+      <ion-button routerLink="/nfts/create" color="primary" fill="solid">
+        Create
+      </ion-button>
+      <ion-fab-button class="profile-button" (click)="presentProfilePopover($event)">
         <ion-avatar class="wallet-avatar">
           <ion-img [src]="imageDataUrl" class="wallet-avatar"></ion-img>
         </ion-avatar>
-        {{account | truncateMiddle:[6, '...', 4] }}
-      </ion-button>
+      </ion-fab-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>

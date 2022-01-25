@@ -20,8 +20,17 @@ const routes: Routes = [
         path: 'collection/:contractAddress',
         loadChildren: () => import('./pages/nft-collection/nft-collection.module').then( m => m.NftCollectionPageModule)
       },
+      {
+        path: 'create',
+        loadChildren: () => import('./pages/create-item/create-item.module').then( m => m.CreateItemPageModule)
+      },
+      {
+        path: 'create/collection',
+        loadChildren: () => import('./pages/create-collection/create-collection.module').then( m => m.CreateCollectionPageModule)
+      }
     ]
-  }
+  },
+
 ];
 
 @NgModule({
