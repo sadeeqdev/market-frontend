@@ -64,6 +64,22 @@ export class GlobalAlertService {
     await alert.present();
   }
 
+  async shwoErrorAlert(title: string, message: string) {
+    const alert = await this.alertController.create({
+      header: title,
+      message: message,
+      buttons: [
+        {
+          text: 'Okay',
+          role: 'okay',
+          cssClass: 'primary',
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
   async showNoCheddaXPAlert() {
     const alert = await this.alertController.create({
       header: 'No Chedda XP',

@@ -61,6 +61,7 @@ export class DappLandingPage implements OnInit {
       switch (this.filterSelect.value) {
         case 'all':
           this.loadAll()
+          break
         case 'popular':
           this.loadPopular()
           break

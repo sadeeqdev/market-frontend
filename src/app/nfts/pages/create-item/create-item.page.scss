@@ -1,8 +1,11 @@
 
 .media-box {
-    min-width: 120px;
-    max-width: 240px;
-    min-height: 120px;
+    height: 300px;
+    width: 300px;
+    padding: 5px;
+    position: relative;
+    display: flex;
+    align-items: center;
 }
 
 .bordered-input {
@@ -19,4 +22,18 @@
 {
   --width: 95%;
   --max-width: 400px;
+}
+
+.preview-image {
+    width: 290px;
+    height: 290px;
+    max-height: 300px;
+    max-width: 300px;
+}
+
+.top-right {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    color: var(--ion-color-medium);
 }

@@ -41,7 +41,7 @@ export class DappRatingModalComponent implements OnInit {
       if (this.addReview) {
         console.log('adding review')
         if (this.validateReview()) {
-          let response = await this.fileUpload.uploadFile(this.createPayload(), FileUploadType.Review)
+          let response = await this.fileUpload.uploadFileThroughLambda(this.createPayload(), FileUploadType.Review)
           console.log('response is: ', response)
           let responseUrl = response.url
           if (responseUrl) {
@@ -67,6 +67,7 @@ export class DappRatingModalComponent implements OnInit {
     }
     return JSON.stringify(json)
   }
+  
   onToggleValueChange($event) {
     console.log('event = ', $event)
   }
