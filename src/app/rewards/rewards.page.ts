@@ -89,7 +89,6 @@ export class RewardsPage implements OnInit, OnDestroy {
     })
   }
 
-
   themeChanged(theme) {
     console.log('theme changed to ', theme)
   }

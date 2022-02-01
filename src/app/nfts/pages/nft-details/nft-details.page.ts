@@ -11,6 +11,7 @@ import { ZeroAddress } from 'src/app/shared/constants';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
 import { NFT } from '../../models/nft.model';
 import { environment } from 'src/environments/environment';
+import { GetLoanModalComponent } from 'src/app/borrow/components/get-loan-modal/get-loan-modal.component';
 
 @Component({
   selector: 'app-nft-details',
@@ -156,6 +157,25 @@ export class NftDetailsPage implements OnInit, OnDestroy {
     await modal.present()
   }
 
+  async onGetLoanClicked() {
+    const modal = await this.modalController.create({
+      component: GetLoanModalComponent,
+      cssClass: 'stack-modal',
+      showBackdrop: true,
+      componentProps: {
+        nft: this.nft
+      }
+    })
+    modal.onDidDismiss().then(async (result) => {
+      if (result && result.data) {
+        await this.showConfirmAlert(result.data)
+        setTimeout(() => {
+          this.loadLikes()
+        }, 3000)
+      }
+    })
+    await modal.present() 
+  }
   private async subscribeToRouteChanges() {
     this.routeSubscription = this.route.paramMap.subscribe(async paramMap => {
       if (!paramMap.has('contractAddress')) {

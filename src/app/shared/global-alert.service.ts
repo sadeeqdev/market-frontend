@@ -126,6 +126,28 @@ export class GlobalAlertService {
     await alert.present();
   }
 
+  async approveNFT() {
+    const alert = await this.alertController.create({
+      header: 'Approve NFT',
+      message: 'To use this NFT as collateral, you must approve Chedda Protocol to manage this NFT. No tokens are transferred until you accept a loan offer.',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+        }, {
+          text: 'Approve',
+          handler: () => {
+            return true
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+    return alert
+  }
+
   async showPurchaseConfirmationAlert(txHash: string) {
     const alert = await this.alertController.create({
       header: 'Transaction sent',

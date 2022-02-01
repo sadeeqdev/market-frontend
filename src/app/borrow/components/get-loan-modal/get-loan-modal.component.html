@@ -1,0 +1,89 @@
+
+<ion-grid class="grid">
+  <ion-row *ngIf="nft">
+    <ion-col class="avatar-wrapper">
+      <ion-avatar class="ion-center app-avatar">
+        <ion-img [src]="nft.metadata.image"></ion-img>
+      </ion-avatar>
+    </ion-col>
+  </ion-row>
+  <ion-row class="centered-text">
+    <ion-col>
+      <ion-row>
+        <ion-col class="ion-center">
+        <ion-text>
+          <h2>Get a loan</h2>
+        </ion-text>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="ion-center">
+          <ion-text>Put this NFT up as collateral and borrow against its value.</ion-text>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+  <form [formGroup]="loanForm">
+    <!-- amount -->
+    <ion-row>
+      <ion-col>
+        <ion-row>
+          <ion-col class="form-col">
+            <ion-text class="form-field-title">Requested Amount</ion-text>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-input class="bordered-input" placeholder="Requested amount" formControlName="amount" type="number"></ion-input>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+
+    <!-- duration -->
+     <ion-row>
+      <ion-col>
+        <ion-row>
+          <ion-col class="form-col">
+            <ion-text class="form-field-title">Loan Term</ion-text>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-select interface="popover" interfaceOptions="{'cssClass': 'wide-popover'}" class="bordered-input" (ionChange)="onCollectionItemSelected()" formControlName="duration">
+              <ion-select-option *ngFor="let option of termOptions" [value]="option">{{option}} days</ion-select-option>
+            </ion-select>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+
+    <!-- amount -->
+    <ion-row>
+      <ion-col>
+        <ion-row>
+          <ion-col class="form-col">
+            <ion-text class="form-field-title">Repayment Amount</ion-text>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-input class="bordered-input"  formControlName="repayment" readonly="true">{{ loanForm.get('amount').value }} wETH</ion-input>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </form>
+  <ion-row>
+    <ion-col>
+      <ion-button (click)="onApproveClicked()" color="light">Approve</ion-button>
+      <ion-button (click)="onSubmitClicked()" [disabled]="!approved">Submit</ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-text class="subtext">Note: To use an NFT as collateral you must first approve the Chedda Protocol to manage it.</ion-text><br/>
+      <ion-text class="subtext">No tokens are transferred until a loan is accepted.</ion-text>
+    </ion-col>
+  </ion-row>
+</ion-grid>

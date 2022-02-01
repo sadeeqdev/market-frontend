@@ -40,25 +40,36 @@ export class TopNavComponent implements OnInit, OnDestroy {
 
   menuItems = [
     {
-      name: 'Dapps',
-      path: '/dapps',
-      icon: 'apps',
-    },
-    {
-      name: 'NFT Market',
+      name: 'Market',
       path: '/nfts',
       icon: 'bag',
     }, 
     {
-      name: 'Rewards',
-      path: '/rewards',
-      icon: 'trophy',
-    },
-    {
-      name: 'Drops',
+      name: 'Launches',
       path: '/drops',
       icon: 'gift'
-    }
+    },
+    {
+      name: 'Lend',
+      path: '/lend',
+      icon: 'briefcase'
+    },
+    {
+      name: 'Borrow',
+      path: '/borrow',
+      icon: 'cash'
+    },
+    // {
+    //   name: 'Dapps',
+    //   path: '/dapps',
+    //   icon: 'apps',
+    // },
+    // {
+    //   name: 'Rewards',
+    //   path: '/rewards',
+    //   icon: 'trophy',
+    // },
+
   ]
 
   constructor(

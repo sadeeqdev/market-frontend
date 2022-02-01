@@ -25,7 +25,6 @@ export class CreateItemPage implements OnInit, AfterViewInit {
     image: new FormControl('', [Validators.required]),
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     description: new FormControl(),
-    // collection: new FormControl('', [Validators.required])
   })
 
   collections = [

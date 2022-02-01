@@ -96,6 +96,9 @@
             <ion-button *ngIf="listingExists" [disabled]="txPending" (click)="onCancelListingClicked()">Cancel Listing</ion-button>
             <ion-button *ngIf="!listingExists" [disabled]="txPending" (click)="presentAlertPrompt()">List For Sale</ion-button>
           </ion-col>
+          <ion-col>
+            <ion-button *ngIf="!listingExists" color="light" (click)="onGetLoanClicked()">Get a Loan</ion-button>
+          </ion-col>
         </ion-row>
       </ion-col>
     </ion-row>

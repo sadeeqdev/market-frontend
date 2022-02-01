@@ -36,6 +36,14 @@ const routes: Routes = [
         path: 'profile/:address',
         loadChildren: () => import('../profile/profile.module').then( m => m.ProfilePageModule)
       },
+      {
+        path:'lend',
+        loadChildren: () => import('../lend/lend.module').then(m => m.LendPageModule)
+      },
+      {
+        path:'borrow',
+        loadChildren: () => import('../borrow/borrow.module').then(m => m.BorrowPageModule)
+      },
     ]
   }
 ];
