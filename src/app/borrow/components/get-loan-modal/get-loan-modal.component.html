@@ -76,8 +76,8 @@
   </form>
   <ion-row>
     <ion-col>
-      <ion-button (click)="onApproveClicked()" color="light">Approve</ion-button>
-      <ion-button (click)="onSubmitClicked()" [disabled]="!approved">Submit</ion-button>
+      <ion-button (click)="onApproveClicked()" color="light" expand="block" *ngIf="!approved">Approve</ion-button>
+      <ion-button (click)="onSubmitClicked()" [disabled]="!approved || loanForm.invalid" expand="block">Submit</ion-button>
     </ion-col>
   </ion-row>
   <ion-row>

@@ -6,24 +6,36 @@ import { BorrowPage } from './borrow.page';
 const routes: Routes = [
   {
     path: '',
-    component: BorrowPage
+    component: BorrowPage,
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('./pages/borrow-landing/borrow-landing.module').then( m => m.BorrowLandingPageModule)
+      },
+      {
+        path: 'mynfts',
+        loadChildren: () => import('./pages/mynfts/mynfts.module').then( m => m.MynftsPageModule)
+      },
+      {
+        path: 'mycollateral',
+        loadChildren: () => import('./pages/mycollateral/mycollateral.module').then( m => m.MycollateralPageModule)
+      },
+      {
+        path: 'loan/:id',
+        loadChildren: () => import('./pages/borrow-loan/borrow-loan.module').then( m => m.BorrowLoanPageModule)
+      },
+      {
+        path: 'request/:id',
+        loadChildren: () => import('./pages/borrow-request/borrow-request.module').then( m => m.BorrowRequestPageModule)
+      },
+      {
+        path: 'request/:nftContract/:tokenID',
+        loadChildren: () => import('./pages/borrow-request/borrow-request.module').then( m => m.BorrowRequestPageModule)
+      },
+    ]
   },
-  {
-    path: 'mynfts',
-    loadChildren: () => import('./pages/mynfts/mynfts.module').then( m => m.MynftsPageModule)
-  },
-  {
-    path: 'mycollateral',
-    loadChildren: () => import('./pages/mycollateral/mycollateral.module').then( m => m.MycollateralPageModule)
-  },
-  {
-    path: 'loan',
-    loadChildren: () => import('./pages/loan/loan.module').then( m => m.LoanPageModule)
-  },
-  {
-    path: 'request',
-    loadChildren: () => import('./pages/request/request.module').then( m => m.RequestPageModule)
-  }
+
+
 ];
 
 @NgModule({

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { ethers } from 'ethers';
 import CheddaLoanManager from '../../artifacts/CheddaLoanManager.json'
 import ERC721 from '../../artifacts/ERC721.json'
-import { LoanRequest } from '../lend/lend.models';
+import { Loan, LoanRequest } from '../lend/lend.models';
 import { DefaultProviderService } from '../providers/default-provider.service';
 import { WalletProviderService } from '../providers/wallet-provider.service';
 
@@ -64,9 +64,34 @@ export class CheddaLoanManagerService {
 
   forecloseLoan() {}
 
+  async getLoanById(id: string): Promise<Loan> {
+    return await this.loanManagerContract.loans(id)
+  }
+
+  async getLoanRequestById(id: string): Promise<LoanRequest> {
+    return await this.loanManagerContract.requests(id)
+  }
+
+  async getOpenLoanRequest(nftContract: string, tokenID: string): Promise<LoanRequest> {
+    const requestID =  await this.loanManagerContract.openRequests(nftContract, tokenID)
+    console.log('requestID = ', requestID)
+    if (requestID) {
+      return await this.loanManagerContract.requests(requestID)
+    }
+  }
+  
+  getNFTContract(nftAddress: string) {
+    return new ethers.Contract(nftAddress, ERC721.abi, this.wallet.signer)
+  }
+
+  contractAddress() {
+    return this.loanManagerContract.address
+  }
+  
   async approve(nftAddress: string, tokenID: string) {
     const nft = new ethers.Contract(nftAddress, ERC721.abi, this.wallet.signer)
     await nft.approve(this.loanManagerContract.address, tokenID)
+    return nft
   }
 
 

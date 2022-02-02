@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { ethers } from 'ethers';
 import { Subject } from 'rxjs';
 import ChedaMarket from '../../artifacts/CheddaMarket.json'
+import ERC721 from '../../artifacts/ERC721.json'
 import { NFT } from '../nfts/models/nft.model';
 import { DefaultProviderService } from '../providers/default-provider.service';
 import { WalletProviderService } from '../providers/wallet-provider.service';
@@ -58,6 +59,11 @@ export class CheddaMarketService {
 
   getMarketItemsInCollection(address: string) {
 
+  }
+
+  async getNFTMetadata(nftAddress: string, tokenID: string) {
+    const nft = new ethers.Contract(nftAddress, ERC721.abi, this.wallet.signer)
+    return await nft.tokenURI(tokenID)
   }
 
   private registerEventListener() {

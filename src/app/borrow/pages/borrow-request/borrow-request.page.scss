@@ -1,0 +1,71 @@
+
+
+.nft-image {
+    box-shadow: 0px 3px 4px 0px grey;
+    margin: 20px;
+}
+
+ion-img.nft-image::part(image) {
+}
+
+.section-title {
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.text-middle {
+    vertical-align: middle;
+}
+
+.attribute-box {
+    padding: 5px;
+    border-radius: 10px;
+    border: 1px solid var(--ion-color-primary);
+    margin: 16px 12px;
+
+    .property {
+        font-weight: 700;
+        font-size: 13px;
+    }
+    .value {
+        font-size: 13px;
+    }
+}
+
+.likes-chip {
+    border-width: 2px;
+}
+
+.likes-column {
+    display: flex;
+    vertical-align: middle;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.likes-icon {
+    font-size: 22px;
+    font-weight: 500;
+    margin-right: 4px;
+}
+
+.likes-count {
+    font-weight: 700;
+    color: var(--ion-color-dark);
+}
+
+.loan-label {
+    font-weight: 700;
+}
+
+.loan-value {
+    font-weight: 500;
+}
+
+.loan-prop-first-row {
+    margin-top: 20px;
+}
+
+.loan-prop-last-row {
+    margin-bottom: 20px;
+}

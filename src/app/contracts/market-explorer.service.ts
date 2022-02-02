@@ -4,7 +4,7 @@ import { ethers } from 'ethers';
 import { DefaultProviderService } from '../providers/default-provider.service';
 import MarketExplorer from '../../artifacts/CheddaMarketExplorer.json'
 import { CollectionMetadata, NFTCollection, NFTCollectionWithLikes } from '../nfts/models/collection.model';
-import { NFTMetadata, NFTWithLikes } from '../nfts/models/nft.model';
+import { NFT, NFTMetadata, NFTWithLikes } from '../nfts/models/nft.model';
 import { WalletProviderService } from '../providers/wallet-provider.service';
 import moment from 'moment';
 
@@ -95,6 +95,22 @@ export class MarketExplorerService {
   async loadItemsOwned(address: string) {
     const items = await this.explorerContract.getItemsOwned(address)
     return this.populateMultipleNftsMetadata(items)
+  }
+
+  async assembleNFT(address: string, tokenID: string, tokenURI: string): Promise<NFT | any> {
+    let nft = {nftContract: address, tokenID}    
+    let metadata: any = {}
+    try {
+      metadata = await this.http.get<NFTMetadata>(tokenURI).toPromise()
+      return {
+        ...nft,
+        metadata
+      }
+    } catch (error) {
+      console.error('caught error processing nft: ', nft)
+      return null
+    }
+
   }
 
   private async populateCollectionMetadata(collection: NFTCollectionWithLikes) {

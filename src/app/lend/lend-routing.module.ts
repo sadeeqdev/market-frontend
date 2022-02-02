@@ -9,12 +9,16 @@ const routes: Routes = [
     component: LendPage
   },
   {
-    path: 'request',
-    loadChildren: () => import('./pages/request/request.module').then( m => m.RequestPageModule)
+    path: 'lend-loan',
+    loadChildren: () => import('./pages/lend-loan/lend-loan.module').then( m => m.LendLoanPageModule)
   },
   {
-    path: 'loan',
-    loadChildren: () => import('./pages/loan/loan.module').then( m => m.LoanPageModule)
+    path: 'lend-landing',
+    loadChildren: () => import('./pages/lend-landing/lend-landing.module').then( m => m.LendLandingPageModule)
+  },
+  {
+    path: 'lend-request',
+    loadChildren: () => import('./pages/lend-request/lend-request.module').then( m => m.LendRequestPageModule)
   }
 ];
 

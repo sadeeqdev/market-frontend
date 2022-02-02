@@ -6,14 +6,6 @@ const routes: Routes = [
     path: '',
     loadChildren: () => import('./main-navigation/main-navigation.module').then( m => m.MainNavigationPageModule)
   },
-  {
-    path: 'lend',
-    loadChildren: () => import('./lend/lend.module').then( m => m.LendPageModule)
-  },
-  {
-    path: 'borrow',
-    loadChildren: () => import('./borrow/borrow.module').then( m => m.BorrowPageModule)
-  },
 ];
 
 @NgModule({

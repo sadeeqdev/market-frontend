@@ -1,13 +1,28 @@
 import { BigNumber } from "ethers"
 
+export enum LoanState {
+    all = 0,
+    open,
+    repayed,
+    foreclosed
+}
+
+export enum LoanRequestState {
+    all = 0,
+    open,
+    cancelled,
+    accepted
+}
+
 export interface LoanRequest {
     requestID: BigNumber
     nftContract: string
     tokenID: BigNumber
     amount: BigNumber
+    repayment: BigNumber
     loanLength: BigNumber
     borrower: string
-    state: number
+    state: LoanRequestState
 }
 
 export interface Loan {
@@ -20,7 +35,7 @@ export interface Loan {
     expiresAt: BigNumber
     closedAt: BigNumber
     interestRate: BigNumber
-    state: number
+    state: LoanState
     lender: string
     borrower: string
 }

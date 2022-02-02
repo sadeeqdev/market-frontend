@@ -179,14 +179,14 @@ export class NftDetailsPage implements OnInit, OnDestroy {
   private async subscribeToRouteChanges() {
     this.routeSubscription = this.route.paramMap.subscribe(async paramMap => {
       if (!paramMap.has('contractAddress')) {
-        this.navController.navigateBack('/nfts')
+        this.navController.navigateBack('/market')
         return
       }
       try {
         const address = paramMap.get('contractAddress')
         const tokenID = paramMap.get('tokenID')
         if (!(address && tokenID)) {
-          this.navController.navigateBack('/nfts')
+          this.navController.navigateBack('/market')
           return
         }
         this.nft = await this.explorer.loadMarketItem(address, tokenID)
@@ -198,7 +198,7 @@ export class NftDetailsPage implements OnInit, OnDestroy {
       } catch (error) {
         //todo: show error before navigating back
         console.error('caught error: ', error)
-        this.navController.navigateBack('/nfts')
+        this.navController.navigateBack('/market')
       }
     })
   }
@@ -270,7 +270,6 @@ export class NftDetailsPage implements OnInit, OnDestroy {
     } catch (error) {
       this.txPending = false
     }
-
   }
 
   private async showConfirmAlert(amount) {

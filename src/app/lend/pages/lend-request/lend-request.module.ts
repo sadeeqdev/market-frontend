@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { RequestPageRoutingModule } from './request-routing.module';
+import { LendRequestPageRoutingModule } from './lend-request-routing.module';
 
-import { RequestPage } from './request.page';
+import { LendRequestPage } from './lend-request.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    RequestPageRoutingModule
+    LendRequestPageRoutingModule
   ],
-  declarations: [RequestPage]
+  declarations: [LendRequestPage]
 })
-export class RequestPageModule {}
+export class LendRequestPageModule {}

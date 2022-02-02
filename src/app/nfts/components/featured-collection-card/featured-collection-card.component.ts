@@ -18,7 +18,7 @@ export class FeaturedCollectionCardComponent implements OnInit {
 
   onCollectionSelected(collection: NFTCollection) {
     console.log('collection selected: ', collection)
-    this.router.navigate(['./', 'nfts', 'collection', collection.nftContract])
+    this.router.navigate(['./', 'market', 'collection', collection.nftContract])
   }
 
 }

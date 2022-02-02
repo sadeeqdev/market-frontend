@@ -45,13 +45,12 @@ export class NftLandingPage implements OnInit {
   }
 
   onNFTSelected(nft: NFT) {
-    console.log('nft selected: ', nft)
-    this.router.navigate(['/', 'nfts', 'details'])
+    this.router.navigate(['/', 'market', 'details'])
   }
 
   onCollectionSelected(collection: NFTCollection) {
     console.log('collection selected: ', collection)
-    this.router.navigate(['./', 'nfts', 'collection', collection.nftContract])
+    this.router.navigate(['./', 'market', 'collection', collection.nftContract])
   }
 
   onFilterChanged($event) {

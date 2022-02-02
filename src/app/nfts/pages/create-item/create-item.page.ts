@@ -88,7 +88,7 @@ export class CreateItemPage implements OnInit, AfterViewInit {
   }
 
   navigateToCreateCollection() {
-    this.router.navigate(['/nfts', 'create', 'collection'])
+    this.router.navigate(['/market', 'create', 'collection'])
   }
 
 

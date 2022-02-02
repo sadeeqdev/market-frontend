@@ -23,6 +23,7 @@ import { BlockiePipe } from '../pipes/blockie.pipe';
 import { DropCardComponent } from '../drops/components/drop-card/drop-card.component';
 import { DropEntryCheddaXpComponent } from '../drops/components/drop-entry-chedda-xp/drop-entry-chedda-xp.component';
 import { DropEntryTwitterComponent } from '../drops/components/drop-entry-twitter/drop-entry-twitter.component';
+import { LoanRequestStatePipe, LoanStatePipe } from '../pipes/loan-state.pipe';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,8 @@ import { DropEntryTwitterComponent } from '../drops/components/drop-entry-twitte
     EthFormattingPipe,
     BlockiePipe,
     RankRewardPipe,
+    LoanStatePipe,
+    LoanRequestStatePipe,
     DropEntryCheddaXpComponent,
     DropEntryTwitterComponent,
     NftCardComponent, 
@@ -59,6 +62,8 @@ import { DropEntryTwitterComponent } from '../drops/components/drop-entry-twitte
     EthFormattingPipe,
     BlockiePipe,
     RankRewardPipe,
+    LoanStatePipe,
+    LoanRequestStatePipe,
     NftCardComponent,
     DropCardComponent,
     DropEntryCheddaXpComponent,

@@ -41,14 +41,9 @@ export class TopNavComponent implements OnInit, OnDestroy {
   menuItems = [
     {
       name: 'Market',
-      path: '/nfts',
+      path: '/market',
       icon: 'bag',
     }, 
-    {
-      name: 'Launches',
-      path: '/drops',
-      icon: 'gift'
-    },
     {
       name: 'Lend',
       path: '/lend',
@@ -58,6 +53,11 @@ export class TopNavComponent implements OnInit, OnDestroy {
       name: 'Borrow',
       path: '/borrow',
       icon: 'cash'
+    },
+    {
+      name: 'Launches',
+      path: '/launches',
+      icon: 'gift'
     },
     // {
     //   name: 'Dapps',
@@ -163,13 +163,13 @@ export class TopNavComponent implements OnInit, OnDestroy {
       case url.match(/\/dapps/)?.input:
         this.title = 'Dapps'
         break
-      case url.match(/\/nft/)?.input:
+      case url.match(/\/market/)?.input:
         this.title = 'NFT Market'
         break
       case url.match(/\/rewards/)?.input:
         this.title = 'Rewards'
         break
-      case url.match('/\/drops/')?.input:
+      case url.match('/\/launches/')?.input:
         this.title = 'Drops'
         break
       case url.match(/\/profile/)?.input:

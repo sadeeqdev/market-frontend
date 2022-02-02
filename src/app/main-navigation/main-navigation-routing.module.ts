@@ -10,14 +10,14 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'dapps'
+        redirectTo: 'market'
       },
       {
         path: 'dapps',
         loadChildren: () => import('../dapps/dapps.module').then( m => m.DappsPageModule)
       },
       {
-        path: 'nfts',
+        path: 'market',
         loadChildren: () => import('../nfts/nfts.module').then( m => m.NftsModule)
       },
       {
@@ -25,7 +25,7 @@ const routes: Routes = [
         loadChildren: () => import('../rewards/rewards.module').then( m => m.RewardsPageModule)
       },
       {
-        path:'drops',
+        path:'launches',
         loadChildren: () => import('../drops/drops.module').then(m => m.DropsPageModule)
       },
       {

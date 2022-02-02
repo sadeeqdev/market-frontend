@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ModalController } from '@ionic/angular';
+import { LoadingController, ModalController } from '@ionic/angular';
 import { ethers } from 'ethers';
 import { CheddaLoanManagerService } from 'src/app/contracts/chedda-loan-manager.service';
 import { NFT } from 'src/app/nfts/models/nft.model';
+import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
 
 @Component({
@@ -13,13 +14,15 @@ import { GlobalAlertService } from 'src/app/shared/global-alert.service';
 })
 export class GetLoanModalComponent implements OnInit {
   nft: NFT
+  nftContract
+  loader
   SECONDS_IN_DAY = 86400
   loanForm = new FormGroup({
     amount: new FormControl('', [Validators.required]),
-    duration: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    repayment: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    duration: new FormControl('', [Validators.required,]),
+    repayment: new FormControl('', [Validators.required,]),
   })
-  approved = true
+  approved = false
   termOptions = [
     7,
     14,
@@ -29,10 +32,14 @@ export class GetLoanModalComponent implements OnInit {
   constructor(
     private modalController: ModalController,
     private loanManger: CheddaLoanManagerService,
+    private wallet: WalletProviderService,
+    private loadingController: LoadingController,
     private globalAlert: GlobalAlertService,
     ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log('got nft: ', this.nft)
+  }
 
   async onSubmitClicked() {
     let loanAmount = this.loanForm.get('amount').value
@@ -54,8 +61,42 @@ export class GetLoanModalComponent implements OnInit {
   }
 
   async onApproveClicked() {
-    await this.loanManger.approve(this.nft.nftContract, this.nft.tokenID)
-    this.modalController.dismiss()
+    try {
+      this.nftContract = this.loanManger.getNFTContract(this.nft.nftContract)
+      this.showLoading()
+      this.listenForApproval()
+      await this.loanManger.approve(this.nft.nftContract, this.nft.tokenID)
+    } catch (error) {
+      console.error('error approving: ', error)
+      await this.hideLoading()
+    }
+  }
+
+  private async listenForApproval() {
+    this.nftContract.on('Approval', async (userAddress, to, tokenID) => {
+      console.log(`matching address: ${userAddress} == ${this.wallet.currentAccount}`)
+      console.log(`matching to: ${to} == ${this.loanManger.contractAddress()}`)
+      console.log(`matching tokenID: ${tokenID} == ${this.nft.tokenID}`)
+      if (userAddress.toLowerCase() == this.wallet.currentAccount.toLowerCase() && 
+      tokenID == this.nft.tokenID && 
+      to.toLowerCase() == this.loanManger.contractAddress().toLowerCase()) {
+        this.approved = true
+        await this.hideLoading()
+      }
+    })
+  }
+
+  private async showLoading() {
+    this.loader = await this.loadingController.create({
+      message: 'Waiting for approval'
+    })
+    this.listenForApproval()
+    await this.loader.present()
+  }
+
+  private async hideLoading() {
+    console.log('hiding loader')
+    this.loader.dismiss()
   }
 
   onCollectionItemSelected() {}
