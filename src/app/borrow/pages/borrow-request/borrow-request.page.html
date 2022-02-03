@@ -97,23 +97,23 @@
             </ion-col>
           </ion-row>
         </div>
-        <ion-row>
-          <ion-col>
-            <ion-text class="subtext">
-              Collateralizing an asset means putting this asset up as collateral to get a loan. 
-              Other users can offer up a loan. If the loan is not repaid by the settlement date, the lender can foreclose and you will lose this asset. <br>
-              Please use this feature carefully
-            </ion-text>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <ion-button expand="block" color="light" (click)="onGetLoanClicked()">Collateralize</ion-button>
-          </ion-col>
-        </ion-row>
 
-
-
+        <div *ngIf="!request || request.state != 1">
+          <ion-row>
+            <ion-col>
+              <ion-text class="subtext">
+                Collateralizing an asset means putting this asset up as collateral to get a loan. 
+                Other users can offer up a loan. If the loan is not repaid by the settlement date, the lender can foreclose and you will lose this asset. <br>
+                Please use this feature carefully
+              </ion-text>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-button expand="block" color="light" (click)="onGetLoanClicked()">Get a Loan</ion-button>
+            </ion-col>
+          </ion-row>
+        </div>
         <ion-row *ngIf="!iAmOwner">
           <ion-col>
             <ion-button *ngIf="listingExists" #buyButton [disabled]="txPending">{{priceString}}</ion-button>

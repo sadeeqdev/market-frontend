@@ -1,14 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonButton, NavController, ToastController, ModalController, AlertController, LoadingController } from '@ionic/angular';
-import { ethers } from 'ethers';
-import { request } from 'http';
 import { Subscription } from 'rxjs';
 import { NftLikeModalComponent } from 'src/app/components/nft-like-modal/nft-like-modal.component';
 import { CheddaLoanManagerService } from 'src/app/contracts/chedda-loan-manager.service';
 import { CheddaMarketService } from 'src/app/contracts/chedda-market.service';
 import { MarketExplorerService } from 'src/app/contracts/market-explorer.service';
-import { LoanRequest } from 'src/app/lend/lend.models';
+import { LoanRequest, LoanRequestState } from 'src/app/lend/lend.models';
 import { NFT } from 'src/app/nfts/models/nft.model';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { ZeroAddress } from 'src/app/shared/constants';
@@ -32,15 +30,14 @@ export class BorrowRequestPage implements OnInit {
   listingExists = false
   iAmOwner = false
   txPending = false
+  canCollateralize = false
   env = environment
   request?: LoanRequest
   currency
 
   private routeSubscription?: Subscription
   private accountSubscription?: Subscription
-  private itemListingSubscription?: Subscription
-  private listingCancelledSubscription?: Subscription
-  private itemSoldSubscription?: Subscription
+  private requestCancelledSubscription?: Subscription
 
   constructor(
     private route: ActivatedRoute,
@@ -58,14 +55,13 @@ export class BorrowRequestPage implements OnInit {
   async ngOnInit() {
     this.currency = environment.config.networkParams.nativeCurrency.name
     await this.subscribeToRouteChanges()
+    await this.registerEventListeners()
   }
 
   ngOnDestroy(): void {
       this.routeSubscription?.unsubscribe()
       this.accountSubscription?.unsubscribe()
-      this.itemListingSubscription?.unsubscribe()
-      this.itemSoldSubscription?.unsubscribe()
-      this.listingCancelledSubscription?.unsubscribe()
+      this.requestCancelledSubscription?.unsubscribe
   }
 
   async onCancelRequest() {
@@ -135,13 +131,15 @@ export class BorrowRequestPage implements OnInit {
           return
         }
         this.nft = nft
-        let loanRequest: LoanRequest = await this.loanManager.getOpenLoanRequest(nftContract, tokenID)
-        console.log('request = ', loanRequest)
-        this.request = loanRequest
+        this.loadLoanRequestForNFT(nftContract, tokenID)
+        console.log('request = ', this.request)
+        if (!this.request || this.request.state == LoanRequestState.all) {
+          this.canCollateralize = true
+        }
       } catch (error) {
         //todo: show error before navigating back
         console.error('caught error: ', error)
-        this.navController.navigateBack('/nfts')
+        this.navController.navigateBack('/borrow')
       }
     })
   }
@@ -166,5 +164,25 @@ export class BorrowRequestPage implements OnInit {
     await this.alert.showRewardConfirmationAlert(amount)
   }
 
+  private async loadLoanRequestForNFT(nftContract, tokenID) {
+    let loanRequest: LoanRequest = await this.loanManager.getOpenLoanRequest(nftContract, tokenID)
+    this.request = loanRequest
+  }
 
+  private registerEventListeners() {
+    this.loanManager.requestCancelledSubject?.subscribe((event) => {
+      console.log('got cancel event: ', event)
+      console.log(`${event.requestId} <=> ${this.request.requestID}`)
+      if (this.request && event.requestId == this.request.requestID) {
+        this.canCollateralize = true
+        this.request = null
+      }
+    })
+
+    this.loanManager.loanRequestSubject?.subscribe(event => {
+      if (event.contractAddress == this.nft.nftContract && event.tokenID == this.nft.tokenID) {
+        this.canCollateralize = false
+      }
+    })
+  }
 }

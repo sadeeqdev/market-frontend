@@ -20,7 +20,7 @@ export class CheddaMarketService {
   listingCancelledSubject: Subject<any> = new Subject()
   itemSoldSubject: Subject<any> = new Subject()
 
-  constructor(provider: DefaultProviderService, private wallet: WalletProviderService, private http: HttpClient) {
+  constructor(private provider: DefaultProviderService, private wallet: WalletProviderService, private http: HttpClient) {
     this.marketContract = new ethers.Contract(
       wallet.currentConfig.contracts.CheddaMarket,
       ChedaMarket.abi,
@@ -62,7 +62,7 @@ export class CheddaMarketService {
   }
 
   async getNFTMetadata(nftAddress: string, tokenID: string) {
-    const nft = new ethers.Contract(nftAddress, ERC721.abi, this.wallet.signer)
+    const nft = new ethers.Contract(nftAddress, ERC721.abi, this.provider.provider)
     return await nft.tokenURI(tokenID)
   }
 

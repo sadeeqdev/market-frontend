@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { IonSegment, NavController } from '@ionic/angular';
+import { IonSegment, IonSelect, NavController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { CheddaLoanManagerService, LoanRequestStatus, LoanStatus } from 'src/app/contracts/chedda-loan-manager.service';
 import { CheddaXpService } from 'src/app/contracts/chedda-xp.service';
@@ -15,8 +15,10 @@ import { environment } from 'src/environments/environment';
 })
 export class BorrowLandingPage implements OnInit {
   @ViewChild('segmentControl') segmentControl: IonSegment
+  @ViewChild('filterSelect') filterSelect: IonSelect
   items = []
   currentSegment = 'items'
+  filter = 'pending'
   accountSubscription?: Subscription
   account
   requestColumns = [
@@ -76,7 +78,9 @@ export class BorrowLandingPage implements OnInit {
     this.currentSegment = this.segmentControl.value
   }
 
-  onFilterChanged(event) {}
+  onFilterChanged(event) {
+    this.filter = this.filterSelect.value
+  }
 
   async registerEventListener() {
     this.accountSubscription = this.wallet.accountSubject.subscribe(newAccount => {

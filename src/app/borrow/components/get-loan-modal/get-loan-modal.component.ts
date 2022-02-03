@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { ethers } from 'ethers';
+import { duration } from 'moment';
 import { CheddaLoanManagerService } from 'src/app/contracts/chedda-loan-manager.service';
 import { NFT } from 'src/app/nfts/models/nft.model';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-get-loan-modal',
@@ -16,11 +18,13 @@ export class GetLoanModalComponent implements OnInit {
   nft: NFT
   nftContract
   loader
+  currency = ''
   SECONDS_IN_DAY = 86400
+  repaymenAmount = ''
   loanForm = new FormGroup({
     amount: new FormControl('', [Validators.required]),
     duration: new FormControl('', [Validators.required,]),
-    repayment: new FormControl('', [Validators.required,]),
+    repayment: new FormControl('', ),
   })
   approved = false
   termOptions = [
@@ -39,6 +43,7 @@ export class GetLoanModalComponent implements OnInit {
 
   ngOnInit() {
     console.log('got nft: ', this.nft)
+    this.currency = environment.config.networkParams.nativeCurrency.symbol
   }
 
   async onSubmitClicked() {
@@ -99,7 +104,31 @@ export class GetLoanModalComponent implements OnInit {
     this.loader.dismiss()
   }
 
-  onCollectionItemSelected() {}
+  async onLoanTermChanged() {
+    await this.onAmountChanged()
+  }
+
+  async onAmountChanged() {
+    console.log('changed')
+    try {
+      let loanAmount = this.loanForm.get('amount').value
+      console.log('loanAmount = ', loanAmount)
+      loanAmount= ethers.utils.parseEther(loanAmount.toString())
+      let term: number = this.loanForm.get('duration').value   
+      term = term * this.SECONDS_IN_DAY
+      
+      console.log(`loanAmount = ${loanAmount}, term = ${term}`)
+      if (!loanAmount || !term) {
+        return
+      }
+      const repaymenAmount = (await this.loanManger.calculateRepaymentAmount(loanAmount, term)).toString()
+      console.log('repaymentAmount = ', repaymenAmount)
+      this.repaymenAmount = ethers.utils.formatEther(repaymenAmount)
+    } catch (error) {
+      console.error('cauth error: ', error)
+    }
+
+  }
 
   private validateInput() {
     return true

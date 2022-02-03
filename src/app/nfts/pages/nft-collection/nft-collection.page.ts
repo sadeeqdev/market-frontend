@@ -33,7 +33,7 @@ export class NftCollectionPage implements OnInit, OnDestroy {
   async ngOnInit() {
     this.routeSuscription = this.route.paramMap.subscribe(async paramMap => {
       if (!paramMap.has('contractAddress')) {
-        this.navController.navigateBack('/nfts')
+        this.navController.navigateBack('/market')
         return
       }
       try {
@@ -43,7 +43,7 @@ export class NftCollectionPage implements OnInit, OnDestroy {
       } catch (error) {
         //todo: show error before navigating back
         console.error('caught error: ', error)
-        this.navController.navigateBack('/nfts')
+        this.navController.navigateBack('/market')
       }
     })
   }

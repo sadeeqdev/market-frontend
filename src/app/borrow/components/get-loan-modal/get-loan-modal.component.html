@@ -1,13 +1,13 @@
 
 <ion-grid class="grid">
-  <ion-row *ngIf="nft">
+  <!-- <ion-row *ngIf="nft">
     <ion-col class="avatar-wrapper">
       <ion-avatar class="ion-center app-avatar">
         <ion-img [src]="nft.metadata.image"></ion-img>
       </ion-avatar>
     </ion-col>
-  </ion-row>
-  <ion-row class="centered-text">
+  </ion-row> -->
+  <ion-row class="centered-text normal-text-color">
     <ion-col>
       <ion-row>
         <ion-col class="ion-center">
@@ -23,18 +23,20 @@
       </ion-row>
     </ion-col>
   </ion-row>
-  <form [formGroup]="loanForm">
+  <form [formGroup]="loanForm" class="normal-text-color">
+    <p>Form Status: {{ loanForm.status }}</p>
+
     <!-- amount -->
     <ion-row>
       <ion-col>
         <ion-row>
           <ion-col class="form-col">
-            <ion-text class="form-field-title">Requested Amount</ion-text>
+            <ion-text class="form-field-title">Requested Amount ({{currency}})</ion-text>
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col>
-            <ion-input class="bordered-input" placeholder="Requested amount" formControlName="amount" type="number"></ion-input>
+            <ion-input class="bordered-input" placeholder="Requested amount" formControlName="amount" type="number" (change)="onAmountChanged()" debounce="1000"></ion-input>
           </ion-col>
         </ion-row>
       </ion-col>
@@ -50,7 +52,7 @@
         </ion-row>
         <ion-row>
           <ion-col>
-            <ion-select interface="popover" interfaceOptions="{'cssClass': 'wide-popover'}" class="bordered-input" (ionChange)="onCollectionItemSelected()" formControlName="duration">
+            <ion-select interface="popover" interfaceOptions="{'cssClass': 'wide-popover'}" class="bordered-input" (ionChange)="onLoanTermChanged()" formControlName="duration">
               <ion-select-option *ngFor="let option of termOptions" [value]="option">{{option}} days</ion-select-option>
             </ion-select>
           </ion-col>
@@ -63,12 +65,12 @@
       <ion-col>
         <ion-row>
           <ion-col class="form-col">
-            <ion-text class="form-field-title">Repayment Amount</ion-text>
+            <ion-text class="form-field-title">Repayment Amount ({{ currency }})</ion-text>
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col>
-            <ion-input class="bordered-input"  formControlName="repayment" readonly="true">{{ loanForm.get('amount').value }} wETH</ion-input>
+            <ion-input class="bordered-input"  formControlName="repayment" readonly="true">{{ repaymenAmount == '' || repaymenAmount == '0' ? '' : repaymenAmount }}</ion-input>
           </ion-col>
         </ion-row>
       </ion-col>
@@ -77,7 +79,7 @@
   <ion-row>
     <ion-col>
       <ion-button (click)="onApproveClicked()" color="light" expand="block" *ngIf="!approved">Approve</ion-button>
-      <ion-button (click)="onSubmitClicked()" [disabled]="!approved || loanForm.invalid" expand="block">Submit</ion-button>
+      <ion-button (click)="onSubmitClicked()" [disabled]="!approved || loanForm.invalid" expand="block">Request Loan</ion-button>
     </ion-col>
   </ion-row>
   <ion-row>

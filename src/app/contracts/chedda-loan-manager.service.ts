@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ethers } from 'ethers';
+import { Subject } from 'rxjs';
 import CheddaLoanManager from '../../artifacts/CheddaLoanManager.json'
 import ERC721 from '../../artifacts/ERC721.json'
 import { Loan, LoanRequest } from '../lend/lend.models';
@@ -27,6 +28,8 @@ export enum LoanRequestStatus {
 export class CheddaLoanManagerService {
 
   loanManagerContract: any
+  requestCancelledSubject?: Subject<any> = new Subject()
+  loanRequestSubject?: Subject<any> = new Subject()
 
   constructor(provider: DefaultProviderService, private wallet: WalletProviderService, private http: HttpClient) {
     this.loanManagerContract = new ethers.Contract(
@@ -72,6 +75,11 @@ export class CheddaLoanManagerService {
     return await this.loanManagerContract.requests(id)
   }
 
+  async calculateRepaymentAmount(amount: string, duration: number) {
+    const repayment = await this.loanManagerContract.calculateRepaymentAmount(amount, duration)
+    return repayment
+  }
+
   async getOpenLoanRequest(nftContract: string, tokenID: string): Promise<LoanRequest> {
     const requestID =  await this.loanManagerContract.openRequests(nftContract, tokenID)
     console.log('requestID = ', requestID)
@@ -84,6 +92,7 @@ export class CheddaLoanManagerService {
     return new ethers.Contract(nftAddress, ERC721.abi, this.wallet.signer)
   }
 
+
   contractAddress() {
     return this.loanManagerContract.address
   }
@@ -94,5 +103,20 @@ export class CheddaLoanManagerService {
     return nft
   }
 
+  async registerEventListeners() {
+    this.loanManagerContract.on('RequestCancelled', async (address, requestId) => {
+      console.log('RequestCancelled: ', address, requestId)
+      this.requestCancelledSubject?.next({
+        address,
+        requestId
+      })
+    })
 
+    this.loanManagerContract.on('LoanRequested', async (requestedBy, contractAddress, tokenID, amount) => {
+      console.log(`got loan request: {${requestedBy}, ${contractAddress} ${tokenID}, ${amount}}`)
+      this.loanRequestSubject?.next({
+        requestedBy, contractAddress, tokenID, amount
+      })
+    })
+  }
 }
