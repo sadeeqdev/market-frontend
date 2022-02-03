@@ -22,7 +22,7 @@ export class DropsLandingPage implements OnInit {
     this.drops = await this.dropManager.getDrops()
   }
   navigateToDetails(drop: Drop) {
-    this.router.navigate(['.', 'drops', 'details', drop.id.toString()])
+    this.router.navigate(['.', 'launches', 'details', drop.id.toString()])
   }
 
   drops: Drop[] = [
