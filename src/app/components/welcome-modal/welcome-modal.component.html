@@ -4,16 +4,34 @@
   </div>
   <div class="modal-content">
     <h4>Welcome to Chedda</h4>
-    <h5>The multi-chain dappstore and NFT market curated by users.</h5>
+    <h5>The Multi-chain NFT market + DeFi Lending Platform.</h5>
     <div>
       <ul>
-        <li>Show your love for your favorite dapps and NFTs</li>
-        <li>Earn Chedda XP in the process</li>
-        <li>Rank on the leaderboard to win Chedda NFTs and ultimately become Godfather.</li>
+        <li>Collect and trade your favorite NFTs</li>
+        <li>Borrow and lend on NFT collateralized loans</li>
+        <li>Catch NFT launches and whitelists</li>
       </ul>
     </div>
   </div>
   <div class="modal-footer">
-    <ion-button color="primary" (click)="onButtonClicked()">Start stacking Chedda</ion-button>
+    <ion-grid>
+      <div>
+        <ion-row>
+          <ion-col class="centered-content grow" size="12">
+            <ion-button color="primary" (click)="onButtonClicked()">Let's Stack Some CHEDDA!</ion-button>
+          </ion-col>
+        </ion-row>
+      </div>
+
+      <div>
+        <ion-row>
+          <ion-col class="centered-content">
+            <ion-text class="subtext">Note: This is a testnet so smart contracts are redeployed often which wipes the contract state. Use with care.</ion-text>
+          </ion-col>
+        </ion-row>
+      </div>
+    </ion-grid>
+
+
   </div>
 </div>

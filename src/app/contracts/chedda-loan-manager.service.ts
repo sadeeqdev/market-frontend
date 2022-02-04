@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ethers } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import { Subject } from 'rxjs';
 import CheddaLoanManager from '../../artifacts/CheddaLoanManager.json'
 import ERC721 from '../../artifacts/ERC721.json'
@@ -30,6 +30,8 @@ export class CheddaLoanManagerService {
   loanManagerContract: any
   requestCancelledSubject?: Subject<any> = new Subject()
   loanRequestSubject?: Subject<any> = new Subject()
+  loanOpenedSubject?: Subject<any> = new Subject()
+  loanForeclosedSubject?: Subject<any> = new Subject()
 
   constructor(provider: DefaultProviderService, private wallet: WalletProviderService, private http: HttpClient) {
     this.loanManagerContract = new ethers.Contract(
@@ -40,7 +42,7 @@ export class CheddaLoanManagerService {
   }
 
   async requestLoan(nftAddress: string, tokenId: string, amount: string, duration: number) {
-    await this.loanManagerContract.connect(this.wallet.signer).requestLoan(
+    return await this.loanManagerContract.connect(this.wallet.signer).requestLoan(
       nftAddress,
       tokenId,
       amount,
@@ -49,30 +51,35 @@ export class CheddaLoanManagerService {
   }
 
   async cancelRequest(requestId) {
-    await this.loanManagerContract.connect(this.wallet.signer).cancelRequest(requestId)
+    return await this.loanManagerContract.connect(this.wallet.signer).cancelRequest(requestId)
   }
 
   async getLoanRequests(address: string, status: LoanRequestStatus): Promise<LoanRequest[]> {
-    const requests = await this.loanManagerContract.getLoanRequests(address, status)
-    return requests
+    return await this.loanManagerContract.getLoanRequests(address, status)
   }
 
-  openLoan() {
-
+  async openLoan(loanID: BigNumber, value: BigNumber) {
+    return await this.loanManagerContract.connect(this.wallet.signer).openLoan(loanID, {value})
   }
 
-  repayLoan() {
-
+  async repayLoan(loanID: BigNumber, value: BigNumber) {
+    return await this.loanManagerContract.repay(loanID, {value})
   }
 
-  forecloseLoan() {}
-
-  async getLoanById(id: string): Promise<Loan> {
-    return await this.loanManagerContract.loans(id)
+  async forecloseLoan(loanID: BigNumber) {
+    return await this.loanManagerContract.foreclose(loanID)
   }
 
-  async getLoanRequestById(id: string): Promise<LoanRequest> {
-    return await this.loanManagerContract.requests(id)
+  async getLoanById(loanID: string): Promise<Loan> {
+    return await this.loanManagerContract.loans(loanID)
+  }
+
+  async getLoanRequestById(requestID: string): Promise<LoanRequest> {
+    return await this.loanManagerContract.requests(requestID)
+  }
+
+  async getLoansLentByAddress(address: string, state: LoanStatus) {
+    return await this.loanManagerContract.getLoansLent(address, state)
   }
 
   async calculateRepaymentAmount(amount: string, duration: number) {
@@ -91,7 +98,6 @@ export class CheddaLoanManagerService {
   getNFTContract(nftAddress: string) {
     return new ethers.Contract(nftAddress, ERC721.abi, this.wallet.signer)
   }
-
 
   contractAddress() {
     return this.loanManagerContract.address
@@ -116,6 +122,15 @@ export class CheddaLoanManagerService {
       console.log(`got loan request: {${requestedBy}, ${contractAddress} ${tokenID}, ${amount}}`)
       this.loanRequestSubject?.next({
         requestedBy, contractAddress, tokenID, amount
+      })
+    })
+
+    this.loanManagerContract.on('LoanOpened', async (lender, borrower, requestID, amount) => {
+      this.loanOpenedSubject?.next({
+        lender,
+        borrower,
+        requestID,
+        amount
       })
     })
   }

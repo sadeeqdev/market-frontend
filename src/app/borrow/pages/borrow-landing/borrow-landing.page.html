@@ -24,7 +24,7 @@
           <ion-text class="centered-text">You do not own any NFTs</ion-text>
         </ion-row>
         <ion-row class="centered-content">
-          <ion-text class="centered-text">You can purchase NFTs in the market </ion-text>
+          <ion-text class="centered-text">You can purchase NFTs in the market or win a whitelist spot in a launch.</ion-text>
         </ion-row>
       </ion-col>
     </ion-row>
@@ -48,7 +48,7 @@
     </ion-row>
     <ion-row *ngIf="loans.length == 0 && pendingLoans.length == 0">
       <ion-col class="centered-content">
-        <ion-text><h2>You do not have any open items</h2></ion-text>
+        <ion-text><h2>You do not have any loans</h2></ion-text>
       </ion-col>
     </ion-row>
 
@@ -85,10 +85,6 @@
           <ion-col></ion-col>
         </ion-row>
       </div>
-      
-      <ion-row *ngIf="pendingLoans.length == 0" class="no-items-row">
-        <ion-col class="center-text no-items-text">No items found</ion-col>
-      </ion-row>
     </div> <!-- filter === 'pending'-->
 
     <div *ngIf="filter !== 'pending'">

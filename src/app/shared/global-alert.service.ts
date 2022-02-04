@@ -168,6 +168,21 @@ export class GlobalAlertService {
     await alert.present(); 
   }
 
+  async showOkayAlert(title: string, message: string) {
+    const alert = await this.alertController.create({
+      header: title,
+      message: message,
+      buttons: [
+        {
+          text: 'Okay',
+          role: 'okay',
+        }
+      ]
+    });
+
+    await alert.present(); 
+  }
+
   async showRewardConfirmationAlert(amount) {
     const alert = await this.alertController.create({
       header: 'Reward!',

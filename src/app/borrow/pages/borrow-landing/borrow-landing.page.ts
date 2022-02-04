@@ -44,24 +44,14 @@ export class BorrowLandingPage implements OnInit {
   currency
   
   constructor(
-    private route: ActivatedRoute,
-    private navController: NavController,
     private explorer: MarketExplorerService,
     private wallet: WalletProviderService,
     private loanManager: CheddaLoanManagerService,
-    private cheddaXP: CheddaXpService,
     ) { }
   
   async ngOnInit() {
     this.registerEventListener()
     this.currency = environment.config.networkParams.nativeCurrency.name
-    console.log('ngoninit')
-    // try {
-    //   await this.fetchItems()
-    // } catch (err) {
-    //   console.error('navigation error: ', err)
-    //   this.navController.navigateBack('/')
-    // }
   }
 
   async fetchItems() {

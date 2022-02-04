@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
 import { CheddaXpService } from 'src/app/contracts/chedda-xp.service';
+import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { Profile } from '../../profile.interface';
 
 @Component({
@@ -18,6 +19,7 @@ export class ProfilePopoverComponent implements OnInit {
   constructor(
     private router: Router,
     private cheddaXP: CheddaXpService,
+    private wallet: WalletProviderService,
     private popoverController: PopoverController
   ) { }
 
@@ -34,5 +36,9 @@ export class ProfilePopoverComponent implements OnInit {
   async navigateToProfile() {
     this.popoverController.dismiss()
     this.router.navigate(['/', 'profile', this.address])
+  }
+
+  async disconnect() {
+    await this.wallet.disconnect()
   }
 }

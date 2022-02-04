@@ -1,9 +1,75 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>lend-landing</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
+  <ion-row>
+    <ion-col>
+      <ion-segment (ionChange)="onSegmentChanged($event)" value="requests" #segmentControl>
+        <ion-segment-button value="requests">
+          <ion-icon name="apps"></ion-icon>
+          <ion-label>Loan Requests</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="myloans">
+          <ion-icon name="cash"></ion-icon>
+          <ion-label>My loans</ion-label>
+         </ion-segment-button>
+      </ion-segment>
+    </ion-col>
+  </ion-row>
+  <div *ngIf="currentSegment == 'requests'">
+    <div *ngIf="loanRequests.length > 0">
+      <ion-row class="loans-header">
+        <ion-col size="2">Asset</ion-col>
+        <ion-col size="3">Amount</ion-col>
+        <ion-col size="4">Repayment</ion-col>
+        <ion-col size="3">Duration</ion-col>
+      </ion-row>
+      <ion-row class="loan-row" *ngFor="let request of loanRequests">
+        <ion-col>
+          <ion-card  [routerLink]="['/', 'lend', 'request', request.requestID.toString()]">
+            <ion-card-content>
+              <ion-row>
+                <ion-col size="2">{{ request.tokenID }}</ion-col>
+                <ion-col size="3">{{ request.amount |formatEth }} </ion-col>
+                <ion-col size="4">{{ request.repayment | formatEth }}</ion-col>
+                <ion-col size="3">{{ request.loanLength.div(86400)  + ' days'}}</ion-col>
+              </ion-row>
+            </ion-card-content>
 
-</ion-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </div>
+    <ion-row *ngIf="loanRequests.length == 0">
+      <ion-col class="centered-content">
+        <ion-text class="centered-text"> There are no open loan requests</ion-text></ion-col>
+    </ion-row>
+  </div>
+
+  <div *ngIf="currentSegment == 'myloans'">
+    <div *ngIf="myLoans.length">
+      <ion-row class="loans-header">
+        <ion-col size="2">Asset</ion-col>
+        <ion-col size="3">Amount</ion-col>
+        <ion-col size="4">Repayment</ion-col>
+        <ion-col size="3">Due Date</ion-col>
+      </ion-row>
+      <ion-row class="loan-row" *ngFor="let loan of myLoans">
+        <ion-col>
+          <ion-card [routerLink]="['/', 'lend', 'loan', loan.loanID.toString()]">
+            <ion-card-content>
+              <ion-row>
+                <ion-col size="2">{{ loan.loanID }}</ion-col>
+                <ion-col size="3">{{ loan.principal | formatEth}}</ion-col>
+                <ion-col size="4">{{ loan.repaymentAmount |formatEth }}</ion-col>
+                <ion-col size="3"> {{ loan.expiresAt.mul(1000).toString() | date}}</ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>        
+      </ion-row>
+    </div>
+    <ion-row *ngIf="myLoans.length == 0">
+      <ion-col class="centered-content">
+        <ion-text>You do not have any open loans</ion-text>
+      </ion-col>
+    </ion-row>
+  </div>
+  </ion-content>

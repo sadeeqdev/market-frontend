@@ -30,7 +30,7 @@ export interface Loan {
     nftContract: string
     tokenID: BigNumber
     principal: BigNumber
-    repaymentAMount: BigNumber
+    repaymentAmount: BigNumber
     openedAt: BigNumber
     expiresAt: BigNumber
     closedAt: BigNumber

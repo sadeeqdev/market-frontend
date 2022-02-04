@@ -124,7 +124,7 @@ export class BorrowRequestPage implements OnInit {
         const nftContract = paramMap.get('nftContract')
         const tokenID = paramMap.get('tokenID')
 
-        let tokenURI = await this.market.getNFTMetadata(nftContract, tokenID)
+        let tokenURI = await this.market.getTokenURI(nftContract, tokenID)
         let nft = await this.marketExplorer.assembleNFT(nftContract, tokenID, tokenURI)
         if (!nft) {
           this.navController.navigateBack('/borrow')
