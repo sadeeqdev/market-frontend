@@ -54,7 +54,7 @@
           </ion-col>
         </ion-row>
 
-        <!-- Loan info -->
+        <!-- Request info -->
         <div *ngIf="request && request.state == 1">
           <ion-row class="loan-prop-first-row">
             <ion-col>
@@ -64,7 +64,6 @@
               <ion-text class="loan-value">{{request.state | loanRequestState | uppercase }}</ion-text>
             </ion-col>
           </ion-row>
-  
           <ion-row>
             <ion-col>
               <ion-text class="loan-label">Amount Requested</ion-text>
@@ -73,7 +72,6 @@
               <ion-text class="loan-value">{{ this.request.amount | formatEth }} {{ currency | uppercase}}</ion-text>
             </ion-col>
           </ion-row> 
-  
           <ion-row>
             <ion-col>
               <ion-text class="loan-label">Repayment Amount</ion-text>
@@ -82,7 +80,6 @@
               <ion-text class="loan-value">{{ this.request.repayment | formatEth }} {{ currency | uppercase}}</ion-text>
             </ion-col>
           </ion-row> 
-  
           <ion-row class="loan-prop-last-row">
             <ion-col>
               <ion-text class="loan-label">Loan Duration</ion-text>
@@ -98,7 +95,48 @@
           </ion-row>
         </div>
 
-        <div *ngIf="!request || request.state != 1">
+        <!-- loan info -->
+        <div *ngIf="loan && loan.state == 1">
+          <ion-row class="loan-prop-first-row">
+            <ion-col>
+              <ion-text class="loan-label">Loan Status</ion-text>
+            </ion-col>
+            <ion-col>
+              <ion-text class="loan-value">{{loan.state | loanRequestState | uppercase }}</ion-text>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-text class="loan-label">Amount</ion-text>
+            </ion-col>
+            <ion-col>
+              <ion-text class="loan-value">{{ loan.principal | formatEth }} {{ currency | uppercase}}</ion-text>
+            </ion-col>
+          </ion-row> 
+          <ion-row>
+            <ion-col>
+              <ion-text class="loan-label">Repayment</ion-text>
+            </ion-col>
+            <ion-col>
+              <ion-text class="loan-value">{{ loan.repaymentAmount | formatEth }} {{ currency | uppercase}}</ion-text>
+            </ion-col>
+          </ion-row> 
+          <ion-row class="loan-prop-last-row">
+            <ion-col>
+              <ion-text class="loan-label">Loan Expiry</ion-text>
+            </ion-col>
+            <ion-col>
+              <ion-text class="loan-value">{{ loan.expiresAt.mul(1000).toString() | date:'medium' }} </ion-text>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-button #buyButton [disabled]="txPending" (click)="onRepayLoanClicked()" expand="block" color="primary">Repay Loan</ion-button>
+            </ion-col>
+          </ion-row>
+        </div>
+
+        <div *ngIf="!(request || loan)">
           <ion-row>
             <ion-col>
               <ion-text class="subtext">

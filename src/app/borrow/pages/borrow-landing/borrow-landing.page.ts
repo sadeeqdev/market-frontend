@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonSegment, IonSelect, NavController } from '@ionic/angular';
+import { stat } from 'fs';
 import { Subscription } from 'rxjs';
 import { CheddaLoanManagerService, LoanRequestStatus, LoanStatus } from 'src/app/contracts/chedda-loan-manager.service';
 import { CheddaXpService } from 'src/app/contracts/chedda-xp.service';
@@ -64,12 +65,29 @@ export class BorrowLandingPage implements OnInit {
       console.log('no account')
     }
   }
+
   onSegmentChanged(event) {
     this.currentSegment = this.segmentControl.value
   }
 
-  onFilterChanged(event) {
+  async onFilterChanged(event) {
     this.filter = this.filterSelect.value
+    switch (this.filter) {
+      case 'pending':
+        this.getPendingLoans(LoanRequestStatus.open)
+        break;
+      case 'open':
+        this.getLoans(LoanStatus.open)
+        break
+      case 'repaid':
+        this.getLoans(LoanStatus.repaid)
+        break
+      case 'foreclosed':
+        this.getLoans(LoanStatus.foreclosed)
+        break
+      default:
+        break;
+    }
   }
 
   async registerEventListener() {
@@ -91,11 +109,13 @@ export class BorrowLandingPage implements OnInit {
     }
   }
 
-  async getOpenLoans() {
-
-  }
-
   async getLoans(status: LoanStatus) {
+    try {
+      this.loans = await this.loanManager.getLoansBorrowedByAddress(this.wallet.currentAccount, status)
+      console.log('loans are: ', this.loans)
+    } catch (error) {
+      console.error('error: ', error)
+    }
   }
 
 }

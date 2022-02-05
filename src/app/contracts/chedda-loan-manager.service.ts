@@ -63,7 +63,7 @@ export class CheddaLoanManagerService {
   }
 
   async repayLoan(loanID: BigNumber, value: BigNumber) {
-    return await this.loanManagerContract.repay(loanID, {value})
+    return await this.loanManagerContract.connect(this.wallet.signer).repay(loanID, {value})
   }
 
   async forecloseLoan(loanID: BigNumber) {
@@ -78,8 +78,12 @@ export class CheddaLoanManagerService {
     return await this.loanManagerContract.requests(requestID)
   }
 
-  async getLoansLentByAddress(address: string, state: LoanStatus) {
+  async getLoansLentByAddress(address: string, state: LoanStatus): Promise<Loan[]> {
     return await this.loanManagerContract.getLoansLent(address, state)
+  }
+
+  async getLoansBorrowedByAddress(address: string, state: LoanStatus): Promise<Loan[]> {
+    return await this.loanManagerContract.getLoansBorrowed(address, state)
   }
 
   async calculateRepaymentAmount(amount: string, duration: number) {
@@ -92,6 +96,17 @@ export class CheddaLoanManagerService {
     console.log('requestID = ', requestID)
     if (requestID) {
       return await this.loanManagerContract.requests(requestID)
+    } else {
+      return null
+    }
+  }
+
+  async getOpenLoan(nftContract: string, tokenID: string): Promise<Loan> {
+    const loanID = await this.loanManagerContract.openLoans(nftContract, tokenID)
+    if (loanID) {
+      return await this.loanManagerContract.loans(loanID)
+    } else {
+      return null
     }
   }
   

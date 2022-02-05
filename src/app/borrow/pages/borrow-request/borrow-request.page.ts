@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonButton, NavController, ToastController, ModalController, AlertController, LoadingController } from '@ionic/angular';
-import { Subscription } from 'rxjs';
+import { BigNumber } from 'ethers';
+import { from, Subscription } from 'rxjs';
 import { NftLikeModalComponent } from 'src/app/components/nft-like-modal/nft-like-modal.component';
 import { CheddaLoanManagerService } from 'src/app/contracts/chedda-loan-manager.service';
 import { CheddaMarketService } from 'src/app/contracts/chedda-market.service';
 import { MarketExplorerService } from 'src/app/contracts/market-explorer.service';
-import { LoanRequest, LoanRequestState } from 'src/app/lend/lend.models';
+import { Loan, LoanRequest, LoanRequestState } from 'src/app/lend/lend.models';
 import { NFT } from 'src/app/nfts/models/nft.model';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { ZeroAddress } from 'src/app/shared/constants';
@@ -33,6 +34,7 @@ export class BorrowRequestPage implements OnInit {
   canCollateralize = false
   env = environment
   request?: LoanRequest
+  loan?: Loan
   currency
 
   private routeSubscription?: Subscription
@@ -114,6 +116,14 @@ export class BorrowRequestPage implements OnInit {
     await modal.present() 
   }
 
+  async onRepayLoanClicked() {
+    if (!this.loan) {
+      return
+    } 
+
+    await this.loanManager.repayLoan(this.loan.loanID, this.loan.repaymentAmount)
+  }
+
   private async subscribeToRouteChanges() {
     this.routeSubscription = this.route.paramMap.subscribe(async paramMap => {
       if (!paramMap.has('nftContract') || !paramMap.has('tokenID')) {
@@ -132,6 +142,8 @@ export class BorrowRequestPage implements OnInit {
         }
         this.nft = nft
         this.loadLoanRequestForNFT(nftContract, tokenID)
+        this.loanLoanForNFT(nftContract, tokenID)
+        await this.checkOwner(nftContract, tokenID)
         console.log('request = ', this.request)
         if (!this.request || this.request.state == LoanRequestState.all) {
           this.canCollateralize = true
@@ -166,7 +178,14 @@ export class BorrowRequestPage implements OnInit {
 
   private async loadLoanRequestForNFT(nftContract, tokenID) {
     let loanRequest: LoanRequest = await this.loanManager.getOpenLoanRequest(nftContract, tokenID)
-    this.request = loanRequest
+    if (loanRequest.requestID && loanRequest.requestID != BigNumber.from(0)) {
+      this.request = loanRequest
+    }
+  }
+
+  private async loanLoanForNFT(nftContract, tokenID) {
+    let loan: Loan = await this.loanManager.getOpenLoan(nftContract, tokenID)
+    this.loan = loan
   }
 
   private registerEventListeners() {
@@ -184,5 +203,11 @@ export class BorrowRequestPage implements OnInit {
         this.canCollateralize = false
       }
     })
+  }
+
+  private async checkOwner(nftContract: string, tokenID: string) {
+    const nft = this.loanManager.getNFTContract(nftContract)
+    let owner = await nft.ownerOf(tokenID)
+    console.log('owner = ', owner)
   }
 }
