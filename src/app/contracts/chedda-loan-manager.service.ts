@@ -94,7 +94,7 @@ export class CheddaLoanManagerService {
   async getOpenLoanRequest(nftContract: string, tokenID: string): Promise<LoanRequest> {
     const requestID =  await this.loanManagerContract.openRequests(nftContract, tokenID)
     console.log('requestID = ', requestID)
-    if (requestID) {
+    if (requestID && !requestID.isZero()) {
       return await this.loanManagerContract.requests(requestID)
     } else {
       return null
@@ -103,7 +103,8 @@ export class CheddaLoanManagerService {
 
   async getOpenLoan(nftContract: string, tokenID: string): Promise<Loan> {
     const loanID = await this.loanManagerContract.openLoans(nftContract, tokenID)
-    if (loanID) {
+    if (loanID && !loanID.isZero()) {
+      console.log('loanID =', loanID)
       return await this.loanManagerContract.loans(loanID)
     } else {
       return null

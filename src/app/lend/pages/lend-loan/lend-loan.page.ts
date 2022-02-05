@@ -58,8 +58,7 @@ export class LendLoanPage implements OnInit {
       try {
         const loanID = paramMap.get('loanId')
         const loan = await this.loanManager.getLoanById(loanID)
-        const tokenURI = await this.market.getTokenURI(loan.nftContract, loan.tokenID.toString())
-        this.nft = await this.marketExplorer.assembleNFT(loan.nftContract, loan.tokenID.toString(), tokenURI)
+        this.nft = await this.marketExplorer.assembleNFT(loan.nftContract, loan.tokenID.toString())
         this.loan = loan
       } catch (error) {
         console.error('error getting nft from loan request: ', error)

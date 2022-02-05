@@ -64,7 +64,7 @@ export class GlobalAlertService {
     await alert.present();
   }
 
-  async shwoErrorAlert(title: string, message: string) {
+  async showMessageAlert(title: string, message: string) {
     const alert = await this.alertController.create({
       header: title,
       message: message,
@@ -78,6 +78,23 @@ export class GlobalAlertService {
     });
 
     await alert.present();
+  }
+
+  async showErrorAlert(error: Error) {
+    const anyError = (error as any)
+    const alert = await this.alertController.create({
+      header: 'An Error Occured',
+      message: (anyError.data && anyError.data.message)? anyError.data.message : anyError.message,
+      buttons: [
+        {
+          text: 'Okay',
+          role: 'okay',
+          cssClass: 'primary',
+        }
+      ]
+    });
+
+    await alert.present(); 
   }
 
   async showNoCheddaXPAlert() {

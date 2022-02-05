@@ -103,7 +103,7 @@ export class CreateItemPage implements OnInit, AfterViewInit {
       // await this.mintToken(metadataUri)
     } catch (error) {
       console.log(error)
-      this.alert.shwoErrorAlert('Error', error.message || error.errmsg || 'An error occured: ' + error.stack)
+      this.alert.showMessageAlert('Error', error.message || error.errmsg || 'An error occured: ' + error.stack)
     }
   }
 

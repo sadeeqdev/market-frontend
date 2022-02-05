@@ -61,11 +61,6 @@ export class CheddaMarketService {
 
   }
 
-  async getTokenURI(nftAddress: string, tokenID: string) {
-    const nft = new ethers.Contract(nftAddress, ERC721.abi, this.provider.provider)
-    return await nft.tokenURI(tokenID)
-  }
-
   private registerEventListener() {
     this.marketContract.on('ItemListed', async (contractAddress, tokenId, price) => {
       this.itemListedSubject.next({

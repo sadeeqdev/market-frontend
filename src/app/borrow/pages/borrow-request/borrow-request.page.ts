@@ -134,8 +134,7 @@ export class BorrowRequestPage implements OnInit {
         const nftContract = paramMap.get('nftContract')
         const tokenID = paramMap.get('tokenID')
 
-        let tokenURI = await this.market.getTokenURI(nftContract, tokenID)
-        let nft = await this.marketExplorer.assembleNFT(nftContract, tokenID, tokenURI)
+        let nft = await this.marketExplorer.assembleNFT(nftContract, tokenID)
         if (!nft) {
           this.navController.navigateBack('/borrow')
           return
@@ -178,14 +177,18 @@ export class BorrowRequestPage implements OnInit {
 
   private async loadLoanRequestForNFT(nftContract, tokenID) {
     let loanRequest: LoanRequest = await this.loanManager.getOpenLoanRequest(nftContract, tokenID)
-    if (loanRequest.requestID && loanRequest.requestID != BigNumber.from(0)) {
+    if (loanRequest && loanRequest.requestID && loanRequest.requestID.isZero()) {
+      console.log('request = ', loanRequest)
       this.request = loanRequest
     }
   }
 
   private async loanLoanForNFT(nftContract, tokenID) {
     let loan: Loan = await this.loanManager.getOpenLoan(nftContract, tokenID)
-    this.loan = loan
+    if (loan && loan.loanID && !loan.loanID.isZero()) {
+      console.log('loan = ', loan)
+      this.loan = loan
+    }
   }
 
   private registerEventListeners() {

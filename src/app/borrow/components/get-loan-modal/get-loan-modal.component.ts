@@ -61,6 +61,7 @@ export class GetLoanModalComponent implements OnInit {
       await this.loanManger.requestLoan(this.nft.nftContract, this.nft.tokenID, loanAmount, term)
     } catch(err) {
       console.log('error: ', err)
+      this.globalAlert.showErrorAlert(err)
     }
     this.modalController.dismiss()
   }
@@ -74,6 +75,7 @@ export class GetLoanModalComponent implements OnInit {
     } catch (error) {
       console.error('error approving: ', error)
       await this.hideLoading()
+      await this.globalAlert.showErrorAlert(error)
     }
   }
 
@@ -126,6 +128,7 @@ export class GetLoanModalComponent implements OnInit {
       this.repaymenAmount = ethers.utils.formatEther(repaymenAmount)
     } catch (error) {
       console.error('cauth error: ', error)
+      this.globalAlert.showErrorAlert(error)
     }
 
   }

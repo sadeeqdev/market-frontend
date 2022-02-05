@@ -64,8 +64,7 @@ export class LendRequestPage implements OnInit, OnDestroy {
       try {
         const requestID = paramMap.get('requestId')
         const loanRequest = await this.loanManager.getLoanRequestById(requestID)
-        const tokenURI = await this.market.getTokenURI(loanRequest.nftContract, loanRequest.tokenID.toString())
-        this.nft = await this.marketExplorer.assembleNFT(loanRequest.nftContract, loanRequest.tokenID.toString(), tokenURI)
+        this.nft = await this.marketExplorer.assembleNFT(loanRequest.nftContract, loanRequest.tokenID.toString())
         this.request = loanRequest
       } catch (error) {
         console.error('error getting nft from loan request: ', error)

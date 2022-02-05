@@ -1,4 +1,5 @@
 import { BigNumber } from "ethers"
+import { NFT } from "../nfts/models/nft.model"
 
 export enum LoanState {
     all = 0,
@@ -23,6 +24,7 @@ export interface LoanRequest {
     loanLength: BigNumber
     borrower: string
     state: LoanRequestState
+    nft?: NFT
 }
 
 export interface Loan {
@@ -37,5 +39,6 @@ export interface Loan {
     interestRate: BigNumber
     state: LoanState
     lender: string
-    borrower: string
+    borrower: string,
+    nft?: NFT
 }

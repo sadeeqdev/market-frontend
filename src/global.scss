@@ -224,3 +224,40 @@ ion-card.main-card:hover {
 .hidden-input {
   display: none;
 }
+
+.loans-header {
+  margin: 0 20px;
+  font-weight: 700;
+}
+
+.no-items-text {
+  font-weight: 500;
+  font-size: 1.2em;
+}
+
+.no-items-row {
+  margin: 20px 0;
+}
+
+.loan-info-col {
+  font-weight: 500;
+  vertical-align: middle;
+}
+
+.loan-content {
+  display: flex;
+  align-items: center;
+}
+
+.no-padding {
+  padding: 0;
+}
+
+.asset-row {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.asset-thumb {
+  min-width: 40px;
+}

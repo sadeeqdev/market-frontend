@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { CheddaLoanManagerService, LoanRequestStatus, LoanStatus } from 'src/app/contracts/chedda-loan-manager.service';
 import { CheddaXpService } from 'src/app/contracts/chedda-xp.service';
 import { MarketExplorerService } from 'src/app/contracts/market-explorer.service';
+import { Loan } from 'src/app/lend/lend.models';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { environment } from 'src/environments/environment';
 
@@ -41,13 +42,14 @@ export class BorrowLandingPage implements OnInit {
   ]
 
   pendingLoans = []
-  loans = []
+  loans: Loan[] = []
   currency
   
   constructor(
     private explorer: MarketExplorerService,
     private wallet: WalletProviderService,
     private loanManager: CheddaLoanManagerService,
+    private marketExplorer: MarketExplorerService,
     ) { }
   
   async ngOnInit() {
@@ -103,7 +105,14 @@ export class BorrowLandingPage implements OnInit {
     }
 
     try {
-      this.pendingLoans = await this.loanManager.getLoanRequests(this.wallet.currentAccount, status)
+      const pendingLoans = await this.loanManager.getLoanRequests(this.wallet.currentAccount, status)
+      this.pendingLoans = await Promise.all(pendingLoans.map(async pending => {
+        const nft = await this.marketExplorer.assembleNFT(pending.nftContract, pending.tokenID.toString())
+        return {
+          ...pending,
+          nft
+        }
+      }))
     } catch (err) {
       console.error(err)
     }
@@ -111,7 +120,14 @@ export class BorrowLandingPage implements OnInit {
 
   async getLoans(status: LoanStatus) {
     try {
-      this.loans = await this.loanManager.getLoansBorrowedByAddress(this.wallet.currentAccount, status)
+      const loans = await this.loanManager.getLoansBorrowedByAddress(this.wallet.currentAccount, status)
+      this.loans = await Promise.all(loans.map(async loan => {
+        const nft = await this.marketExplorer.assembleNFT(loan.nftContract, loan.tokenID.toString())
+        return {
+          ...loan,
+          nft
+        }
+      }))
       console.log('loans are: ', this.loans)
     } catch (error) {
       console.error('error: ', error)

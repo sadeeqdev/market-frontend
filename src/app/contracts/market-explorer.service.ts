@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { ethers } from 'ethers';
 import { DefaultProviderService } from '../providers/default-provider.service';
 import MarketExplorer from '../../artifacts/CheddaMarketExplorer.json'
+import ERC721 from '../../artifacts/ERC721.json'
 import { CollectionMetadata, NFTCollection, NFTCollectionWithLikes } from '../nfts/models/collection.model';
 import { NFT, NFTMetadata, NFTWithLikes } from '../nfts/models/nft.model';
 import { WalletProviderService } from '../providers/wallet-provider.service';
@@ -15,7 +16,7 @@ export class MarketExplorerService {
 
   private explorerContract: any
 
-  constructor(provider: DefaultProviderService, private wallet: WalletProviderService, private http: HttpClient) {
+  constructor(private provider: DefaultProviderService, private wallet: WalletProviderService, private http: HttpClient) {
     this.explorerContract = new ethers.Contract(
       wallet.currentConfig.contracts.CheddaMarketExplorer,
       MarketExplorer.abi,
@@ -97,8 +98,15 @@ export class MarketExplorerService {
     return this.populateMultipleNftsMetadata(items)
   }
 
-  async assembleNFT(address: string, tokenID: string, tokenURI: string): Promise<NFT | any> {
+
+  async getTokenURI(nftAddress: string, tokenID: string) {
+    const nft = new ethers.Contract(nftAddress, ERC721.abi, this.provider.provider)
+    return await nft.tokenURI(tokenID)
+  }
+
+  async assembleNFT(address: string, tokenID: string): Promise<NFT | any> {
     let nft = {nftContract: address, tokenID}    
+    const tokenURI = await this.getTokenURI(address, tokenID)
     let metadata: any = {}
     try {
       metadata = await this.http.get<NFTMetadata>(tokenURI).toPromise()
