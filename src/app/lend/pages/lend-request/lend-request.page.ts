@@ -18,17 +18,14 @@ import { LoanRequest } from '../../lend.models';
 })
 export class LendRequestPage implements OnInit, OnDestroy {
   @ViewChild('lendButton') buyButton: IonButton
-  priceString = ''
   nft: NFT
   numberOfLikes
-  account
 
-  listingExists = false
-  iAmOwner = false
   txPending = false
   canCollateralize = false
   env = environment
   request?: LoanRequest
+  iAmRequestor = false
   currency
 
   private routeSubscription?: Subscription
@@ -65,6 +62,8 @@ export class LendRequestPage implements OnInit, OnDestroy {
         const requestID = paramMap.get('requestId')
         const loanRequest = await this.loanManager.getLoanRequestById(requestID)
         this.nft = await this.marketExplorer.assembleNFT(loanRequest.nftContract, loanRequest.tokenID.toString())
+        this.iAmRequestor = loanRequest.borrower.toLowerCase() == this.wallet.currentAccount.toLowerCase()
+        console.log(`borrower ${loanRequest.borrower} <=> ${this.wallet.currentAccount}\niAmRequestor = ${this.iAmRequestor}`)
         this.request = loanRequest
       } catch (error) {
         console.error('error getting nft from loan request: ', error)

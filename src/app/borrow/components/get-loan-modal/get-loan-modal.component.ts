@@ -59,11 +59,11 @@ export class GetLoanModalComponent implements OnInit {
     console.log(`requestiong a loan for: ${loanAmount} <> ${term}`)
     try {
       await this.loanManger.requestLoan(this.nft.nftContract, this.nft.tokenID, loanAmount, term)
+      this.modalController.dismiss({loanRequested: true})
     } catch(err) {
       console.log('error: ', err)
       this.globalAlert.showErrorAlert(err)
     }
-    this.modalController.dismiss()
   }
 
   async onApproveClicked() {

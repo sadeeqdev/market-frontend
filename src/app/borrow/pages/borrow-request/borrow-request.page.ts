@@ -67,11 +67,16 @@ export class BorrowRequestPage implements OnInit {
   }
 
   async onCancelRequest() {
-    if (this.wallet.isConnected && this.request) {
-      this.txPending = true
-      await this.loanManager.cancelRequest(this.request.requestID)
-    } else {
-      this.alert.showConnectAlert()
+    try {
+      if (this.wallet.isConnected && this.request) {
+        this.txPending = true
+        await this.loanManager.cancelRequest(this.request.requestID)
+      } else {
+        this.alert.showConnectAlert()
+      }
+    } catch (error) {
+      this.txPending = false
+      this.alert.showErrorAlert(error)
     }
   }
 
@@ -96,7 +101,6 @@ export class BorrowRequestPage implements OnInit {
   }
 
   async onGetLoanClicked() {
-    console.log('passing in nft: ', this.nft)
     const modal = await this.modalController.create({
       component: GetLoanModalComponent,
       cssClass: 'stack-modal',
@@ -106,11 +110,9 @@ export class BorrowRequestPage implements OnInit {
       }
     })
     modal.onDidDismiss().then(async (result) => {
-      if (result && result.data) {
-        await this.showConfirmAlert(result.data)
-        setTimeout(() => {
-          this.loadLikes()
-        }, 3000)
+      console.log('dismiss result i s', result)
+      if (result && result.data && result.data.loanRequested) {
+        this.txPending = true
       }
     })
     await modal.present() 
@@ -142,8 +144,8 @@ export class BorrowRequestPage implements OnInit {
         this.nft = nft
         this.loadLoanRequestForNFT(nftContract, tokenID)
         this.loanLoanForNFT(nftContract, tokenID)
+        this.loadLikes()
         await this.checkOwner(nftContract, tokenID)
-        console.log('request = ', this.request)
         if (!this.request || this.request.state == LoanRequestState.all) {
           this.canCollateralize = true
         }
@@ -177,8 +179,8 @@ export class BorrowRequestPage implements OnInit {
 
   private async loadLoanRequestForNFT(nftContract, tokenID) {
     let loanRequest: LoanRequest = await this.loanManager.getOpenLoanRequest(nftContract, tokenID)
-    if (loanRequest && loanRequest.requestID && loanRequest.requestID.isZero()) {
-      console.log('request = ', loanRequest)
+    console.log('loanRequest = ', loanRequest)
+    if (loanRequest && loanRequest.requestID && !loanRequest.requestID.isZero()) {
       this.request = loanRequest
     }
   }
@@ -194,16 +196,28 @@ export class BorrowRequestPage implements OnInit {
   private registerEventListeners() {
     this.loanManager.requestCancelledSubject?.subscribe((event) => {
       console.log('got cancel event: ', event)
-      console.log(`${event.requestId} <=> ${this.request.requestID}`)
-      if (this.request && event.requestId == this.request.requestID) {
+      console.log('event.requestId, request.requestID: ', event.requestId, this.request.requestID)
+      if (this.request && event.requestId.eq(this.request.requestID)) {
         this.canCollateralize = true
         this.request = null
+        this.txPending = false
+        this.alert.showToast('Loan request cancelled')
+      } else {
+        console.log('no match')
       }
     })
 
-    this.loanManager.loanRequestSubject?.subscribe(event => {
-      if (event.contractAddress == this.nft.nftContract && event.tokenID == this.nft.tokenID) {
+    this.loanManager.loanRequestSubject?.subscribe(async event => {
+      console.log('event.tokenID, nft.tokenID: ', event.tokenID, this.nft.tokenID)
+      console.log('event.contractAddress, this.nft.nftContract: ', event.contractAddress, this.nft.nftContract)
+      if (event.contractAddress == this.nft.nftContract && event.tokenID.toString() == this.nft.tokenID) {
+        console.log('match')
         this.canCollateralize = false
+        this.txPending = false
+        this.alert.showToast('Loan requested')
+        await this.loadLoanRequestForNFT(this.nft.nftContract, this.nft.tokenID)
+      } else {
+        console.log('no match')
       }
     })
   }

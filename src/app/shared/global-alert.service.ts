@@ -221,9 +221,17 @@ export class GlobalAlertService {
       header: 'Chedda XP earned',
       message: `You just earned ${amount} XP`,
       position: 'bottom',
-      duration: 5000
+      duration: 3000
     })
 
+    await toast.present()
+  }
+
+  async showToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 3000
+    })
     await toast.present()
   }
 

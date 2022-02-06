@@ -39,6 +39,7 @@ export class CheddaLoanManagerService {
       CheddaLoanManager.abi,
       provider.provider
       );
+      this.registerEventListeners()
   }
 
   async requestLoan(nftAddress: string, tokenId: string, amount: string, duration: number) {

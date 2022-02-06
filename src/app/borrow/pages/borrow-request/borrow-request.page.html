@@ -148,7 +148,7 @@
           </ion-row>
           <ion-row>
             <ion-col>
-              <ion-button expand="block" color="light" (click)="onGetLoanClicked()">Get a Loan</ion-button>
+              <ion-button expand="block" color="light" (click)="onGetLoanClicked()" [disabled]="txPending">Get a Loan</ion-button>
             </ion-col>
           </ion-row>
         </div>

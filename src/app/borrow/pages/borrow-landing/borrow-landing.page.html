@@ -46,11 +46,6 @@
         </ion-select>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="loans.length == 0 && pendingLoans.length == 0">
-      <ion-col class="centered-content">
-        <ion-text><h2>You do not have any loans</h2></ion-text>
-      </ion-col>
-    </ion-row>
 
     <div *ngIf="filter === 'pending'">
       <div *ngIf="pendingLoans.length">
@@ -102,6 +97,11 @@
           <ion-col></ion-col>
         </ion-row>
       </div>
+      <ion-row *ngIf="loans.length == 0 && pendingLoans.length == 0">
+        <ion-col class="centered-content">
+          <ion-text>You do not have any open loans requests</ion-text>
+        </ion-col>
+      </ion-row>
     </div> <!-- filter === 'pending'-->
 
     <div *ngIf="filter !== 'pending'">
@@ -155,8 +155,10 @@
         </ion-row>
       </div>
 
-      <ion-row *ngIf="loans.length == 0" class="no-items-row">
-        <ion-col class="centered-content no-items-text">No items found</ion-col>
+      <ion-row *ngIf="loans.length == 0">
+        <ion-col class="centered-content">
+          <ion-text>You do not have any loans</ion-text>
+        </ion-col>
       </ion-row>
     </div> <!-- filter !== 'pending'-->
     

@@ -93,7 +93,7 @@
           </ion-row>
           <ion-row>
             <ion-col>
-              <ion-button #buyButton [disabled]="txPending" (click)="onLendButtonClicked()" expand="block" color="dark">Lend {{request.amount | formatEth}} {{currency}}</ion-button>
+              <ion-button #buyButton [disabled]="txPending || iAmRequestor" (click)="onLendButtonClicked()" expand="block" color="dark">Lend {{request.amount | formatEth}} {{currency}}</ion-button>
             </ion-col>
           </ion-row>
           <ion-row>
@@ -117,22 +117,7 @@
               </ion-text>
             </ion-col>
           </ion-row>
-          <ion-row>
-            <ion-col>
-              <ion-button expand="block" color="light" (click)="onGetLoanClicked()">Get a Loan</ion-button>
-            </ion-col>
-          </ion-row>
         </div>
-        <ion-row *ngIf="!iAmOwner">
-          <ion-col>
-            <ion-button *ngIf="listingExists" #buyButton [disabled]="txPending">{{priceString}}</ion-button>
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="iAmOwner">
-          <ion-col>
-            <ion-button *ngIf="!listingExists" color="light" (click)="onGetLoanClicked()">Get a Loan</ion-button>
-          </ion-col>
-        </ion-row>
       </ion-col>
     </ion-row>
   </ion-grid>
