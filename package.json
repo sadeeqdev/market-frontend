@@ -8,6 +8,7 @@
     "start": "ng serve",
     "build": "ng build",
     "dev": "ng build --configuration testnet.hardhat",
+    "build.testnet.avalanche": "ng build --configuration testnet.avalanche",
     "build.testnet.polygon": "ng build --configuration testnet.polygon",
     "build.testnet.harmony": "ng build --configuration testnet.harmony",
     "build.testnet.hardhat": "ng build --configuration testnet.hardhat",
