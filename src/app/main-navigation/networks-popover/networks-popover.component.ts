@@ -10,15 +10,21 @@ export class NetworksPopoverComponent implements OnInit {
 
   networkList = [
     {
-      name: 'Harmony Testnet',
-      url: 'https://testnet-harmony.chedda.store',
-      icon: '/assets/logos/harmony-logo.png'
+      name: 'Avalanche Testnet',
+      url: 'https://testnet-avalanche.chedda.store',
+      icon: '/assets/logos/avalanche-avax-logo.png'
     },
     {
       name: 'Polygon Testnet',
       url: 'https://testnet-polygon.chedda.store',
       icon: '/assets/logos/polygon-logo.svg'
     },
+    {
+      name: 'Harmony Testnet',
+      url: 'https://testnet-harmony.chedda.store',
+      icon: '/assets/logos/harmony-logo.png'
+    },
+
   ]
   constructor(private popoverController: PopoverController) { }
 
