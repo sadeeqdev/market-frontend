@@ -150,5 +150,13 @@ export class CheddaLoanManagerService {
         amount
       })
     })
+
+    this.loanManagerContract.on('LoanForeclosed', async(loanId, borrower, lender) => {
+      this.loanForeclosedSubject?.next({
+        loanId,
+        borrower,
+        lender
+      })
+    })
   }
 }

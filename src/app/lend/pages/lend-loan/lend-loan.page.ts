@@ -2,12 +2,14 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonButton, NavController } from '@ionic/angular';
 import { ethers } from 'ethers';
+import moment from 'moment';
 import { Subscription } from 'rxjs';
 import { CheddaLoanManagerService } from 'src/app/contracts/chedda-loan-manager.service';
 import { CheddaMarketService } from 'src/app/contracts/chedda-market.service';
 import { MarketExplorerService } from 'src/app/contracts/market-explorer.service';
 import { PriceConsumerService } from 'src/app/contracts/price-consumer.service';
 import { NFT } from 'src/app/nfts/models/nft.model';
+import { GlobalAlertService } from 'src/app/shared/global-alert.service';
 import { environment } from 'src/environments/environment';
 import { Loan, LoanRequest } from '../../lend.models';
 
@@ -35,6 +37,7 @@ export class LendLoanPage implements OnInit, OnDestroy {
 
   private routeSubscription?: Subscription
   private loanSubscription?: Subscription
+  private forecloseSubscription?: Subscription
 
   constructor(
     private route: ActivatedRoute,
@@ -43,6 +46,7 @@ export class LendLoanPage implements OnInit, OnDestroy {
     private marketExplorer: MarketExplorerService,
     private loanManager: CheddaLoanManagerService,
     private priceConsumer: PriceConsumerService,
+    private alert: GlobalAlertService,
   ) { }
 
   ngOnInit() {
@@ -52,10 +56,15 @@ export class LendLoanPage implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.routeSubscription?.unsubscribe()
     this.loanSubscription?.unsubscribe()
+    this.forecloseSubscription?.unsubscribe()
   }
 
-  foreclose() {
-
+  async foreclose() {
+    try {
+      await this.loanManager.forecloseLoan(this.loan.loanID)
+    } catch (error) {
+      this.alert.showErrorAlert(error)
+    }
   }
 
   private async registerRouteSubscription() {
@@ -73,6 +82,9 @@ export class LendLoanPage implements OnInit, OnDestroy {
         this.loan = loan
         this.loanAmountUSD = this.priceConsumer.toUSD(ethers.utils.formatEther(loan.principal), usdRate, 2)
         this.loanRepaymentUSD = this.priceConsumer.toUSD(ethers.utils.formatEther(loan.repaymentAmount), usdRate, 2)
+        const expiryDate = moment.unix(loan.expiresAt.toNumber())
+        console.log('expiry date = ', expiryDate)
+        this.canForeclose = expiryDate < moment()
       } catch (error) {
         console.error('error getting nft from loan request: ', error)
         this.navController.navigateBack('/lend')
@@ -81,8 +93,16 @@ export class LendLoanPage implements OnInit, OnDestroy {
 
     this.loanSubscription = this.loanManager.loanOpenedSubject?.subscribe(result => {
       console.log('loanSubscription got: ', result)
-      if (result.requestID == this.loan.loanID) {
+      if (result.requestID.eq(this.loan.loanID)) {
         this.showLoanOpenedAlert()
+      }
+    })
+
+    this.forecloseSubscription = this.loanManager.loanForeclosedSubject?.subscribe(result => {
+      if (result.loanID.eq(this.loan.loanID)) {
+        this.txPending = false
+        this.canForeclose = false
+        this.alert.showToast('Loan Foreclosed. This NFT has been transferred to your account.')
       }
     })
   }
