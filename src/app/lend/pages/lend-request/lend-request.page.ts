@@ -68,7 +68,9 @@ export class LendRequestPage implements OnInit, OnDestroy {
         const usdRate = await this.priceConsumer.latestPriceUSD()
         const loanRequest = await this.loanManager.getLoanRequestById(requestID)
         this.nft = await this.marketExplorer.assembleNFT(loanRequest.nftContract, loanRequest.tokenID.toString())
-        this.iAmRequestor = loanRequest.borrower.toLowerCase() == this.wallet.currentAccount.toLowerCase()
+        if (this.wallet.currentAccount) { 
+          this.iAmRequestor = loanRequest.borrower.toLowerCase() == this.wallet.currentAccount.toLowerCase()
+        }
         this.request = loanRequest
         this.requestAmountUSD = this.priceConsumer.toUSD(ethers.utils.formatEther(loanRequest.amount), usdRate, 2)
         this.requestRepaymentUSD = this.priceConsumer.toUSD(ethers.utils.formatEther(loanRequest.repayment), usdRate, 2)
