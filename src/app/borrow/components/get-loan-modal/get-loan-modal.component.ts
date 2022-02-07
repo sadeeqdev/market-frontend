@@ -31,7 +31,7 @@ export class GetLoanModalComponent implements OnInit {
     7,
     14,
     30,
-    365
+    90,
   ]
   constructor(
     private modalController: ModalController,
@@ -115,6 +115,10 @@ export class GetLoanModalComponent implements OnInit {
     try {
       let loanAmount = this.loanForm.get('amount').value
       console.log('loanAmount = ', loanAmount)
+      if (!loanAmount) {
+        this.globalAlert.showToast('Enter a loan value first')
+        return
+      }
       loanAmount= ethers.utils.parseEther(loanAmount.toString())
       let term: number = this.loanForm.get('duration').value   
       term = term * this.SECONDS_IN_DAY

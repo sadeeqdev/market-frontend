@@ -11,7 +11,7 @@ import { NFT } from 'src/app/nfts/models/nft.model';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
 import { environment } from 'src/environments/environment';
-import { LoanRequest } from '../../lend.models';
+import { LoanRequest, LoanRequestState } from '../../lend.models';
 
 @Component({
   selector: 'app-lend-request',
@@ -24,7 +24,7 @@ export class LendRequestPage implements OnInit, OnDestroy {
   numberOfLikes
 
   txPending = false
-  canCollateralize = false
+  loanIsOpen = false
   env = environment
   request?: LoanRequest
   iAmRequestor = false
@@ -80,7 +80,9 @@ export class LendRequestPage implements OnInit, OnDestroy {
 
     this.loanSubscription = this.loanManager.loanOpenedSubject?.subscribe(result => {
       console.log('loanSubscription got: ', result)
-      if (result.requestID == this.request.requestID) {
+      console.log('result.requestID <> this.requestID: ', result.requestID, this.request?.requestID)
+      if (result.requestID.eq(this.request.requestID)) {
+        this.request.state = LoanRequestState.accepted
         this.showLoanOpenedAlert()
       }
     })

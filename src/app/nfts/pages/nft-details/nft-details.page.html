@@ -35,14 +35,14 @@
             </ion-text>
           </ion-col>
         </ion-row>
-        <ion-row>
+        <ion-row *ngIf="listingExists">
           <ion-col>
             <ion-label class="section-title">
               Current Price
             </ion-label>
           </ion-col>
         </ion-row>
-        <ion-row>
+        <ion-row *ngIf="listingExists">
           <ion-col *ngIf="priceString">
            <ion-text class="price-string">{{ priceString }}</ion-text> <ion-text class="usd-value"> (${{usdPrice}})</ion-text>
           </ion-col>
@@ -54,8 +54,8 @@
         </ion-row>
         <ion-row *ngIf="iAmOwner">
           <ion-col>
-            <ion-button *ngIf="listingExists" [disabled]="txPending" (click)="onCancelListingClicked()">Cancel Listing</ion-button>
-            <ion-button *ngIf="!listingExists" [disabled]="txPending" (click)="presentAlertPrompt()">List For Sale</ion-button>
+            <ion-button *ngIf="listingExists" [disabled]="txPending" (click)="onCancelListingClicked()" expand="block">Cancel Listing</ion-button>
+            <ion-button *ngIf="!listingExists" [disabled]="txPending" (click)="presentAlertPrompt()" expand="block">List For Sale</ion-button>
           </ion-col>
         </ion-row>
         

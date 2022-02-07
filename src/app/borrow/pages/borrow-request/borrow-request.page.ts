@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonButton, NavController, ToastController, ModalController, AlertController, LoadingController } from '@ionic/angular';
 import { BigNumber, ethers } from 'ethers';
@@ -20,7 +20,7 @@ import { GetLoanModalComponent } from '../../components/get-loan-modal/get-loan-
   templateUrl: './borrow-request.page.html',
   styleUrls: ['./borrow-request.page.scss'],
 })
-export class BorrowRequestPage implements OnInit {
+export class BorrowRequestPage implements OnInit, OnDestroy {
 
   @ViewChild('buyButton') buyButton: IonButton
   priceString = ''
@@ -46,6 +46,8 @@ export class BorrowRequestPage implements OnInit {
   private routeSubscription?: Subscription
   private accountSubscription?: Subscription
   private requestCancelledSubscription?: Subscription
+  private loanRequestSubscription?: Subscription
+  private loanRepaidSubscription?: Subscription
 
   constructor(
     private route: ActivatedRoute,
@@ -62,7 +64,7 @@ export class BorrowRequestPage implements OnInit {
     ) { }
 
   async ngOnInit() {
-    this.currency = environment.config.networkParams.nativeCurrency.name
+    this.currency = environment.config.networkParams.nativeCurrency.symbol
     this.usdRate = await this.priceConsumer.latestPriceUSD()
     await this.subscribeToRouteChanges()
     await this.registerEventListeners()
@@ -71,7 +73,9 @@ export class BorrowRequestPage implements OnInit {
   ngOnDestroy(): void {
       this.routeSubscription?.unsubscribe()
       this.accountSubscription?.unsubscribe()
-      this.requestCancelledSubscription?.unsubscribe
+      this.requestCancelledSubscription?.unsubscribe()
+      this.loanRequestSubscription?.unsubscribe()
+      this.loanRepaidSubscription?.unsubscribe()
   }
 
   async onCancelRequest() {
@@ -131,7 +135,15 @@ export class BorrowRequestPage implements OnInit {
       return
     } 
 
-    await this.loanManager.repayLoan(this.loan.loanID, this.loan.repaymentAmount)
+    try {
+      
+      this.txPending = true
+      await this.loanManager.repayLoan(this.loan.loanID, this.loan.repaymentAmount)
+    } catch (error) {
+      this.txPending = false
+      this.alert.showErrorAlert(error)
+    }
+      
   }
 
   private async subscribeToRouteChanges() {
@@ -206,7 +218,7 @@ export class BorrowRequestPage implements OnInit {
   }
 
   private registerEventListeners() {
-    this.loanManager.requestCancelledSubject?.subscribe((event) => {
+    this.requestCancelledSubscription = this.loanManager.requestCancelledSubject?.subscribe((event) => {
       console.log('got cancel event: ', event)
       console.log('event.requestId, request.requestID: ', event.requestId, this.request.requestID)
       if (this.request && event.requestId.eq(this.request.requestID)) {
@@ -219,7 +231,7 @@ export class BorrowRequestPage implements OnInit {
       }
     })
 
-    this.loanManager.loanRequestSubject?.subscribe(async event => {
+    this.loanRequestSubscription = this.loanManager.loanRequestSubject?.subscribe(async event => {
       console.log('event.tokenID, nft.tokenID: ', event.tokenID, this.nft.tokenID)
       console.log('event.contractAddress, this.nft.nftContract: ', event.contractAddress, this.nft.nftContract)
       if (event.contractAddress == this.nft.nftContract && event.tokenID.toString() == this.nft.tokenID) {
@@ -230,6 +242,14 @@ export class BorrowRequestPage implements OnInit {
         await this.loadLoanRequestForNFT(this.nft.nftContract, this.nft.tokenID)
       } else {
         console.log('no match')
+      }
+    })
+
+    this.loanRepaidSubscription = this.loanManager.loanRepaidSubject?.subscribe(async event => {
+      console.log(' event.loanID <> this.loanID: ', event.loanID, this.loan ? this.loan.loanID : '')
+      if (this.loan && event.loanID.eq(this.loan.loanID)) {
+        this.txPending = false
+        this.alert.showToast('Loan Repaid')
       }
     })
   }

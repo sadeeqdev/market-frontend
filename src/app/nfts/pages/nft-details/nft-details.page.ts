@@ -29,6 +29,7 @@ export class NftDetailsPage implements OnInit, OnDestroy {
   account
 
   listingExists = false
+  currentListing
   iAmOwner = false
   txPending = false
   usdPrice?: string
@@ -65,38 +66,49 @@ export class NftDetailsPage implements OnInit, OnDestroy {
   }
 
   async onBuyButtonClicked() {
-    if (this.wallet.isConnected()) {
-      const hasSufficient = await this.wallet.balanceIsOver(this.nft.price)
-      if (hasSufficient) {
-        this.txPending = true
-        let result = await this.market.buyItem(this.nft)
-        if (result && result.hash) {
-          this.alert.showPurchaseConfirmationAlert(result.hash)
+    try {
+      if (this.wallet.isConnected()) {
+        const hasSufficient = await this.wallet.balanceIsOver(this.nft.price)
+        if (hasSufficient) {
+          this.txPending = true
+          let result = await this.market.buyItem(this.nft)
+          if (result && result.hash) {
+            this.alert.showPurchaseConfirmationAlert(result.hash)
+          } else {
+            this.txPending = false
+          }
         } else {
-          this.txPending = false
+          this.alert.showInsufficientBalanceAlert()
         }
       } else {
-        this.alert.showInsufficientBalanceAlert()
+        // show error
+        this.txPending = false
+        this.alert.showConnectAlert()
       }
-    } else {
-      // show error
+    } catch (error) {
+      this.alert.showErrorAlert(error)
       this.txPending = false
-      this.alert.showConnectAlert()
     }
   }
 
   async onCancelListingClicked() {
-    if (this.wallet.isConnected) {
-      this.txPending = true
-      let result = await this.market.cancelListing(this.nft)
-      if (result) {
-        this.showToast('Listing Cancelled', 'Your listing has been cancled')
+    try {
+      if (this.wallet.isConnected) {
+        this.txPending = true
+        let result = await this.market.cancelListing(this.nft)
+        if (result) {
+          this.showToast('Listing Cancelled', 'Your listing has been cancelled')
+        } else {
+          this.txPending = false
+        }
       } else {
-        this.txPending = false
+        this.alert.showConnectAlert()
       }
-    } else {
-      this.alert.showConnectAlert()
+    } catch (error) {
+      this.alert.showErrorAlert(error)
+      this.txPending = false
     }
+
   }
 
   async presentAlertPrompt() {
@@ -195,8 +207,8 @@ export class NftDetailsPage implements OnInit, OnDestroy {
         }
         this.nft = await this.explorer.loadMarketItem(address, tokenID)
         await this.checkListing()
-        this.setPrice()
-        this.loadLikes()
+        await this.setPrice()
+        await this.loadLikes()
 
         this.subscribeToAccountChanges()
       } catch (error) {
@@ -217,28 +229,29 @@ export class NftDetailsPage implements OnInit, OnDestroy {
     this.itemListingSubscription = this.market.itemListedSubject.subscribe(async result => {
       if (result.contractAddress == this.nft.nftContract) {
         this.txPending = false
-        this.checkListing()
+        await this.checkListing()
+        await this.setPrice()
       }
     })
 
     this.itemSoldSubscription = this.market.itemSoldSubject.subscribe(async result => {
       if (result.contractAddress == this.nft.nftContract) {
         this.txPending = false
-        this.checkListing()
-        this.checkOwner()
+        await this.checkListing()
+        await this.checkOwner()
       }
     })
 
     this.listingCancelledSubscription = this.market.listingCancelledSubject.subscribe(async result => {
       if (result.contractAddress == this.nft.nftContract) {
         this.txPending = false
-        this.checkListing()
+        await this.checkListing()
       }
     })
   }
 
   private async setPrice() {
-    let price = ethers.utils.formatEther(this.nft.price)
+    let price = ethers.utils.formatEther(this.currentListing.price)
     console.log('ethPrice = ', price)
     let usdRate = await this.priceConsumer.latestPriceUSD()
     this.usdPrice = this.priceConsumer.toUSD(price, usdRate, 2)
@@ -252,6 +265,8 @@ export class NftDetailsPage implements OnInit, OnDestroy {
 
   private async checkListing() {
     let listing = await this.market.listingForItem(this.nft.nftContract, this.nft.tokenID)
+    console.log('listing = ', listing)
+    this.currentListing = listing
     this.listingExists = listing.nftContract !== ZeroAddress
   }
 

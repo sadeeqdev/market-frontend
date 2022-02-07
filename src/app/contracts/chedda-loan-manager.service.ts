@@ -31,6 +31,7 @@ export class CheddaLoanManagerService {
   requestCancelledSubject?: Subject<any> = new Subject()
   loanRequestSubject?: Subject<any> = new Subject()
   loanOpenedSubject?: Subject<any> = new Subject()
+  loanRepaidSubject?: Subject<any> = new Subject()
   loanForeclosedSubject?: Subject<any> = new Subject()
 
   constructor(provider: DefaultProviderService, private wallet: WalletProviderService, private http: HttpClient) {
@@ -147,6 +148,15 @@ export class CheddaLoanManagerService {
         lender,
         borrower,
         requestID,
+        amount
+      })
+    })
+
+    this.loanManagerContract.on('LoanRepaid', async (loanID, borrower, lender, amount) => {
+      this.loanRepaidSubject?.next({
+        loanID,
+        borrower,
+        lender,
         amount
       })
     })
