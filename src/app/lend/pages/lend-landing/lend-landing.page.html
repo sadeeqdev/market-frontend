@@ -46,7 +46,7 @@
                   </ion-row>
                 </ion-col>
                 <ion-col size="2" class="loan-content">{{ request.amount |formatEth }} {{ currency }}</ion-col>
-                <ion-col size="3" class="loan-content">{{ request.repayment | formatEth }} {{ currency }}</ion-col>
+                <ion-col size="3" class="loan-content">{{ request.repayment | formatEth | rounding:[4] }} {{ currency }}</ion-col>
                 <ion-col size="3" class="loan-content">{{ request.loanLength.div(86400)  + ' days'}}</ion-col>
               </ion-row>
             </ion-card-content>
@@ -94,7 +94,7 @@
                   </ion-row>
                 </ion-col>
                 <ion-col size="2" class="loan-content">{{ loan.principal | formatEth}} {{ currency }}</ion-col>
-                <ion-col size="3" class="loan-content">{{ loan.repaymentAmount |formatEth }} {{ currency }}</ion-col>
+                <ion-col size="3" class="loan-content">{{ loan.repaymentAmount |formatEth | rounding:[4]}} {{ currency }}</ion-col>
                 <ion-col size="3" class="loan-content"> {{ loan.expiresAt.mul(1000).toString() | date}}</ion-col>
               </ion-row>
             </ion-card-content>

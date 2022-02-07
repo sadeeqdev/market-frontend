@@ -71,6 +71,7 @@
             </ion-col>
             <ion-col>
               <ion-text class="loan-value">{{ this.request.amount | formatEth }} {{ currency | uppercase}}</ion-text>
+              <ion-text class="usd-value"> (${{requestAmountUSD }})</ion-text>
             </ion-col>
           </ion-row> 
   
@@ -79,7 +80,8 @@
               <ion-text class="loan-label">Repayment Amount</ion-text>
             </ion-col>
             <ion-col>
-              <ion-text class="loan-value">{{ this.request.repayment | formatEth }} {{ currency | uppercase}}</ion-text>
+              <ion-text class="loan-value">{{ this.request.repayment | formatEth | rounding:[4] }} {{ currency | uppercase}}</ion-text>
+              <ion-text class="usd-value"> (${{requestRepaymentUSD }})</ion-text>
             </ion-col>
           </ion-row> 
   

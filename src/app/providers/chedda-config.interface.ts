@@ -10,6 +10,7 @@ export interface CheddaConfig {
         CheddaRewards: string
         CheddaDropManager: string
         CheddaLoanManager: string
+        ChainlinkPriceConsumer: string
     }
     networkParams: NetworkParams
 }

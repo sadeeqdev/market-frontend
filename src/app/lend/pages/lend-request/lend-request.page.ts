@@ -1,10 +1,12 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonButton, NavController, ToastController, ModalController, AlertController } from '@ionic/angular';
+import { ethers } from 'ethers';
 import { Subscription } from 'rxjs';
 import { CheddaLoanManagerService } from 'src/app/contracts/chedda-loan-manager.service';
 import { CheddaMarketService } from 'src/app/contracts/chedda-market.service';
 import { MarketExplorerService } from 'src/app/contracts/market-explorer.service';
+import { PriceConsumerService } from 'src/app/contracts/price-consumer.service';
 import { NFT } from 'src/app/nfts/models/nft.model';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
@@ -27,6 +29,8 @@ export class LendRequestPage implements OnInit, OnDestroy {
   request?: LoanRequest
   iAmRequestor = false
   currency
+  requestAmountUSD
+  requestRepaymentUSD
 
   private routeSubscription?: Subscription
   private loanSubscription?: Subscription
@@ -39,6 +43,7 @@ export class LendRequestPage implements OnInit, OnDestroy {
     private market: CheddaMarketService,
     private marketExplorer: MarketExplorerService,
     private loanManager: CheddaLoanManagerService,
+    private priceConsumer: PriceConsumerService,
   ) { }
 
   ngOnInit() {
@@ -60,11 +65,14 @@ export class LendRequestPage implements OnInit, OnDestroy {
 
       try {
         const requestID = paramMap.get('requestId')
+        const usdRate = await this.priceConsumer.latestPriceUSD()
         const loanRequest = await this.loanManager.getLoanRequestById(requestID)
         this.nft = await this.marketExplorer.assembleNFT(loanRequest.nftContract, loanRequest.tokenID.toString())
         this.iAmRequestor = loanRequest.borrower.toLowerCase() == this.wallet.currentAccount.toLowerCase()
         console.log(`borrower ${loanRequest.borrower} <=> ${this.wallet.currentAccount}\niAmRequestor = ${this.iAmRequestor}`)
         this.request = loanRequest
+        this.requestAmountUSD = this.priceConsumer.toUSD(ethers.utils.formatEther(loanRequest.amount), usdRate, 2)
+        this.requestRepaymentUSD = this.priceConsumer.toUSD(ethers.utils.formatEther(loanRequest.repayment), usdRate, 2)
       } catch (error) {
         console.error('error getting nft from loan request: ', error)
         this.navController.navigateBack('/lend')

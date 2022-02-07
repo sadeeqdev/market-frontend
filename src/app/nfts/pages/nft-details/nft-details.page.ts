@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AlertController, IonButton, ModalController, NavController, ToastController } from '@ionic/angular';
-import { ethers } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import { Subscription } from 'rxjs';
 import { NftLikeModalComponent } from 'src/app/components/nft-like-modal/nft-like-modal.component';
 import { CheddaMarketService } from 'src/app/contracts/chedda-market.service';
@@ -12,6 +12,8 @@ import { GlobalAlertService } from 'src/app/shared/global-alert.service';
 import { NFT } from '../../models/nft.model';
 import { environment } from 'src/environments/environment';
 import { GetLoanModalComponent } from 'src/app/borrow/components/get-loan-modal/get-loan-modal.component';
+import { PriceConsumerService } from 'src/app/contracts/price-consumer.service';
+import { EthFormattingPipe } from 'src/app/pipes/eth-formatting.pipe';
 
 @Component({
   selector: 'app-nft-details',
@@ -29,6 +31,7 @@ export class NftDetailsPage implements OnInit, OnDestroy {
   listingExists = false
   iAmOwner = false
   txPending = false
+  usdPrice?: string
   env = environment
 
   private routeSubscription?: Subscription
@@ -46,7 +49,8 @@ export class NftDetailsPage implements OnInit, OnDestroy {
     private wallet: WalletProviderService,
     private alert: GlobalAlertService,
     private market: CheddaMarketService,
-    private explorer: MarketExplorerService) { }
+    private explorer: MarketExplorerService,
+    private priceConsumer: PriceConsumerService,) { }
 
   async ngOnInit() {
     await this.subscribeToRouteChanges()
@@ -233,10 +237,13 @@ export class NftDetailsPage implements OnInit, OnDestroy {
     })
   }
 
-  private setPrice() {
+  private async setPrice() {
     let price = ethers.utils.formatEther(this.nft.price)
+    console.log('ethPrice = ', price)
+    let usdRate = await this.priceConsumer.latestPriceUSD()
+    this.usdPrice = this.priceConsumer.toUSD(price, usdRate, 2)
     let currency = this.env.config.networkParams.nativeCurrency.symbol
-    this.priceString = `BUY for ${price} ${currency}`
+    this.priceString = `${price} ${currency}`
   }
 
   private async loadLikes() {
@@ -285,6 +292,17 @@ export class NftDetailsPage implements OnInit, OnDestroy {
     })
 
     await toast.present() 
+  }
+
+  private async getUSDPrice() {
+    try {
+      const rate = await this.priceConsumer.latestPriceUSD()
+      // this.usdPrice = 
+      let ethPrice = ethers.utils.formatEther(this.nft.price)
+      console.log('ethPrice = ', ethPrice)
+    } catch (error) {
+      console.error('caught error : ', error)
+    }
   }
 
   private async showListingConfirmationToast() {

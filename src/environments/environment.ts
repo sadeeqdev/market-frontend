@@ -16,6 +16,7 @@ export const environment = {
           CheddaRewards: '',
           CheddaDropManager: '',
           CheddaLoanManager: '',
+          ChainlinkPriceConsumer: '',
         },
         networkParams: {
           chainId: '',

@@ -53,3 +53,15 @@ ion-img.nft-image::part(image) {
     font-weight: 700;
     color: var(--ion-color-dark);
 }
+
+.price-string {
+    font-weight: 700;
+    font-size: 1.2em;
+    color: var(--ion-color-contrast);
+}
+
+.usd-value {
+    font-weight: 500;
+    font-size: 1em;
+    color: var(--ion-color-medium);
+}

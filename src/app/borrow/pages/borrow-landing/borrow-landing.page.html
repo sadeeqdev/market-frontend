@@ -85,7 +85,7 @@
                     {{ pending.amount | formatEth }} {{ currency | uppercase }}
                   </ion-col>
                   <ion-col size="3" class="loan-info-col loan-content">
-                    {{ pending.repayment | formatEth }} {{ currency | uppercase }}
+                    {{ pending.repayment | formatEth | rounding:[4]}} {{ currency | uppercase }}
                   </ion-col>
                   <ion-col size="3" class="loan-info-col loan-content">
                     {{ pending.loanLength / 86400 + ' days' }}
@@ -138,7 +138,7 @@
                     {{ loan.principal | formatEth }} {{ currency | uppercase }}
                   </ion-col>
                   <ion-col size="3" class="loan-info-col loan-content">
-                    {{ loan.repaymentAmount | formatEth }} {{ currency | uppercase }}
+                    {{ loan.repaymentAmount | formatEth | rounding:[4] }} {{ currency | uppercase }}
                   </ion-col>
                   <ion-col size="3" class="loan-info-col loan-content">
                     <ion-text *ngIf="filter === 'open'">

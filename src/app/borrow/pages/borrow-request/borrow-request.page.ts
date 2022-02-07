@@ -1,16 +1,16 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonButton, NavController, ToastController, ModalController, AlertController, LoadingController } from '@ionic/angular';
-import { BigNumber } from 'ethers';
-import { from, Subscription } from 'rxjs';
+import { BigNumber, ethers } from 'ethers';
+import { Subscription } from 'rxjs';
 import { NftLikeModalComponent } from 'src/app/components/nft-like-modal/nft-like-modal.component';
 import { CheddaLoanManagerService } from 'src/app/contracts/chedda-loan-manager.service';
 import { CheddaMarketService } from 'src/app/contracts/chedda-market.service';
 import { MarketExplorerService } from 'src/app/contracts/market-explorer.service';
+import { PriceConsumerService } from 'src/app/contracts/price-consumer.service';
 import { Loan, LoanRequest, LoanRequestState } from 'src/app/lend/lend.models';
 import { NFT } from 'src/app/nfts/models/nft.model';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
-import { ZeroAddress } from 'src/app/shared/constants';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
 import { environment } from 'src/environments/environment';
 import { GetLoanModalComponent } from '../../components/get-loan-modal/get-loan-modal.component';
@@ -37,6 +37,12 @@ export class BorrowRequestPage implements OnInit {
   loan?: Loan
   currency
 
+  requestAmountUSD
+  requestRepaymentUSD
+  loanAmountUSD
+  loanRepaymentUSD
+  usdRate
+
   private routeSubscription?: Subscription
   private accountSubscription?: Subscription
   private requestCancelledSubscription?: Subscription
@@ -52,10 +58,12 @@ export class BorrowRequestPage implements OnInit {
     private market: CheddaMarketService,
     private marketExplorer: MarketExplorerService,
     private loanManager: CheddaLoanManagerService,
+    private priceConsumer: PriceConsumerService,
     ) { }
 
   async ngOnInit() {
     this.currency = environment.config.networkParams.nativeCurrency.name
+    this.usdRate = await this.priceConsumer.latestPriceUSD()
     await this.subscribeToRouteChanges()
     await this.registerEventListeners()
   }
@@ -182,6 +190,8 @@ export class BorrowRequestPage implements OnInit {
     console.log('loanRequest = ', loanRequest)
     if (loanRequest && loanRequest.requestID && !loanRequest.requestID.isZero()) {
       this.request = loanRequest
+      this.requestAmountUSD = this.priceConsumer.toUSD(ethers.utils.formatEther(loanRequest.amount), this.usdRate, 2)
+      this.requestRepaymentUSD = this.priceConsumer.toUSD(ethers.utils.formatEther(loanRequest.repayment), this.usdRate, 2)
     }
   }
 
@@ -190,6 +200,8 @@ export class BorrowRequestPage implements OnInit {
     if (loan && loan.loanID && !loan.loanID.isZero()) {
       console.log('loan = ', loan)
       this.loan = loan
+      this.loanAmountUSD = this.priceConsumer.toUSD(ethers.utils.formatEther(this.loan.principal), this.usdRate, 2)
+      this.loanRepaymentUSD = this.priceConsumer.toUSD(ethers.utils.formatEther(this.loan.repaymentAmount), this.usdRate, 2)
     }
   }
 
