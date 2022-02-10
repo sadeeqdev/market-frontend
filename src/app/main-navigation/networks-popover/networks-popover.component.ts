@@ -15,16 +15,25 @@ export class NetworksPopoverComponent implements OnInit {
       icon: '/assets/logos/avalanche-avax-logo.png'
     },
     {
-      name: 'Polygon Testnet',
-      url: 'https://testnet-polygon.chedda.store',
-      icon: '/assets/logos/polygon-logo.svg'
-    },
-    {
       name: 'Harmony Testnet',
       url: 'https://testnet-harmony.chedda.store',
       icon: '/assets/logos/harmony-logo.png'
     },
-
+    {
+      name: 'IoTeX Testnet',
+      url: 'https://testnet-iotex.chedda.store',
+      icon: '/assets/logos/iotex-logo.png'
+    },
+    {
+      name: 'Oasis Testnet',
+      url: 'https://testnet-oasis.chedda.store',
+      icon: '/assets/logos/oasis-logo-sm.png'
+    },
+    {
+      name: 'Polygon Testnet',
+      url: 'https://testnet-polygon.chedda.store',
+      icon: '/assets/logos/polygon-logo.svg'
+    },
   ]
   constructor(private popoverController: PopoverController) { }
 

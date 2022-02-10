@@ -260,4 +260,7 @@ ion-card.main-card:hover {
 
 .asset-thumb {
   min-width: 40px;
+  &::part(image) {
+    border-radius: 2px;
+  }
 }

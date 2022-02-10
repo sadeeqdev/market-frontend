@@ -29,6 +29,7 @@ export class LendRequestPage implements OnInit, OnDestroy {
   request?: LoanRequest
   iAmRequestor = false
   currency
+  showUSDPrices = false
   requestAmountUSD
   requestRepaymentUSD
 
@@ -48,6 +49,7 @@ export class LendRequestPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.currency = environment.config.networkParams.nativeCurrency.symbol
+    this.showUSDPrices = this.priceConsumer.priceFeedExists
     this.registerRouteSubscription()
   }
 

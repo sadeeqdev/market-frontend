@@ -11,6 +11,8 @@
     "build.testnet.avalanche": "ng build --configuration testnet.avalanche",
     "build.testnet.polygon": "ng build --configuration testnet.polygon",
     "build.testnet.harmony": "ng build --configuration testnet.harmony",
+    "build.testnet.oasis": "ng build --configuration testnet.oasis",
+    "build.testnet.iotex": "ng build --configuration testnet.iotex",
     "build.testnet.hardhat": "ng build --configuration testnet.hardhat",
     "test": "ng test",
     "lint": "ng lint",

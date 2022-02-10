@@ -251,10 +251,12 @@ export class NftDetailsPage implements OnInit, OnDestroy {
   }
 
   private async setPrice() {
-    let price = ethers.utils.formatEther(this.currentListing.price)
+    const price = ethers.utils.formatEther(this.currentListing.price)
     console.log('ethPrice = ', price)
-    let usdRate = await this.priceConsumer.latestPriceUSD()
-    this.usdPrice = this.priceConsumer.toUSD(price, usdRate, 2)
+    const usdRate = await this.priceConsumer.latestPriceUSD()
+    if (usdRate) {
+      this.usdPrice = this.priceConsumer.toUSD(price, usdRate, 2)
+    }
     let currency = this.env.config.networkParams.nativeCurrency.symbol
     this.priceString = `${price} ${currency}`
   }
@@ -309,20 +311,10 @@ export class NftDetailsPage implements OnInit, OnDestroy {
     await toast.present() 
   }
 
-  private async getUSDPrice() {
-    try {
-      const rate = await this.priceConsumer.latestPriceUSD()
-      // this.usdPrice = 
-      let ethPrice = ethers.utils.formatEther(this.nft.price)
-      console.log('ethPrice = ', ethPrice)
-    } catch (error) {
-      console.error('caught error : ', error)
-    }
-  }
-
   private async showListingConfirmationToast() {
     await this.showToast('Item Listed', `Your item has been listed in the market.`)
   }
+
   async showInvalidPriceToast() {
     await this.showToast('Invalid Price', `Please enter a valid price to list this item.`)
   }

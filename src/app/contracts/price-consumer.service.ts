@@ -11,26 +11,42 @@ export class PriceConsumerService {
 
   priceConsumerContract
   numberOfDecimals = 7
+  priceFeedExists = false
 
   constructor(private provider: DefaultProviderService, wallet: WalletProviderService) {
-    this.priceConsumerContract = new ethers.Contract(
-      wallet.currentConfig.contracts.ChainlinkPriceConsumer,
-      ChainlinkPriceConsumer.abi,
-      provider.provider
-      );
+    const contractAddress = wallet.currentConfig.contracts.ChainlinkPriceConsumer
+    if (contractAddress) {
+      this.priceConsumerContract = new ethers.Contract(
+        contractAddress,
+        ChainlinkPriceConsumer.abi,
+        provider.provider
+        );
+        this.priceFeedExists = true
+        console.log('******************* Price feed exists')
+    } else {
+      console.log('********************* No price feed')
     }
+  }
 
-    async latestPriceRaw(): Promise<BigNumber> {
+  async latestPriceRaw(): Promise<BigNumber | null> {
+    if (this.priceConsumerContract) {
       return await this.priceConsumerContract.getLatestPrice()
+    } else {
+      return null
     }
+  }
 
-    async latestPriceUSD(): Promise<number> {
-      const priceRaw = await this.latestPriceRaw()
-     return (priceRaw.div(10**6).toNumber()/100)
+  async latestPriceUSD(): Promise<number | null> {
+    const priceRaw = await this.latestPriceRaw()
+    if (priceRaw) {
+      return (priceRaw.div(10**6).toNumber()/100)
+    } else {
+      return null
     }
+  }
 
-    toUSD(price: string, usdRate: number, decimals: number): string {
-      const usdPrice = (Number(price) * usdRate).toFixed(decimals)
-      return usdPrice
-    }
+  toUSD(price: string, usdRate: number, decimals: number): string {
+    const usdPrice = (Number(price) * usdRate).toFixed(decimals)
+    return usdPrice
+  }
 }

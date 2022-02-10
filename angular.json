@@ -89,6 +89,22 @@
                 }
               ]
             },
+            "testnet.oasis": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.testnet.oasis.ts"
+                }
+              ]
+            },
+            "testnet.iotex": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.testnet.iotex.ts"
+                }
+              ]
+            },
             "testnet.hardhat": {
               "fileReplacements": [
                 {
@@ -132,6 +148,12 @@
             },
             "testnet.harmony": {
               "browserTarget": "app:build:testnet.harmony"
+            },
+            "testnet.oasis": {
+              "browserTarget": "app:build:testnet.oasis"
+            },
+            "testnet.iotex": {
+              "browserTarget": "app:build:testnet.iotex"
             },
             "testnet.hardhat": {
               "browserTarget": "app:build:testnet.hardhat"
