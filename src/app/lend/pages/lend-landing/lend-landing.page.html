@@ -14,7 +14,7 @@
     </ion-col>
   </ion-row>
   <div *ngIf="currentSegment == 'requests'">
-    <div *ngIf="loanRequests.length > 0">
+    <div *ngIf="loanRequests && loanRequests.length > 0">
       <ion-row class="loans-header">
         <ion-col size="4">Asset</ion-col>
         <ion-col size="2">Amount</ion-col>
@@ -55,7 +55,7 @@
         </ion-col>
       </ion-row>
     </div>
-    <ion-row *ngIf="loanRequests.length == 0">
+    <ion-row *ngIf="loanRequests == null || loanRequests.length == 0">
       <ion-col class="centered-content">
         <ion-text class="centered-text"> There are no open loan requests</ion-text></ion-col>
     </ion-row>

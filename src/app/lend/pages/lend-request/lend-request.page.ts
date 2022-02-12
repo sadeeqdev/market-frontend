@@ -82,9 +82,7 @@ export class LendRequestPage implements OnInit, OnDestroy {
       }
     })
 
-    this.loanSubscription = this.loanManager.loanOpenedSubject?.subscribe(result => {
-      console.log('loanSubscription got: ', result)
-      console.log('result.requestID <> this.requestID: ', result.requestID, this.request?.requestID)
+    this.loanSubscription = this.loanManager.loanOpenedEventSubject?.subscribe(result => {
       if (result.requestID.eq(this.request.requestID)) {
         this.request.state = LoanRequestState.accepted
         this.showLoanOpenedAlert()

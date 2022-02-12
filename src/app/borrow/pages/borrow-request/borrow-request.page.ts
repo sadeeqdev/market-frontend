@@ -50,12 +50,12 @@ export class BorrowRequestPage implements OnInit, OnDestroy {
   private loanRepaidSubscription?: Subscription
 
   constructor(
+    public wallet: WalletProviderService,
     private route: ActivatedRoute,
     private navController: NavController,
     private toastController: ToastController,
     private modalController: ModalController,
     private alertController: AlertController,
-    private wallet: WalletProviderService,
     private alert: GlobalAlertService,
     private market: CheddaMarketService,
     private marketExplorer: MarketExplorerService,
@@ -218,7 +218,7 @@ export class BorrowRequestPage implements OnInit, OnDestroy {
   }
 
   private registerEventListeners() {
-    this.requestCancelledSubscription = this.loanManager.requestCancelledSubject?.subscribe((event) => {
+    this.requestCancelledSubscription = this.loanManager.loanRequestCancelledEventSubject?.subscribe((event) => {
       console.log('got cancel event: ', event)
       console.log('event.requestId, request.requestID: ', event.requestId, this.request.requestID)
       if (this.request && event.requestId.eq(this.request.requestID)) {
@@ -231,7 +231,7 @@ export class BorrowRequestPage implements OnInit, OnDestroy {
       }
     })
 
-    this.loanRequestSubscription = this.loanManager.loanRequestSubject?.subscribe(async event => {
+    this.loanRequestSubscription = this.loanManager.loanRequestedEventSubject?.subscribe(async event => {
       console.log('event.tokenID, nft.tokenID: ', event.tokenID, this.nft.tokenID)
       console.log('event.contractAddress, this.nft.nftContract: ', event.contractAddress, this.nft.nftContract)
       if (event.contractAddress == this.nft.nftContract && event.tokenID.toString() == this.nft.tokenID) {
@@ -245,7 +245,7 @@ export class BorrowRequestPage implements OnInit, OnDestroy {
       }
     })
 
-    this.loanRepaidSubscription = this.loanManager.loanRepaidSubject?.subscribe(async event => {
+    this.loanRepaidSubscription = this.loanManager.loanRepaidEventSubject?.subscribe(async event => {
       console.log(' event.loanID <> this.loanID: ', event.loanID, this.loan ? this.loan.loanID : '')
       if (this.loan && event.loanID.eq(this.loan.loanID)) {
         this.txPending = false

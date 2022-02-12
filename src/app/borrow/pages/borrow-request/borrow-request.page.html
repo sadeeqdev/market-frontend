@@ -92,7 +92,7 @@
           </ion-row>
           <ion-row>
             <ion-col>
-              <ion-button #buyButton [disabled]="txPending" (click)="onCancelRequest()" expand="block" color="dark">Cancel Request</ion-button>
+              <ion-button *ngIf="request.borrower.toLowerCase() == wallet.currentAccount.toLowerCase()" #buyButton [disabled]="txPending" (click)="onCancelRequest()" expand="block" color="dark">Cancel Request</ion-button>
             </ion-col>
           </ion-row>
         </div>

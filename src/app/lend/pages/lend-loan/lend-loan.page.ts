@@ -91,14 +91,14 @@ export class LendLoanPage implements OnInit, OnDestroy {
       }
     })
 
-    this.loanSubscription = this.loanManager.loanOpenedSubject?.subscribe(result => {
+    this.loanSubscription = this.loanManager.loanOpenedEventSubject?.subscribe(result => {
       console.log('loanSubscription got: ', result)
       if (result.requestID.eq(this.loan.loanID)) {
         this.showLoanOpenedAlert()
       }
     })
 
-    this.forecloseSubscription = this.loanManager.loanForeclosedSubject?.subscribe(result => {
+    this.forecloseSubscription = this.loanManager.loanForeclosedEventSubject?.subscribe(result => {
       if (result.loanID.eq(this.loan.loanID)) {
         this.txPending = false
         this.canForeclose = false

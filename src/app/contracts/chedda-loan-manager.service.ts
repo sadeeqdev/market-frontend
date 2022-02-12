@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BigNumber, ethers } from 'ethers';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import CheddaLoanManager from '../../artifacts/CheddaLoanManager.json'
 import ERC721 from '../../artifacts/ERC721.json'
 import { Loan, LoanRequest } from '../lend/lend.models';
@@ -28,11 +28,17 @@ export enum LoanRequestStatus {
 export class CheddaLoanManagerService {
 
   loanManagerContract: any
-  requestCancelledSubject?: Subject<any> = new Subject()
-  loanRequestSubject?: Subject<any> = new Subject()
-  loanOpenedSubject?: Subject<any> = new Subject()
-  loanRepaidSubject?: Subject<any> = new Subject()
-  loanForeclosedSubject?: Subject<any> = new Subject()
+
+  myLoansSubject?: BehaviorSubject<Loan[]> = new BehaviorSubject(null)
+  openLoanRequestsSubject?: BehaviorSubject<LoanRequest[]> = new BehaviorSubject(null)
+
+  loanRequestCancelledEventSubject?: Subject<any> = new Subject()
+  loanRequestedEventSubject?: Subject<any> = new Subject()
+  loanOpenedEventSubject?: Subject<any> = new Subject()
+  loanRepaidEventSubject?: Subject<any> = new Subject()
+  loanForeclosedEventSubject?: Subject<any> = new Subject()
+
+  loanRequestListSubject
 
   constructor(provider: DefaultProviderService, private wallet: WalletProviderService, private http: HttpClient) {
     this.loanManagerContract = new ethers.Contract(
@@ -127,10 +133,27 @@ export class CheddaLoanManagerService {
     return nft
   }
 
+  async refreshLoanRequests() {
+    console.log('refreshing loan requests')
+    const requests = await this.getLoanRequests(ethers.constants.AddressZero, LoanRequestStatus.open)
+    console.log('next list of requests = ', requests)
+    this.openLoanRequestsSubject.next(requests)
+  }
+
+  async refreshMyLoans() {
+    if (!this.wallet.currentAccount) {
+      return
+    }
+    const myLoans = await this.getLoansLentByAddress(this.wallet.currentAccount, LoanStatus.open)
+    this.myLoansSubject.next(myLoans)
+  }
+
   async registerEventListeners() {
+    await this.refreshLoanRequests()
+    await this.refreshMyLoans()
     this.loanManagerContract.on('RequestCancelled', async (address, requestId) => {
       console.log('RequestCancelled: ', address, requestId)
-      this.requestCancelledSubject?.next({
+      this.loanRequestCancelledEventSubject?.next({
         address,
         requestId
       })
@@ -138,22 +161,24 @@ export class CheddaLoanManagerService {
 
     this.loanManagerContract.on('LoanRequested', async (requestedBy, contractAddress, tokenID, amount) => {
       console.log(`got loan request: {${requestedBy}, ${contractAddress} ${tokenID}, ${amount}}`)
-      this.loanRequestSubject?.next({
+      this.loanRequestedEventSubject?.next({
         requestedBy, contractAddress, tokenID, amount
       })
+      this.refreshLoanRequests()
     })
 
     this.loanManagerContract.on('LoanOpened', async (lender, borrower, requestID, amount) => {
-      this.loanOpenedSubject?.next({
+      this.loanOpenedEventSubject?.next({
         lender,
         borrower,
         requestID,
         amount
       })
+      this.refreshLoanRequests()
     })
 
     this.loanManagerContract.on('LoanRepaid', async (loanID, borrower, lender, amount) => {
-      this.loanRepaidSubject?.next({
+      this.loanRepaidEventSubject?.next({
         loanID,
         borrower,
         lender,
@@ -162,7 +187,7 @@ export class CheddaLoanManagerService {
     })
 
     this.loanManagerContract.on('LoanForeclosed', async(loanId, borrower, lender) => {
-      this.loanForeclosedSubject?.next({
+      this.loanForeclosedEventSubject?.next({
         loanId,
         borrower,
         lender

@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { IonSegment } from '@ionic/angular';
 import { ethers } from 'ethers';
+import { Subscription } from 'rxjs';
 import { CheddaLoanManagerService, LoanRequestStatus, LoanStatus } from 'src/app/contracts/chedda-loan-manager.service';
 import { MarketExplorerService } from 'src/app/contracts/market-explorer.service';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
@@ -12,7 +13,7 @@ import { Loan, LoanRequest } from '../../lend.models';
   templateUrl: './lend-landing.page.html',
   styleUrls: ['./lend-landing.page.scss'],
 })
-export class LendLandingPage implements OnInit {
+export class LendLandingPage implements OnInit, OnDestroy {
 
   @ViewChild('segmentControl') segmentControl: IonSegment
 
@@ -20,6 +21,8 @@ export class LendLandingPage implements OnInit {
   myLoans: Loan[] = []
   currentSegment = 'requests'
   currency
+  openLoansSubscription?: Subscription
+  openLoanRequestsSubscription?: Subscription
 
   constructor(
     private wallet: WalletProviderService,
@@ -28,8 +31,14 @@ export class LendLandingPage implements OnInit {
 
   async ngOnInit() {
     this.currency = environment.config.networkParams.nativeCurrency.symbol
-    await this.fetchLoanRequests()
-    await this.fetchMyLoans()
+    // await this.fetchLoanRequests()
+    // await this.fetchMyLoans()
+    await this.listenToChanges()
+  }
+
+  async ngOnDestroy() {
+    this.openLoansSubscription?.unsubscribe()
+    this.openLoanRequestsSubscription?.unsubscribe()
   }
 
   async fetchLoanRequests() {
@@ -63,6 +72,33 @@ export class LendLandingPage implements OnInit {
     } catch (error) {
       console.error('error fetching my loans: ', error)
     }
+  }
+
+  async listenToChanges() {
+    this.openLoanRequestsSubscription = this.loanManager.openLoanRequestsSubject.subscribe(async loanRequests => {
+      console.log('got loan requests : ', loanRequests)
+      if (loanRequests) {
+        this.loanRequests = await Promise.all(loanRequests.map(async pending => {
+          const nft = await this.marketExplorer.assembleNFT(pending.nftContract, pending.tokenID.toString())
+          return {
+            ...pending,
+            nft
+          }
+        }))
+      }
+    })
+
+    this.openLoansSubscription = this.loanManager.myLoansSubject?.subscribe(async loans => {
+      if (loans) {
+        this.myLoans = await Promise.all(loans.map(async pending => {
+          const nft = await this.marketExplorer.assembleNFT(pending.nftContract, pending.tokenID.toString())
+          return {
+            ...pending,
+            nft
+          }
+        }))
+      }
+    })
   }
 
   onSegmentChanged(event) {
