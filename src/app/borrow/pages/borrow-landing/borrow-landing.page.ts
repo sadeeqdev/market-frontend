@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonSegment, IonSelect, NavController } from '@ionic/angular';
+import { BigNumber } from 'ethers';
 import { stat } from 'fs';
 import { Subscription } from 'rxjs';
 import { CheddaLoanManagerService, LoanRequestStatus, LoanStatus } from 'src/app/contracts/chedda-loan-manager.service';
 import { CheddaXpService } from 'src/app/contracts/chedda-xp.service';
 import { MarketExplorerService } from 'src/app/contracts/market-explorer.service';
-import { Loan } from 'src/app/lend/lend.models';
+import { LendignPool, Loan } from 'src/app/lend/lend.models';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { environment } from 'src/environments/environment';
 
@@ -43,6 +44,7 @@ export class BorrowLandingPage implements OnInit {
 
   pendingLoans = []
   loans: Loan[] = []
+  lendingPools: LendignPool[] = []
   currency
   
   constructor(
@@ -53,6 +55,13 @@ export class BorrowLandingPage implements OnInit {
     ) { }
   
   async ngOnInit() {
+    this.lendingPools = environment.config.lendingPools
+    this.lendingPools[0].stats = {
+      supplied: BigNumber.from(1010101),
+      utilization: "63.55%",
+      apr: "12.98%",
+      total: "87250923"
+    }
     this.registerEventListener()
     this.currency = environment.config.networkParams.nativeCurrency.name
   }

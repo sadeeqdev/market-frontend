@@ -33,10 +33,6 @@
                     </ion-text>
                   </ion-col>
                   <ion-col size="3">
-                    <!-- <ion-avatar *ngFor="let collateral of pool.collateral" class="asset-logo">
-                      <ion-img [src]="collateral.logo"></ion-img>
-                    </ion-avatar> -->
-
                     <ion-text *ngFor="let collateral of pool.collateral; index as i">
                       {{collateral.name}}
                       <span *ngIf="i !== pool.collateral.length - 1">, </span>

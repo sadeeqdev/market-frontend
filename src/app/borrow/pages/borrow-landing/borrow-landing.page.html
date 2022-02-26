@@ -1,167 +1,234 @@
 <ion-content>
+  <!-- Lending Pools -->
   <ion-row>
-    <ion-col>
-      <ion-segment (ionChange)="onSegmentChanged($event)" value="items" #segmentControl>
-        <ion-segment-button value="items">
-          <ion-icon name="apps"></ion-icon>
-          <ion-label>My OWned Items</ion-label>
-        </ion-segment-button>
-        <ion-segment-button value="loans">
-          <ion-icon name="cash"></ion-icon>
-          <ion-label>My loans</ion-label>
-         </ion-segment-button>
-      </ion-segment>
+    <ion-col size-xs="12" size-sm="12" size-md="12" size-lg="10" offset-lg="1" size-xl="8" offset-xl="2">
+      <ion-card>
+        <ion-card-title>
+          <ion-row class="pool-title-row">
+            <ion-col>
+              <ion-text class="pool-section-title">Lending Pools</ion-text>
+            </ion-col>
+          </ion-row>
+        </ion-card-title>
+        <ion-item-divider></ion-item-divider>
+        <ion-card-content>
+          <ion-row class="loans-header">
+            <ion-col size="3">Market</ion-col>
+            <ion-col size="3">Collateral</ion-col>
+            <ion-col size="2">APR</ion-col>
+            <ion-col size="2">Utilization</ion-col>
+            <ion-col size="2">Total</ion-col>
+          </ion-row>
+          <ion-row *ngFor="let pool of lendingPools">
+            <ion-col>
+              <ion-card [routerLink]="['/', 'borrow', 'pool', pool.address]">
+                <ion-row class="pool-row">
+                  <ion-col size="3" class="flex-col">
+                    <ion-avatar class="asset-logo">
+                      <ion-img [src]="pool.asset.logo" class="asset-avatar"></ion-img>
+                    </ion-avatar>
+                    <ion-text class="asset-name">
+                      {{pool.asset.name}}
+                    </ion-text>
+                  </ion-col>
+                  <ion-col size="3">
+                    <ion-text *ngFor="let collateral of pool.collateral; index as i">
+                      {{collateral.name}}
+                      <span *ngIf="i !== pool.collateral.length - 1">, </span>
+                    </ion-text>
+                  </ion-col>
+                  <ion-col size="2">{{ pool.stats.apr }}</ion-col>
+                  <ion-col size="2">{{ pool.stats.utilization }}</ion-col>
+                  <ion-col size="2">{{ pool.stats.total | currency }}</ion-col>
+                </ion-row>
+              </ion-card>
+            </ion-col>
+            <!-- columns for pools -->
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
     </ion-col>
   </ion-row>
 
-  <div *ngIf="currentSegment == 'items'">
-    <ion-row>
-      <ion-col *ngFor="let nft of items; let i=index" size-xs="12" size-sm="6" size-md="4" size-lg="3" size-xl="2">
-        <my-nft-card [nft]="nft" [routerLink]="['/', 'borrow', 'request', nft.nftContract, nft.tokenID.toString() ]"></my-nft-card>
-      </ion-col>
-      <ion-col *ngIf="items && items.length == 0">
-        <ion-row class="centered-content owned-title">
-          <ion-text class="centered-text">You do not own any NFTs</ion-text>
-        </ion-row>
-        <ion-row class="centered-content">
-          <ion-text class="centered-text">You can purchase NFTs in the market or win a whitelist spot in a launch.</ion-text>
-        </ion-row>
-      </ion-col>
-    </ion-row>
-    
-  </div>
-  <div *ngIf="currentSegment == 'loans'">
-    <ion-row class="title-row">
-      <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="4" size-xl="4">
-        <ion-text class="row-title">
-          Filter
-        </ion-text>
-      </ion-col>
-      <ion-col size-xs="12" size-sm="12" size-md="4" offset-md="4"  offset-lg="4" size-lg="2" offset-lg="6" size-xl="2" offset-xl="6">
-        <ion-select value="pending" interface="popover" class="dropdown-select" #filterSelect (ionChange)="onFilterChanged($event)">
-          <ion-select-option value="pending">Pending</ion-select-option>
-          <ion-select-option value="open">Open</ion-select-option>
-          <ion-select-option value="repaid">Repaid</ion-select-option>
-          <ion-select-option value="foreclosed">Foreclosed</ion-select-option>
-        </ion-select>
-      </ion-col>
-    </ion-row>
-
-    <div *ngIf="filter === 'pending'">
-      <div *ngIf="pendingLoans.length">
-        <ion-row class="loans-header">
-          <ion-col size="4">Asset</ion-col>
-          <ion-col size="2">Amount</ion-col>
-          <ion-col size="3">Repayment</ion-col>
-          <ion-col size="3">Duration</ion-col>
-        </ion-row>
-        <ion-row class="loan-row" *ngFor="let pending of pendingLoans">
-          <ion-col size="12">
-            <ion-card [routerLink]="['/', 'borrow', 'request', pending.nftContract.toString(), pending.tokenID.toString()]">
-              
-              <ion-card-content class="no-padding">
-                <ion-row class="asset-row">
-                  <ion-col size="4" class="loan-info-col">
-                    <ion-row *ngIf="pending.nft && pending.nft.metadata" class="asset-row">
-
-                        <ion-col size="3" class="loan-info-col loan-content">
-                          <ion-thumbnail>
-                            <ion-img [src]="pending.nft.metadata.image" class="asset-thumb"></ion-img>
-                          </ion-thumbnail>
-                        </ion-col> 
-                        <ion-col size="9" class="loan-info-col loan-content">
-                          <ion-text>
-                            {{pending.nft.metadata.name}}
-                          </ion-text>
-                        </ion-col>
-                    </ion-row>
-                    <ion-row *ngIf="!(pending.nft && pending.nft.metadata)">
-                      <ion-col class="loan-content">
-                        NFT # {{ pending.tokenID }}
-                      </ion-col>
-                    </ion-row>
+  <!-- P2P Markets -->
+  <ion-row>
+    <ion-col size-xs="12" size-sm="12" size-md="12" size-lg="10" offset-lg="1" size-xl="8" offset-xl="2">
+      <ion-card>
+        <ion-card-title>
+          <ion-row class="pool-title-row">
+            <ion-col>
+              <ion-text class="pool-section-title">P2P Markets</ion-text>
+            </ion-col>
+          </ion-row>
+        </ion-card-title>
+        <ion-item-divider></ion-item-divider>
+        <ion-card-content>
+          <ion-row>
+            <ion-col>
+              <ion-segment (ionChange)="onSegmentChanged($event)" value="items" #segmentControl>
+                <ion-segment-button value="items">
+                  <ion-icon name="apps"></ion-icon>
+                  <ion-label>My OWned Items</ion-label>
+                </ion-segment-button>
+                <ion-segment-button value="loans">
+                  <ion-icon name="cash"></ion-icon>
+                  <ion-label>My loans</ion-label>
+                 </ion-segment-button>
+              </ion-segment>
+            </ion-col>
+          </ion-row>
+  
+          <div *ngIf="currentSegment == 'items'">
+            <ion-row>
+              <ion-col *ngFor="let nft of items; let i=index" size-xs="12" size-sm="6" size-md="4" size-lg="3" size-xl="2">
+                <my-nft-card [nft]="nft" [routerLink]="['/', 'borrow', 'request', nft.nftContract, nft.tokenID.toString() ]"></my-nft-card>
+              </ion-col>
+              <ion-col *ngIf="items && items.length == 0">
+                <ion-row class="centered-content owned-title">
+                  <ion-text class="centered-text">You do not own any NFTs</ion-text>
+                </ion-row>
+                <ion-row class="centered-content">
+                  <ion-text class="centered-text">You can purchase NFTs in the market or win a whitelist spot in a launch.</ion-text>
+                </ion-row>
+              </ion-col>
+            </ion-row>
+          </div> <!-- currentSegment == 'items'-->
+  
+          <div *ngIf="currentSegment == 'loans'">
+            <ion-row class="title-row">
+              <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="4" size-xl="4">
+                <ion-text class="row-title">
+                  Filter
+                </ion-text>
+              </ion-col>
+              <ion-col size-xs="12" size-sm="12" size-md="4" offset-md="4"  offset-lg="4" size-lg="2" offset-lg="6" size-xl="2" offset-xl="6">
+                <ion-select value="pending" interface="popover" class="dropdown-select" #filterSelect (ionChange)="onFilterChanged($event)">
+                  <ion-select-option value="pending">Pending</ion-select-option>
+                  <ion-select-option value="open">Open</ion-select-option>
+                  <ion-select-option value="repaid">Repaid</ion-select-option>
+                  <ion-select-option value="foreclosed">Foreclosed</ion-select-option>
+                </ion-select>
+              </ion-col>
+            </ion-row>
+        
+            <div *ngIf="filter === 'pending'">
+              <div *ngIf="pendingLoans.length">
+                <ion-row class="loans-header">
+                  <ion-col size="4">Asset</ion-col>
+                  <ion-col size="2">Amount</ion-col>
+                  <ion-col size="3">Repayment</ion-col>
+                  <ion-col size="3">Duration</ion-col>
+                </ion-row>
+                <ion-row class="loan-row" *ngFor="let pending of pendingLoans">
+                  <ion-col size="12">
+                    <ion-card [routerLink]="['/', 'borrow', 'request', pending.nftContract.toString(), pending.tokenID.toString()]">
+                      
+                      <ion-card-content class="no-padding">
+                        <ion-row class="asset-row">
+                          <ion-col size="4" class="loan-info-col">
+                            <ion-row *ngIf="pending.nft && pending.nft.metadata" class="asset-row">
+        
+                                <ion-col size="3" class="loan-info-col loan-content">
+                                  <ion-thumbnail>
+                                    <ion-img [src]="pending.nft.metadata.image" class="asset-thumb"></ion-img>
+                                  </ion-thumbnail>
+                                </ion-col> 
+                                <ion-col size="9" class="loan-info-col loan-content">
+                                  <ion-text>
+                                    {{pending.nft.metadata.name}}
+                                  </ion-text>
+                                </ion-col>
+                            </ion-row>
+                            <ion-row *ngIf="!(pending.nft && pending.nft.metadata)">
+                              <ion-col class="loan-content">
+                                NFT # {{ pending.tokenID }}
+                              </ion-col>
+                            </ion-row>
+                          </ion-col>
+                          <ion-col size="2" class="loan-info-col loan-content">
+                            {{ pending.amount | formatEth }} {{ currency | uppercase }}
+                          </ion-col>
+                          <ion-col size="3" class="loan-info-col loan-content">
+                            {{ pending.repayment | formatEth | rounding:[4]}} {{ currency | uppercase }}
+                          </ion-col>
+                          <ion-col size="3" class="loan-info-col loan-content">
+                            {{ pending.loanLength / 86400 + ' days' }}
+                          </ion-col>
+                        </ion-row>
+                      </ion-card-content>
+                    </ion-card>
                   </ion-col>
-                  <ion-col size="2" class="loan-info-col loan-content">
-                    {{ pending.amount | formatEth }} {{ currency | uppercase }}
-                  </ion-col>
-                  <ion-col size="3" class="loan-info-col loan-content">
-                    {{ pending.repayment | formatEth | rounding:[4]}} {{ currency | uppercase }}
-                  </ion-col>
-                  <ion-col size="3" class="loan-info-col loan-content">
-                    {{ pending.loanLength / 86400 + ' days' }}
+                  <ion-col></ion-col>
+                </ion-row>
+              </div>
+              <ion-row *ngIf="loans.length == 0 && pendingLoans.length == 0">
+                <ion-col class="centered-content">
+                  <ion-text>You do not have any open loans requests</ion-text>
+                </ion-col>
+              </ion-row>
+            </div> <!-- filter === 'pending'-->
+        
+            <div *ngIf="filter !== 'pending'">
+              <div *ngIf="loans.length">
+                <ion-row class="loans-header">
+                  <ion-col size="4">Asset</ion-col>
+                  <ion-col size="2">Amount</ion-col>
+                  <ion-col size="3">Repayment</ion-col>
+                  <ion-col size="3" *ngIf="filter === 'open'">Due Date</ion-col>
+                  <ion-col size="3" *ngIf="filter !== 'open'">Closed On</ion-col>
+                </ion-row>
+                <ion-row class="loan-row" *ngFor="let loan of loans">
+                  <ion-col size="12">
+                    <ion-card [routerLink]="['/', 'borrow', 'request', loan.nftContract.toString(), loan.tokenID.toString()]">
+                      
+                      <ion-card-content class="no-padding">
+                        <ion-row>
+                          <ion-col size="4" class="loan-info-col">
+                            <ion-row *ngIf="loan.nft && loan.nft.metadata">
+                              <ion-col size-xs="12" size-sm="3" class="loan-info-col loan-content">
+                                <ion-thumbnail>
+                                  <ion-img [src]="loan.nft.metadata.image"></ion-img>
+                                </ion-thumbnail>
+                              </ion-col>
+                              <ion-col size-xs="12" size-sm="9" class="loan-info-col loan-content">{{loan.nft.metadata.name}}</ion-col>
+                            </ion-row>
+                            <ion-row *ngIf="!(loan.nft && loan.nft.metadata)">
+                              <ion-col class="loan-content">
+                                NFT # {{ loan.tokenID }}
+                              </ion-col>
+                            </ion-row>
+                          </ion-col>
+                          <ion-col size="2" class="loan-info-col loan-content">
+                            {{ loan.principal | formatEth }} {{ currency | uppercase }}
+                          </ion-col>
+                          <ion-col size="3" class="loan-info-col loan-content">
+                            {{ loan.repaymentAmount | formatEth | rounding:[4] }} {{ currency | uppercase }}
+                          </ion-col>
+                          <ion-col size="3" class="loan-info-col loan-content">
+                            <ion-text *ngIf="filter === 'open'">
+                            {{ loan.expiresAt.mul(1000).toString() | date:'medium' }}
+                            </ion-text>
+                            <ion-text *ngIf="filter !== 'open'">
+                              {{ loan.closedAt.mul(1000).toString() | date:'medium' }}
+                              </ion-text>
+                          </ion-col>
+                        </ion-row>
+                      </ion-card-content>
+                    </ion-card>
                   </ion-col>
                 </ion-row>
-              </ion-card-content>
-            </ion-card>
-          </ion-col>
-          <ion-col></ion-col>
-        </ion-row>
-      </div>
-      <ion-row *ngIf="loans.length == 0 && pendingLoans.length == 0">
-        <ion-col class="centered-content">
-          <ion-text>You do not have any open loans requests</ion-text>
-        </ion-col>
-      </ion-row>
-    </div> <!-- filter === 'pending'-->
-
-    <div *ngIf="filter !== 'pending'">
-      <div *ngIf="loans.length">
-        <ion-row class="loans-header">
-          <ion-col size="4">Asset</ion-col>
-          <ion-col size="2">Amount</ion-col>
-          <ion-col size="3">Repayment</ion-col>
-          <ion-col size="3" *ngIf="filter === 'open'">Due Date</ion-col>
-          <ion-col size="3" *ngIf="filter !== 'open'">Closed On</ion-col>
-        </ion-row>
-        <ion-row class="loan-row" *ngFor="let loan of loans">
-          <ion-col size="12">
-            <ion-card [routerLink]="['/', 'borrow', 'request', loan.nftContract.toString(), loan.tokenID.toString()]">
-              
-              <ion-card-content class="no-padding">
-                <ion-row>
-                  <ion-col size="4" class="loan-info-col">
-                    <ion-row *ngIf="loan.nft && loan.nft.metadata">
-                      <ion-col size-xs="12" size-sm="3" class="loan-info-col loan-content">
-                        <ion-thumbnail>
-                          <ion-img [src]="loan.nft.metadata.image"></ion-img>
-                        </ion-thumbnail>
-                      </ion-col>
-                      <ion-col size-xs="12" size-sm="9" class="loan-info-col loan-content">{{loan.nft.metadata.name}}</ion-col>
-                    </ion-row>
-                    <ion-row *ngIf="!(loan.nft && loan.nft.metadata)">
-                      <ion-col class="loan-content">
-                        NFT # {{ loan.tokenID }}
-                      </ion-col>
-                    </ion-row>
-                  </ion-col>
-                  <ion-col size="2" class="loan-info-col loan-content">
-                    {{ loan.principal | formatEth }} {{ currency | uppercase }}
-                  </ion-col>
-                  <ion-col size="3" class="loan-info-col loan-content">
-                    {{ loan.repaymentAmount | formatEth | rounding:[4] }} {{ currency | uppercase }}
-                  </ion-col>
-                  <ion-col size="3" class="loan-info-col loan-content">
-                    <ion-text *ngIf="filter === 'open'">
-                    {{ loan.expiresAt.mul(1000).toString() | date:'medium' }}
-                    </ion-text>
-                    <ion-text *ngIf="filter !== 'open'">
-                      {{ loan.closedAt.mul(1000).toString() | date:'medium' }}
-                      </ion-text>
-                  </ion-col>
-                </ion-row>
-              </ion-card-content>
-            </ion-card>
-          </ion-col>
-        </ion-row>
-      </div>
-
-      <ion-row *ngIf="loans.length == 0">
-        <ion-col class="centered-content">
-          <ion-text>You do not have any loans</ion-text>
-        </ion-col>
-      </ion-row>
-    </div> <!-- filter !== 'pending'-->
-    
-  </div>
-  <!-- <ion-router-outlet></ion-router-outlet> -->
+              </div>
+        
+              <ion-row *ngIf="loans.length == 0">
+                <ion-col class="centered-content">
+                  <ion-text>You do not have any loans</ion-text>
+                </ion-col>
+              </ion-row>
+            </div> <!-- filter !== 'pending'-->
+          </div> <!-- currentSegment == 'loans' -->
+        </ion-card-content>
+        
+      </ion-card>
+    </ion-col>
+  </ion-row>
 </ion-content>

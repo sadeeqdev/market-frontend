@@ -1,9 +1,156 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>borrow-pool-details</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
+  <ion-grid>
+    <!-- main -->
+    <ion-row>
+      <ion-col size-xs="12" size-sm="10" offset-sm="1" size-md="8" offset-md="2" size-lg="6" offset-lg="3" size-xl="4" offset-xl="4">
+        <ion-card>
+          <ion-card-title>
+            <ion-row class="card-title-row">
+              <ion-col>
+                <ion-text class="card-title">
+                  Borrow USDC
+                </ion-text>
+              </ion-col>
+              <ion-col class="card-collateral-col">
+                <ion-avatar *ngFor="let collateral of collaterals" class="card-title-collateral-img logo-cascade">
+                  <ion-img [src]="collateral.logo"></ion-img>
+                </ion-avatar>
+              </ion-col>
+            </ion-row>
+            
+          </ion-card-title>
+          <ion-item-divider></ion-item-divider>
+          <ion-card-content>
+
+            <ion-row>
+              <ion-col size="6">
+                <ion-text>My Deposits</ion-text>
+              </ion-col>
+              <ion-col size="6">{{'1000' | currency}}</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6">
+                <ion-text>Available Liquidity</ion-text>
+              </ion-col>
+              <ion-col size="6">{{'2241000000' | currency}}</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6">
+                <ion-text>Utilization</ion-text>
+              </ion-col>
+              <ion-col size="6">55.87%</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6">
+                <ion-text>Deposit APR</ion-text>
+              </ion-col>
+              <ion-col size="6">
+                <ion-text>3.25%</ion-text>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6">
+                <ion-text>Rewards APR</ion-text>
+              </ion-col>
+              <ion-col size="6">
+                <ion-text>5.89%</ion-text>
+              </ion-col>
+            </ion-row>
+            <ion-item-divider></ion-item-divider>
+            <ion-row>
+              <ion-segment value="collateral" (ionChange)="onSegmentChanged($event)">
+                <ion-segment-button value="collateral">My Collateral</ion-segment-button>
+                <ion-segment-button value="borrow">Borrow</ion-segment-button>
+              </ion-segment>
+            </ion-row>
+            <div *ngIf="currentSegment === 'collateral'">
+              <ion-row>
+                <ion-col>
+                  <ion-text>
+                    Deposit Collateral
+                  </ion-text>
+                </ion-col>
+                <ion-col>
+                  <ion-select placeholder="Collateral Type" interface="popover" (ionChange)="onCollateralTypeChanged($event)">
+                    <ion-select-option value="wavax">WAVAX</ion-select-option>
+                    <ion-select-option value="wgk">Wierd Geek NFT</ion-select-option>
+                    <ion-select-option value="eye">Fancy EYE NFT</ion-select-option>
+                  </ion-select>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <div *ngIf="collateralType === 'wavax'"></div>
+                <div *ngIf="collateralType === 'nft'">
+                  <div *ngIf="myNftsCollateral.length === 0">
+                    <ion-text>No matching NFTs in wallet</ion-text>
+                  </div>
+                  <div *ngIf="myNftsCollateral.length !== 0">
+                    <ion-col *ngFor="let nft of myNftsCollateral">
+                      <ion-thumbnail [ngClass]="selectedNfts.includes(nft) ? '' : ''"> <!-- use ids -->
+                        <ion-img [src]="nft.image"></ion-img>
+                      </ion-thumbnail>
+                    </ion-col>
+                  </div>
+                </div>
+                <ion-col class="align-items-center">
+                  <ion-text>Amount</ion-text>
+                </ion-col>
+                <ion-col class="justify-content-end">
+                  <ion-button size="small" color="primary" fill="clear">Max {{'0'}}</ion-button>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-input placeholder="0.0" class="bordered-input"></ion-input>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-button color="primary" expand="block">Deposit</ion-button>
+                </ion-col>
+              </ion-row>
+            </div>
+            <div *ngIf="currentSegment === 'borrow'">
+              <ion-row>
+                <ion-col>
+                  <ion-text>
+                    Withdraw USDC
+                  </ion-text>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col class="align-items-center">
+                  <ion-text>Amount</ion-text>
+                </ion-col>
+                <ion-col class="justify-content-end">
+                  <ion-button size="small" color="primary" fill="clear">Max {{'0'}}</ion-button>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-input placeholder="0.0" class="bordered-input"></ion-input>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-button color="primary" fill="outline" expand="block">Borrow</ion-button>
+                </ion-col>
+              </ion-row>
+            </div>
+
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <!-- Pool details -->
+    <ion-row>
+      <ion-col>
+        <ion-card>
+
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
 </ion-content>
