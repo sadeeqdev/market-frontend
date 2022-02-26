@@ -201,7 +201,7 @@ ion-card.main-card:hover {
 
 .bordered-input {
   border-radius: 5px;
-  border: 1px var(--ion-color-light-shade) solid;
+  border: 1px var(--ion-color-medium-tint) solid;
   padding-left: 6px;
   padding-right: 6px;
 }
@@ -321,3 +321,24 @@ ion-card.main-card:hover {
   margin: 20px 16px -20px;
 }
 
+.default-background {
+  background-color: var(--chedda-default-background);
+}
+
+.light-background {
+  background-color: var(--chedda-light-background);
+}
+
+.lighter-background {
+  background-color: var(--chedda-lighter-background);
+}
+
+.item-divider-wrapper {
+  background-color: var(--chedda-light-background) !important;
+}
+
+@media screen and (max-width: 768px) {
+  .no-mobile {
+    display: none;
+  }
+}

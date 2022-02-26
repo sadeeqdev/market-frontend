@@ -1,4 +1,5 @@
 <ion-content>
+  <ion-grid class="default-background">
   <!-- Lending Pools -->
   <ion-row>
     <ion-col size-xs="12" size-sm="12" size-md="12" size-lg="10" offset-lg="1" size-xl="8" offset-xl="2">
@@ -21,7 +22,7 @@
           </ion-row>
           <ion-row *ngFor="let pool of lendingPools">
             <ion-col>
-              <ion-card [routerLink]="['/', 'borrow', 'pool', pool.address]">
+              <ion-card [routerLink]="['/', 'borrow', 'pool', pool.address]" class="lighter-background">
                 <ion-row class="pool-row">
                   <ion-col size="3" class="flex-col">
                     <ion-avatar class="asset-logo">
@@ -53,7 +54,7 @@
   <!-- P2P Markets -->
   <ion-row>
     <ion-col size-xs="12" size-sm="12" size-md="12" size-lg="10" offset-lg="1" size-xl="8" offset-xl="2">
-      <ion-card>
+      <ion-card class="light-background">
         <ion-card-title>
           <ion-row class="pool-title-row">
             <ion-col>
@@ -121,7 +122,7 @@
                 </ion-row>
                 <ion-row class="loan-row" *ngFor="let pending of pendingLoans">
                   <ion-col size="12">
-                    <ion-card [routerLink]="['/', 'borrow', 'request', pending.nftContract.toString(), pending.tokenID.toString()]">
+                    <ion-card [routerLink]="['/', 'borrow', 'request', pending.nftContract.toString(), pending.tokenID.toString()]" class="lighter-background">
                       
                       <ion-card-content class="no-padding">
                         <ion-row class="asset-row">
@@ -179,7 +180,7 @@
                 </ion-row>
                 <ion-row class="loan-row" *ngFor="let loan of loans">
                   <ion-col size="12">
-                    <ion-card [routerLink]="['/', 'borrow', 'request', loan.nftContract.toString(), loan.tokenID.toString()]">
+                    <ion-card [routerLink]="['/', 'borrow', 'request', loan.nftContract.toString(), loan.tokenID.toString()]" class="lighter-background">
                       
                       <ion-card-content class="no-padding">
                         <ion-row>
@@ -231,4 +232,6 @@
       </ion-card>
     </ion-col>
   </ion-row>
+  </ion-grid>
+
 </ion-content>

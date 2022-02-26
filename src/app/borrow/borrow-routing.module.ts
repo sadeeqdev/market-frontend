@@ -21,10 +21,6 @@ const routes: Routes = [
         loadChildren: () => import('./pages/mycollateral/mycollateral.module').then( m => m.MycollateralPageModule)
       },
       {
-        path: 'loan/:id',
-        loadChildren: () => import('./pages/borrow-loan/borrow-loan.module').then( m => m.BorrowLoanPageModule)
-      },
-      {
         path: 'request/:id',
         loadChildren: () => import('./pages/borrow-request/borrow-request.module').then( m => m.BorrowRequestPageModule)
       },

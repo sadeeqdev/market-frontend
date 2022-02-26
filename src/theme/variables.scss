@@ -82,6 +82,10 @@
 
   --ion-color-contrast: #000000;
   --chedda-color-clean: #ffffff;
+
+  --chedda-default-background: #eaeaea;
+  --chedda-light-background: #f4f4f4;
+  --chedda-lighter-background: #fcfcff;
 }
 
 // @media (prefers-color-scheme: dark) {
@@ -159,6 +163,10 @@
 
     --ion-color-contrast: #ffffff;
     --chedda-color-clean: #000000;
+
+    --chedda-default-background: #0d0d0d;
+    --chedda-light-background: #1a1a1a;
+    --chedda-lighter-background: #262626;
   }
 
   /*

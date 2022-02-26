@@ -1,9 +1,11 @@
 <ion-content>
 
+  <ion-grid class="default-background">
+
   <!-- Lending Pools -->
   <ion-row>
     <ion-col size-xs="12" size-sm="12" size-md="12" size-lg="10" offset-lg="1" size-xl="8" offset-xl="2">
-      <ion-card>
+      <ion-card class="light-background">
         <ion-card-title>
           <ion-row class="pool-title-row">
             <ion-col>
@@ -22,7 +24,7 @@
           </ion-row>
           <ion-row *ngFor="let pool of lendingPools">
             <ion-col>
-              <ion-card [routerLink]="['/', 'lend', 'pool', pool.address]">
+              <ion-card [routerLink]="['/', 'lend', 'pool', pool.address]" class="lighter-background">
                 <ion-row class="pool-row">
                   <ion-col size="3" class="flex-col">
                     <ion-avatar class="asset-logo">
@@ -84,7 +86,7 @@
                 </ion-row>
                 <ion-row class="loan-row" *ngFor="let request of loanRequests">
                   <ion-col class="no-padding">
-                    <ion-card  [routerLink]="['/', 'lend', 'request', request.requestID.toString()]">
+                    <ion-card  [routerLink]="['/', 'lend', 'request', request.requestID.toString()]" class="lighter-background">
                       <ion-card-content class="no-padding">
                         <ion-row>
                           <ion-col size="4" class="loan-info-col">
@@ -125,14 +127,14 @@
             <div *ngIf="currentSegment === 'myloans'">
               <div *ngIf="myLoans.length">
                 <ion-row class="loans-header">
-                  <ion-col size="4" size-xs="6">Asset</ion-col>
-                  <ion-col size="2" size-xs="6">Amount</ion-col>
-                  <ion-col size="3" size-xs="0">Repayment</ion-col>
-                  <ion-col size="3" size-xs="0">Expiry</ion-col>
+                  <ion-col size-sm="4" size-xs="6">Asset</ion-col>
+                  <ion-col size-sm="2" size-xs="6">Amount</ion-col>
+                  <ion-col size-sm="3" class="no-mobile">Repayment</ion-col>
+                  <ion-col size-sm="3" class="no-mobile">Expiry</ion-col>
                 </ion-row>
                 <ion-row class="loan-row" *ngFor="let loan of myLoans">
                   <ion-col>
-                    <ion-card [routerLink]="['/', 'lend', 'loan', loan.loanID.toString()]">
+                    <ion-card [routerLink]="['/', 'lend', 'loan', loan.loanID.toString()]" class="lighter-background">
                       <ion-card-content class="no-padding">
                         <ion-row>
                           <ion-col size="4" class="loan-info-col">
@@ -174,4 +176,5 @@
         </ion-card> 
     </ion-col>
   </ion-row>
+  </ion-grid>
   </ion-content>

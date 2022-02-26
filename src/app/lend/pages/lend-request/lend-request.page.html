@@ -8,18 +8,15 @@
 
       <!-- details -->
       <ion-col size-xs="12" size-sm="10" offset-sm="1" size-md="8" offset-md="2" size-lg="5" offset-lg="0" size-xl="4">
+        <ion-card>
+          <ion-card-content>
         <ion-row>
           <ion-col size-xs="10" size-sm="10" size-md="9" size-lg="10" size-xl="10">
             <ion-text>
               <h1>{{nft.metadata.name}}</h1>
             </ion-text>
           </ion-col>
-          <!-- <ion-col class="likes-column" size-xs="2" size-sm="2" size-md="3" size-lg="2" size-xl="2">
-            <ion-chip outline="true" color="primary" class="likes-chip" (click)="onLikeClicked()">
-              <ion-icon name="heart" color="primary" class="likes-icon"></ion-icon>
-              <ion-text class="likes-count">{{numberOfLikes}}</ion-text>
-            </ion-chip>
-          </ion-col> -->
+
         </ion-row>
         <ion-row>
           <ion-col>
@@ -120,6 +117,8 @@
             </ion-col>
           </ion-row>
         </div>
+        </ion-card-content>
+      </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>
