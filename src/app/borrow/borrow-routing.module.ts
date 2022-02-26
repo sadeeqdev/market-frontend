@@ -32,10 +32,12 @@ const routes: Routes = [
         path: 'request/:nftContract/:tokenID',
         loadChildren: () => import('./pages/borrow-request/borrow-request.module').then( m => m.BorrowRequestPageModule)
       },
+      {
+        path: 'pool/:id',
+        loadChildren: () => import('./pages/pool/borrow-pool-details/borrow-pool-details.module').then( m => m.BorrowPoolDetailsPageModule)
+      },
     ]
   },
-
-
 ];
 
 @NgModule({

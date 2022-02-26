@@ -1,6 +1,10 @@
 {
   "root": true,
   "ignorePatterns": ["projects/**/*"],
+  "rules": {
+    "extends": "standard",
+    "semi": [1, "never"]
+  },
   "overrides": [
     {
       "files": ["*.ts"],
@@ -14,6 +18,7 @@
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
       "rules": {
+
         "@angular-eslint/component-class-suffix": [
           "error",
           {

@@ -19,7 +19,11 @@ const routes: Routes = [
       {
         path: 'request/:requestId',
         loadChildren: () => import('./pages/lend-request/lend-request.module').then( m => m.LendRequestPageModule)
-      }
+      },
+      {
+        path: 'pool/:id',
+        loadChildren: () => import('./pages/pool/lend-pool-details/lend-pool-details.module').then( m => m.LendPoolDetailsPageModule)
+      },
     ]
   },
 

@@ -42,3 +42,11 @@ export interface Loan {
     borrower: string,
     nft?: NFT
 }
+
+export interface LendignPool {
+    name: String
+    address: String
+    asset: any
+    collateral: any[]
+    stats: any
+}

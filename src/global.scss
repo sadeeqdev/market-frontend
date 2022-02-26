@@ -264,3 +264,55 @@ ion-card.main-card:hover {
     border-radius: 2px;
   }
 }
+
+.asset-avatar {
+  width: 36px;
+  height: 36px;
+}
+
+.asset-name {
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
+  font-weight: 500;
+}
+
+.pool-section-title {
+  margin: 0 32px;
+  font-weight: 500;
+}
+
+.pool-title-row {
+  margin-top: 20px;
+  margin-bottom: -20px;
+}
+
+.asset-logo {
+  width: 36px;
+  height: 36px;
+}
+
+.justify-content-end {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.align-items-center {
+  display: flex;
+  align-items: center;
+}
+
+.flex-col {
+  display: flex;
+}
+
+.pool-row {
+  margin: 4px 0;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.thin-divider {
+  height: 4px;
+}

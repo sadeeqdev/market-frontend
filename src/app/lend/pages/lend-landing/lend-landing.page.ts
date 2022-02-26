@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { IonSegment } from '@ionic/angular';
-import { ethers } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import { Subscription } from 'rxjs';
 import { CheddaLoanManagerService, LoanRequestStatus, LoanStatus } from 'src/app/contracts/chedda-loan-manager.service';
 import { MarketExplorerService } from 'src/app/contracts/market-explorer.service';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { environment } from 'src/environments/environment';
-import { Loan, LoanRequest } from '../../lend.models';
+import { LendignPool, Loan, LoanRequest } from '../../lend.models';
 
 @Component({
   selector: 'app-lend-landing',
@@ -23,6 +23,7 @@ export class LendLandingPage implements OnInit, OnDestroy {
   currency
   openLoansSubscription?: Subscription
   openLoanRequestsSubscription?: Subscription
+  lendingPools: LendignPool[] = []
 
   constructor(
     private wallet: WalletProviderService,
@@ -34,6 +35,13 @@ export class LendLandingPage implements OnInit, OnDestroy {
     // await this.fetchLoanRequests()
     // await this.fetchMyLoans()
     await this.listenToChanges()
+    this.lendingPools = environment.config.lendingPools
+    this.lendingPools[0].stats = {
+      supplied: BigNumber.from(1010101),
+      utilization: "63.55%",
+      apr: "12.98%",
+      total: "87250923"
+    }
   }
 
   async ngOnDestroy() {
@@ -61,7 +69,7 @@ export class LendLandingPage implements OnInit, OnDestroy {
       return
     }
     try {
-      let loans = await this.loanManager.getLoansLentByAddress(this.wallet.currentAccount, LoanStatus.open)
+      const loans = await this.loanManager.getLoansLentByAddress(this.wallet.currentAccount, LoanStatus.open)
       this.myLoans = await Promise.all(loans.map(async pending => {
         const nft = await this.marketExplorer.assembleNFT(pending.nftContract, pending.tokenID.toString())
         return {

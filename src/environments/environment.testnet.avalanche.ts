@@ -37,6 +37,31 @@ export const environment = {
               url: 'https://faucet.avax-test.network/',
             }
           ],
+          lendingPools: [
+            {
+              name: 'USDC/WAVAX Pool',
+              address: '0x000',
+              asset: {
+                name: 'USDC',
+                logo: '/assets/logos/usd-coin-logo.png'
+              },
+              collateral: [
+                {
+                  name: 'WAVAX',
+                  logo: '/assets/logos/avalanche-avax-logo.png'
+                },
+                {
+                  name: 'WGK',
+                  logo: '/assets/logos/wgk-logo.png'
+                },
+                {
+                  name: 'EYE',
+                  logo: '/assets/logos/eye-logo.png'
+                },
+              ],
+              stats: {}
+            }
+          ],
           ui: {
             chainName: 'Avalanche',
             logo: '/assets/logos/avalanche-avax-logo.png',

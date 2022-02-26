@@ -1,111 +1,181 @@
 <ion-content>
+
+  <!-- Lending Pools -->
   <ion-row>
-    <ion-col>
-      <ion-segment (ionChange)="onSegmentChanged($event)" value="requests" #segmentControl>
-        <ion-segment-button value="requests">
-          <ion-icon name="apps"></ion-icon>
-          <ion-label>Loan Requests</ion-label>
-        </ion-segment-button>
-        <ion-segment-button value="myloans">
-          <ion-icon name="cash"></ion-icon>
-          <ion-label>My loans</ion-label>
-         </ion-segment-button>
-      </ion-segment>
+    <ion-col size-xs="12" size-sm="12" size-md="12" size-lg="10" offset-lg="1" size-xl="8" offset-xl="2">
+      <ion-card>
+        <ion-card-title>
+          <ion-row class="pool-title-row">
+            <ion-col>
+              <ion-text class="pool-section-title">Lending Pools</ion-text>
+            </ion-col>
+          </ion-row>
+        </ion-card-title>
+        <ion-item-divider class="thin-divider"></ion-item-divider>
+        <ion-card-content>
+          <ion-row class="loans-header">
+            <ion-col size="3">Market</ion-col>
+            <ion-col size="3">Collateral</ion-col>
+            <ion-col size="2">APR</ion-col>
+            <ion-col size="2">Utilization</ion-col>
+            <ion-col size="2">Total</ion-col>
+          </ion-row>
+          <ion-row *ngFor="let pool of lendingPools">
+            <ion-col>
+              <ion-card [routerLink]="['/', 'lend', 'pool', pool.address]">
+                <ion-row class="pool-row">
+                  <ion-col size="3" class="flex-col">
+                    <ion-avatar class="asset-logo">
+                      <ion-img [src]="pool.asset.logo" class="asset-avatar"></ion-img>
+                    </ion-avatar>
+                    <ion-text class="asset-name">
+                      {{pool.asset.name}}
+                    </ion-text>
+                  </ion-col>
+                  <ion-col size="3">
+                    <!-- <ion-avatar *ngFor="let collateral of pool.collateral" class="asset-logo">
+                      <ion-img [src]="collateral.logo"></ion-img>
+                    </ion-avatar> -->
+
+                    <ion-text *ngFor="let collateral of pool.collateral; index as i">
+                      {{collateral.name}}
+                      <span *ngIf="i !== pool.collateral.length - 1">, </span>
+                    </ion-text>
+                  </ion-col>
+                  <ion-col size="2">{{ pool.stats.apr }}</ion-col>
+                  <ion-col size="2">{{ pool.stats.utilization }}</ion-col>
+                  <ion-col size="2">{{ pool.stats.total | currency }}</ion-col>
+                </ion-row>
+              </ion-card>
+            </ion-col>
+            <!-- columns for pools -->
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
     </ion-col>
   </ion-row>
-  <div *ngIf="currentSegment == 'requests'">
-    <div *ngIf="loanRequests && loanRequests.length > 0">
-      <ion-row class="loans-header">
-        <ion-col size="4">Asset</ion-col>
-        <ion-col size="2">Amount</ion-col>
-        <ion-col size="3">Repayment</ion-col>
-        <ion-col size="3">Duration</ion-col>
-      </ion-row>
-      <ion-row class="loan-row" *ngFor="let request of loanRequests">
-        <ion-col>
-          <ion-card  [routerLink]="['/', 'lend', 'request', request.requestID.toString()]">
-            <ion-card-content class="no-padding">
-              <ion-row>
-                <ion-col size="4" class="loan-info-col">
-                  <ion-row *ngIf="request.nft && request.nft.metadata" class="asset-row">
-                      <ion-col size="3" class="loan-info-col loan-content">
-                        <ion-thumbnail>
-                          <ion-img [src]="request.nft.metadata.image" class="asset-thumb"></ion-img>
-                        </ion-thumbnail>
-                      </ion-col> 
-                      <ion-col size="9" class="loan-info-col loan-content">
-                        <ion-text>
-                          {{request.nft.metadata.name}}
-                        </ion-text>
-                      </ion-col>
-                  </ion-row>
-                  <ion-row *ngIf="!(request.nft && request.nft.metadata)">
-                    <ion-col class="loan-content">
-                      NFT # {{ request.tokenID }}
-                    </ion-col>
-                  </ion-row>
-                </ion-col>
-                <ion-col size="2" class="loan-content">{{ request.amount |formatEth }} {{ currency }}</ion-col>
-                <ion-col size="3" class="loan-content">{{ request.repayment | formatEth | rounding:[4] }} {{ currency }}</ion-col>
-                <ion-col size="3" class="loan-content">{{ request.loanLength.div(86400)  + ' days'}}</ion-col>
-              </ion-row>
-            </ion-card-content>
+  <!-- P2P Markets -->
+  <ion-row>
+    <ion-col size-xs="12" size-sm="12" size-md="12" size-lg="10" offset-lg="1" size-xl="8" offset-xl="2">
+        <ion-card>
+          <ion-card-title>
+            <ion-row class="pool-title-row">
+              <ion-col>
+                <ion-text class="pool-section-title">P2P Markets</ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-card-title>
+          <ion-item-divider class="thin-divider"></ion-item-divider>
+          <ion-card-content>
+            <ion-segment (ionChange)="onSegmentChanged($event)" value="requests" #segmentControl>
+              <ion-segment-button value="requests">
+                <ion-icon name="apps"></ion-icon>
+                <ion-label>Loan Requests</ion-label>
+              </ion-segment-button>
+              <ion-segment-button value="myloans">
+                <ion-icon name="cash"></ion-icon>
+                <ion-label>My loans</ion-label>
+               </ion-segment-button>
+            </ion-segment> 
 
-          </ion-card>
-        </ion-col>
-      </ion-row>
-    </div>
-    <ion-row *ngIf="loanRequests == null || loanRequests.length == 0">
-      <ion-col class="centered-content">
-        <ion-text class="centered-text"> There are no open loan requests</ion-text></ion-col>
-    </ion-row>
-  </div>
-
-  <div *ngIf="currentSegment == 'myloans'">
-    <div *ngIf="myLoans.length">
-      <ion-row class="loans-header">
-        <ion-col size="4" size-xs="6">Asset</ion-col>
-        <ion-col size="2" size-xs="6">Amount</ion-col>
-        <ion-col size="3" size-xs="0">Repayment</ion-col>
-        <ion-col size="3" size-xs="0">Expiry</ion-col>
-      </ion-row>
-      <ion-row class="loan-row" *ngFor="let loan of myLoans">
-        <ion-col>
-          <ion-card [routerLink]="['/', 'lend', 'loan', loan.loanID.toString()]">
-            <ion-card-content class="no-padding">
-              <ion-row>
-                <ion-col size="4" class="loan-info-col">
-                  <ion-row *ngIf="loan.nft && loan.nft.metadata" class="asset-row">
-                      <ion-col size="3" class="loan-info-col loan-content">
-                        <ion-thumbnail>
-                          <ion-img [src]="loan.nft.metadata.image" class="asset-thumb"></ion-img>
-                        </ion-thumbnail>
-                      </ion-col> 
-                      <ion-col size="9" class="loan-info-col loan-content">
-                        <ion-text>
-                          {{loan.nft.metadata.name}}
-                        </ion-text>
-                      </ion-col>
-                  </ion-row>
-                  <ion-row *ngIf="!(loan.nft && loan.nft.metadata)">
-                    <ion-col class="loan-content">
-                      NFT # {{ loan.tokenID }}
-                    </ion-col>
-                  </ion-row>
-                </ion-col>
-                <ion-col size="2" class="loan-content">{{ loan.principal | formatEth}} {{ currency }}</ion-col>
-                <ion-col size="3" class="loan-content">{{ loan.repaymentAmount |formatEth | rounding:[4]}} {{ currency }}</ion-col>
-                <ion-col size="3" class="loan-content"> {{ loan.expiresAt.mul(1000).toString() | date}}</ion-col>
+            <div *ngIf="currentSegment === 'requests'">
+              <div *ngIf="loanRequests && loanRequests.length > 0">
+                <ion-row class="loans-header">
+                  <ion-col size="4">Asset</ion-col>
+                  <ion-col size="2">Amount</ion-col>
+                  <ion-col size="3">Repayment</ion-col>
+                  <ion-col size="3">Duration</ion-col>
+                </ion-row>
+                <ion-row class="loan-row" *ngFor="let request of loanRequests">
+                  <ion-col class="no-padding">
+                    <ion-card  [routerLink]="['/', 'lend', 'request', request.requestID.toString()]">
+                      <ion-card-content class="no-padding">
+                        <ion-row>
+                          <ion-col size="4" class="loan-info-col">
+                            <ion-row *ngIf="request.nft && request.nft.metadata" class="asset-row">
+                                <ion-col size="3" class="loan-info-col loan-content">
+                                  <ion-thumbnail>
+                                    <ion-img [src]="request.nft.metadata.image" class="asset-thumb"></ion-img>
+                                  </ion-thumbnail>
+                                </ion-col> 
+                                <ion-col size="9" class="loan-info-col loan-content">
+                                  <ion-text>
+                                    {{request.nft.metadata.name}}
+                                  </ion-text>
+                                </ion-col>
+                            </ion-row>
+                            <ion-row *ngIf="!(request.nft && request.nft.metadata)">
+                              <ion-col class="loan-content">
+                                NFT # {{ request.tokenID }}
+                              </ion-col>
+                            </ion-row>
+                          </ion-col>
+                          <ion-col size="2" class="loan-content">{{ request.amount |formatEth }} {{ currency }}</ion-col>
+                          <ion-col size="3" class="loan-content">{{ request.repayment | formatEth | rounding:[4] }} {{ currency }}</ion-col>
+                          <ion-col size="3" class="loan-content">{{ request.loanLength.div(86400)  + ' days'}}</ion-col>
+                        </ion-row>
+                      </ion-card-content>
+          
+                    </ion-card>
+                  </ion-col>
+                </ion-row>
+              </div> <!-- loanRequests.length > 0 -->
+              <ion-row *ngIf="loanRequests === null || loanRequests.length === 0">
+                <ion-col class="centered-content">
+                  <ion-text class="centered-text"> There are no open loan requests</ion-text></ion-col>
               </ion-row>
-            </ion-card-content>
-          </ion-card>
-        </ion-col>        
-      </ion-row>
-    </div>
-    <ion-row *ngIf="myLoans.length == 0">
-      <ion-col class="centered-content">
-        <ion-text>You do not have any open loans</ion-text>
-      </ion-col>
-    </ion-row>
-  </div>
+            </div> <!-- currentSegment === 'requests'-->
+
+            <div *ngIf="currentSegment === 'myloans'">
+              <div *ngIf="myLoans.length">
+                <ion-row class="loans-header">
+                  <ion-col size="4" size-xs="6">Asset</ion-col>
+                  <ion-col size="2" size-xs="6">Amount</ion-col>
+                  <ion-col size="3" size-xs="0">Repayment</ion-col>
+                  <ion-col size="3" size-xs="0">Expiry</ion-col>
+                </ion-row>
+                <ion-row class="loan-row" *ngFor="let loan of myLoans">
+                  <ion-col>
+                    <ion-card [routerLink]="['/', 'lend', 'loan', loan.loanID.toString()]">
+                      <ion-card-content class="no-padding">
+                        <ion-row>
+                          <ion-col size="4" class="loan-info-col">
+                            <ion-row *ngIf="loan.nft && loan.nft.metadata" class="asset-row">
+                                <ion-col size="3" class="loan-info-col loan-content">
+                                  <ion-thumbnail>
+                                    <ion-img [src]="loan.nft.metadata.image" class="asset-thumb"></ion-img>
+                                  </ion-thumbnail>
+                                </ion-col> 
+                                <ion-col size="9" class="loan-info-col loan-content">
+                                  <ion-text>
+                                    {{loan.nft.metadata.name}}
+                                  </ion-text>
+                                </ion-col>
+                            </ion-row>
+                            <ion-row *ngIf="!(loan.nft && loan.nft.metadata)">
+                              <ion-col class="loan-content">
+                                NFT # {{ loan.tokenID }}
+                              </ion-col>
+                            </ion-row>
+                          </ion-col>
+                          <ion-col size="2" class="loan-content">{{ loan.principal | formatEth}} {{ currency }}</ion-col>
+                          <ion-col size="3" class="loan-content">{{ loan.repaymentAmount |formatEth | rounding:[4]}} {{ currency }}</ion-col>
+                          <ion-col size="3" class="loan-content"> {{ loan.expiresAt.mul(1000).toString() | date}}</ion-col>
+                        </ion-row>
+                      </ion-card-content>
+                    </ion-card>
+                  </ion-col>        
+                </ion-row>
+              </div>
+              <ion-row *ngIf="myLoans.length === 0">
+                <ion-col class="centered-content">
+                  <ion-text>You do not have any open loans</ion-text>
+                </ion-col>
+              </ion-row>
+            </div> <!-- currentSegment === 'myloans' -->
+            
+          </ion-card-content>
+        </ion-card> 
+    </ion-col>
+  </ion-row>
   </ion-content>
