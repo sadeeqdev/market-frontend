@@ -55,7 +55,7 @@ export class BorrowLandingPage implements OnInit {
     ) { }
   
   async ngOnInit() {
-    this.lendingPools = environment.config.lendingPools
+    this.lendingPools = environment.config.pools
     this.lendingPools[0].stats = {
       supplied: BigNumber.from(1010101),
       utilization: "63.55%",

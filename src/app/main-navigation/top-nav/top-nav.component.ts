@@ -55,9 +55,9 @@ export class TopNavComponent implements OnInit, OnDestroy {
       icon: 'cash'
     },
     {
-      name: 'Launches',
-      path: '/launches',
-      icon: 'gift'
+      name: 'Grotto',
+      path: '/grotto',
+      icon: 'storefront'
     },
     // {
     //   name: 'Dapps',
@@ -163,14 +163,14 @@ export class TopNavComponent implements OnInit, OnDestroy {
       case url.match(/\/dapps/)?.input:
         this.title = 'Dapps'
         break
-      case url.match(/\/market/)?.input:
-        this.title = 'NFT Market'
+      case url.match(/\/lend/)?.input:
+        this.title = 'Lend'
         break
-      case url.match(/\/rewards/)?.input:
-        this.title = 'Rewards'
+      case url.match(/\/borrow/)?.input:
+        this.title = 'Borrow'
         break
-      case url.match('/\/launches/')?.input:
-        this.title = 'Drops'
+      case url.match('/\/grotto/')?.input:
+        this.title = 'Grotto'
         break
       case url.match(/\/profile/)?.input:
         this.title = 'Profile'

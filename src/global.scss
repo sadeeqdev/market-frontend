@@ -159,6 +159,12 @@ ion-card.main-card:hover {
   color: var(--ion-color-medium);
 }
 
+.subheading {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--ion-color-medium);
+}
+
 .white-text {
   color: white;
 }
@@ -260,14 +266,19 @@ ion-card.main-card:hover {
 
 .asset-thumb {
   min-width: 40px;
+  max-height: 40px;
   &::part(image) {
     border-radius: 2px;
+    width: 40px;
+    height: 40px;
+    size: 40px;
+    --size: 40px;
   }
 }
 
 .asset-avatar {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
 }
 
 .asset-name {
@@ -321,8 +332,12 @@ ion-card.main-card:hover {
   margin: 20px 16px -20px;
 }
 
+body, main {
+  background-color: var(--chedda-default-background) !important;
+}
+
 .default-background {
-  background-color: var(--chedda-default-background);
+  // background-color: var(--chedda-default-background);
 }
 
 .light-background {
@@ -337,7 +352,7 @@ ion-card.main-card:hover {
   background-color: var(--chedda-light-background) !important;
 }
 
-@media screen and (max-width: 768px) {
+@media (min-width: 768px) {
   .no-mobile {
     display: none;
   }

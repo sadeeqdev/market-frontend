@@ -1,9 +1,9 @@
 <ion-content>
-  <ion-grid class="default-background">
+  <ion-grid>
   <!-- Lending Pools -->
   <ion-row>
     <ion-col size-xs="12" size-sm="12" size-md="12" size-lg="10" offset-lg="1" size-xl="8" offset-xl="2">
-      <ion-card>
+      <ion-card class="light-background">
         <ion-card-title>
           <ion-row class="pool-title-row">
             <ion-col>
@@ -11,7 +11,7 @@
             </ion-col>
           </ion-row>
         </ion-card-title>
-        <ion-item-divider></ion-item-divider>
+        <ion-item-divider class="light-background"></ion-item-divider>
         <ion-card-content>
           <ion-row class="loans-header">
             <ion-col size="3">Market</ion-col>
@@ -29,12 +29,12 @@
                       <ion-img [src]="pool.asset.logo" class="asset-avatar"></ion-img>
                     </ion-avatar>
                     <ion-text class="asset-name">
-                      {{pool.asset.name}}
+                      {{pool.asset.symbol}}
                     </ion-text>
                   </ion-col>
                   <ion-col size="3">
                     <ion-text *ngFor="let collateral of pool.collateral; index as i">
-                      {{collateral.name}}
+                      {{collateral.symbol}}
                       <span *ngIf="i !== pool.collateral.length - 1">, </span>
                     </ion-text>
                   </ion-col>
@@ -62,7 +62,7 @@
             </ion-col>
           </ion-row>
         </ion-card-title>
-        <ion-item-divider></ion-item-divider>
+        <ion-item-divider class="light-background"></ion-item-divider>
         <ion-card-content>
           <ion-row>
             <ion-col>
@@ -81,7 +81,7 @@
   
           <div *ngIf="currentSegment == 'items'">
             <ion-row>
-              <ion-col *ngFor="let nft of items; let i=index" size-xs="12" size-sm="6" size-md="4" size-lg="3" size-xl="2">
+              <ion-col *ngFor="let nft of items; let i=index" size-xs="12" size-sm="6" size-md="4" size-lg="3" size-xl="3">
                 <my-nft-card [nft]="nft" [routerLink]="['/', 'borrow', 'request', nft.nftContract, nft.tokenID.toString() ]"></my-nft-card>
               </ion-col>
               <ion-col *ngIf="items && items.length == 0">
@@ -96,7 +96,7 @@
           </div> <!-- currentSegment == 'items'-->
   
           <div *ngIf="currentSegment == 'loans'">
-            <ion-row class="title-row">
+            <ion-row class="filter-row">
               <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="4" size-xl="4">
                 <ion-text class="row-title">
                   Filter
@@ -116,9 +116,9 @@
               <div *ngIf="pendingLoans.length">
                 <ion-row class="loans-header">
                   <ion-col size="4">Asset</ion-col>
-                  <ion-col size="2">Amount</ion-col>
+                  <ion-col size="3">Amount</ion-col>
                   <ion-col size="3">Repayment</ion-col>
-                  <ion-col size="3">Duration</ion-col>
+                  <ion-col size="2">Duration</ion-col>
                 </ion-row>
                 <ion-row class="loan-row" *ngFor="let pending of pendingLoans">
                   <ion-col size="12">
@@ -128,11 +128,8 @@
                         <ion-row class="asset-row">
                           <ion-col size="4" class="loan-info-col">
                             <ion-row *ngIf="pending.nft && pending.nft.metadata" class="asset-row">
-        
                                 <ion-col size="3" class="loan-info-col loan-content">
-                                  <ion-thumbnail>
-                                    <ion-img [src]="pending.nft.metadata.image" class="asset-thumb"></ion-img>
-                                  </ion-thumbnail>
+                                  <ion-img [src]="pending.nft.metadata.image" class="asset-thumb"></ion-img>
                                 </ion-col> 
                                 <ion-col size="9" class="loan-info-col loan-content">
                                   <ion-text>
@@ -146,13 +143,13 @@
                               </ion-col>
                             </ion-row>
                           </ion-col>
-                          <ion-col size="2" class="loan-info-col loan-content">
+                          <ion-col size="3" class="loan-info-col loan-content">
                             {{ pending.amount | formatEth }} {{ currency | uppercase }}
                           </ion-col>
                           <ion-col size="3" class="loan-info-col loan-content">
                             {{ pending.repayment | formatEth | rounding:[4]}} {{ currency | uppercase }}
                           </ion-col>
-                          <ion-col size="3" class="loan-info-col loan-content">
+                          <ion-col size="2" class="loan-info-col loan-content">
                             {{ pending.loanLength / 86400 + ' days' }}
                           </ion-col>
                         </ion-row>
@@ -187,9 +184,7 @@
                           <ion-col size="4" class="loan-info-col">
                             <ion-row *ngIf="loan.nft && loan.nft.metadata">
                               <ion-col size-xs="12" size-sm="3" class="loan-info-col loan-content">
-                                <ion-thumbnail>
-                                  <ion-img [src]="loan.nft.metadata.image"></ion-img>
-                                </ion-thumbnail>
+                                <ion-img [src]="loan.nft.metadata.image"></ion-img>
                               </ion-col>
                               <ion-col size-xs="12" size-sm="9" class="loan-info-col loan-content">{{loan.nft.metadata.name}}</ion-col>
                             </ion-row>

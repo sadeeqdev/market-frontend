@@ -44,6 +44,10 @@ const routes: Routes = [
         path:'borrow',
         loadChildren: () => import('../borrow/borrow.module').then(m => m.BorrowPageModule)
       },
+      {
+        path: 'grotto',
+        loadChildren: () => import('../grotto/grotto.module').then( m => m.GrottoPageModule)
+      },
     ]
   }
 ];

@@ -35,7 +35,7 @@ export class LendLandingPage implements OnInit, OnDestroy {
     // await this.fetchLoanRequests()
     // await this.fetchMyLoans()
     await this.listenToChanges()
-    this.lendingPools = environment.config.lendingPools
+    this.lendingPools = environment.config.pools
     this.lendingPools[0].stats = {
       supplied: BigNumber.from(1010101),
       utilization: "63.55%",
