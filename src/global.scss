@@ -295,7 +295,6 @@ ion-card.main-card:hover {
 
 .pool-title-row {
   margin-top: 20px;
-  margin-bottom: -20px;
 }
 
 .asset-logo {
@@ -329,7 +328,7 @@ ion-card.main-card:hover {
 }
 
 .card-title-row {
-  margin: 20px 16px -20px;
+  margin: 20px 16px 0px;
 }
 
 body, main {
@@ -348,6 +347,10 @@ body, main {
   background-color: var(--chedda-lighter-background);
 }
 
+ion-item-divider {
+  margin-top: 0px;
+  min-height: 1px !important;
+}
 .item-divider-wrapper {
   background-color: var(--chedda-light-background) !important;
 }

@@ -20,7 +20,7 @@
             <ion-col size="3">Collateral</ion-col>
             <ion-col size="2">APR</ion-col>
             <ion-col size="2">Utilization</ion-col>
-            <ion-col size="2">Total</ion-col>
+            <ion-col size="2">Deposited</ion-col>
           </ion-row>
           <ion-row *ngFor="let pool of lendingPools">
             <ion-col>
@@ -80,9 +80,9 @@
               <div *ngIf="loanRequests && loanRequests.length > 0">
                 <ion-row class="loans-header">
                   <ion-col size="4">Asset</ion-col>
-                  <ion-col size="2">Amount</ion-col>
+                  <ion-col size="3">Amount</ion-col>
                   <ion-col size="3">Repayment</ion-col>
-                  <ion-col size="3">Duration</ion-col>
+                  <ion-col size="2">Duration</ion-col>
                 </ion-row>
                 <ion-row class="loan-row" *ngFor="let request of loanRequests">
                   <ion-col class="no-padding">
@@ -106,9 +106,9 @@
                               </ion-col>
                             </ion-row>
                           </ion-col>
-                          <ion-col size="2" class="loan-content">{{ request.amount |formatEth }} {{ currency }}</ion-col>
+                          <ion-col size="3" class="loan-content">{{ request.amount |formatEth }} {{ currency }}</ion-col>
                           <ion-col size="3" class="loan-content">{{ request.repayment | formatEth | rounding:[4] }} {{ currency }}</ion-col>
-                          <ion-col size="3" class="loan-content">{{ request.loanLength.div(86400)  + ' days'}}</ion-col>
+                          <ion-col size="2" class="loan-content">{{ request.loanLength.div(86400)  + ' days'}}</ion-col>
                         </ion-row>
                       </ion-card-content>
                     </ion-card>
