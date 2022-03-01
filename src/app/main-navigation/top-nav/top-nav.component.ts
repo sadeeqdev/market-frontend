@@ -40,9 +40,9 @@ export class TopNavComponent implements OnInit, OnDestroy {
 
   menuItems = [
     {
-      name: 'Market',
-      path: '/market',
-      icon: 'bag',
+      name: 'Dashboard',
+      path: '/dashboard',
+      icon: 'pie-chart',
     }, 
     {
       name: 'Lend',
@@ -59,6 +59,11 @@ export class TopNavComponent implements OnInit, OnDestroy {
       path: '/grotto',
       icon: 'storefront'
     },
+    {
+      name: 'Auction',
+      path: '/market',
+      icon: 'bag',
+    }, 
     // {
     //   name: 'Dapps',
     //   path: '/dapps',
@@ -160,8 +165,8 @@ export class TopNavComponent implements OnInit, OnDestroy {
   async checkRoute() {
     let url = this.router.url
     switch (url) {
-      case url.match(/\/dapps/)?.input:
-        this.title = 'Dapps'
+      case url.match(/\/dashboard/)?.input:
+        this.title = 'Dashboard'
         break
       case url.match(/\/lend/)?.input:
         this.title = 'Lend'

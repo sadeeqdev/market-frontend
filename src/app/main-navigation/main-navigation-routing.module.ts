@@ -10,7 +10,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'market'
+        redirectTo: 'dashboard'
       },
       {
         path: 'dapps',
@@ -47,6 +47,10 @@ const routes: Routes = [
       {
         path: 'grotto',
         loadChildren: () => import('../grotto/grotto.module').then( m => m.GrottoPageModule)
+      },
+      {
+        path: 'dashboard',
+        loadChildren: () => import('../dashboard/dashboard.module').then( m => m.DashboardPageModule)
       },
     ]
   }
