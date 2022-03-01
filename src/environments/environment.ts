@@ -33,17 +33,21 @@ export const environment = {
           name: '',
           url: ''
         }],
-        lendingPools: [
+        pools: [
           {
             name: '',
             address: '',
             asset: {
               name: '',
+              symbol:'',
+              address: '',
               logo: ''
             },
             collateral: [
               {
                 name: '',
+                symbol: '',
+                address: '',
                 logo: ''
               },
             ],

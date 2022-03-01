@@ -1,0 +1,137 @@
+<ion-content>
+  <ion-grid>
+    <!-- main -->
+    <ion-row>
+      <ion-col size-xs="12" size-sm="10" offset-sm="1" size-md="8" offset-md="2" size-lg="6" offset-lg="3" size-xl="4" offset-xl="4">
+        <ion-card class="light-background">
+          <ion-card-title>
+            <ion-row class="card-title-row">
+              <ion-col>
+                <ion-text class="card-title">
+                  Stake CHEDDA
+                </ion-text>
+              </ion-col>
+            </ion-row>
+            
+          </ion-card-title>
+          <ion-item-divider class="light-background"></ion-item-divider>
+          <ion-card-content>
+
+            <ion-row>
+              <ion-col size="6">
+                <ion-text>Total Supply</ion-text>
+              </ion-col>
+              <ion-col size="6">{{'1000' | currency}}</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6">
+                <ion-text>Chedda Balance</ion-text>
+              </ion-col>
+              <ion-col size="6">{{'2241000000' | currency}}</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6">
+                <ion-text>Staked Chedda Balance</ion-text>
+              </ion-col>
+              <ion-col size="6">{{'2241000000' | currency}}</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6">
+                <ion-text>Current APR</ion-text>
+              </ion-col>
+              <ion-col size="6">
+                <ion-text>3.25%</ion-text>
+              </ion-col>
+            </ion-row>
+            <ion-item-divider class="light-background"></ion-item-divider>
+            <ion-row>
+              <ion-col class="align-items-center">
+                <ion-text>Amount</ion-text>
+              </ion-col>
+              <ion-col class="justify-content-end">
+                <ion-button size="small" color="primary" fill="clear">Max {{'0'}}</ion-button>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-input placeholder="0.0" class="bordered-input"></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-button color="primary" fill="solid" expand="block">Stake</ion-button>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-button color="primary" fill="outline" expand="block">Unstake</ion-button>
+              </ion-col>
+            </ion-row>
+
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <!-- Pool details -->
+    <ion-row>
+      <ion-col size-xs="12" size-sm="10" offset-sm="1" size-md="8" offset-md="2" size-lg="6" offset-lg="3" size-xl="4" offset-xl="4">        
+        <ion-card class="light-background">
+          <ion-card-title>
+            <ion-row class="card-title-row">
+              <ion-col>
+                <ion-text class="card-title">
+                  Testnet Faucets
+                </ion-text>
+              </ion-col>
+            </ion-row>
+            <ion-row class="card-title-row">
+              <ion-col>
+                <ion-text class="subheading">
+                  Testnet faucets for minting tokens to use in Lending and Borrowing
+                </ion-text>
+              </ion-col>
+              
+            </ion-row>
+            
+          </ion-card-title>
+          <ion-item-divider class="light-background"></ion-item-divider>
+          <ion-card-content>
+            <ion-row>
+              <ion-col>
+
+                <!---->
+                <ion-col class="no-padding">
+                  <ion-card class="lighter-background" *ngFor="let token of tokens">
+                    <ion-card-content class="no-padding faucet-row">
+                      <ion-row>
+                        <ion-col size="9" class="loan-info-col">
+                          <ion-row class="asset-row">
+                              <ion-col size="3" class="loan-info-col loan-content"> 
+                                <ion-img [src]="token.logo" class="asset-thumb round-image"></ion-img>
+                              </ion-col> 
+                              <ion-col size="9" class="loan-info-col loan-content">
+                                <ion-text>
+                                  {{ token.name }}
+                                </ion-text>
+                              </ion-col>
+                             
+                          </ion-row>
+                        </ion-col>
+                        <ion-col size="3" class="justify-content-end align-items-center">
+                          <ion-button size="small" fill="solid" color="secondary">Drip</ion-button>
+                        </ion-col>
+                      </ion-row>
+                    </ion-card-content>
+                  </ion-card>
+                </ion-col>
+                <!---->
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+          </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

@@ -1,0 +1,9 @@
+.faucet-row {
+    padding: 0;
+}
+
+.round-image {
+    &::part(image) {
+        border-radius: 50%;
+    }
+}
