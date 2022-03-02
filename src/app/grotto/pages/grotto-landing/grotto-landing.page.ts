@@ -32,6 +32,8 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
   loader
   isApproved = false
   cheddaApprovalSubscription?: Subscription
+  depositSubscription?: Subscription
+  withdrawSubscription?: Subscription
 
   tokens: Token[] = [
     {
@@ -61,11 +63,14 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
 
   async ngOnInit() {
     await this.loadCheddaStats()
+    await this.checkAllowance()
     await this.listenForEvents()
   }
 
   ngOnDestroy(): void {
     this.cheddaApprovalSubscription?.unsubscribe()
+    this.depositSubscription?.unsubscribe()
+    this.withdrawSubscription?.unsubscribe()
   }
 
   async loadCheddaStats() {
@@ -118,8 +123,11 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       return
     }
     try {
+      await this.showLoading('Waiting for confirmation')
       await this.sChedda.stake(amount)
+      this.stakeInput.value = ''
     } catch (error) {
+      await this.hideLoading()
       this.alert.showErrorAlert(error)
     }
   }
@@ -132,7 +140,9 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       return
     }
     try {
+      this.showLoading('Waiting for confirmation')
       await this.sChedda.unstake(amount)
+      this.unstakeInput.value = ''
     } catch (error) {
       this.alert.showErrorAlert(error)
     }
@@ -140,7 +150,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
 
   async approveChedda() {
     try {
-      await this.showLoading()
+      await this.showLoading('Waiting for approval')
       await this.chedda.approve(this.sChedda.address())
     } catch (error) {
       await this.hideLoading()
@@ -167,10 +177,9 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     this.unstakeInput.value = this.myStakedCheddaBalance
   }
 
-
-  private async showLoading() {
+  private async showLoading(message: string) {
     this.loader = await this.loadingController.create({
-      message: 'Waiting for approval'
+      message
     })
     await this.loader.present()
   }
@@ -180,11 +189,37 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     await this.loader.dismiss()
   }
 
+  private async checkAllowance() {
+    if (!this.wallet || !this.wallet.currentAccount) {
+      return
+    }
+    const allowance = await this.chedda.allowance(this.wallet.currentAccount, this.sChedda.address())
+    this.isApproved = allowance.gt(ethers.utils.parseUnits("1000"))
+  }
+
   private async listenForEvents() {
     this.cheddaApprovalSubscription = this.chedda.approvalSubject.subscribe(async res => {
       if (res && res.account.toLowerCase() === this.wallet.currentAccount.toLowerCase()) {
         this.isApproved = true
         await this.hideLoading()
+      }
+    })
+
+    this.depositSubscription = this.sChedda.depositSubject.subscribe(async res => {
+      console.log('deposit received: ', res)
+      if (this.wallet && this.wallet.currentAccount && res && res.from.toLowerCase() == this.wallet.currentAccount.toLowerCase()) {
+        await this.hideLoading()
+        await this.alert.showToast('Stake confirmed')
+        await this.loadCheddaStats()
+      }
+    })
+
+    this.withdrawSubscription = this.sChedda.withdrawSubject.subscribe(async res => {
+      console.log('withdraw received: ', res)
+      if (this.wallet && this.wallet.currentAccount && res && res.from.toLowerCase() == this.wallet.currentAccount.toLowerCase()) {
+        await this.hideLoading()
+        await this.alert.showToast('Withdrawal confirmed')
+        await this.loadCheddaStats()
       }
     })
   }

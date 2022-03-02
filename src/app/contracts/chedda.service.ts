@@ -27,6 +27,9 @@ export class CheddaService {
     return await this.cheddaContract.balanceOf(address)
   }
 
+  async allowance(account: string, spender: string): Promise<BigNumber> {
+    return await this.cheddaContract.allowance(account, spender)
+  }
   async totalSupply(): Promise<BigNumber> {
     return await this.cheddaContract.totalSupply()
   }

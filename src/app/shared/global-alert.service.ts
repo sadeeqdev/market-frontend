@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { WalletProviderService } from '../providers/wallet-provider.service';
 import { environment } from 'src/environments/environment';
 
@@ -12,6 +12,7 @@ export class GlobalAlertService {
   constructor(
     private alertController: AlertController,
     private toastController: ToastController,
+    private loadingController: LoadingController,
     private provider: WalletProviderService,
     private router: Router,
     ) { }
@@ -227,10 +228,10 @@ export class GlobalAlertService {
     await toast.present()
   }
 
-  async showToast(message: string) {
+  async showToast(message: string, timeout: number = 3000) {
     const toast = await this.toastController.create({
       message: message,
-      duration: 3000
+      duration: timeout
     })
     await toast.present()
   }

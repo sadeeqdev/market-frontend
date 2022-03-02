@@ -26,34 +26,34 @@
               <ion-col size="6">
                 <ion-text>My Deposits</ion-text>
               </ion-col>
-              <ion-col size="6">{{'1000' | currency}}</ion-col>
+              <ion-col size="6">{{myVaultSharesBalance | number:'1.2-6'}} mUSDC.c</ion-col>
             </ion-row>
             <ion-row>
               <ion-col size="6">
                 <ion-text>Available Liquidity</ion-text>
               </ion-col>
-              <ion-col size="6">{{'2241000000' | currency}}</ion-col>
+              <ion-col size="6">{{totalVaultAssets | number:'1.2-6'}} USDC.c</ion-col>
             </ion-row>
             <ion-row>
               <ion-col size="6">
                 <ion-text>Utilization</ion-text>
               </ion-col>
-              <ion-col size="6">55.87%</ion-col>
+              <ion-col size="6">{{utilizationRate | number:'1.2-3'}}%</ion-col>
             </ion-row>
             <ion-row>
               <ion-col size="6">
-                <ion-text>Deposit APR</ion-text>
+                <ion-text>Deposit APY</ion-text>
               </ion-col>
               <ion-col size="6">
-                <ion-text>3.25%</ion-text>
+                <ion-text>{{depositApy | number:'1.2-3'}}%</ion-text>
               </ion-col>
             </ion-row>
             <ion-row>
               <ion-col size="6">
-                <ion-text>Rewards APR</ion-text>
+                <ion-text>Rewards APY</ion-text>
               </ion-col>
               <ion-col size="6">
-                <ion-text>5.89%</ion-text>
+                <ion-text>{{rewardsApy | number:'1.2-3'}}%</ion-text>
               </ion-col>
             </ion-row>
             <ion-item-divider class="light-background"></ion-item-divider>
@@ -76,17 +76,18 @@
                   <ion-text>Amount</ion-text>
                 </ion-col>
                 <ion-col class="justify-content-end">
-                  <ion-button size="small" color="primary" fill="clear">Max {{'0'}}</ion-button>
+                  <ion-button size="small" color="primary" fill="clear" (click)="fillMaxDeposit()">Max {{myUsdcBalance | number:'1.2-5'}} </ion-button>
                 </ion-col>
               </ion-row>
               <ion-row>
                 <ion-col>
-                  <ion-input placeholder="0.0" class="bordered-input"></ion-input>
+                  <ion-input placeholder="0.0" class="bordered-input" #depositInput></ion-input>
                 </ion-col>
               </ion-row>
               <ion-row>
                 <ion-col>
-                  <ion-button color="primary" expand="block">Deposit</ion-button>
+                  <ion-button *ngIf="isApproved" color="primary" expand="block" (click)="deposit()">Deposit</ion-button>
+                  <ion-button *ngIf="!isApproved" color="primary" fill="solid" expand="block" (click)="approveUsdc()">Approve USDC.c</ion-button>
                 </ion-col>
               </ion-row>
             </div>
@@ -103,17 +104,17 @@
                   <ion-text>Amount</ion-text>
                 </ion-col>
                 <ion-col class="justify-content-end">
-                  <ion-button size="small" color="primary" fill="clear">Max {{'0'}}</ion-button>
+                  <ion-button size="small" color="primary" fill="clear" (click)="fillMaxWithdraw()">Max {{myVaultSharesBalance | number:'1.2-4'}}</ion-button>
                 </ion-col>
               </ion-row>
               <ion-row>
                 <ion-col>
-                  <ion-input placeholder="0.0" class="bordered-input"></ion-input>
+                  <ion-input placeholder="0.0" class="bordered-input" #withdrawInput></ion-input>
                 </ion-col>
               </ion-row>
               <ion-row>
                 <ion-col>
-                  <ion-button color="primary" fill="outline" expand="block">Withdraw</ion-button>
+                  <ion-button color="primary" fill="outline" expand="block" (click)="redeem()">Withdraw</ion-button>
                 </ion-col>
               </ion-row>
             </div>
