@@ -5,6 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { NetworkParams } from './network-params.interface';
 import { CheddaConfig } from './chedda-config.interface';
+import { StringifyOptions } from 'querystring';
 
 @Injectable({
   providedIn: 'root'
@@ -75,6 +76,29 @@ export class WalletProviderService {
     .catch((error: any) => {
       console.log(error)
     })
+  }
+
+  async addToken(address: string, symbol: string, decimals: number, image?: string) {
+    this.provider
+  .send(
+    'wallet_watchAsset',
+    {
+      type: 'ERC20',
+      options: {
+        address,
+        symbol,
+        decimals,
+        image
+      },
+  })
+  .then((success) => {
+    if (success) {
+      console.log('FOO successfully added to wallet!');
+    } else {
+      throw new Error('Something went wrong.');
+    }
+  })
+  .catch(console.error);
   }
 
   async getAccounts() {

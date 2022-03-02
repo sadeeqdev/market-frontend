@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AlertController, IonButton, ModalController, NavController, ToastController } from '@ionic/angular';
-import { BigNumber, ethers } from 'ethers';
+import {  ethers } from 'ethers';
 import { Subscription } from 'rxjs';
 import { NftLikeModalComponent } from 'src/app/components/nft-like-modal/nft-like-modal.component';
 import { CheddaMarketService } from 'src/app/contracts/chedda-market.service';
@@ -13,7 +13,6 @@ import { NFT } from '../../models/nft.model';
 import { environment } from 'src/environments/environment';
 import { GetLoanModalComponent } from 'src/app/borrow/components/get-loan-modal/get-loan-modal.component';
 import { PriceConsumerService } from 'src/app/contracts/price-consumer.service';
-import { EthFormattingPipe } from 'src/app/pipes/eth-formatting.pipe';
 
 @Component({
   selector: 'app-nft-details',

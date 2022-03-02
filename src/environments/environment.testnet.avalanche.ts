@@ -18,6 +18,12 @@ export const environment = {
             CheddaDropManager: '0x70381A1c4bc75b9E9defDe8Dc1E291880e44F73b',
             CheddaLoanManager: '0x2808a47dca28f46D85210Bcd56B585446d1482be',
             ChainlinkPriceConsumer: '0x674036Df4BdbCB9bD6D5F83d6daA340f190a5DCC',
+            Chedda: '0x30c54E9c99147620BD6fBC2D9b0CE90b4FBc80eF',
+            sChedda: '0x0fFD5fB4B3160A2709E120A7484AEE03500c55b3',
+            USDC: '0x55df0aF74eE7FA170AbBF7eb3F8D43d7c20De207',
+            mUSDC: '0xd2DA1a0D84DA053c88434A2a688798DB9E93365e',
+            WrappedNative: '0x2c01212f051A59D88A1361db1E2041896dB4af64',
+            Faucet: '0xF9BF842eA45AfBa3cd3A1aED2aA5a3ACE07B9DF4',
           },
           networkParams: {
             chainId: '0xA869',
@@ -37,25 +43,33 @@ export const environment = {
               url: 'https://faucet.avax-test.network/',
             }
           ],
-          lendingPools: [
+          pools: [
             {
               name: 'USDC/WAVAX Pool',
               address: '0x000',
               asset: {
-                name: 'USDC',
+                name: 'USD Coin',
+                symbol: 'USCD.c',
+                address: '0x55df0aF74eE7FA170AbBF7eb3F8D43d7c20De207',
                 logo: '/assets/logos/usd-coin-logo.png'
               },
               collateral: [
                 {
-                  name: 'WAVAX',
+                  name: 'Wrapped AVAX',
+                  symbol: 'WAVAX.c',
+                  address: '0x2c01212f051A59D88A1361db1E2041896dB4af64',
                   logo: '/assets/logos/avalanche-avax-logo.png'
                 },
                 {
-                  name: 'WGK',
+                  name: 'Weird geek',
+                  symbol: 'WGK',
+                  address: '0x0',
                   logo: '/assets/logos/wgk-logo.png'
                 },
                 {
-                  name: 'EYE',
+                  name: 'Chedda Fancy Eye',
+                  symbol: 'EYE',
+                  address: '0x0',
                   logo: '/assets/logos/eye-logo.png'
                 },
               ],

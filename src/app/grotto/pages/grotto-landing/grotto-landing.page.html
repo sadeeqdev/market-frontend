@@ -21,53 +21,75 @@
               <ion-col size="6">
                 <ion-text>Total Supply</ion-text>
               </ion-col>
-              <ion-col size="6">{{'1000' | currency}}</ion-col>
+              <ion-col size="6">{{ cheddaTotalSupply | number:'1.2-5':'en-us' }} CHEDDA</ion-col>
             </ion-row>
             <ion-row>
               <ion-col size="6">
-                <ion-text>Chedda Balance</ion-text>
+                <ion-text>My Balance</ion-text>
               </ion-col>
-              <ion-col size="6">{{'2241000000' | currency}}</ion-col>
+              <ion-col size="6">{{ myCheddaBalance | number:'1.2-5':'en-us' }} CHEDDA </ion-col>
             </ion-row>
             <ion-row>
               <ion-col size="6">
-                <ion-text>Staked Chedda Balance</ion-text>
+                <ion-text>My Stake</ion-text>
               </ion-col>
-              <ion-col size="6">{{'2241000000' | currency}}</ion-col>
+              <ion-col size="6">{{ myStakedCheddaBalance | number:'1.2-5':'en-us'}} sCHEDDA </ion-col>
             </ion-row>
             <ion-row>
               <ion-col size="6">
                 <ion-text>Current APR</ion-text>
               </ion-col>
               <ion-col size="6">
-                <ion-text>3.25%</ion-text>
+                <ion-text>{{cheddaStakingAPR | number}}%</ion-text>
               </ion-col>
             </ion-row>
             <ion-item-divider class="light-background"></ion-item-divider>
+            <ion-segment value="stake" (ionChange)="onSegmentChanged($event)">
+              <ion-segment-button value="stake">Stake</ion-segment-button>
+              <ion-segment-button value="unstake">Unstake</ion-segment-button>
+            </ion-segment>
+            <div *ngIf="currentSegment === 'stake'">
+              <ion-row>
+                <ion-col class="align-items-center">
+                  <ion-text>Amount</ion-text>
+                </ion-col>
+                <ion-col class="justify-content-end">
+                  <ion-button size="small" color="primary" fill="clear" (click)="fillMaxStake()">Max {{myCheddaBalance | number:'1.1-4'}}</ion-button>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-input placeholder="0.0" class="bordered-input" type="number" #stakeInput></ion-input>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-button *ngIf="isApproved" color="primary" fill="solid" expand="block" (click)="stake()">Stake</ion-button>
+                  <ion-button *ngIf="!isApproved" color="primary" fill="solid" expand="block" (click)="approveChedda()">Approve Chedda</ion-button>
+                </ion-col>
+              </ion-row>
+            </div>
+
+            <div *ngIf="currentSegment === 'unstake'">
             <ion-row>
               <ion-col class="align-items-center">
                 <ion-text>Amount</ion-text>
               </ion-col>
               <ion-col class="justify-content-end">
-                <ion-button size="small" color="primary" fill="clear">Max {{'0'}}</ion-button>
+                <ion-button size="small" color="primary" fill="clear" (click)="fillMaxUnstake()">Max {{myStakedCheddaBalance | number:'1.1-4'}}</ion-button>
               </ion-col>
             </ion-row>
             <ion-row>
               <ion-col>
-                <ion-input placeholder="0.0" class="bordered-input"></ion-input>
+                <ion-input placeholder="0.0" class="bordered-input" type="number" #unstakeInput></ion-input>
               </ion-col>
             </ion-row>
             <ion-row>
               <ion-col>
-                <ion-button color="primary" fill="solid" expand="block">Stake</ion-button>
+                <ion-button color="primary" fill="outline" expand="block" (click)="unstake()">Unstake</ion-button>
               </ion-col>
             </ion-row>
-            <ion-row>
-              <ion-col>
-                <ion-button color="primary" fill="outline" expand="block">Unstake</ion-button>
-              </ion-col>
-            </ion-row>
-
+            </div>
           </ion-card-content>
         </ion-card>
       </ion-col>
@@ -90,6 +112,7 @@
                 <ion-text class="subheading">
                   Testnet faucets for minting tokens to use in Lending and Borrowing
                 </ion-text>
+                
               </ion-col>
               
             </ion-row>
@@ -114,11 +137,19 @@
                           </ion-row>
                         </ion-col>
                         <ion-col size="3" class="justify-content-end align-items-center">
-                          <ion-button size="small" fill="solid" color="secondary">Drip</ion-button>
+                          <ion-button size="small" fill="solid" color="secondary" (click)="drip(token.address)">Drip</ion-button>
+                          <ion-button (click)="addTokenToMetamask(token)" size="small" color="dark"><ion-icon name="add"></ion-icon></ion-button>
                         </ion-col>
                       </ion-row>
                     </ion-card-content>
                   </ion-card>
+                  <ion-row>
+                    <ion-col>
+                      <ion-text class="subtext">
+                        Note: You can only drip once a day.
+                      </ion-text>
+                    </ion-col>
+                  </ion-row>
                 </ion-col>
                 <!---->
               </ion-col>

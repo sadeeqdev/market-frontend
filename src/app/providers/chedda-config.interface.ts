@@ -11,6 +11,12 @@ export interface CheddaConfig {
         CheddaDropManager: string
         CheddaLoanManager: string
         ChainlinkPriceConsumer: string
-    }
+        Chedda: string
+        sChedda: string
+        USDC: string
+        mUSDC: string
+        WrappedNative: string
+        Faucet: string
+    },
     networkParams: NetworkParams
 }
