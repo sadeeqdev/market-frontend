@@ -24,28 +24,28 @@
 
             <ion-row>
               <ion-col size="6">
-                <ion-text>My Deposits</ion-text>
+                <ion-text>My Collateral</ion-text>
               </ion-col>
-              <ion-col size="6">{{'1000' | currency}}</ion-col>
+              <ion-col size="6">{{ myCollateralDeposited | number:'1.2-4'}} {{collateralTokenSymbol}}</ion-col>
             </ion-row>
             <ion-row>
               <ion-col size="6">
                 <ion-text>Available Liquidity</ion-text>
               </ion-col>
-              <ion-col size="6">{{'2241000000' | currency}}</ion-col>
+              <ion-col size="6">{{totalVaultAssets | number:'1.2-4'}} {{assetSymbol}}</ion-col>
             </ion-row>
             <ion-row>
               <ion-col size="6">
                 <ion-text>Utilization</ion-text>
               </ion-col>
-              <ion-col size="6">55.87%</ion-col>
+              <ion-col size="6">{{utilizationRate | number:'1.2-3'}}%</ion-col>
             </ion-row>
             <ion-row>
               <ion-col size="6">
                 <ion-text>Deposit APR</ion-text>
               </ion-col>
               <ion-col size="6">
-                <ion-text>3.25%</ion-text>
+                <ion-text>{{depositApy | number:'1.2-3'}}%</ion-text>
               </ion-col>
             </ion-row>
             <ion-row>
@@ -53,17 +53,17 @@
                 <ion-text>Rewards APR</ion-text>
               </ion-col>
               <ion-col size="6">
-                <ion-text>5.89%</ion-text>
+                <ion-text>{{rewardsApy | number:'1.2-3'}}%</ion-text>
               </ion-col>
             </ion-row>
             <ion-item-divider class="light-background"></ion-item-divider>
             <ion-row>
-              <ion-segment value="collateral" (ionChange)="onSegmentChanged($event)">
-                <ion-segment-button value="collateral">My Collateral</ion-segment-button>
+              <ion-segment value="borrow" (ionChange)="onSegmentChanged($event)">
                 <ion-segment-button value="borrow">Borrow</ion-segment-button>
+                <ion-segment-button value="repay">Repay</ion-segment-button>
               </ion-segment>
             </ion-row>
-            <div *ngIf="currentSegment === 'collateral'">
+            <div *ngIf="currentSegment === 'borrow'">
               <ion-row>
                 <ion-col>
                   <ion-text>
@@ -72,9 +72,7 @@
                 </ion-col>
                 <ion-col>
                   <ion-select placeholder="Collateral Type" interface="popover" (ionChange)="onCollateralTypeChanged($event)">
-                    <ion-select-option value="wavax">WAVAX</ion-select-option>
-                    <ion-select-option value="wgk">Wierd Geek NFT</ion-select-option>
-                    <ion-select-option value="eye">Fancy EYE NFT</ion-select-option>
+                    <ion-select-option [value]="c.symbol" *ngFor="let c of collaterals">{{c.symbol}}</ion-select-option>
                   </ion-select>
                 </ion-col>
               </ion-row>
@@ -93,47 +91,78 @@
                   </div>
                 </div>
                 <ion-col class="align-items-center">
-                  <ion-text>Amount</ion-text>
+                  <ion-text>Add {{collateralType}} Collateral</ion-text>&nbsp;
+                  <ion-icon name="enter-outline"></ion-icon>
                 </ion-col>
                 <ion-col class="justify-content-end">
-                  <ion-button size="small" color="primary" fill="clear">Max {{'0'}}</ion-button>
+                  <ion-button size="small" color="primary" fill="clear" (click)="fillMaxDeposit()">Balance {{myCollateralTokenBalance | number:'1.2-4'}}</ion-button>
                 </ion-col>
               </ion-row>
               <ion-row>
                 <ion-col>
-                  <ion-input placeholder="0.0" class="bordered-input"></ion-input>
+                  <ion-input placeholder="0.0" class="bordered-input" (ionChange)="setBorrowMode('collateral')" #addCollateralInput></ion-input>        
+               </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col class="align-items-center">
+                  <ion-text>Borrow {{assetSymbol}}</ion-text> &nbsp;
+                  <ion-icon name="exit-outline"></ion-icon>
+                </ion-col>
+                <ion-col class="justify-content-end">
+                  <ion-button size="small" color="primary" fill="clear" (click)="fillMaxBorrow()">Max {{'0' | number:'1.2-4'}}</ion-button>
                 </ion-col>
               </ion-row>
               <ion-row>
                 <ion-col>
-                  <ion-button color="primary" expand="block">Deposit</ion-button>
+                  <ion-input placeholder="0.0" class="bordered-input" (ionChange)="setBorrowMode('borrow')" #borrowInput></ion-input>        
+               </ion-col> 
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-button *ngIf="!isApproved" color="primary" fill="solid" expand="block" (click)="approveCollateral()">Approve {{collateralTokenSymbol}}</ion-button>
+                  <ion-button *ngIf="isApproved && borrowMode == 'collateral'" color="primary" expand="block" (click)="addCollateral()">Deposit {{collateralTokenSymbol}}</ion-button>
+                  <ion-button *ngIf="isApproved && borrowMode == 'borrow'" color="primary" expand="block" (click)="borrowAsset()" (ionChange)="setBorrowMode('borrow')">Borrow {{assetSymbol}}</ion-button>
                 </ion-col>
               </ion-row>
             </div>
-            <div *ngIf="currentSegment === 'borrow'">
+            <div *ngIf="currentSegment === 'repay'">
               <ion-row>
                 <ion-col>
                   <ion-text>
-                    Withdraw USDC
+                    Repay
                   </ion-text>
                 </ion-col>
               </ion-row>
               <ion-row>
                 <ion-col class="align-items-center">
-                  <ion-text>Amount</ion-text>
+                  <ion-text>Repay {{assetSymbol}}</ion-text>
                 </ion-col>
                 <ion-col class="justify-content-end">
-                  <ion-button size="small" color="primary" fill="clear">Max {{'0'}}</ion-button>
+                  <ion-button size="small" color="primary" fill="clear" (click)="fillMaxRepay()">Max {{myCollateralDeposited | number:'1.2-5'}}</ion-button>
                 </ion-col>
               </ion-row>
               <ion-row>
                 <ion-col>
-                  <ion-input placeholder="0.0" class="bordered-input"></ion-input>
+                  <ion-input placeholder="0.0" class="bordered-input" type="number" (ionChange)="setRepayMode('repay')" #repayInput></ion-input>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col class="align-items-center">
+                  <ion-text>Withdraw {{collateralTokenSymbol}} collateral</ion-text>
+                </ion-col>
+                <ion-col class="justify-content-end">
+                  <ion-button size="small" color="primary" fill="clear" (click)="fillMaxWithdraw()">Max {{myCollateralDeposited | number:'1.2-5'}}</ion-button>
                 </ion-col>
               </ion-row>
               <ion-row>
                 <ion-col>
-                  <ion-button color="primary" fill="outline" expand="block">Borrow</ion-button>
+                  <ion-input placeholder="0.0" class="bordered-input" type="number" (ionChange)="setRepayMode('collateral')" #withdrawCollateralInput></ion-input>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-button *ngIf="repayMode == 'repay'" color="primary" fill="outline" expand="block">Repay {{assetSymbol}}</ion-button>
+                  <ion-button *ngIf="repayMode == 'collateral'" color="primary" fill="outline" expand="block">Withdraw {{collateralTokenSymbol}}</ion-button>
                 </ion-col>
               </ion-row>
             </div>

@@ -3,27 +3,26 @@
     <ion-row>
       <ion-col size="3">
         <!-- disable image for now -->
-        <ion-avatar class="profile-avatar" border-radius="10px" *ngIf="true">
-          <ion-img [src]="address | blockie:[12, 4]"></ion-img>
-        </ion-avatar>
+        <ion-img class="popover-avatar" [src]="address | blockie:[12, 4]"></ion-img>
       </ion-col>
-      <ion-col size="8" offset="1" class="address-row">
+      <ion-col size="9" offset="0" class="address-row justify-content-end">
         <ion-row>
           <ion-text>{{address | truncateMiddle:[6, '...', 4]}}</ion-text>
-        </ion-row>
-        <ion-row class="centered-content balance-row">
-          XP Balance: <span class="xp-balance">{{balance}} XP</span>
         </ion-row>
       </ion-col>
     </ion-row>
     <ion-item-divider></ion-item-divider>
     <ion-row>
-      <ion-col>
-        <ion-text class="profile-link">
-          <a (click)="navigateToProfile()" class="profile-link">My Profile</a>
-        </ion-text>
+      <ion-col class="justify-content-end">
+        <span class="xp-balance">{{cheddaBalance | number:'1.2-4'}}</span>&nbsp; CHEDDA 
       </ion-col>
     </ion-row>
+    <ion-row>
+      <ion-col class="justify-content-end">
+        <span class="xp-balance">{{sCheddaBalance | number:'1.2-4'}}</span>&nbsp; sCHEDDA
+      </ion-col>
+    </ion-row>
+    <!-- <ion-item-divider></ion-item-divider> -->
     <!-- <ion-row>
       <ion-col>
         <ion-text class="profile-link">

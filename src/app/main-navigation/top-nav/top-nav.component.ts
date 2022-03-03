@@ -39,11 +39,11 @@ export class TopNavComponent implements OnInit, OnDestroy {
   private balanceSubscription?: Subscription
 
   menuItems = [
-    {
-      name: 'Dashboard',
-      path: '/dashboard',
-      icon: 'pie-chart',
-    }, 
+    // {
+    //   name: 'Dashboard',
+    //   path: '/dashboard',
+    //   icon: 'pie-chart',
+    // }, 
     {
       name: 'Lend',
       path: '/lend',
@@ -64,17 +64,6 @@ export class TopNavComponent implements OnInit, OnDestroy {
       path: '/market',
       icon: 'bag',
     }, 
-    // {
-    //   name: 'Dapps',
-    //   path: '/dapps',
-    //   icon: 'apps',
-    // },
-    // {
-    //   name: 'Rewards',
-    //   path: '/rewards',
-    //   icon: 'trophy',
-    // },
-
   ]
 
   constructor(

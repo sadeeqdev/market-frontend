@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { IonInput, LoadingController } from '@ionic/angular';
 import { BigNumber, ethers } from 'ethers';
-import { stat } from 'fs';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { CheddaBaseTokenVaultService } from 'src/app/contracts/chedda-base-token-vault.service';
 import { TokenService } from 'src/app/contracts/token.service';
@@ -45,9 +44,9 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
   vaultContract
   stats?: VaultStats
   usdcApprovalSubject = new BehaviorSubject(null)
-  approvalEventListener?: Subscription
-  depositEventListener?: Subscription
-  withdrawEventListener?: Subscription
+  approvalEventListener
+  depositEventListener
+  withdrawEventListener
   walletSubscription?: Subscription
   myUsdcBalance
   myVaultSharesBalance
@@ -68,7 +67,6 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.usdc = this.tokenService.contractAt(environment.config.contracts.USDC)
-    console.log('address = ', environment.config.contracts.CheddaBaseTokenVault)
     this.vaultContract = this.vaultService.contractAt(environment.config.contracts.CheddaBaseTokenVault)
 
     console.log('vaultcontract = ', this.vaultContract)
@@ -90,22 +88,15 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
       return
     }
     this.myUsdcBalance = ethers.utils.formatEther(await this.tokenService.balanceOf(this.usdc, this.wallet.currentAccount))
-    console.log('mybalance= ', this.myUsdcBalance)
 
-    const balance = await this.vaultService.balanceOf(this.vaultContract, this.wallet.currentAccount)
     this.myVaultSharesBalance = ethers.utils.formatEther(
-    await this.tokenService.balanceOf(this.vaultContract, this.wallet.currentAccount))
-    this.totalVaultAssets = ethers.utils.formatEther(
-      await this.vaultService.totalAssets(this.vaultContract)) 
-    console.log('balance = ', balance)
-    const apr = await this.vaultService.borrowApr(this.vaultContract)
-    console.log('borrow apr = ', apr)
-    // return
+      await this.tokenService.balanceOf(this.vaultContract, this.wallet.currentAccount))
     const stats = await this.vaultService.getVaultStats(this.vaultContract)
     console.log('stats = ', stats)
     this.depositApy = stats.depositApr/this.ratePrecision
     this.utilizationRate = stats.utilization.toNumber()/this.ratePrecision
     this.rewardsApy = stats.rewardsApr/this.ratePrecision
+    this.totalVaultAssets = ethers.utils.formatEther(stats.liquidity)
   }
 
   async approveUsdc() {
@@ -118,7 +109,6 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
       this.alert.showErrorAlert(error)
       this.hideLoading()
     }
-    
   }
 
   async deposit() {
@@ -129,7 +119,7 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
       await this.showLoading('Waiting for confirmation')
       const amount = ethers.utils.parseUnits(this.depositInput.value.toString() ?? '0')
       this.depositInput.value = ''
-      await this.vaultService.deposit(this.vaultContract, amount, this.wallet.currentAccount) 
+      await this.vaultService.depositAsset(this.vaultContract, amount, this.wallet.currentAccount) 
     } catch (error) {
       await this.hideLoading()
       this.alert.showErrorAlert(error)
@@ -196,7 +186,7 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
     const allowance = await this.tokenService.allowance(this.usdc, this.wallet.currentAccount, this.vaultContract.address)
     this.isApproved = allowance.gt(ethers.utils.parseUnits("1000"))
   }
-  
+
   private async showLoading(message: string) {
     this.loader = await this.loadingController.create({
       message

@@ -13,7 +13,7 @@ export class CheddaBaseTokenVaultService {
   }
 
   // Vault
-  async deposit(contract, amount: BigNumber, toAccount: string) {
+  async depositAsset(contract, amount: BigNumber, toAccount: string) {
     return await contract.connect(this.wallet.signer).deposit(amount, toAccount)
   }
 
@@ -21,11 +21,26 @@ export class CheddaBaseTokenVaultService {
     return await contract.connect(this.wallet.signer).redeem(amount, toAccount, toAccount)
   }
 
-  async addCollateral() {}
-
-  async removeCollateral() {
-
+  async addCollateral(contract, token: string, amount: BigNumber) {
+    return await contract.connect(this.wallet.signer).addCollateral(token, amount)
   }
+
+  async removeCollateral(contract, token: string, amount: BigNumber) {
+    return await contract.connect(this.wallet.signer).removeCollateral(token, amount)
+  }
+
+  async borrow(contract, amount: BigNumber) {
+    return await contract.connect(this.wallet.signer).take(amount)
+  }
+
+  async repay(contract, amount:BigNumber) {
+    return await contract.connect(this.wallet.signer).put(amount)
+  }
+
+  async collateral(contract, account: string, token: string): Promise<any> {
+    return await contract.accountCollateral(account, token)
+  }
+
   async totalAssets(contract): Promise<BigNumber> {
     return await contract.totalAssets()
   }

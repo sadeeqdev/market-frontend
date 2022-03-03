@@ -13,6 +13,7 @@ export class CheddaService {
 
   cheddaContract: any
   approvalSubject: BehaviorSubject<any> = new BehaviorSubject(null)
+  transferSubject: BehaviorSubject<any> = new BehaviorSubject(null)
   
   constructor(provider: DefaultProviderService, private wallet: WalletProviderService, private http: HttpClient) {
     this.cheddaContract = new ethers.Contract(
@@ -55,6 +56,14 @@ export class CheddaService {
       this.approvalSubject?.next({
         account,
         spender,
+        amount
+      })
+    })
+    this.cheddaContract.on('Transfer', async (from, to, amount) => {
+      console.log('Approval: ', from, to, amount)
+      this.approvalSubject?.next({
+        from,
+        to,
         amount
       })
     })

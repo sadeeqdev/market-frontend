@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { IonSegment } from '@ionic/angular';
 import { BigNumber, ethers } from 'ethers';
 import { Subscription } from 'rxjs';
+import { CheddaBaseTokenVaultService } from 'src/app/contracts/chedda-base-token-vault.service';
 import { CheddaLoanManagerService, LoanRequestStatus, LoanStatus } from 'src/app/contracts/chedda-loan-manager.service';
 import { MarketExplorerService } from 'src/app/contracts/market-explorer.service';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
@@ -24,29 +25,44 @@ export class LendLandingPage implements OnInit, OnDestroy {
   openLoansSubscription?: Subscription
   openLoanRequestsSubscription?: Subscription
   lendingPools: LendignPool[] = []
+  vaultContract
+  ratePrecision = 100000
 
   constructor(
     private wallet: WalletProviderService,
     private marketExplorer: MarketExplorerService,
-    private loanManager: CheddaLoanManagerService) { }
+    private loanManager: CheddaLoanManagerService,
+    private vaultService: CheddaBaseTokenVaultService) { }
 
   async ngOnInit() {
     this.currency = environment.config.networkParams.nativeCurrency.symbol
-    // await this.fetchLoanRequests()
-    // await this.fetchMyLoans()
+
+    this.vaultContract = this.vaultService.contractAt(environment.config.contracts.CheddaBaseTokenVault)
+    await this.loadVaultStats()
+    await this.fetchLoanRequests()
+    await this.fetchMyLoans()
     await this.listenToChanges()
     this.lendingPools = environment.config.pools
-    this.lendingPools[0].stats = {
-      supplied: BigNumber.from(1010101),
-      utilization: "63.55%",
-      apr: "12.98%",
-      total: "87250923"
-    }
+
   }
 
   async ngOnDestroy() {
     this.openLoansSubscription?.unsubscribe()
     this.openLoanRequestsSubscription?.unsubscribe()
+  }
+
+  private async loadVaultStats() {
+
+    const stats = await this.vaultService.getVaultStats(this.vaultContract)
+    console.log('stats = ', stats)
+    this.lendingPools = environment.config.pools
+
+    this.lendingPools[0].stats = {
+      supplied: BigNumber.from(1010101),
+      utilization: stats.utilization.toNumber()/this.ratePrecision,
+      apr: stats.depositApr/this.ratePrecision,
+      total: ethers.utils.formatEther(stats.liquidity)
+    }
   }
 
   async fetchLoanRequests() {

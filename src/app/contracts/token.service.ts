@@ -14,6 +14,14 @@ export class TokenService {
 
   }
 
+  async name(contract): Promise<string> {
+    return await contract.name()
+  }
+
+  async symbol(contract): Promise<string> {
+    return await contract.symbol()
+  }
+  
   async approve(contract, spender: string, amount: BigNumber) {
     await contract.connect(this.wallet.signer).approve(spender, amount)
   }

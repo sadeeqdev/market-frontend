@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonSegment, IonSelect, NavController } from '@ionic/angular';
-import { BigNumber } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import { stat } from 'fs';
 import { Subscription } from 'rxjs';
+import { CheddaBaseTokenVaultService } from 'src/app/contracts/chedda-base-token-vault.service';
 import { CheddaLoanManagerService, LoanRequestStatus, LoanStatus } from 'src/app/contracts/chedda-loan-manager.service';
 import { CheddaXpService } from 'src/app/contracts/chedda-xp.service';
 import { MarketExplorerService } from 'src/app/contracts/market-explorer.service';
@@ -46,22 +47,21 @@ export class BorrowLandingPage implements OnInit {
   loans: Loan[] = []
   lendingPools: LendignPool[] = []
   currency
-  
+  vaultContract
+  ratePrecision = 100000
+
   constructor(
     private explorer: MarketExplorerService,
     private wallet: WalletProviderService,
     private loanManager: CheddaLoanManagerService,
     private marketExplorer: MarketExplorerService,
+    private vaultService: CheddaBaseTokenVaultService,
     ) { }
   
   async ngOnInit() {
     this.lendingPools = environment.config.pools
-    this.lendingPools[0].stats = {
-      supplied: BigNumber.from(1010101),
-      utilization: "63.55%",
-      apr: "12.98%",
-      total: "87250923"
-    }
+    this.vaultContract = this.vaultService.contractAt(environment.config.contracts.CheddaBaseTokenVault)
+    await this.loadVaultStats()
     this.registerEventListener()
     this.currency = environment.config.networkParams.nativeCurrency.name
   }
@@ -74,6 +74,20 @@ export class BorrowLandingPage implements OnInit {
       await this.getLoans(LoanStatus.open)
     } else {
       console.log('no account')
+    }
+  }
+
+  private async loadVaultStats() {
+
+    const stats = await this.vaultService.getVaultStats(this.vaultContract)
+    console.log('stats = ', stats)
+    this.lendingPools = environment.config.pools
+
+    this.lendingPools[0].stats = {
+      supplied: BigNumber.from(1010101),
+      utilization: stats.utilization.toNumber()/this.ratePrecision,
+      apr: stats.borrowApr/this.ratePrecision,
+      total: ethers.utils.formatEther(stats.liquidity)
     }
   }
 

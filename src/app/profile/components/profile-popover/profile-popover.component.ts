@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
+import { ethers } from 'ethers';
 import { CheddaXpService } from 'src/app/contracts/chedda-xp.service';
+import { TokenService } from 'src/app/contracts/token.service';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
+import { environment } from 'src/environments/environment';
 import { Profile } from '../../profile.interface';
 
 @Component({
@@ -15,22 +18,41 @@ export class ProfilePopoverComponent implements OnInit {
   address: string
   profile: Profile
   balance = 0
+  cheddaContract
+  stakedCheddaContract
+  cheddaBalance
+  sCheddaBalance
 
   constructor(
     private router: Router,
     private cheddaXP: CheddaXpService,
     private wallet: WalletProviderService,
+    private tokenService: TokenService,
     private popoverController: PopoverController
   ) { }
 
   ngOnInit() {
+    this.cheddaContract = this.tokenService.contractAt(environment.config.contracts.Chedda)
+    this.stakedCheddaContract = this.tokenService.contractAt(environment.config.contracts.sChedda)
+    this.listenForTransfers()
     this.checkBalance()
   }
 
   private async checkBalance() {
     if (this.address) {
-      this.balance = await (await this.cheddaXP.balanceOf(this.address)).toNumber()
+      await this.checkCheddaBalance()
+      await this.checkStakedCheddaBalance()
     }
+  }
+
+  private async checkCheddaBalance() {
+    const cheddaBalance = await this.tokenService.balanceOf(this.cheddaContract, this.address) 
+    this.cheddaBalance = ethers.utils.formatEther(cheddaBalance)
+  }
+
+  private async checkStakedCheddaBalance() {
+    const sChedaBalance = await this.tokenService.balanceOf(this.stakedCheddaContract, this.address) 
+    this.sCheddaBalance = ethers.utils.formatEther(sChedaBalance)
   }
 
   async navigateToProfile() {
@@ -40,5 +62,19 @@ export class ProfilePopoverComponent implements OnInit {
 
   async disconnect() {
     await this.wallet.disconnect()
+  }
+
+  private async listenForTransfers() {
+    this.cheddaContract.on('Transfer', (from, to, value) => {
+      if (from.toLowerCase() == this.address.toLocaleLowerCase() || to.toLowerCase() == this.address.toLocaleLowerCase()) {
+        this.checkCheddaBalance()
+      }
+    })
+
+    this.stakedCheddaContract.on('Transfer', (from, to, value) => {
+      if (from.toLowerCase() == this.address.toLocaleLowerCase() || to.toLowerCase() == this.address.toLocaleLowerCase()) {
+        this.checkStakedCheddaBalance()
+      }
+    })
   }
 }

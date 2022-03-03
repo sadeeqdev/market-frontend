@@ -32,6 +32,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
   loader
   isApproved = false
   cheddaApprovalSubscription?: Subscription
+  cheddaTransferSubscription?: Subscription
   depositSubscription?: Subscription
   withdrawSubscription?: Subscription
 
@@ -69,6 +70,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.cheddaApprovalSubscription?.unsubscribe()
+    this.cheddaTransferSubscription?.unsubscribe()
     this.depositSubscription?.unsubscribe()
     this.withdrawSubscription?.unsubscribe()
   }
@@ -202,6 +204,13 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       if (res && res.account.toLowerCase() === this.wallet.currentAccount.toLowerCase()) {
         this.isApproved = true
         await this.hideLoading()
+      }
+    })
+
+    this.cheddaTransferSubscription = this.chedda.transferSubject.subscribe(async res => {
+      if (res && res.to.toLowerCase() === this.wallet.currentAccount.toLowerCase()) {
+        await this.hideLoading()
+        await this.loadCheddaStats()
       }
     })
 

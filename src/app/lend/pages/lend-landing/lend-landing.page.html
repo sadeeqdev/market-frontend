@@ -18,9 +18,9 @@
           <ion-row class="loans-header">
             <ion-col size="3">Market</ion-col>
             <ion-col size="3">Collateral</ion-col>
-            <ion-col size="2">APR</ion-col>
+            <ion-col size="2">APY</ion-col>
             <ion-col size="2">Utilization</ion-col>
-            <ion-col size="2">Deposited</ion-col>
+            <ion-col size="2">Liquidity</ion-col>
           </ion-row>
           <ion-row *ngFor="let pool of lendingPools">
             <ion-col>
@@ -40,8 +40,8 @@
                       <span *ngIf="i !== pool.collateral.length - 1">, </span>
                     </ion-text>
                   </ion-col>
-                  <ion-col size="2">{{ pool.stats.apr }}</ion-col>
-                  <ion-col size="2">{{ pool.stats.utilization }}</ion-col>
+                  <ion-col size="2">{{ pool.stats.apr | number:'1.2' }}%</ion-col>
+                  <ion-col size="2">{{ pool.stats.utilization | number:'1.2' }}%</ion-col>
                   <ion-col size="2">{{ pool.stats.total | currency }}</ion-col>
                 </ion-row>
               </ion-card>
