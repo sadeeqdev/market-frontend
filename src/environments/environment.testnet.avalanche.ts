@@ -37,13 +37,6 @@ export const environment = {
             rpcUrls: ['https://api.avax-test.network/ext/bc/C/rpc'],
             blockExplorerUrls: ['https://testnet.snowtrace.io/']
           },
-          faucets: [
-            {
-              name: 'Avalanche Testnet Faucet',
-              logo: '',
-              url: 'https://faucet.avax-test.network/',
-            }
-          ],
           pools: [
             {
               name: 'USDC/WAVAX Pool',
@@ -75,6 +68,13 @@ export const environment = {
                 },
               ],
               stats: {}
+            }
+          ],
+          faucets: [
+            {
+              name: 'Avalanche Testnet Faucet',
+              logo: '',
+              url: 'https://faucet.avax-test.network/',
             }
           ],
           ui: {

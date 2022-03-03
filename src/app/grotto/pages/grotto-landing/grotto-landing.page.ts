@@ -48,9 +48,9 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       address: environment.config.contracts.USDC
     },
     {
-      name: 'WAVAX.c',
-      logo: '/assets/logos/avalanche-avax-logo.png',
-      address: environment.config.contracts.WrappedNative
+      name: environment.config.pools[0].collateral[0].symbol,
+      logo: environment.config.pools[0].collateral[0].logo,
+      address: environment.config.pools[0].collateral[0].address
     }
   ]
   constructor(
@@ -112,7 +112,9 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     }
     try {
       await this.faucet.drip(token)
+      await this.alert.showToast('Drip request sent to faucet')
     } catch (error) {
+      await this.hideLoading()
       await this.alert.showErrorAlert(error)
     }
   }
@@ -217,7 +219,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
 
   private async listenForEvents() {
     this.cheddaApprovalSubscription = this.chedda.approvalSubject.subscribe(async res => {
-      if (res && res.account.toLowerCase() === this.wallet.currentAccount.toLowerCase()) {
+      if (res && res.account && res.account.toLowerCase() === this.wallet.currentAccount.toLowerCase()) {
         this.isApproved = true
         await this.hideLoading()
       }
@@ -226,6 +228,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     this.cheddaTransferSubscription = this.chedda.transferSubject.subscribe(async res => {
       if (res && res.to.toLowerCase() === this.wallet.currentAccount.toLowerCase()) {
         await this.hideLoading()
+        await this.alert.showToast('CHEDDA transfer received')
         await this.loadCheddaStats()
       }
     })

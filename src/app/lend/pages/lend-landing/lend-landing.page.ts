@@ -52,7 +52,6 @@ export class LendLandingPage implements OnInit, OnDestroy {
   }
 
   private async loadVaultStats() {
-
     const stats = await this.vaultService.getVaultStats(this.vaultContract)
     console.log('stats = ', stats)
     this.lendingPools = environment.config.pools

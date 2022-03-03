@@ -60,8 +60,8 @@ export class CheddaService {
       })
     })
     this.cheddaContract.on('Transfer', async (from, to, amount) => {
-      console.log('Approval: ', from, to, amount)
-      this.approvalSubject?.next({
+      console.log('Transfer: ', from, to, amount)
+      this.transferSubject?.next({
         from,
         to,
         amount
