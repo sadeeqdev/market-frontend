@@ -14,21 +14,21 @@ export class NetworksPopoverComponent implements OnInit {
       url: 'https://testnet-avalanche.chedda.store',
       icon: '/assets/logos/avalanche-avax-logo.png'
     },
-    {
-      name: 'Harmony Testnet',
-      url: 'https://testnet-harmony.chedda.store',
-      icon: '/assets/logos/harmony-logo.png'
-    },
-    {
-      name: 'IoTeX Testnet',
-      url: 'https://testnet-iotex.chedda.store',
-      icon: '/assets/logos/iotex-logo.png'
-    },
-    {
-      name: 'Oasis Testnet',
-      url: 'https://testnet-oasis.chedda.store',
-      icon: '/assets/logos/oasis-logo-sm.png'
-    },
+    // {
+    //   name: 'Harmony Testnet',
+    //   url: 'https://testnet-harmony.chedda.store',
+    //   icon: '/assets/logos/harmony-logo.png'
+    // },
+    // {
+    //   name: 'IoTeX Testnet',
+    //   url: 'https://testnet-iotex.chedda.store',
+    //   icon: '/assets/logos/iotex-logo.png'
+    // },
+    // {
+    //   name: 'Oasis Testnet',
+    //   url: 'https://testnet-oasis.chedda.store',
+    //   icon: '/assets/logos/oasis-logo-sm.png'
+    // },
     {
       name: 'Polygon Testnet',
       url: 'https://testnet-polygon.chedda.store',

@@ -25,8 +25,8 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
   @ViewChild('stakeInput') stakeInput: IonInput
   @ViewChild('unstakeInput') unstakeInput: IonInput
   cheddaTotalSupply
-  myCheddaBalance
-  myStakedCheddaBalance
+  myCheddaBalance = '0'
+  myStakedCheddaBalance = '0'
   cheddaStakingAPR
   currentSegment = 'stake'
   loader
@@ -80,7 +80,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       this.cheddaTotalSupply = ethers.utils.formatEther(await this.chedda.totalSupply())
       this.cheddaStakingAPR = ((await this.chedda.apr()).toNumber()/1000).toString()
       console.log('apr = ', this.cheddaStakingAPR)
-      if (this.wallet.isConnected) {
+      if (this.wallet.isConnected && this.wallet.currentAccount) {
         this.myCheddaBalance = ethers.utils.formatEther(await this.chedda.balanceOf(this.wallet.currentAccount))
         this.myStakedCheddaBalance = ethers.utils.formatEther(await this.sChedda.balanceOf(this.wallet.currentAccount))
       } else {
@@ -118,6 +118,10 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
   }
 
   async stake() {
+    if (!this.wallet.currentAccount) {
+      this.alert.showConnectAlert()
+      return
+    }
     const amount = ethers.utils.parseEther(this.stakeInput.value.toString() ?? '0')
     const cheddaBalance = ethers.utils.parseEther(this.myCheddaBalance)
     if (amount.gt(cheddaBalance)){
@@ -135,6 +139,10 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
   }
 
   async unstake() {
+    if (!this.wallet.currentAccount) {
+      this.alert.showConnectAlert()
+      return
+    }
     const amount = ethers.utils.parseEther(this.unstakeInput.value.toString() ?? '0')
     const stakedBalance = ethers.utils.parseEther(this.myStakedCheddaBalance)
     if (amount.gt(stakedBalance)){
@@ -151,6 +159,10 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
   }
 
   async approveChedda() {
+    if (!this.wallet.currentAccount) {
+      this.alert.showConnectAlert()
+      return
+    }
     try {
       await this.showLoading('Waiting for approval')
       await this.chedda.approve(this.sChedda.address())
@@ -161,6 +173,10 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
   }
 
   async approveStakedChedda() {
+    if (!this.wallet.currentAccount) {
+      this.alert.showConnectAlert()
+      return
+    }
     try {
       this.chedda.approve(this.sChedda.address())
     } catch (error) {

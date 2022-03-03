@@ -93,7 +93,7 @@ export class WalletProviderService {
   })
   .then((success) => {
     if (success) {
-      console.log('FOO successfully added to wallet!');
+      console.log('successfully added to wallet!');
     } else {
       throw new Error('Something went wrong.');
     }

@@ -49,8 +49,8 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
   withdrawEventListener
   walletSubscription?: Subscription
   myUsdcBalance
-  myVaultSharesBalance
-  totalVaultAssets
+  myVaultSharesBalance = '0'
+  totalVaultAssets = '0'
   loader?
 
   utilizationRate = 0
@@ -84,6 +84,12 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
   }
 
   private async loadVaultStats() {
+    const stats = await this.vaultService.getVaultStats(this.vaultContract)
+    console.log('stats = ', stats)
+    this.depositApy = stats.depositApr/this.ratePrecision
+    this.utilizationRate = stats.utilization.toNumber()/this.ratePrecision
+    this.rewardsApy = stats.rewardsApr/this.ratePrecision
+    this.totalVaultAssets = ethers.utils.formatEther(stats.liquidity)
     if (!this.wallet || !this.wallet.currentAccount) {
       return
     }
@@ -91,16 +97,15 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
 
     this.myVaultSharesBalance = ethers.utils.formatEther(
       await this.tokenService.balanceOf(this.vaultContract, this.wallet.currentAccount))
-    const stats = await this.vaultService.getVaultStats(this.vaultContract)
-    console.log('stats = ', stats)
-    this.depositApy = stats.depositApr/this.ratePrecision
-    this.utilizationRate = stats.utilization.toNumber()/this.ratePrecision
-    this.rewardsApy = stats.rewardsApr/this.ratePrecision
-    this.totalVaultAssets = ethers.utils.formatEther(stats.liquidity)
+    
   }
 
   async approveUsdc() {
     console.log('usdc address = ', this.usdc.address)
+    if (!this.wallet.currentAccount) {
+      this.alert.showConnectAlert()
+      return
+    }
     try {
       this.showLoading('Waiting for approval')
       const totalSupply = await this.tokenService.totalSupply(this.usdc)
@@ -113,6 +118,7 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
 
   async deposit() {
     if (!this.wallet.currentAccount) {
+      this.alert.showConnectAlert()
       return
     }
     try {
@@ -128,6 +134,7 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
 
   async redeem() {
     if (!this.wallet.currentAccount) {
+      this.alert.showConnectAlert()
       return
     }
     try {

@@ -39,7 +39,7 @@ export class BorrowPoolDetailsPage implements OnInit {
   collateralTokenSymbol
   loader
   myCollateralTokenBalance
-  myCollateralDeposited
+  myCollateralDeposited = '0'
   collaterals = [
   ]
   selectedNfts = []
@@ -56,7 +56,7 @@ export class BorrowPoolDetailsPage implements OnInit {
   borrowListener
   repayListener
   borrowMode: BorrowMode = BorrowMode.collateral
-  repayMode: RepayMode
+  repayMode: RepayMode = RepayMode.repay
 
   constructor(
     private tokenService: TokenService, 
@@ -143,7 +143,10 @@ export class BorrowPoolDetailsPage implements OnInit {
   }
 
   async approveCollateral() {
-    console.log('usdc address = ', this.collateralContract.address)
+    if (!this.wallet.currentAccount) {
+      this.alert.showConnectAlert()
+      return
+    }
     try {
       this.showLoading('Waiting for approval')
       const totalSupply = await this.tokenService.totalSupply(this.collateralContract)
@@ -155,6 +158,10 @@ export class BorrowPoolDetailsPage implements OnInit {
   }
 
   async addCollateral() {
+    if (!this.wallet.currentAccount) {
+      this.alert.showConnectAlert()
+      return
+    }
     try {
       await this.showLoading('Waiting for confirmation')
       const amount = ethers.utils.parseUnits(this.addCollateralInput.value.toString() ?? '0')
@@ -167,6 +174,10 @@ export class BorrowPoolDetailsPage implements OnInit {
   }
 
   async removeCollateral() {
+    if (!this.wallet.currentAccount) {
+      this.alert.showConnectAlert()
+      return
+    }
     try {
       await this.showLoading('Waiting for confirmation')
       const amount = ethers.utils.parseUnits(this.withdrawCollateralInput.value.toString() ?? '0')
@@ -179,6 +190,10 @@ export class BorrowPoolDetailsPage implements OnInit {
   }
 
   async borrowAsset() {
+    if (!this.wallet.currentAccount) {
+      this.alert.showConnectAlert()
+      return
+    }
     try {
       await this.showLoading('Waiting for confirmation')
       const amount = ethers.utils.parseUnits(this.borrowInput.value.toString() ?? '0')
@@ -191,6 +206,10 @@ export class BorrowPoolDetailsPage implements OnInit {
   }
 
   async repay() {
+    if (!this.wallet.currentAccount) {
+      this.alert.showConnectAlert()
+      return
+    }
     try {
       await this.showLoading('Waiting for confirmation')
       const amount = ethers.utils.parseUnits(this.repayInput.value.toString() ?? '0')
