@@ -81,7 +81,6 @@ export class TopNavComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     const colorTheme = this.preferences.colorTheme
-    this.toggleDarkTheme(colorTheme == 'dark')
 
     this.setupListeners()
     this.checkRoute()
