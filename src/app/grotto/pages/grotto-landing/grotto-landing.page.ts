@@ -29,7 +29,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
   myStakedCheddaBalance = '0'
   cheddaStakingAPR
   currentSegment = 'stake'
-  loader
+  loader?
   isApproved = false
   cheddaApprovalSubscription?: Subscription
   cheddaTransferSubscription?: Subscription
@@ -201,12 +201,12 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     this.loader = await this.loadingController.create({
       message
     })
-    await this.loader.present()
+    await this.loader?.present()
   }
 
   private async hideLoading() {
     console.log('hiding loader')
-    await this.loader.dismiss()
+    await this.loader?.dismiss()
   }
 
   private async checkAllowance() {

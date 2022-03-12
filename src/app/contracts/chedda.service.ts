@@ -39,6 +39,10 @@ export class CheddaService {
     return await this.cheddaContract.apr()
   }
 
+  async rebase() {
+    await this.cheddaContract.connect(this.wallet.signer).rebase()
+  }
+
   async approve(spender: string, amount?: string) {
     if (!amount) {
       amount = await this.cheddaContract.totalSupply();

@@ -45,6 +45,10 @@ export class CheddaBaseTokenVaultService {
     return await contract.totalAssets()
   }
 
+  async collateralAmounts(contract) {
+    return await contract.collateralAmounts()
+  }
+
   async utilization(contract): Promise<BigNumber> {
     return await contract.utilization()
   }

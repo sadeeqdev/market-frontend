@@ -39,11 +39,11 @@ export class TopNavComponent implements OnInit, OnDestroy {
   private balanceSubscription?: Subscription
 
   menuItems = [
-    // {
-    //   name: 'Dashboard',
-    //   path: '/dashboard',
-    //   icon: 'pie-chart',
-    // }, 
+    {
+      name: 'Dashboard',
+      path: '/dashboard',
+      icon: 'pie-chart',
+    }, 
     {
       name: 'Lend',
       path: '/lend',

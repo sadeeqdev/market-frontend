@@ -18,13 +18,13 @@ export const environment = {
             CheddaDropManager: '0xfe29f9595fef194Cb433bF1eF91f1c57801afE0e',
             CheddaLoanManager: '0x4a171D4CC2F371C4Dfc82469a473323afa5c7298',
             ChainlinkPriceConsumer: '0xDd558ACa8cd32D77Bf2e63D25a94691C32eb44D4',
-            CheddaBaseTokenVault: '0x247f60e4435881018a1B19eB070A09550b73612E',
-            Chedda: '0x317639AF54EDeCcfE217423eEbBF8d0a6E2B57BF',
-            sChedda: '0x5640B32a8146F30ed632b1d7F57Ea53804AC01a8',
-            USDC: '0x750c318A46eBC81e919AA4cC62Ca708A6aACc938',
-            mUSDC: '0x247f60e4435881018a1B19eB070A09550b73612E',
-            WrappedNative: '0xEB23DE540db9514D36AF9BD65Ef209e65DeB668a',
-            Faucet: '0xcbd5BF9E84DA3F4CB3A78B5138385805CeaAB69D',
+            CheddaBaseTokenVault: '0x53637c9dC575C66ce106F6e250c5e58E192DD5bD',
+            Chedda: '0x45d4079DAF446920Bb5494Afce19320D92fF3059',
+            sChedda: '0x7f4329c822ee86d713140923153eEdD925673759',
+            USDC: '0x14d8C077FbFB0Bb9657C3E4D4f8E20eC7E1C7D6B',
+            mUSDC: '0xF37b0DAd165Ce47D700E782E9845E319f4287296',
+            WrappedNative: '0xA36d30A62Cf2E1D4731A32DFD3d468514FFA99d9',
+            Faucet: '0x0d421b53964856364358D154fAdC0AF0C7B6a6D1',
           },
           networkParams: {
             chainId: '0x13881',
@@ -41,18 +41,18 @@ export const environment = {
           pools: [
             {
               name: 'USDC/WMATIC Pool',
-              address: '0xAEee371752a0D2715cFA8bE1a995954b828Aeb1A',
+              address: '0x53637c9dC575C66ce106F6e250c5e58E192DD5bD',
               asset: {
                 name: 'USD Coin',
                 symbol: 'USCD.c',
-                address: '0x43CBD4aF3f63c4F4E350D3E6554e7B03916A418C',
+                address: '0x14d8C077FbFB0Bb9657C3E4D4f8E20eC7E1C7D6B',
                 logo: '/assets/logos/usd-coin-logo.png'
               },
               collateral: [
                 {
                   name: 'Wrapped MATIC',
                   symbol: 'WMATIC.c',
-                  address: '0x5bE4b70ADF6ab9990bDf6148770dc97Fc7468882',
+                  address: '0xA36d30A62Cf2E1D4731A32DFD3d468514FFA99d9',
                   logo: '/assets/logos/matic-token-icon.png'
                 },
                 {

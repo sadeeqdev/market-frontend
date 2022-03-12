@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedComponentsModule } from './components/shared-components.module';
+import { NgChartsModule } from 'ng2-charts'
 
 @NgModule({
   declarations: [AppComponent],
@@ -15,6 +16,7 @@ import { SharedComponentsModule } from './components/shared-components.module';
   imports: [
     BrowserModule, 
     IonicModule.forRoot(), 
+    NgChartsModule,
     AppRoutingModule, 
     HttpClientModule, 
     SharedComponentsModule, 
