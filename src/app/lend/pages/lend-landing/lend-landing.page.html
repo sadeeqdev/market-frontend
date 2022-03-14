@@ -16,8 +16,9 @@
         <ion-item-divider class="thin-divider light-background"></ion-item-divider>
         <ion-card-content>
           <ion-row class="loans-header">
-            <ion-col size="3">Market</ion-col>
-            <ion-col size="3">Collateral</ion-col>
+            <ion-col size="2">Market</ion-col>
+            <ion-col size="2">Collateral</ion-col>
+            <ion-col size="2">NFTs</ion-col>
             <ion-col size="2">APY</ion-col>
             <ion-col size="2">Utilization</ion-col>
             <ion-col size="2">Liquidity</ion-col>
@@ -26,19 +27,25 @@
             <ion-col>
               <ion-card [routerLink]="['/', 'lend', 'pool', pool.address]" class="lighter-background">
                 <ion-row class="pool-row">
-                  <ion-col size="3" class="flex-col">
+                  <ion-col size="2" class="flex-col">
                     <ion-avatar class="asset-logo">
                       <ion-img [src]="pool.asset.logo" class="asset-avatar"></ion-img>
                     </ion-avatar>
                     <ion-text class="asset-name">
-                      {{pool.asset.symbol}}
+                      {{pool.asset.symbol}} 
                     </ion-text>
                   </ion-col>
-                  <ion-col size="3">
+                  <ion-col size="2">
                     <ion-text *ngFor="let collateral of pool.collateral; index as i">
                       {{collateral.symbol}}
                       <span *ngIf="i !== pool.collateral.length - 1">, </span>
                     </ion-text>
+                    <br>
+                      100%
+                  </ion-col>
+                  <ion-col size="2">
+                    -- <br>
+                    0%
                   </ion-col>
                   <ion-col size="2">{{ pool.stats.apr | number:'1.2' }}%</ion-col>
                   <ion-col size="2">{{ pool.stats.utilization | number:'1.2' }}%</ion-col>

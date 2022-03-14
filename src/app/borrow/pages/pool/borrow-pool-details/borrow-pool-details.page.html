@@ -162,7 +162,7 @@
               <ion-row>
                 <ion-col>
                   <ion-button *ngIf="repayMode == 'repay'" color="primary" fill="outline" expand="block">Repay {{assetSymbol}}</ion-button>
-                  <ion-button *ngIf="repayMode == 'collateral'" color="primary" fill="outline" expand="block">Withdraw {{collateralTokenSymbol}}</ion-button>
+                  <ion-button *ngIf="repayMode == 'collateral'" color="primary" fill="outline" expand="block" (click)="removeCollateral()">Withdraw {{collateralTokenSymbol}}</ion-button>
                 </ion-col>
               </ion-row>
             </div>

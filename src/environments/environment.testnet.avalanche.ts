@@ -18,7 +18,7 @@ export const environment = {
             CheddaDropManager: '0x70381A1c4bc75b9E9defDe8Dc1E291880e44F73b',
             CheddaLoanManager: '0x2808a47dca28f46D85210Bcd56B585446d1482be',
             ChainlinkPriceConsumer: '0x674036Df4BdbCB9bD6D5F83d6daA340f190a5DCC',
-            CheddaBaseTokenVault: '0xc0B3a48DBe196ECfb14A65a2FA6aD5DaD07C866f',
+            CheddaBaseTokenVault: '0xfdFfc461476CEd890dC62830969E6Eba1048A99D',
             Chedda: '0x30c54E9c99147620BD6fBC2D9b0CE90b4FBc80eF',
             sChedda: '0x0fFD5fB4B3160A2709E120A7484AEE03500c55b3',
             USDC: '0x55df0aF74eE7FA170AbBF7eb3F8D43d7c20De207',
@@ -40,7 +40,7 @@ export const environment = {
           pools: [
             {
               name: 'USDC/WAVAX Pool',
-              address: '0xc0B3a48DBe196ECfb14A65a2FA6aD5DaD07C866f',
+              address: '0xfdFfc461476CEd890dC62830969E6Eba1048A99D',
               asset: {
                 name: 'USD Coin',
                 symbol: 'USCD.c',
