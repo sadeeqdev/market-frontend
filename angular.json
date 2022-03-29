@@ -105,6 +105,14 @@
                 }
               ]
             },
+            "testnet.telos": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.testnet.telos.ts"
+                }
+              ]
+            },
             "testnet.hardhat": {
               "fileReplacements": [
                 {
@@ -154,6 +162,9 @@
             },
             "testnet.iotex": {
               "browserTarget": "app:build:testnet.iotex"
+            },
+            "testnet.telos": {
+              "browserTarget": "app:build:testnet.telos"
             },
             "testnet.hardhat": {
               "browserTarget": "app:build:testnet.hardhat"
