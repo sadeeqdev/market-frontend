@@ -24,11 +24,14 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
 
   @ViewChild('stakeInput') stakeInput: IonInput
   @ViewChild('unstakeInput') unstakeInput: IonInput
+  @ViewChild('lockInput') lockInput: IonInput
+  @ViewChild('unlockInput') unlockInput: IonInput
   cheddaTotalSupply
   myCheddaBalance = '0'
   myStakedCheddaBalance = '0'
   cheddaStakingAPR
-  currentSegment = 'stake'
+  currentStakeSegment = 'stake'
+  currentLockSegment = 'lock'
   loader?
   isApproved = false
   cheddaApprovalSubscription?: Subscription
@@ -160,6 +163,10 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     }
   }
 
+  async lock() {}
+
+  async unlock() {}
+
   async approveChedda() {
     if (!this.wallet.currentAccount) {
       this.alert.showConnectAlert()
@@ -185,8 +192,13 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       await this.alert.showErrorAlert(error)
     }
   } 
-  onSegmentChanged($event) {
-    this.currentSegment = $event.target.value
+
+  onStakeSegmentChanged($event) {
+    this.currentStakeSegment = $event.target.value
+  }
+
+  onLockSegmentChanged($event) {
+    this.currentLockSegment = $event.target.value
   }
 
   fillMaxStake() {
@@ -195,6 +207,14 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
 
   fillMaxUnstake() {
     this.unstakeInput.value = this.myStakedCheddaBalance
+  }
+
+  fillMaxLock() {
+    this.lockInput.value = ''
+  }
+
+  fillMaxUnlock() {
+    this.unlockInput.value = ''
   }
 
   private async showLoading(message: string) {

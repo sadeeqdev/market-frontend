@@ -1,6 +1,101 @@
 <ion-content>
   <ion-grid>
-    <!-- main -->
+        <!-- stake -->
+        <ion-row>
+          <ion-col size-xs="12" size-sm="10" offset-sm="1" size-md="8" offset-md="2" size-lg="6" offset-lg="3" size-xl="4" offset-xl="4">
+            <ion-card class="light-background">
+              <ion-card-title>
+                <ion-row class="card-title-row">
+                  <ion-col>
+                    <ion-text class="card-title">
+                      Stake CHEDDA
+                    </ion-text>
+                  </ion-col>
+                </ion-row>
+                
+              </ion-card-title>
+              <ion-item-divider class="light-background"></ion-item-divider>
+              <ion-card-content>
+    
+                <ion-row>
+                  <ion-col size="6">
+                    <ion-text>Total Supply</ion-text>
+                  </ion-col>
+                  <ion-col size="6">{{ cheddaTotalSupply | number:'1.2-5':'en-us' }} CHEDDA</ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col size="6">
+                    <ion-text>My Balance</ion-text>
+                  </ion-col>
+                  <ion-col size="6">{{ myCheddaBalance | number:'1.2-5':'en-us' }} CHEDDA </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col size="6">
+                    <ion-text>My Stake</ion-text>
+                  </ion-col>
+                  <ion-col size="6">{{ myStakedCheddaBalance | number:'1.2-5':'en-us'}} sCHEDDA </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col size="6">
+                    <ion-text>Current APR</ion-text>
+                  </ion-col>
+                  <ion-col size="6">
+                    <ion-text>{{cheddaStakingAPR | number}}%</ion-text>
+                  </ion-col>
+                </ion-row>
+                <ion-item-divider class="light-background"></ion-item-divider>
+                <ion-segment value="stake" (ionChange)="onStakeSegmentChanged($event)">
+                  <ion-segment-button value="stake">Stake</ion-segment-button>
+                  <ion-segment-button value="unstake">Unstake</ion-segment-button>
+                </ion-segment>
+                <div *ngIf="currentStakeSegment === 'stake'">
+                  <ion-row>
+                    <ion-col class="align-items-center">
+                      <ion-text>Amount</ion-text>
+                    </ion-col>
+                    <ion-col class="justify-content-end">
+                      <ion-button size="small" color="primary" fill="clear" (click)="fillMaxStake()">Max {{myCheddaBalance | number:'1.1-4'}}</ion-button>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col>
+                      <ion-input placeholder="0.0" class="bordered-input" type="number" #stakeInput></ion-input>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col>
+                      <ion-button *ngIf="isApproved" color="primary" fill="solid" expand="block" (click)="stake()">Stake</ion-button>
+                      <ion-button *ngIf="!isApproved" color="primary" fill="solid" expand="block" (click)="approveChedda()">Approve Chedda</ion-button>
+                    </ion-col>
+                  </ion-row>
+                </div>
+    
+                <div *ngIf="currentStakeSegment === 'unstake'">
+                <ion-row>
+                  <ion-col class="align-items-center">
+                    <ion-text>Amount</ion-text>
+                  </ion-col>
+                  <ion-col class="justify-content-end">
+                    <ion-button size="small" color="primary" fill="clear" (click)="fillMaxUnstake()">Max {{myStakedCheddaBalance | number:'1.1-4'}}</ion-button>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col>
+                    <ion-input placeholder="0.0" class="bordered-input" type="number" #unstakeInput></ion-input>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col>
+                    <ion-button color="primary" fill="outline" expand="block" (click)="unstake()">Unstake</ion-button>
+                  </ion-col>
+                </ion-row>
+                </div>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+
+    <!-- Lock -->
     <ion-row>
       <ion-col size-xs="12" size-sm="10" offset-sm="1" size-md="8" offset-md="2" size-lg="6" offset-lg="3" size-xl="4" offset-xl="4">
         <ion-card class="light-background">
@@ -8,7 +103,7 @@
             <ion-row class="card-title-row">
               <ion-col>
                 <ion-text class="card-title">
-                  Stake CHEDDA
+                  Lock xCHEDDA
                 </ion-text>
               </ion-col>
             </ion-row>
@@ -25,30 +120,30 @@
             </ion-row>
             <ion-row>
               <ion-col size="6">
-                <ion-text>My Balance</ion-text>
+                <ion-text>xCHEDDA Locked</ion-text>
               </ion-col>
-              <ion-col size="6">{{ myCheddaBalance | number:'1.2-5':'en-us' }} CHEDDA </ion-col>
+              <ion-col size="6">{{ myCheddaBalance | number:'1.2-5':'en-us' }} xCHEDDA </ion-col>
             </ion-row>
             <ion-row>
               <ion-col size="6">
-                <ion-text>My Stake</ion-text>
+                <ion-text>Voting Power</ion-text>
               </ion-col>
-              <ion-col size="6">{{ myStakedCheddaBalance | number:'1.2-5':'en-us'}} sCHEDDA </ion-col>
+              <ion-col size="6">{{ myStakedCheddaBalance | number:'1.2-5':'en-us'}} veCHEDDA </ion-col>
             </ion-row>
             <ion-row>
               <ion-col size="6">
-                <ion-text>Current APR</ion-text>
+                <ion-text>Weekly Rewards APR</ion-text>
               </ion-col>
               <ion-col size="6">
                 <ion-text>{{cheddaStakingAPR | number}}%</ion-text>
               </ion-col>
             </ion-row>
             <ion-item-divider class="light-background"></ion-item-divider>
-            <ion-segment value="stake" (ionChange)="onSegmentChanged($event)">
-              <ion-segment-button value="stake">Stake</ion-segment-button>
-              <ion-segment-button value="unstake">Unstake</ion-segment-button>
+            <ion-segment value="lock" (ionChange)="onLockSegmentChanged($event)">
+              <ion-segment-button value="lock">Lock</ion-segment-button>
+              <ion-segment-button value="withdraw">Withdraw</ion-segment-button>
             </ion-segment>
-            <div *ngIf="currentSegment === 'stake'">
+            <div *ngIf="currentLockSegment === 'lock'">
               <ion-row>
                 <ion-col class="align-items-center">
                   <ion-text>Amount</ion-text>
@@ -57,36 +152,57 @@
                   <ion-button size="small" color="primary" fill="clear" (click)="fillMaxStake()">Max {{myCheddaBalance | number:'1.1-4'}}</ion-button>
                 </ion-col>
               </ion-row>
+
               <ion-row>
                 <ion-col>
-                  <ion-input placeholder="0.0" class="bordered-input" type="number" #stakeInput></ion-input>
+                  <ion-input placeholder="0.0" class="bordered-input" type="number" #lockInput></ion-input>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col class="align-items-center">
+                  <ion-text>Lock Time (In Weeks)</ion-text>
+                </ion-col>
+                <ion-col class="justify-content-end">
                 </ion-col>
               </ion-row>
               <ion-row>
                 <ion-col>
-                  <ion-button *ngIf="isApproved" color="primary" fill="solid" expand="block" (click)="stake()">Stake</ion-button>
-                  <ion-button *ngIf="!isApproved" color="primary" fill="solid" expand="block" (click)="approveChedda()">Approve Chedda</ion-button>
+                  <ion-range pin min="1" max="156">
+                    <ion-label slot="start">1 week</ion-label>
+                    <ion-label slot="end">3 years</ion-label>
+                  </ion-range>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-text class="subtext">
+                  Note: Locking can not be undone until the lock expires. Use with caution.
+                </ion-text>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-button *ngIf="isApproved" color="primary" fill="solid" expand="block" (click)="lock()">Lock</ion-button>
+                  <ion-button *ngIf="!isApproved" color="primary" fill="solid" expand="block" (click)="approveStakedChedda()">Approve xChedda</ion-button>
                 </ion-col>
               </ion-row>
             </div>
 
-            <div *ngIf="currentSegment === 'unstake'">
-            <ion-row>
-              <ion-col class="align-items-center">
-                <ion-text>Amount</ion-text>
-              </ion-col>
-              <ion-col class="justify-content-end">
-                <ion-button size="small" color="primary" fill="clear" (click)="fillMaxUnstake()">Max {{myStakedCheddaBalance | number:'1.1-4'}}</ion-button>
-              </ion-col>
-            </ion-row>
+            <div *ngIf="currentLockSegment === 'withdraw'">
+              <ion-row>
+                <ion-col>
+                  Lock Expiry
+                </ion-col>
+                <ion-col> May 22, 2023</ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                <ion-text>
+                  Withdrawals only possible when the lock expires. 
+                </ion-text>
+                </ion-col>
+              </ion-row>
             <ion-row>
               <ion-col>
-                <ion-input placeholder="0.0" class="bordered-input" type="number" #unstakeInput></ion-input>
-              </ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col>
-                <ion-button color="primary" fill="outline" expand="block" (click)="unstake()">Unstake</ion-button>
+                <ion-button color="primary" fill="outline" expand="block" (click)="withdraw()">Withdraw</ion-button>
               </ion-col>
             </ion-row>
             </div>
@@ -95,7 +211,7 @@
       </ion-col>
     </ion-row>
 
-    <!-- Pool details -->
+    <!-- Faucets -->
     <ion-row>
       <ion-col size-xs="12" size-sm="10" offset-sm="1" size-md="8" offset-md="2" size-lg="6" offset-lg="3" size-xl="4" offset-xl="4">        
         <ion-card class="light-background">
