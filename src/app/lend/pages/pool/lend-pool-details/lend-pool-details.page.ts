@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { IonInput, LoadingController } from '@ionic/angular';
+import { ActivatedRoute, Router } from '@angular/router';
+import { IonInput, LoadingController, NavController } from '@ionic/angular';
 import { BigNumber, ethers } from 'ethers';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { CheddaBaseTokenVaultService } from 'src/app/contracts/chedda-base-token-vault.service';
@@ -57,26 +58,44 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
   depositApy = 0
   rewardsApy = 0
   ratePrecision = 100000
+  routeSubscription: Subscription
 
   constructor(
     private tokenService: TokenService, 
     private vaultService: CheddaBaseTokenVaultService,
     private wallet: WalletProviderService,
     private loadingController: LoadingController,
+    private route: ActivatedRoute,
+    private router: Router,
+    private navController: NavController,
     private alert: GlobalAlertService) { }
 
   async ngOnInit() {
+    await this.setup()
     this.usdc = this.tokenService.contractAt(environment.config.contracts.USDC)
-    this.vaultContract = this.vaultService.contractAt(environment.config.contracts.CheddaBaseTokenVault)
-
-    console.log('vaultcontract = ', this.vaultContract)
-    await this.loadVaultStats()
-    await this.checkAllowance()
-    this.registerEventListeners()
   }
 
   ngOnDestroy(): void {
     this.walletSubscription?.unsubscribe()
+  }
+
+  private async setup() {
+    this.routeSubscription = this.route.paramMap.subscribe(async paramMap => {
+      if (!paramMap.has('id')) {
+        this.navigateBack()
+        return
+      }
+      this.vaultContract = this.vaultService.contractAt(paramMap.get('id'))
+      console.log('vaultcontract = ', this.vaultContract)
+      if (!this.vaultContract) { 
+        this.navigateBack()
+        return
+      }
+
+      await this.loadVaultStats()
+      await this.checkAllowance()
+      this.registerEventListeners()
+    })
   }
 
   onSegmentChanged($event) {
@@ -203,5 +222,9 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
 
   private async hideLoading() {
     await this.loader?.dismiss()
+  }
+
+  private navigateBack() {
+    this.navController.navigateBack('/lend')
   }
 }

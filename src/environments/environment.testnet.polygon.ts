@@ -18,13 +18,14 @@ export const environment = {
             CheddaDropManager: '0xfe29f9595fef194Cb433bF1eF91f1c57801afE0e',
             CheddaLoanManager: '0x4a171D4CC2F371C4Dfc82469a473323afa5c7298',
             ChainlinkPriceConsumer: '0xDd558ACa8cd32D77Bf2e63D25a94691C32eb44D4',
-            CheddaBaseTokenVault: '0x53637c9dC575C66ce106F6e250c5e58E192DD5bD',
-            Chedda: '0x45d4079DAF446920Bb5494Afce19320D92fF3059',
-            sChedda: '0x7f4329c822ee86d713140923153eEdD925673759',
-            USDC: '0x14d8C077FbFB0Bb9657C3E4D4f8E20eC7E1C7D6B',
-            mUSDC: '0xF37b0DAd165Ce47D700E782E9845E319f4287296',
-            WrappedNative: '0xA36d30A62Cf2E1D4731A32DFD3d468514FFA99d9',
-            Faucet: '0x0d421b53964856364358D154fAdC0AF0C7B6a6D1',
+            CheddaBaseTokenVault: '0x98bca9f9508815d4400057797A3Fa397815dDaE0',
+            Chedda: '0x4E216D9D34Fd1c6609cCa8f5bcACF5d1beEDe9c7',
+            xChedda: '0x411A84eD193db7d978BC047ACE48c1174c5e9120',
+            USDC: '0xD294C4B008bfd4b3F7f08C6971Ca4f50BFdD3D88',
+            mUSDC: '0xaff2587D12C6F27ACa7dA5c431b82BADa1d11edf',
+            WrappedNative: '0x2c5E809920f1d2b7e24F35e98816fA3314A362e2',
+            Faucet: '0xa0DDF73A63EBe3355d8255e7561b2Ae75be4EDa6',
+            GaugeController: '0xCB9E954baaE6D1696c0F79024b65d3e04c607740',
           },
           networkParams: {
             chainId: '0x13881',
@@ -39,6 +40,90 @@ export const environment = {
             blockExplorerUrls: ['https://mumbai.polygonscan.com/']
           },
           pools: [
+            {
+              name: 'USDC/WMATIC Pool',
+              address: '0xDFfC4eeB22dF1fC1A65B29802f5b6dAa99b4659A',
+              asset: {
+                name: 'USD Coin',
+                symbol: 'USCD.c',
+                address: '0x85d02ddE4382F144c8D77D8a3aE0B49441Eeff97',
+                logo: '/assets/logos/usd-coin-logo.png'
+              },
+              collateral: [
+                {
+                  name: 'Wrapped MATIC',
+                  symbol: 'WMATIC.c',
+                  address: '0x2c5E809920f1d2b7e24F35e98816fA3314A362e2',
+                  logo: '/assets/logos/matic-token-icon.png'
+                },
+              ]
+            },
+            {
+              name: 'DAI/WMATIC Pool',
+              address: '0xFDC142B9C96CC45321376F79b2b0017D80773aFE',
+              asset: {
+                name: 'Dai Stalbcoin',
+                symbol: 'DAI',
+                address: '0x7079ef81bcFB2CfBE9699c79238b690a76848c73',
+                logo: '/assets/logos/dai-logo.png'
+              },
+              collateral: [
+                {
+                  name: 'Wrapped MATIC',
+                  symbol: 'WMATIC.c',
+                  address: '0x2c5E809920f1d2b7e24F35e98816fA3314A362e2',
+                  logo: '/assets/logos/matic-token-icon.png'
+                },
+              ]
+            },
+            {
+              name: 'FRAX/WMATIC Pool',
+              address: '0xBac84b73A248Bd247169ec7727071544392dA20E',
+              asset: {
+                name: 'Frax',
+                symbol: 'FRAX',
+                address: '0xbb53367653e91585533fFE91D22cba2179323537',
+                logo: '/assets/logos/frax-logo.png'
+              },
+              collateral: [
+                {
+                  name: 'Wrapped MATIC',
+                  symbol: 'WMATIC.c',
+                  address: '0x2c5E809920f1d2b7e24F35e98816fA3314A362e2',
+                  logo: '/assets/logos/matic-token-icon.png'
+                },
+              ]
+            },
+            {
+              name: 'Native Asset Pool',
+              address: '0x2D01f2D9b4A453DCEe3aDa5d630aFA1d800009D0',
+              asset: {
+                name: 'Wrapped MATIC',
+                symbol: 'WMATIC.c',
+                address: '0x2c5E809920f1d2b7e24F35e98816fA3314A362e2',
+                logo: '/assets/logos/matic-token-icon.png'
+              },
+              collateral: [
+                {
+                  name: 'USD Coin',
+                  symbol: 'USCD.c',
+                  address: '0x85d02ddE4382F144c8D77D8a3aE0B49441Eeff97',
+                  logo: '/assets/logos/usd-coin-logo.png'
+                },
+                {
+                  name: 'Dai Stalbcoin',
+                  symbol: 'DAI',
+                  address: '0x7079ef81bcFB2CfBE9699c79238b690a76848c73',
+                  logo: '/assets/logos/dai-logo.png'
+                },
+                {
+                  name: 'Frax',
+                  symbol: 'FRAX',
+                  address: '0xbb53367653e91585533fFE91D22cba2179323537',
+                  logo: '/assets/logos/frax-logo.png'
+                }
+              ]
+            },
             {
               name: 'USDC/WMATIC Pool',
               address: '0x53637c9dC575C66ce106F6e250c5e58E192DD5bD',

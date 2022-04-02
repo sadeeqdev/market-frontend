@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BigNumber, ethers } from 'ethers';
 import { BehaviorSubject } from 'rxjs';
-import StakedChedda from '../../artifacts/sChedda.json'
+import StakedChedda from '../../artifacts/StakedChedda.json'
 import { DefaultProviderService } from '../providers/default-provider.service';
 import { WalletProviderService } from '../providers/wallet-provider.service';
 
@@ -17,7 +17,7 @@ export class StakedCheddaService {
   
   constructor(provider: DefaultProviderService, private wallet: WalletProviderService, private http: HttpClient) {
     this.stakedCheddaContract = new ethers.Contract(
-      wallet.currentConfig.contracts.sChedda,
+      wallet.currentConfig.contracts.xChedda,
       StakedChedda.abi,
       provider.provider
       );
@@ -45,7 +45,7 @@ export class StakedCheddaService {
   }
 
   address(): string {
-    return this.wallet.currentConfig.contracts.sChedda
+    return this.wallet.currentConfig.contracts.xChedda
   }
 
   registerForEvents() {

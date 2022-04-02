@@ -20,7 +20,7 @@ export const environment = {
             ChainlinkPriceConsumer: '0x674036Df4BdbCB9bD6D5F83d6daA340f190a5DCC',
             CheddaBaseTokenVault: '0xfdFfc461476CEd890dC62830969E6Eba1048A99D',
             Chedda: '0x30c54E9c99147620BD6fBC2D9b0CE90b4FBc80eF',
-            sChedda: '0x0fFD5fB4B3160A2709E120A7484AEE03500c55b3',
+            xChedda: '0x0fFD5fB4B3160A2709E120A7484AEE03500c55b3',
             USDC: '0x55df0aF74eE7FA170AbBF7eb3F8D43d7c20De207',
             mUSDC: '0xd2DA1a0D84DA053c88434A2a688798DB9E93365e',
             WrappedNative: '0x2c01212f051A59D88A1361db1E2041896dB4af64',

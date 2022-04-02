@@ -57,7 +57,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     private faucet: FaucetService,
     private wallet: WalletProviderService,
     private chedda: CheddaService,
-    private sChedda: StakedCheddaService,
+    private xChedda: StakedCheddaService,
     private alert: GlobalAlertService,
     private loadingController: LoadingController) { }
 
@@ -82,7 +82,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       console.log('apr = ', this.cheddaStakingAPR)
       if (this.wallet.isConnected && this.wallet.currentAccount) {
         this.myCheddaBalance = ethers.utils.formatEther(await this.chedda.balanceOf(this.wallet.currentAccount))
-        this.myStakedCheddaBalance = ethers.utils.formatEther(await this.sChedda.balanceOf(this.wallet.currentAccount))
+        this.myStakedCheddaBalance = ethers.utils.formatEther(await this.xChedda.balanceOf(this.wallet.currentAccount))
       } else {
         this.myCheddaBalance = '0'
         this.myStakedCheddaBalance = '0'
@@ -132,7 +132,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     }
     try {
       await this.showLoading('Waiting for confirmation')
-      await this.sChedda.stake(amount)
+      await this.xChedda.stake(amount)
       this.stakeInput.value = ''
     } catch (error) {
       await this.hideLoading()
@@ -153,7 +153,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     }
     try {
       this.showLoading('Waiting for confirmation')
-      await this.sChedda.unstake(amount)
+      await this.xChedda.unstake(amount)
       this.unstakeInput.value = ''
     } catch (error) {
       this.alert.showErrorAlert(error)
@@ -167,7 +167,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     }
     try {
       await this.showLoading('Waiting for approval')
-      await this.chedda.approve(this.sChedda.address())
+      await this.chedda.approve(this.xChedda.address())
     } catch (error) {
       await this.hideLoading()
       await this.alert.showErrorAlert(error)
@@ -180,7 +180,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       return
     }
     try {
-      this.chedda.approve(this.sChedda.address())
+      this.chedda.approve(this.xChedda.address())
     } catch (error) {
       await this.alert.showErrorAlert(error)
     }
@@ -213,7 +213,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     if (!this.wallet || !this.wallet.currentAccount) {
       return
     }
-    const allowance = await this.chedda.allowance(this.wallet.currentAccount, this.sChedda.address())
+    const allowance = await this.chedda.allowance(this.wallet.currentAccount, this.xChedda.address())
     this.isApproved = allowance.gt(ethers.utils.parseUnits("1000"))
   }
 
@@ -233,7 +233,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       }
     })
 
-    this.depositSubscription = this.sChedda.depositSubject.subscribe(async res => {
+    this.depositSubscription = this.xChedda.depositSubject.subscribe(async res => {
       console.log('deposit received: ', res)
       if (this.wallet && this.wallet.currentAccount && res && res.from.toLowerCase() == this.wallet.currentAccount.toLowerCase()) {
         await this.hideLoading()
@@ -242,7 +242,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       }
     })
 
-    this.withdrawSubscription = this.sChedda.withdrawSubject.subscribe(async res => {
+    this.withdrawSubscription = this.xChedda.withdrawSubject.subscribe(async res => {
       console.log('withdraw received: ', res)
       if (this.wallet && this.wallet.currentAccount && res && res.from.toLowerCase() == this.wallet.currentAccount.toLowerCase()) {
         await this.hideLoading()

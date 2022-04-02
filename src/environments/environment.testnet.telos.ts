@@ -20,11 +20,12 @@ export const environment = {
             ChainlinkPriceConsumer: '',
             CheddaBaseTokenVault: '',
             Chedda: '',
-            sChedda: '',
+            xChedda: '',
             USDC: '',
             mUSDC: '',
             WrappedNative: '',
             Faucet: '',
+            GaugeController: '',
           },
           networkParams: {
             chainId: '0x29',

@@ -33,7 +33,7 @@ export class ProfilePopoverComponent implements OnInit {
 
   ngOnInit() {
     this.cheddaContract = this.tokenService.contractAt(environment.config.contracts.Chedda)
-    this.stakedCheddaContract = this.tokenService.contractAt(environment.config.contracts.sChedda)
+    this.stakedCheddaContract = this.tokenService.contractAt(environment.config.contracts.xChedda)
     this.listenForTransfers()
     this.checkBalance()
   }

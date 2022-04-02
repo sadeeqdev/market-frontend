@@ -44,9 +44,9 @@ export interface Loan {
 }
 
 export interface LendignPool {
-    name: String
-    address: String
+    name: string
+    address: string
     asset: any
     collateral: any[]
-    stats: any
+    stats?: any
 }

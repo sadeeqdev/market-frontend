@@ -13,9 +13,10 @@ export interface CheddaConfig {
         ChainlinkPriceConsumer: string
         CheddaBaseTokenVault: string
         Chedda: string
-        sChedda: string
+        xChedda: string
         USDC: string
         mUSDC: string
+        GaugeController: string,
         WrappedNative: string
         Faucet: string
     },
