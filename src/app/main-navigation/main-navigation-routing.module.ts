@@ -52,6 +52,10 @@ const routes: Routes = [
         path: 'grotto',
         loadChildren: () => import('../grotto/grotto.module').then( m => m.GrottoPageModule)
       },
+      {
+        path: 'vote',
+        loadChildren: () => import('../vote/vote.module').then( m => m.VotePageModule)
+      },
     ]
   }
 ];

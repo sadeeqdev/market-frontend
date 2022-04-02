@@ -60,9 +60,9 @@ export class TopNavComponent implements OnInit, OnDestroy {
       icon: 'storefront'
     },
     {
-      name: 'Market',
-      path: '/market',
-      icon: 'bag',
+      name: 'Vote',
+      path: '/vote',
+      icon: 'checkbox',
     }, 
   ]
 

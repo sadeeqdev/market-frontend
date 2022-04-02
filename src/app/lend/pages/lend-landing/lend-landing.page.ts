@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { IonSegment } from '@ionic/angular';
 import { BigNumber, ethers } from 'ethers';
-import { stat } from 'fs';
 import { Subscription } from 'rxjs';
 import { CheddaBaseTokenVaultService } from 'src/app/contracts/chedda-base-token-vault.service';
 import { CheddaLoanManagerService, LoanRequestStatus, LoanStatus } from 'src/app/contracts/chedda-loan-manager.service';
