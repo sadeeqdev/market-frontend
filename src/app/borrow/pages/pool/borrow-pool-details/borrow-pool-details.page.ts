@@ -1,8 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonInput, LoadingController } from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
+import { IonInput, LoadingController, NavController } from '@ionic/angular';
 import { ethers } from 'ethers';
+import { Subscription } from 'rxjs';
 import { CheddaBaseTokenVaultService } from 'src/app/contracts/chedda-base-token-vault.service';
 import { TokenService } from 'src/app/contracts/token.service';
+import { LendingPool } from 'src/app/lend/lend.models';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
 import { environment } from 'src/environments/environment';
@@ -57,27 +60,64 @@ export class BorrowPoolDetailsPage implements OnInit {
   repayListener
   borrowMode: BorrowMode = BorrowMode.collateral
   repayMode: RepayMode = RepayMode.repay
+  routeSubscription: Subscription
+  pool: LendingPool
 
   constructor(
     private tokenService: TokenService, 
     private vaultService: CheddaBaseTokenVaultService,
     private wallet: WalletProviderService,
     private loadingController: LoadingController,
+    private route: ActivatedRoute,
+    private navController: NavController,
     private alert: GlobalAlertService) { 
 
   }
 
   async ngOnInit() {
-    this.assetSymbol = environment.config.pools[0].asset.symbol
-    this.collateralContract = this.tokenService.contractAt(environment.config.contracts.WrappedNative)
-    console.log('collateralContract = ', this.collateralContract)
-    this.vaultContract = this.vaultService.contractAt(environment.config.contracts.CheddaBaseTokenVault)
+    await this.setup();
+  }
 
-    this.collaterals = environment.config.pools[0].collateral
-    this.collateralTokeName = environment.config.pools[0].collateral[0].name
-    this.collateralTokenSymbol = environment.config.pools[0].collateral[0].symbol
-    await this.registerForEvents()
-    await this.checkAllowance()
+
+  private async setup() {
+    this.routeSubscription = this.route.paramMap.subscribe(async paramMap => {
+      if (!paramMap.has('id')) {
+        this.navigateBack()
+        return
+      }
+      const poolId = paramMap.get('id')
+      this.pool = this.findPoolWithId(poolId)
+      if (!this.pool) {
+        console.warn('pool with id not found: ', poolId)
+        this.navigateBack()
+        return
+      }
+
+      this.assetSymbol = this.pool.asset.symbol
+      this.collaterals = this.pool.collateral
+      this.collateralTokeName = this.pool.collateral[0].name
+      this.collateralTokenSymbol = this.pool.collateral[0].symbol
+      this.vaultContract = this.vaultService.contractAt(poolId)
+      this.collateralContract = this.tokenService.contractAt(this.pool.collateral[0].address)
+      console.log('vaultcontract = ', this.vaultContract)
+      if (!this.vaultContract) { 
+        this.navigateBack()
+        return
+      }
+
+      await this.loadVaultStats()
+      await this.checkAllowance()
+      this.registerForEvents()
+    })
+  }
+
+  private findPoolWithId(id: string): LendingPool | null {
+    for (const pool of environment.config.pools) {
+      if (pool.address.toLowerCase() == id.toLocaleLowerCase()) {
+        return pool
+      }
+    }
+    return null
   }
 
   onSegmentChanged($event) {
@@ -293,5 +333,9 @@ export class BorrowPoolDetailsPage implements OnInit {
     this.wallet.accountSubject.subscribe(() => {
       this.loadVaultStats()
     })
+  }
+
+  private navigateBack() {
+    this.navController.navigateBack('/borrow')
   }
 }

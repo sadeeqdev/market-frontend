@@ -7,12 +7,12 @@
           <ion-card-title>
             <ion-row class="card-title-row">
               <ion-col>
-                <ion-text class="card-title">
-                  Lend USDC
+                <ion-text class="card-title" *ngIf="pool">
+                  Lend {{ pool.asset.name }}
                 </ion-text>
               </ion-col>
               <ion-col class="card-collateral-col">
-                <ion-avatar *ngFor="let collateral of collaterals" class="card-title-collateral-img logo-cascade">
+                <ion-avatar *ngFor="let collateral of pool.collateral" class="card-title-collateral-img logo-cascade">
                   <ion-img [src]="collateral.logo"></ion-img>
                 </ion-avatar>
               </ion-col>

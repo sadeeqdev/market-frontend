@@ -8,7 +8,7 @@ import { CheddaLoanManagerService, LoanRequestStatus, LoanStatus } from 'src/app
 import { MarketExplorerService } from 'src/app/contracts/market-explorer.service';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { environment } from 'src/environments/environment';
-import { LendignPool, Loan, LoanRequest } from '../../lend.models';
+import { LendingPool, Loan, LoanRequest } from '../../lend.models';
 
 @Component({
   selector: 'app-lend-landing',
@@ -25,7 +25,7 @@ export class LendLandingPage implements OnInit, OnDestroy {
   currency
   openLoansSubscription?: Subscription
   openLoanRequestsSubscription?: Subscription
-  lendingPools: LendignPool[] = []
+  lendingPools: LendingPool[] = []
   vaultContract
   ratePrecision = 100000
 
@@ -53,8 +53,6 @@ export class LendLandingPage implements OnInit, OnDestroy {
   }
 
   private async loadVaultStats() {
-    // const stats = await this.vaultService.getVaultStats(this.vaultContract)
-    // console.log('stats = ', stats)
     this.lendingPools = environment.config.pools
     try {
       this.lendingPools.forEach(async pool => {
@@ -65,7 +63,7 @@ export class LendLandingPage implements OnInit, OnDestroy {
     }
   }
 
-  private async loadStats(pool: LendignPool) {
+  private async loadStats(pool: LendingPool) {
     const contract = this.vaultService.contractAt(pool.address) 
     console.log('contract is for: ', contract.address)
 

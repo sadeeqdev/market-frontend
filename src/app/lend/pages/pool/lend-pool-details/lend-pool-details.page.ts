@@ -5,6 +5,7 @@ import { BigNumber, ethers } from 'ethers';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { CheddaBaseTokenVaultService } from 'src/app/contracts/chedda-base-token-vault.service';
 import { TokenService } from 'src/app/contracts/token.service';
+import { LendingPool } from 'src/app/lend/lend.models';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
 import { environment } from 'src/environments/environment';
@@ -26,20 +27,6 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
   @ViewChild('depositInput') depositInput: IonInput
   @ViewChild('withdrawInput') withdrawInput: IonInput
   isApproved = false
-  collaterals = [
-    {
-      name: 'AVAX',
-      logo: '/assets/logos/avalanche-avax-logo.png'
-    },
-    {
-      name: 'WGK',
-      logo: '/assets/logos/wgk-logo.png'
-    },
-    {
-      name: 'EYE',
-      logo: '/assets/logos/eye-logo.png'
-    },
-  ]
   currentSegment = 'deposit'
   usdc
   vaultContract
@@ -59,6 +46,7 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
   rewardsApy = 0
   ratePrecision = 100000
   routeSubscription: Subscription
+  pool: LendingPool
 
   constructor(
     private tokenService: TokenService, 
@@ -85,7 +73,14 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
         this.navigateBack()
         return
       }
-      this.vaultContract = this.vaultService.contractAt(paramMap.get('id'))
+      const poolId = paramMap.get('id')
+      this.pool = this.findPoolWithId(poolId)
+      if (!this.pool) {
+        console.warn('pool id not found')
+        this.navigateBack()
+        return
+      }
+      this.vaultContract = this.vaultService.contractAt(poolId)
       console.log('vaultcontract = ', this.vaultContract)
       if (!this.vaultContract) { 
         this.navigateBack()
@@ -98,6 +93,15 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
     })
   }
 
+  private findPoolWithId(id: string): LendingPool | null {
+    for (const pool of environment.config.pools) {
+      if (pool.address.toLowerCase() == id.toLocaleLowerCase()) {
+        return pool
+      }
+    }
+    return null
+  }
+  
   onSegmentChanged($event) {
     this.currentSegment = $event.target.value
   }

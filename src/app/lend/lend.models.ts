@@ -43,7 +43,7 @@ export interface Loan {
     nft?: NFT
 }
 
-export interface LendignPool {
+export interface LendingPool {
     name: string
     address: string
     asset: any

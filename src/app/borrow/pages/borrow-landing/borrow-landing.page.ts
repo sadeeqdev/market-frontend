@@ -8,7 +8,7 @@ import { CheddaBaseTokenVaultService } from 'src/app/contracts/chedda-base-token
 import { CheddaLoanManagerService, LoanRequestStatus, LoanStatus } from 'src/app/contracts/chedda-loan-manager.service';
 import { CheddaXpService } from 'src/app/contracts/chedda-xp.service';
 import { MarketExplorerService } from 'src/app/contracts/market-explorer.service';
-import { LendignPool, Loan } from 'src/app/lend/lend.models';
+import { LendingPool, Loan } from 'src/app/lend/lend.models';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { environment } from 'src/environments/environment';
 
@@ -45,7 +45,7 @@ export class BorrowLandingPage implements OnInit {
 
   pendingLoans = []
   loans: Loan[] = []
-  lendingPools: LendignPool[] = []
+  lendingPools: LendingPool[] = []
   currency
   vaultContract
   ratePrecision = 100000
@@ -78,15 +78,26 @@ export class BorrowLandingPage implements OnInit {
   }
 
   private async loadVaultStats() {
-
-    const stats = await this.vaultService.getVaultStats(this.vaultContract)
-    console.log('stats = ', stats)
     this.lendingPools = environment.config.pools
+    try {
+      this.lendingPools.forEach(async pool => {
+        await this.loadStats(pool)
+      }); 
+    } catch (error) {
+      console.error('caught error: ', error)
+    }
+  }
 
-    this.lendingPools[0].stats = {
+  private async loadStats(pool: LendingPool) {
+    const contract = this.vaultService.contractAt(pool.address) 
+    console.log('contract is for: ', contract.address)
+
+    const stats = await this.vaultService.getVaultStats(contract)
+    console.log('stats = ', stats)
+    pool.stats = {
       supplied: BigNumber.from(1010101),
       utilization: stats.utilization.toNumber()/this.ratePrecision,
-      apr: stats.borrowApr/this.ratePrecision,
+      apr: stats.depositApr/this.ratePrecision,
       total: ethers.utils.formatEther(stats.liquidity)
     }
   }
