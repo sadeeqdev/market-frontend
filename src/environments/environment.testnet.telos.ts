@@ -18,13 +18,13 @@ export const environment = {
             CheddaDropManager: '',
             CheddaLoanManager: '',
             ChainlinkPriceConsumer: '',
-            CheddaBaseTokenVault: '',
-            Chedda: '',
-            xChedda: '',
-            USDC: '',
-            mUSDC: '',
-            WrappedNative: '',
-            Faucet: '',
+            CheddaBaseTokenVault: '0xCBfa283cCc60CF5151AAf5f73F9513e7321c8483',
+            Chedda: '0x8c2B728F8c9F6c1ee7a1339633173102A50c1FeC',
+            xChedda: '0x7c21541F02a6A1DCcBD556bd70257178AD889974',
+            USDC: '0xACfA6c29730a73463f7df3b15A46075F0f43A3c0',
+            mUSDC: '0x2f9bdA241cf548bf31f55b6715B23a1057DfAFE9',
+            WrappedNative: '0x7cdaCA59885a4FCC590043d97bdE3f73Df4DE0c5',
+            Faucet: '0xAdBCD031E337453a2451f336194F9912Ff3D0893',
             GaugeController: '',
           },
           networkParams: {
@@ -41,33 +41,90 @@ export const environment = {
           },
           pools: [
             {
-              name: 'USDC/WMATIC Pool',
-              address: '0x0',
+              name: 'USDC/TLOS Pool',
+              address: '0x2f9bdA241cf548bf31f55b6715B23a1057DfAFE9',
               asset: {
                 name: 'USD Coin',
                 symbol: 'USCD.c',
-                address: '0x0',
+                address: '0xACfA6c29730a73463f7df3b15A46075F0f43A3c0',
                 logo: '/assets/logos/usd-coin-logo.png'
               },
               collateral: [
                 {
-                  name: 'Wrapped MATIC',
-                  symbol: 'WMATIC.c',
-                  address: '0x0',
-                  logo: '/assets/logos/matic-token-icon.png'
+                  name: 'Wrapped TLOS',
+                  symbol: 'WTLOS.c',
+                  address: '0x7cdaCA59885a4FCC590043d97bdE3f73Df4DE0c5',
+                  logo: '/assets/logos/tlos-logo.png'
+                },
+              ],
+              stats: {}
+            },
+            {
+              name: 'DAI/TLOS Pool',
+              address: '0x6Ff6aab66Bc6a2BdcD6E2b647AfA84c7e489fd4F',
+              asset: {
+                name: 'Dai StableCoin',
+                symbol: 'DAI.c',
+                address: '0xb77193180525d24B5c30F3CFfbE054436EAF1851',
+                logo: '/assets/logos/dai-logo.png'
+              },
+              collateral: [
+                {
+                  name: 'Wrapped TLOS',
+                  symbol: 'WTLOS.c',
+                  address: '0x7cdaCA59885a4FCC590043d97bdE3f73Df4DE0c5',
+                  logo: '/assets/logos/tlos-logo.png'
+                },
+              ],
+              stats: {}
+            },
+            {
+              name: 'FRAX/TLOS Pool',
+              address: '0xcd7AbFd6Cb848A5397A29fCC8Cb5D4CE9C993814',
+              asset: {
+                name: 'Frax',
+                symbol: 'FRAX',
+                address: '0x4e18E8A38b848ACE0D60937c4699c1D6cF0feAA1',
+                logo: '/assets/logos/frax-logo.png'
+              },
+              collateral: [
+                {
+                  name: 'Wrapped TLOS',
+                  symbol: 'WTLOS.c',
+                  address: '0x7cdaCA59885a4FCC590043d97bdE3f73Df4DE0c5',
+                  logo: '/assets/logos/tlos-logo.png'
+                },
+              ],
+              stats: {}
+            },
+            {
+              name: 'TLOS/Stable Pool',
+              address: '0xdE16696ad38ECc993BB1d28304E1B00357ADe8fa',
+              asset: {
+                name: 'Wrapped TLOS',
+                symbol: 'WTLOS.c',
+                address: '0x7cdaCA59885a4FCC590043d97bdE3f73Df4DE0c5',
+                logo: '/assets/logos/tlos-logo.png'
+              },
+              collateral: [
+                {
+                  name: 'USD Coin',
+                  symbol: 'USCD.c',
+                  address: '0xACfA6c29730a73463f7df3b15A46075F0f43A3c0',
+                  logo: '/assets/logos/usd-coin-logo.png'
                 },
                 {
-                  name: 'Weird geek',
-                  symbol: 'WGK',
-                  address: '0x0',
-                  logo: '/assets/logos/wgk-logo.png'
+                  name: 'Dai StableCoin',
+                  symbol: 'DAI.c',
+                  address: '0xb77193180525d24B5c30F3CFfbE054436EAF1851',
+                  logo: '/assets/logos/dai-logo.png'
                 },
                 {
-                  name: 'Chedda Fancy Eye',
-                  symbol: 'EYE',
-                  address: '0x0',
-                  logo: '/assets/logos/eye-logo.png'
-                },
+                  name: 'Frax',
+                  symbol: 'FRAX',
+                  address: '0x4e18E8A38b848ACE0D60937c4699c1D6cF0feAA1',
+                  logo: '/assets/logos/frax-logo.png'
+                }
               ],
               stats: {}
             }
@@ -81,7 +138,7 @@ export const environment = {
           ],
           ui: {
             chainName: 'Telos',
-            logo: '/assets/logos/tlos-token-icon.png',
+            logo: '/assets/logos/tlos-logo.png',
             txUrlPrefix: 'https://testnet.telos.net/evm/tx/'
           }
     },

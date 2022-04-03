@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ModalController, NavController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
-import { CheddaXpService } from 'src/app/contracts/chedda-xp.service';
+import { CheddaService } from 'src/app/contracts/chedda.service';
 import { DropManagerService } from 'src/app/contracts/drop-manager.service';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
@@ -25,7 +25,7 @@ export class DropDetailsPage implements OnInit, OnDestroy {
     private wallet: WalletProviderService,
     private navController: NavController,
     private dropManager: DropManagerService,
-    private cheddaXP: CheddaXpService,
+    private chedda: CheddaService,
     private route: ActivatedRoute
   ) { }
 
@@ -52,7 +52,7 @@ export class DropDetailsPage implements OnInit, OnDestroy {
     if (this.wallet.isConnected) {
       const currentAccount = this.wallet.currentAccount
       if (currentAccount) {
-        let balance = await this.cheddaXP.balanceOf(currentAccount)
+        let balance = await this.chedda.balanceOf(currentAccount)
         console.log('balance = ', balance)
         if (!balance.isZero()) {
           this.showEnterModal() 

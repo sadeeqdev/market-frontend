@@ -34,6 +34,11 @@ export class NetworksPopoverComponent implements OnInit {
       url: 'https://testnet-polygon.chedda.store',
       icon: '/assets/logos/polygon-logo.svg'
     },
+    {
+      name: 'Telos Testnet',
+      url: 'https://telos-hackathon.chedda.store',
+      icon: '/assets/logos/tlos-logo.png'
+    },
   ]
   constructor(private popoverController: PopoverController) { }
 

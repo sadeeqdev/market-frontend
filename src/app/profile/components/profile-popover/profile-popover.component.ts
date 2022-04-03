@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
 import { ethers } from 'ethers';
-import { CheddaXpService } from 'src/app/contracts/chedda-xp.service';
 import { TokenService } from 'src/app/contracts/token.service';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { environment } from 'src/environments/environment';
@@ -21,11 +20,10 @@ export class ProfilePopoverComponent implements OnInit {
   cheddaContract
   stakedCheddaContract
   cheddaBalance
-  sCheddaBalance
+  xCheddaBalance
 
   constructor(
     private router: Router,
-    private cheddaXP: CheddaXpService,
     private wallet: WalletProviderService,
     private tokenService: TokenService,
     private popoverController: PopoverController
@@ -52,7 +50,7 @@ export class ProfilePopoverComponent implements OnInit {
 
   private async checkStakedCheddaBalance() {
     const sChedaBalance = await this.tokenService.balanceOf(this.stakedCheddaContract, this.address) 
-    this.sCheddaBalance = ethers.utils.formatEther(sChedaBalance)
+    this.xCheddaBalance = ethers.utils.formatEther(sChedaBalance)
   }
 
   async navigateToProfile() {

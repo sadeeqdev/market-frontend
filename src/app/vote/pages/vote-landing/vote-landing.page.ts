@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CheddaBaseTokenVaultService } from 'src/app/contracts/chedda-base-token-vault.service';
-import { CheddaLoanManagerService } from 'src/app/contracts/chedda-loan-manager.service';
-import { MarketExplorerService } from 'src/app/contracts/market-explorer.service';
 import { LendingPool } from 'src/app/lend/lend.models';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { environment } from 'src/environments/environment';
@@ -18,8 +16,6 @@ export class VoteLandingPage implements OnInit {
   ratePrecision = 100000
   constructor(
     private wallet: WalletProviderService,
-    private marketExplorer: MarketExplorerService,
-    private loanManager: CheddaLoanManagerService,
     private vaultService: CheddaBaseTokenVaultService) { }
 
   async ngOnInit() {

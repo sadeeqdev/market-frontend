@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { CheddaRewardsService } from 'src/app/contracts/chedda-rewards.service';
-import { CheddaXpService } from 'src/app/contracts/chedda-xp.service';
 import { ProfilePopoverComponent } from 'src/app/profile/components/profile-popover/profile-popover.component';
 import { Profile } from 'src/app/profile/profile.interface';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
@@ -11,6 +10,8 @@ import { GlobalAlertService } from 'src/app/shared/global-alert.service';
 import { PreferencesService } from 'src/app/shared/preferences.service';
 import { NetworksPopoverComponent } from '../networks-popover/networks-popover.component';
 import { environment } from 'src/environments/environment';
+import { CheddaService } from 'src/app/contracts/chedda.service';
+import { ethers } from 'ethers';
 
 declare const blockies
 
@@ -26,7 +27,7 @@ export class TopNavComponent implements OnInit, OnDestroy {
   connected = false
   isDark = false;
   account?: string
-  balance = 0
+  balance
   isCorrectNetwork = true
   env = environment
   popover: any
@@ -70,11 +71,10 @@ export class TopNavComponent implements OnInit, OnDestroy {
     private router: Router,
     private zone: NgZone,
     private provider: WalletProviderService, 
-    private cheddaXP: CheddaXpService,
+    private chedda: CheddaService,
     private alertService: GlobalAlertService,
     private popoverController: PopoverController,
     private preferences: PreferencesService,
-    private rewardService: CheddaRewardsService, // not used locally needed to listen to global rewards events
     ) {
     }
 
@@ -130,7 +130,7 @@ export class TopNavComponent implements OnInit, OnDestroy {
       this.zone.run(async () => {
         this.account = account
         if (account) {
-          this.balance = await (await this.cheddaXP.balanceOf(account)).toNumber()
+          this.balance = await (await ethers.utils.formatEther(await this.chedda.balanceOf(account)))
         }
         this.createBlockie()
       })
@@ -143,11 +143,11 @@ export class TopNavComponent implements OnInit, OnDestroy {
         })
       }
     })
-    this.balanceSubscription = this.cheddaXP.balanceSubject.subscribe(balance => {
-      if (balance) {
-        this.balance = balance
-      }
-    })
+    // this.balanceSubscription = this.chedda.balanceSubject.subscribe(balance => {
+    //   if (balance) {
+    //     this.balance = balance
+    //   }
+    // })
   }
 
   async checkRoute() {
@@ -164,6 +164,9 @@ export class TopNavComponent implements OnInit, OnDestroy {
         break
       case url.match('/\/grotto/')?.input:
         this.title = 'Grotto'
+        break
+      case url.match('/\/vote/')?.input:
+        this.title = 'Vote'
         break
       case url.match(/\/profile/)?.input:
         this.title = 'Profile'
