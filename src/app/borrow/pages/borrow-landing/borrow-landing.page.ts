@@ -43,7 +43,8 @@ export class BorrowLandingPage implements OnInit {
   lendingPools: LendingPool[] = []
   currency
   vaultContract
-  ratePrecision = 100000
+  borrowPrecision = BigNumber.from(1000000000000)
+  aprPrecision = BigNumber.from(100000000000)
 
   constructor(
     private wallet: WalletProviderService,
@@ -77,8 +78,8 @@ export class BorrowLandingPage implements OnInit {
     console.log('stats = ', stats)
     pool.stats = {
       supplied: BigNumber.from(1010101),
-      utilization: stats.utilization.toNumber()/this.ratePrecision,
-      apr: stats.depositApr/this.ratePrecision,
+      utilization: stats.utilization.div(this.borrowPrecision).toString(),
+      apr: stats.depositApr.div(this.aprPrecision).toString(),
       total: ethers.utils.formatEther(stats.liquidity)
     }
   }

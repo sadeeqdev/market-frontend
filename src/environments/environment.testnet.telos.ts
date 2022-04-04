@@ -18,14 +18,15 @@ export const environment = {
             CheddaDropManager: '',
             CheddaLoanManager: '',
             ChainlinkPriceConsumer: '',
-            CheddaBaseTokenVault: '0xCBfa283cCc60CF5151AAf5f73F9513e7321c8483',
-            Chedda: '0x8c2B728F8c9F6c1ee7a1339633173102A50c1FeC',
-            xChedda: '0x7c21541F02a6A1DCcBD556bd70257178AD889974',
-            USDC: '0xACfA6c29730a73463f7df3b15A46075F0f43A3c0',
+            CheddaBaseTokenVault: '0xB0A47be6707E3122F1CF4C2259897E6e97380E1A',
+            Chedda: '0xc862b668A36E33576D8e6AD9b7faB0afB57E6e12',
+            xChedda: '0x5eC93EEdDaFE5286BDeCDC06773CAA6A82298239',
+            veChedda: '0xb7F8F59753750B0dB5C9F7083D56E0499a9219D0',
+            USDC: '0x464e5fD82cacA90375C27f08D9D68f4433C71fA7',
             mUSDC: '0x2f9bdA241cf548bf31f55b6715B23a1057DfAFE9',
-            WrappedNative: '0x7cdaCA59885a4FCC590043d97bdE3f73Df4DE0c5',
-            Faucet: '0xAdBCD031E337453a2451f336194F9912Ff3D0893',
-            GaugeController: '',
+            WrappedNative: '0x8aDfBAD20bBe6CCD33d8Bd412C8AB9f67bc69a71',
+            Faucet: '0xd03514EEC1Bda2c88EE8d4Af10A757284934Def4',
+            GaugeController: '0xe88AF62fe2117565cB6B2c206e820Cb8d4Bce91a',
           },
           networkParams: {
             chainId: '0x29',
@@ -42,18 +43,18 @@ export const environment = {
           pools: [
             {
               name: 'USDC/TLOS Pool',
-              address: '0x2f9bdA241cf548bf31f55b6715B23a1057DfAFE9',
+              address: '0xB0A47be6707E3122F1CF4C2259897E6e97380E1A',
               asset: {
                 name: 'USD Coin',
                 symbol: 'USCD.c',
-                address: '0xACfA6c29730a73463f7df3b15A46075F0f43A3c0',
+                address: '0x464e5fD82cacA90375C27f08D9D68f4433C71fA7',
                 logo: '/assets/logos/usd-coin-logo.png'
               },
               collateral: [
                 {
                   name: 'Wrapped TLOS',
                   symbol: 'WTLOS.c',
-                  address: '0x7cdaCA59885a4FCC590043d97bdE3f73Df4DE0c5',
+                  address: '0x8aDfBAD20bBe6CCD33d8Bd412C8AB9f67bc69a71',
                   logo: '/assets/logos/tlos-logo.png'
                 },
               ],
@@ -61,18 +62,18 @@ export const environment = {
             },
             {
               name: 'DAI/TLOS Pool',
-              address: '0x6Ff6aab66Bc6a2BdcD6E2b647AfA84c7e489fd4F',
+              address: '0x4c12c9C5E754360fb8e8Ed986300C60d588C9e72',
               asset: {
                 name: 'Dai StableCoin',
                 symbol: 'DAI.c',
-                address: '0xb77193180525d24B5c30F3CFfbE054436EAF1851',
+                address: '0x35Bc96883D4bD811Ab684D976dD86FB5dc5F7B2c',
                 logo: '/assets/logos/dai-logo.png'
               },
               collateral: [
                 {
                   name: 'Wrapped TLOS',
                   symbol: 'WTLOS.c',
-                  address: '0x7cdaCA59885a4FCC590043d97bdE3f73Df4DE0c5',
+                  address: '0x8aDfBAD20bBe6CCD33d8Bd412C8AB9f67bc69a71',
                   logo: '/assets/logos/tlos-logo.png'
                 },
               ],
@@ -80,18 +81,18 @@ export const environment = {
             },
             {
               name: 'FRAX/TLOS Pool',
-              address: '0xcd7AbFd6Cb848A5397A29fCC8Cb5D4CE9C993814',
+              address: '0x29114AE8FA314dC27e96990182827A29A609e079',
               asset: {
                 name: 'Frax',
                 symbol: 'FRAX',
-                address: '0x4e18E8A38b848ACE0D60937c4699c1D6cF0feAA1',
+                address: '0x73B6f852ED785B93301dE96e1860f25B176BCa81',
                 logo: '/assets/logos/frax-logo.png'
               },
               collateral: [
                 {
                   name: 'Wrapped TLOS',
                   symbol: 'WTLOS.c',
-                  address: '0x7cdaCA59885a4FCC590043d97bdE3f73Df4DE0c5',
+                  address: '0x8aDfBAD20bBe6CCD33d8Bd412C8AB9f67bc69a71',
                   logo: '/assets/logos/tlos-logo.png'
                 },
               ],
@@ -99,30 +100,30 @@ export const environment = {
             },
             {
               name: 'TLOS/Stable Pool',
-              address: '0xdE16696ad38ECc993BB1d28304E1B00357ADe8fa',
+              address: '0x42070Eaf1d7834F92341D58D3a145509E361F6d3',
               asset: {
                 name: 'Wrapped TLOS',
                 symbol: 'WTLOS.c',
-                address: '0x7cdaCA59885a4FCC590043d97bdE3f73Df4DE0c5',
+                address: '0x8aDfBAD20bBe6CCD33d8Bd412C8AB9f67bc69a71',
                 logo: '/assets/logos/tlos-logo.png'
               },
               collateral: [
                 {
                   name: 'USD Coin',
                   symbol: 'USCD.c',
-                  address: '0xACfA6c29730a73463f7df3b15A46075F0f43A3c0',
+                  address: '0x464e5fD82cacA90375C27f08D9D68f4433C71fA7',
                   logo: '/assets/logos/usd-coin-logo.png'
                 },
                 {
                   name: 'Dai StableCoin',
                   symbol: 'DAI.c',
-                  address: '0xb77193180525d24B5c30F3CFfbE054436EAF1851',
+                  address: '0x35Bc96883D4bD811Ab684D976dD86FB5dc5F7B2c',
                   logo: '/assets/logos/dai-logo.png'
                 },
                 {
                   name: 'Frax',
                   symbol: 'FRAX',
-                  address: '0x4e18E8A38b848ACE0D60937c4699c1D6cF0feAA1',
+                  address: '0x73B6f852ED785B93301dE96e1860f25B176BCa81',
                   logo: '/assets/logos/frax-logo.png'
                 }
               ],

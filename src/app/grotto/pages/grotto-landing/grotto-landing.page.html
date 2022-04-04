@@ -33,7 +33,7 @@
                   <ion-col size="6">
                     <ion-text>My Stake</ion-text>
                   </ion-col>
-                  <ion-col size="6">{{ myStakedCheddaBalance | number:'1.2-5':'en-us'}} sCHEDDA </ion-col>
+                  <ion-col size="6">{{ myStakedCheddaBalance | number:'1.2-5':'en-us'}} xCHEDDA </ion-col>
                 </ion-row>
                 <ion-row>
                   <ion-col size="6">
@@ -64,8 +64,8 @@
                   </ion-row>
                   <ion-row>
                     <ion-col>
-                      <ion-button *ngIf="isApproved" color="primary" fill="solid" expand="block" (click)="stake()">Stake</ion-button>
-                      <ion-button *ngIf="!isApproved" color="primary" fill="solid" expand="block" (click)="approveChedda()">Approve Chedda</ion-button>
+                      <ion-button *ngIf="isCheddaApproved" color="primary" fill="solid" expand="block" (click)="stake()">Stake</ion-button>
+                      <ion-button *ngIf="!isCheddaApproved" color="primary" fill="solid" expand="block" (click)="approveChedda()">Approve Chedda</ion-button>
                     </ion-col>
                   </ion-row>
                 </div>
@@ -113,21 +113,15 @@
 
             <ion-row>
               <ion-col size="6">
-                <ion-text>Total Supply</ion-text>
-              </ion-col>
-              <ion-col size="6">{{ cheddaTotalSupply | number:'1.2-5':'en-us' }} CHEDDA</ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col size="6">
                 <ion-text>xCHEDDA Locked</ion-text>
               </ion-col>
-              <ion-col size="6">{{ myCheddaBalance | number:'1.2-5':'en-us' }} xCHEDDA </ion-col>
+              <ion-col size="6">{{ myXCheddaLocked | number:'1.2-5':'en-us' }} xCHEDDA </ion-col>
             </ion-row>
             <ion-row>
               <ion-col size="6">
                 <ion-text>Voting Power</ion-text>
               </ion-col>
-              <ion-col size="6">{{ myStakedCheddaBalance | number:'1.2-5':'en-us'}} veCHEDDA </ion-col>
+              <ion-col size="6">{{ myVeCheddaBalance | number:'1.2-5':'en-us'}} veCHEDDA </ion-col>
             </ion-row>
             <ion-row>
               <ion-col size="6">
@@ -148,7 +142,7 @@
                   <ion-text>Amount</ion-text>
                 </ion-col>
                 <ion-col class="justify-content-end">
-                  <ion-button size="small" color="primary" fill="clear" (click)="fillMaxStake()">Max {{myCheddaBalance | number:'1.1-4'}}</ion-button>
+                  <ion-button size="small" color="primary" fill="clear" (click)="fillMaxLock()">Max {{myStakedCheddaBalance | number:'1.1-4'}}</ion-button>
                 </ion-col>
               </ion-row>
 
@@ -166,7 +160,7 @@
               </ion-row>
               <ion-row>
                 <ion-col>
-                  <ion-range pin min="1" max="156">
+                  <ion-range pin min="1" max="156" value="1" #lockRange>
                     <ion-label slot="start">1 week</ion-label>
                     <ion-label slot="end">3 years</ion-label>
                   </ion-range>
@@ -179,8 +173,8 @@
               </ion-row>
               <ion-row>
                 <ion-col>
-                  <ion-button *ngIf="isApproved" color="primary" fill="solid" expand="block" (click)="lock()">Lock</ion-button>
-                  <ion-button *ngIf="!isApproved" color="primary" fill="solid" expand="block" (click)="approveStakedChedda()">Approve xChedda</ion-button>
+                  <ion-button *ngIf="isXCheddaApproved" color="primary" fill="solid" expand="block" (click)="lock()">Lock</ion-button>
+                  <ion-button *ngIf="!isXCheddaApproved" color="primary" fill="solid" expand="block" (click)="approveStakedChedda()">Approve xChedda</ion-button>
                 </ion-col>
               </ion-row>
             </div>

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonInput, LoadingController, NavController } from '@ionic/angular';
-import { ethers } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import { Subscription } from 'rxjs';
 import { CheddaBaseTokenVaultService } from 'src/app/contracts/chedda-base-token-vault.service';
 import { TokenService } from 'src/app/contracts/token.service';
@@ -51,6 +51,8 @@ export class BorrowPoolDetailsPage implements OnInit {
   depositApy = 0
   rewardsApy = 0
   ratePrecision = 100000
+  utilizationPrecision = BigNumber.from(1000000000000)
+  aprPrecision = BigNumber.from(100000000000)
   totalVaultAssets
   assetSymbol
 
@@ -136,9 +138,9 @@ export class BorrowPoolDetailsPage implements OnInit {
   private async loadVaultStats() {
     const stats = await this.vaultService.getVaultStats(this.vaultContract)
     console.log('stats = ', stats)
-    this.depositApy = stats.depositApr/this.ratePrecision
-    this.utilizationRate = stats.utilization.toNumber()/this.ratePrecision
-    this.rewardsApy = stats.rewardsApr/this.ratePrecision
+    this.depositApy = stats.depositApr.div(this.aprPrecision).toString()
+    this.utilizationRate = stats.utilization.div(this.utilizationPrecision).toString()
+    this.rewardsApy = stats.rewardsApr.div(this.aprPrecision).toString()
     this.totalVaultAssets = ethers.utils.formatEther(stats.liquidity)
     console.log('collateral address =', this.collateralContract.address)
     if (this.wallet && this.wallet.currentAccount) {

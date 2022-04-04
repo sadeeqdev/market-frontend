@@ -2,6 +2,44 @@
 
   <ion-grid>
 
+    <ion-row>
+      <ion-col size-xs="12" size-sm="12" size-md="12" size-lg="10" offset-lg="1" size-xl="8" offset-xl="2">
+        <ion-card class="light-background">
+          <ion-card-title>
+            <ion-row class="pool-title-row">
+              <ion-col>
+                <ion-text class="pool-section-title">CHEDDA Rewards Distribution</ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-card-title>
+          <ion-item-divider class="light-background"></ion-item-divider>
+          <ion-card-content>
+
+            <ion-row>
+              <ion-col size="6" offset="3">
+                <div style="display: block">
+                  <canvas
+                    baseChart
+                    [data]="chartData"
+                    [type]="chartType"
+                    [options]=""
+                  >
+                  </canvas>
+                </div>
+              </ion-col>
+            </ion-row>
+            
+            <ion-row>
+              <ion-col>
+                <ion-text class="centered-text">
+                  Current epoch ends: April 10, 10:00 PM UTC
+                </ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
   <!-- Lending Pools -->
   <ion-row>
     <ion-col size-xs="12" size-sm="12" size-md="12" size-lg="10" offset-lg="1" size-xl="8" offset-xl="2">
@@ -12,14 +50,19 @@
               <ion-text class="pool-section-title">Gauges</ion-text>
             </ion-col>
           </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-text class="normal-text pool-section-subtitle">Use your voting power to direct token emission.</ion-text>
+            </ion-col>
+          </ion-row>
         </ion-card-title>
         <ion-item-divider class="thin-divider light-background"></ion-item-divider>
         <ion-card-content>
           <ion-row class="loans-header">
             <ion-col size="4">Pool</ion-col>
             <ion-col size="4">Votes</ion-col>
-            <ion-col size="2">Claim</ion-col>
             <ion-col size="2">Vote</ion-col>
+            <ion-col size="2">Claim</ion-col>
           </ion-row>
           <ion-row *ngFor="let pool of lendingPools">
             <ion-col>
@@ -39,10 +82,10 @@
                     </ion-text>
                   </ion-col>
                   <ion-col size="2">
-                    <ion-button>Claim</ion-button>
+                    <ion-button fill="outline" [disabled]="!canVote" (click)="vote(pool)">Vote</ion-button>
                   </ion-col>
                   <ion-col size="2">
-                    <ion-button fill="outline">Vote</ion-button>
+                    <ion-button [disabled]="true" (click)="claim(pool)">Claim</ion-button>
                   </ion-col>
                 </ion-row>
               </ion-card>

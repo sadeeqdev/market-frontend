@@ -17,11 +17,10 @@
         <ion-card-content>
           <ion-row class="loans-header">
             <ion-col size="2">Asset</ion-col>
-            <ion-col size="2">Collateral</ion-col>
-            <ion-col size="2">NFTs</ion-col>
+            <ion-col size="3">Collateral</ion-col>
             <ion-col size="2">APY</ion-col>
             <ion-col size="2">Utilization</ion-col>
-            <ion-col size="2">Liquidity</ion-col>
+            <ion-col size="3">Liquidity</ion-col>
           </ion-row>
           <ion-row *ngFor="let pool of lendingPools">
             <ion-col>
@@ -35,21 +34,15 @@
                       {{pool.asset.symbol}} 
                     </ion-text>
                   </ion-col>
-                  <ion-col size="2">
+                  <ion-col size="3">
                     <ion-text *ngFor="let collateral of pool.collateral; index as i">
                       {{collateral.symbol}}
                       <span *ngIf="i !== pool.collateral.length - 1">, </span>
                     </ion-text>
-                    <br>
-                      100%
-                  </ion-col>
-                  <ion-col size="2">
-                    -- <br>
-                    0%
                   </ion-col>
                   <ion-col size="2" *ngIf="pool.stats">{{ pool.stats.apr | number:'1.2' }}%</ion-col>
                   <ion-col size="2" *ngIf="pool.stats">{{ pool.stats.utilization | number:'1.2' }}%</ion-col>
-                  <ion-col size="2" *ngIf="pool.stats">{{ pool.stats.total | currency }}</ion-col>
+                  <ion-col size="3" *ngIf="pool.stats">{{ pool.stats.total | currency }}</ion-col>
                 </ion-row>
               </ion-card>
             </ion-col>

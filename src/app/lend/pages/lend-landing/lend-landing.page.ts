@@ -24,6 +24,8 @@ export class LendLandingPage implements OnInit, OnDestroy {
   lendingPools: LendingPool[] = []
   vaultContract
   ratePrecision = 100000
+  utilizationPrecision = BigNumber.from(1000000000000)
+  aprPrecision = BigNumber.from(100000000000)
 
   constructor(
     private wallet: WalletProviderService,
@@ -62,8 +64,8 @@ export class LendLandingPage implements OnInit, OnDestroy {
     console.log('stats = ', stats)
     pool.stats = {
       supplied: BigNumber.from(1010101),
-      utilization: stats.utilization.toNumber()/this.ratePrecision,
-      apr: stats.depositApr/this.ratePrecision,
+      utilization: stats.utilization.div(this.utilizationPrecision).toString(),
+      apr: stats.depositApr.div(this.aprPrecision).toString(),
       total: ethers.utils.formatEther(stats.liquidity)
     }
   }

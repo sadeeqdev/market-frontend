@@ -7,12 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { VoteLandingPageRoutingModule } from './vote-landing-routing.module';
 
 import { VoteLandingPage } from './vote-landing.page';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    NgChartsModule,
     VoteLandingPageRoutingModule
   ],
   declarations: [VoteLandingPage]

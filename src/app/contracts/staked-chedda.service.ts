@@ -12,6 +12,7 @@ import { WalletProviderService } from '../providers/wallet-provider.service';
 export class StakedCheddaService {
 
   stakedCheddaContract: any
+  approvalSubject: BehaviorSubject<any> = new BehaviorSubject(null)
   withdrawSubject: BehaviorSubject<any> = new BehaviorSubject(null)
   depositSubject: BehaviorSubject<any> = new BehaviorSubject(null)
   
@@ -44,11 +45,31 @@ export class StakedCheddaService {
     return await this.stakedCheddaContract.totalAssets()
   }
 
+  async allowance(account: string, spender: string): Promise<BigNumber> {
+    return await this.stakedCheddaContract.allowance(account, spender)
+  }
+
+
+  async approve(spender: string, amount?: string) {
+    if (!amount) {
+      amount = await this.stakedCheddaContract.totalSupply();
+    }
+    this.stakedCheddaContract.connect(this.wallet.signer).approve(spender, amount)
+  }
+
   address(): string {
     return this.wallet.currentConfig.contracts.xChedda
   }
 
   registerForEvents() {
+    this.stakedCheddaContract.on('Approval', async (account, spender, amount) => {
+      console.log('Approval: ', account, spender, amount)
+      this.approvalSubject?.next({
+        account,
+        spender,
+        amount
+      })
+    })
     this.stakedCheddaContract.on('Deposit', (from, to, amount, shares) => {
       this.depositSubject.next({
         from,

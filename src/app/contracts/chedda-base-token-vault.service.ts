@@ -90,6 +90,10 @@ export class CheddaBaseTokenVaultService {
     return await contract.totalSupply()
   }
 
+  async gauge(contract): Promise<string> {
+    return await contract.gauge()
+  }
+
   contractAt(address: string) {
     return new ethers.Contract(
       address,

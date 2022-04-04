@@ -28,23 +28,26 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
   @ViewChild('withdrawInput') withdrawInput: IonInput
   isApproved = false
   currentSegment = 'deposit'
-  usdc
+  asset
   vaultContract
   stats?: VaultStats
-  usdcApprovalSubject = new BehaviorSubject(null)
+  assetApprovalSubjet = new BehaviorSubject(null)
   approvalEventListener
   depositEventListener
   withdrawEventListener
   walletSubscription?: Subscription
-  myUsdcBalance
+  myAssetBalance
   myVaultSharesBalance = '0'
   totalVaultAssets = '0'
+  assetSymbol
+  vaultTokenSymbol
   loader?
 
-  utilizationRate = 0
-  depositApy = 0
-  rewardsApy = 0
-  ratePrecision = 100000
+  utilizationRate = '0'
+  depositApy = '0'
+  rewardsApy = '0'
+  utilizationPrecision = BigNumber.from(1000000000000)
+  aprPrecision = BigNumber.from(100000000000)
   routeSubscription: Subscription
   pool: LendingPool
 
@@ -60,7 +63,6 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
 
   async ngOnInit() {
     await this.setup()
-    this.usdc = this.tokenService.contractAt(environment.config.contracts.USDC)
   }
 
   ngOnDestroy(): void {
@@ -86,6 +88,11 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
         this.navigateBack()
         return
       }
+      this.asset = this.tokenService.contractAt(this.pool.asset.address)
+      console.log('asset = ', this.asset)
+      console.log('asset address = ', this.asset.address)
+      this.assetSymbol = await this.tokenService.symbol(this.asset)
+      this.vaultTokenSymbol = await this.tokenService.symbol(this.vaultContract)
 
       await this.loadVaultStats()
       await this.checkAllowance()
@@ -109,30 +116,30 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
   private async loadVaultStats() {
     const stats = await this.vaultService.getVaultStats(this.vaultContract)
     console.log('stats = ', stats)
-    this.depositApy = stats.depositApr/this.ratePrecision
-    this.utilizationRate = stats.utilization.toNumber()/this.ratePrecision
-    this.rewardsApy = stats.rewardsApr/this.ratePrecision
+    this.depositApy = stats.depositApr.div(this.aprPrecision).toString()
+    this.utilizationRate = stats.utilization.div(this.utilizationPrecision).toString()
+    this.rewardsApy = stats.rewardsApr.div(this.aprPrecision).toString()
     this.totalVaultAssets = ethers.utils.formatEther(stats.liquidity)
     if (!this.wallet || !this.wallet.currentAccount) {
       return
     }
-    this.myUsdcBalance = ethers.utils.formatEther(await this.tokenService.balanceOf(this.usdc, this.wallet.currentAccount))
+    this.myAssetBalance = ethers.utils.formatEther(await this.tokenService.balanceOf(this.asset, this.wallet.currentAccount))
 
     this.myVaultSharesBalance = ethers.utils.formatEther(
       await this.tokenService.balanceOf(this.vaultContract, this.wallet.currentAccount))
     
   }
 
-  async approveUsdc() {
-    console.log('usdc address = ', this.usdc.address)
+  async approveAsset() {
+    console.log('asset address = ', this.asset.address)
     if (!this.wallet.currentAccount) {
       this.alert.showConnectAlert()
       return
     }
     try {
       this.showLoading('Waiting for approval')
-      const totalSupply = await this.tokenService.totalSupply(this.usdc)
-      await this.tokenService.approve(this.usdc, this.vaultContract.address, totalSupply)
+      const totalSupply = await this.tokenService.totalSupply(this.asset)
+      await this.tokenService.approve(this.asset, this.vaultContract.address, totalSupply)
     } catch (error) {
       this.alert.showErrorAlert(error)
       this.hideLoading()
@@ -172,7 +179,7 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
   }  
 
   fillMaxDeposit() {
-    this.depositInput.value = this.myUsdcBalance
+    this.depositInput.value = this.myAssetBalance
   }
 
   fillMaxWithdraw() {
@@ -180,7 +187,7 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
   }
 
   private async registerEventListeners() {
-    this.usdcApprovalSubject = this.usdc.on('Approval', async (account, spender, amount) => {
+    this.assetApprovalSubjet = this.asset.on('Approval', async (account, spender, amount) => {
       console.log('Approval: ', account, spender, amount)
       if (account.toLowerCase() === this.wallet.currentAccount.toLowerCase()) {
         this.hideLoading()
@@ -213,7 +220,7 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
     if (!this.wallet || !this.wallet.currentAccount) {
       return
     }
-    const allowance = await this.tokenService.allowance(this.usdc, this.wallet.currentAccount, this.vaultContract.address)
+    const allowance = await this.tokenService.allowance(this.asset, this.wallet.currentAccount, this.vaultContract.address)
     this.isApproved = allowance.gt(ethers.utils.parseUnits("1000"))
   }
 

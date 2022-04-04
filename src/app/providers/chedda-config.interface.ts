@@ -14,6 +14,7 @@ export interface CheddaConfig {
         CheddaBaseTokenVault: string
         Chedda: string
         xChedda: string
+        veChedda: string
         USDC: string
         mUSDC: string
         GaugeController: string,
