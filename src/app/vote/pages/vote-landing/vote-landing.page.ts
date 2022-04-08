@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartType } from 'chart.js';
+import { BigNumber, ethers } from 'ethers';
 import { CheddaBaseTokenVaultService } from 'src/app/contracts/chedda-base-token-vault.service';
 import { GaugeControllerService } from 'src/app/contracts/gauge-controller.service';
 import { LendingPool } from 'src/app/lend/lend.models';
@@ -38,13 +39,36 @@ export class VoteLandingPage implements OnInit {
 
   async loadGaugeData() {
     this.chartLabels = this.lendingPools.map(p => p.name)
+
+    // this.lendingPools.forEach(async p => {
+    //   let vaultContract = this.vaultContract.contractAt(p.address)
+    //   let gaugeAddress = await this.vaultService.gauge(vaultContract)
+    //   let votes = await this.gaugeController.gaugeVotes(gaugeAddress)
+    //   p.votes = votes
+    //   return p
+    // })
+
+
+    this.lendingPools = await Promise.all(this.lendingPools.map(async p => {
+      let vaultContract = this.vaultService.contractAt(p.address)
+      let gaugeAddress = await this.vaultService.gauge(vaultContract)
+      let votes = await this.gaugeController.gaugeVotes(gaugeAddress)
+      p.votes = votes
+      return p
+    }))
+    let voteShare = await Promise.all(this.lendingPools.map(async p => {
+      return Number(ethers.utils.formatEther(p.votes)) / 100
+    }))
     this.chartData = {
       labels: this.chartLabels,
       datasets: [
-        { data: [ 25, 25, 25, 25],
+        { 
+          // data: [25, 25, 25, 25],
+          data: voteShare
         },
       ]
     }
+    console.log('voteShare = ', voteShare)
   }
 
   async ngOnDestroy() {

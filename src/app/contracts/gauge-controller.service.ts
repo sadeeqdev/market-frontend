@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ethers } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import { DefaultProviderService } from '../providers/default-provider.service';
 import { WalletProviderService } from '../providers/wallet-provider.service';
 import GaugeController from '../../artifacts/GaugeController.json'
@@ -22,6 +22,10 @@ export class GaugeControllerService {
 
   async vote(gaugeAddress: string) {
     await this.gaugeControllerContract.connect(this.wallet.signer).vote(gaugeAddress)
+  }
+
+  async gaugeVotes(gaugeAddress: string): Promise<BigNumber> {
+    return await this.gaugeControllerContract.gaugeVotes(gaugeAddress)
   }
 
   registerForEvents() {}

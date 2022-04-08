@@ -49,4 +49,5 @@ export interface LendingPool {
     asset: any
     collateral: any[]
     stats?: any
+    votes?: BigNumber
 }
