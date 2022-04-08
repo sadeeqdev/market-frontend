@@ -53,6 +53,8 @@ export class BorrowPoolDetailsPage implements OnInit {
   rewardsApy = '0'
   totalVaultAssets
   assetSymbol
+  maxBorrowAmount // TODO: update maxLTV to 75% and use remaining borrow amount instead of total borrow 
+  maxLTV = 65 // 65 % 
 
   collateralApprovalListener
   depositListener
@@ -170,6 +172,13 @@ export class BorrowPoolDetailsPage implements OnInit {
     this.totalVaultAssets = ethers.utils.formatEther(stats.liquidity)
     if (this.wallet && this.wallet.currentAccount) {
       await this.updateCollateralBalances()
+      const collateralValue = await this.vaultService.totalAccountCollateralValue(
+        this.vaultContract, 
+        this.wallet.currentAccount
+      )
+      const maxLoanAmount = collateralValue.mul(this.maxLTV).div(100)
+      this.maxBorrowAmount = ethers.utils.formatEther(maxLoanAmount)
+
       const collateral = await this.vaultService.collateral(
         this.vaultContract, 
         this.wallet.currentAccount, 
@@ -189,7 +198,7 @@ export class BorrowPoolDetailsPage implements OnInit {
   }
 
   fillMaxBorrow() {
-
+    this.borrowInput.value = this.maxBorrowAmount
   }
 
   fillMaxWithdraw() {

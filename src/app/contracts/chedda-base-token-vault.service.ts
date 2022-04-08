@@ -53,6 +53,10 @@ export class CheddaBaseTokenVaultService {
     return await contract.utilization()
   }
 
+  async totalAccountCollateralValue(contract, account: string): Promise<BigNumber> {
+    return await contract.totalAccountCollateralValue(account)
+  }
+
   async depositApr(contract): Promise<BigNumber> {
     return await contract.depositApr();
   }

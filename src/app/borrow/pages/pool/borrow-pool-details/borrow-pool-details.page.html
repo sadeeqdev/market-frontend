@@ -109,7 +109,7 @@
                   <ion-icon name="exit-outline"></ion-icon>
                 </ion-col>
                 <ion-col class="justify-content-end">
-                  <ion-button size="small" color="primary" fill="clear" (click)="fillMaxBorrow()">Max {{'0' | number:'1.2-4'}}</ion-button>
+                  <ion-button size="small" color="primary" fill="clear" (click)="fillMaxBorrow()">Max {{maxBorrowAmount | number:'1.2'}}</ion-button>
                 </ion-col>
               </ion-row>
               <ion-row>
