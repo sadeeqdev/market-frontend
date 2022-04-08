@@ -116,9 +116,9 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
   private async loadVaultStats() {
     const stats = await this.vaultService.getVaultStats(this.vaultContract)
     console.log('stats = ', stats)
-    this.depositApy = stats.depositApr.div(this.aprPrecision).toString()
-    this.utilizationRate = stats.utilization.div(this.utilizationPrecision).toString()
-    this.rewardsApy = stats.rewardsApr.div(this.aprPrecision).toString()
+    this.utilizationRate = ethers.utils.formatEther(stats.utilization.mul(100))
+    this.depositApy = ethers.utils.formatEther(stats.depositApr.mul(1000)) // todo: Should be .mul(100)
+    this.rewardsApy = ethers.utils.formatEther(stats.rewardsApr.mul(100))
     this.totalVaultAssets = ethers.utils.formatEther(stats.liquidity)
     if (!this.wallet || !this.wallet.currentAccount) {
       return

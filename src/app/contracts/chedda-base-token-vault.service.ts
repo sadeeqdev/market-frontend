@@ -94,6 +94,10 @@ export class CheddaBaseTokenVaultService {
     return await contract.gauge()
   }
 
+  async accountPendingAmount(contract, account: string): Promise<BigNumber> {
+    return await contract.accountPendingAmount(account)
+  }
+
   contractAt(address: string) {
     return new ethers.Contract(
       address,

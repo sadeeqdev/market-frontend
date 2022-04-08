@@ -59,6 +59,16 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       address: environment.config.contracts.USDC
     },
     {
+      name: 'DAI.c',
+      logo: '/assets/logos/dai-logo.png',
+      address: environment.config.contracts.DAI
+    },
+    {
+      name: 'FRAX',
+      logo: '/assets/logos/frax-logo.png',
+      address: environment.config.contracts.FRAX
+    },
+    {
       name: environment.config.pools[0].collateral[0].symbol,
       logo: environment.config.pools[0].collateral[0].logo,
       address: environment.config.pools[0].collateral[0].address

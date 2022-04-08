@@ -24,6 +24,8 @@ export const environment = {
             veChedda: '0xb7F8F59753750B0dB5C9F7083D56E0499a9219D0',
             USDC: '0x464e5fD82cacA90375C27f08D9D68f4433C71fA7',
             mUSDC: '0x2f9bdA241cf548bf31f55b6715B23a1057DfAFE9',
+            DAI: '0x35Bc96883D4bD811Ab684D976dD86FB5dc5F7B2c',
+            FRAX: '0x73B6f852ED785B93301dE96e1860f25B176BCa81',
             WrappedNative: '0x8aDfBAD20bBe6CCD33d8Bd412C8AB9f67bc69a71',
             Faucet: '0xd03514EEC1Bda2c88EE8d4Af10A757284934Def4',
             GaugeController: '0xe88AF62fe2117565cB6B2c206e820Cb8d4Bce91a',

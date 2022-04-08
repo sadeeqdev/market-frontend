@@ -58,15 +58,14 @@ export class LendLandingPage implements OnInit, OnDestroy {
 
   private async loadStats(pool: LendingPool) {
     const contract = this.vaultService.contractAt(pool.address) 
-    console.log('contract is for: ', contract.address)
 
     const stats = await this.vaultService.getVaultStats(contract)
-    console.log('stats = ', stats)
     pool.stats = {
       supplied: BigNumber.from(1010101),
-      utilization: stats.utilization.div(this.utilizationPrecision).toString(),
-      apr: stats.depositApr.div(this.aprPrecision).toString(),
-      total: ethers.utils.formatEther(stats.liquidity)
+      total: ethers.utils.formatEther(stats.liquidity),
+      utilization: ethers.utils.formatEther(stats.utilization.mul(100)),
+      apr: ethers.utils.formatEther(stats.depositApr.mul(1000)), // todo: Should be .mul(100)
+    //rewardsApy: ethers.utils.formatEther(stats.rewardsApr.mul(100))
     }
   }
 

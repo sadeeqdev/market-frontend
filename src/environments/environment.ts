@@ -21,6 +21,8 @@ export const environment = {
           Chedda: '',
           xChedda: '',
           USDC: '',
+          DAI: '',
+          FRAX: '',
           mUSDC: '',
           WrappedNative: '',
           Faucet: '',

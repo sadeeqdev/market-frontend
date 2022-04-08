@@ -43,16 +43,14 @@ export class BorrowPoolDetailsPage implements OnInit {
   loader
   myCollateralTokenBalance
   myCollateralDeposited = '0'
+  myAmountOwed = '0'
   collaterals = [
   ]
   selectedNfts = []
   myNftsCollateral = []
-  utilizationRate = 0
-  depositApy = 0
-  rewardsApy = 0
-  ratePrecision = 100000
-  utilizationPrecision = BigNumber.from(1000000000000)
-  aprPrecision = BigNumber.from(100000000000)
+  utilizationRate = '0'
+  depositApy = '0'
+  rewardsApy = '0'
   totalVaultAssets
   assetSymbol
 
@@ -138,11 +136,10 @@ export class BorrowPoolDetailsPage implements OnInit {
   private async loadVaultStats() {
     const stats = await this.vaultService.getVaultStats(this.vaultContract)
     console.log('stats = ', stats)
-    this.depositApy = stats.depositApr.div(this.aprPrecision).toString()
-    this.utilizationRate = stats.utilization.div(this.utilizationPrecision).toString()
-    this.rewardsApy = stats.rewardsApr.div(this.aprPrecision).toString()
+    this.utilizationRate = ethers.utils.formatEther(stats.utilization.mul(100))
+    this.depositApy = ethers.utils.formatEther(stats.depositApr.mul(1000)) // todo: Should be .mul(100)
+    this.rewardsApy = ethers.utils.formatEther(stats.rewardsApr.mul(100))
     this.totalVaultAssets = ethers.utils.formatEther(stats.liquidity)
-    console.log('collateral address =', this.collateralContract.address)
     if (this.wallet && this.wallet.currentAccount) {
       const balance = await this.tokenService.balanceOf(this.collateralContract, this.wallet.currentAccount)
       console.log('balance = ', balance)
@@ -160,7 +157,9 @@ export class BorrowPoolDetailsPage implements OnInit {
         this.vaultContract, 
         this.wallet.currentAccount, 
         this.collateralContract.address
-        ) 
+        )
+      const borrowed = await this.vaultService.accountPendingAmount(this.vaultContract, this.wallet.currentAccount)
+      this.myAmountOwed = ethers.utils.formatEther(borrowed)
       console.log('collateral = ', collateral)
       this.myCollateral = ethers.utils.parseEther(collateral.amount.toString())
       console.log('mycollateral = ', this.myCollateral)
