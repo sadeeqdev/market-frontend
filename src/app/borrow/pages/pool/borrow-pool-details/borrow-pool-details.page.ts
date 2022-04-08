@@ -126,11 +126,27 @@ export class BorrowPoolDetailsPage implements OnInit {
 
   onCollateralTypeChanged($event) {
     const newValue = $event.target.value
-    if (newValue == this.collateralTokenSymbol) {
-      this.collateralType = newValue
-    } else {
-      this.alert.showToast('Support for NFTs coming soon')   
+    this.changeCollateral(newValue)
+  }
+
+  private async changeCollateral(symbol: string) {
+    let found = false
+    for (const c of this.pool.collateral) {
+      if (c.symbol === symbol) {
+        this.collateralContract = this.tokenService.contractAt(c.address)
+        found = true
+        break
+      }
     }
+    if (found) {
+      this.collateralTokenSymbol = symbol
+      this.myCollateralTokenBalance = ethers.utils.formatEther(
+        await this.tokenService.balanceOf(this.collateralContract, this.wallet.currentAccount)
+      )
+    } else {
+      this.alert.showToast('Invalid collateral')
+    }
+ 
   }
 
   private async loadVaultStats() {
@@ -141,11 +157,6 @@ export class BorrowPoolDetailsPage implements OnInit {
     this.rewardsApy = ethers.utils.formatEther(stats.rewardsApr.mul(100))
     this.totalVaultAssets = ethers.utils.formatEther(stats.liquidity)
     if (this.wallet && this.wallet.currentAccount) {
-      const balance = await this.tokenService.balanceOf(this.collateralContract, this.wallet.currentAccount)
-      console.log('balance = ', balance)
-      const deposits =  await this.vaultService.collateral(this.vaultContract, this.wallet.currentAccount, this.collateralContract.address)
-      console.log('deposits: ', deposits)
-
       this.myCollateralTokenBalance = ethers.utils.formatEther(
         await this.tokenService.balanceOf(this.collateralContract, this.wallet.currentAccount)
       )
