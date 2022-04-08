@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ChartType } from 'chart.js';
 import { BigNumber, ethers } from 'ethers';
+import { Subscription } from 'rxjs';
 import { CheddaBaseTokenVaultService } from 'src/app/contracts/chedda-base-token-vault.service';
 import { GaugeControllerService } from 'src/app/contracts/gauge-controller.service';
 import { LendingPool } from 'src/app/lend/lend.models';
@@ -13,7 +14,7 @@ import { environment } from 'src/environments/environment';
   templateUrl: './vote-landing.page.html',
   styleUrls: ['./vote-landing.page.scss'],
 })
-export class VoteLandingPage implements OnInit {
+export class VoteLandingPage implements OnInit, OnDestroy {
   currency
   lendingPools: LendingPool[] = []
   vaultContract
@@ -21,6 +22,7 @@ export class VoteLandingPage implements OnInit {
   chartLabels
   chartData
   canVote = true
+  voteEventSubscription?: Subscription
 
   public chartType: ChartType = 'doughnut';
   constructor(
@@ -35,6 +37,11 @@ export class VoteLandingPage implements OnInit {
     this.vaultContract = this.vaultService.contractAt(environment.config.contracts.CheddaBaseTokenVault)
     this.lendingPools = environment.config.pools
     this.loadGaugeData()
+    this.registerForEvents()
+  }
+
+  async ngOnDesctroy() {
+    this.voteEventSubscription?.unsubscribe()
   }
 
   async loadGaugeData() {
@@ -57,7 +64,7 @@ export class VoteLandingPage implements OnInit {
       return p
     }))
     let voteShare = await Promise.all(this.lendingPools.map(async p => {
-      return Number(ethers.utils.formatEther(p.votes)) / 100
+      return Number(ethers.utils.formatEther(p.votes))
     }))
     this.chartData = {
       labels: this.chartLabels,
@@ -88,6 +95,15 @@ export class VoteLandingPage implements OnInit {
 
   async claim(pool) {
     console.log('claim')
+  }
+
+  async registerForEvents() {
+    this.voteEventSubscription = this.gaugeController.votedSubject.subscribe(async res => {
+      console.log('votes recieved: ', res)
+      if (res && res.account && this.wallet.currentAccount && 
+        this.wallet.currentAccount.toLowerCase() == res.account.toLowerCase()) {}
+        await this.loadGaugeData()
+    })
   }
 
 }

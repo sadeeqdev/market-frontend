@@ -28,7 +28,7 @@ export const environment = {
             FRAX: '0x73B6f852ED785B93301dE96e1860f25B176BCa81',
             WrappedNative: '0x8aDfBAD20bBe6CCD33d8Bd412C8AB9f67bc69a71',
             Faucet: '0xd03514EEC1Bda2c88EE8d4Af10A757284934Def4',
-            GaugeController: '0xe88AF62fe2117565cB6B2c206e820Cb8d4Bce91a',
+            GaugeController: '0xDaD3282999167b0939C7DC9cF1DeC3128b8bd177',
           },
           networkParams: {
             chainId: '0x29',

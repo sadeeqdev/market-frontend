@@ -8,6 +8,7 @@ import { VoteLandingPageRoutingModule } from './vote-landing-routing.module';
 
 import { VoteLandingPage } from './vote-landing.page';
 import { NgChartsModule } from 'ng2-charts';
+import { SharedComponentsModule } from 'src/app/components/shared-components.module';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { NgChartsModule } from 'ng2-charts';
     FormsModule,
     IonicModule,
     NgChartsModule,
+    SharedComponentsModule,
     VoteLandingPageRoutingModule
   ],
   declarations: [VoteLandingPage]

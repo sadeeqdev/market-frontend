@@ -4,6 +4,7 @@ import { BigNumber, ethers } from 'ethers';
 import { DefaultProviderService } from '../providers/default-provider.service';
 import { WalletProviderService } from '../providers/wallet-provider.service';
 import GaugeController from '../../artifacts/GaugeController.json'
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,8 @@ import GaugeController from '../../artifacts/GaugeController.json'
 export class GaugeControllerService {
 
   gaugeControllerContract
+  votedSubject: BehaviorSubject<any> = new BehaviorSubject(null)
+
   constructor(provider: DefaultProviderService, private wallet: WalletProviderService, private http: HttpClient) {
     this.gaugeControllerContract = new ethers.Contract(
       wallet.currentConfig.contracts.GaugeController,
@@ -28,5 +31,18 @@ export class GaugeControllerService {
     return await this.gaugeControllerContract.gaugeVotes(gaugeAddress)
   }
 
-  registerForEvents() {}
+  async allGaugeVotes(): Promise<any> {
+    return await this.gaugeControllerContract.allGaugeVotes()
+  }
+
+  registerForEvents() {
+    this.gaugeControllerContract.on('Voted', (account, gauge, votes) => {
+      console.log('Voted: ', account, gauge, votes)
+      this.votedSubject?.next({
+        account,
+        gauge,
+        votes
+      })
+    })
+  }
 }
