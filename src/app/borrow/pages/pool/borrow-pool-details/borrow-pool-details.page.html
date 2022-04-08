@@ -129,23 +129,16 @@
               <ion-row>
                 <ion-col>
                   <ion-text>
-                    Repay
+                    Remove Collateral
                   </ion-text>
                 </ion-col>
-              </ion-row>
-              <ion-row>
-                <ion-col class="align-items-center">
-                  <ion-text>Repay {{assetSymbol}}</ion-text>
-                </ion-col>
-                <ion-col class="justify-content-end">
-                  <ion-button size="small" color="primary" fill="clear" (click)="fillMaxRepay()">Max {{myAmountOwed | number:'1.2-5'}}</ion-button>
-                </ion-col>
-              </ion-row>
-              <ion-row>
                 <ion-col>
-                  <ion-input placeholder="0.0" class="bordered-input" type="number" (ionChange)="setRepayMode('repay')" #repayInput></ion-input>
+                  <ion-select placeholder="Collateral Type" interface="popover" (ionChange)="onCollateralTypeChanged($event)" [value]="collateralTokenSymbol">
+                    <ion-select-option [value]="c.symbol" *ngFor="let c of collaterals">{{c.symbol}}</ion-select-option>
+                  </ion-select>
                 </ion-col>
               </ion-row>
+
               <ion-row>
                 <ion-col class="align-items-center">
                   <ion-text>Withdraw {{collateralTokenSymbol}} collateral</ion-text>
@@ -159,6 +152,21 @@
                   <ion-input placeholder="0.0" class="bordered-input" type="number" (ionChange)="setRepayMode('collateral')" #withdrawCollateralInput></ion-input>
                 </ion-col>
               </ion-row>
+
+              <ion-row>
+                <ion-col class="align-items-center">
+                  <ion-text>Repay {{assetSymbol}}</ion-text>
+                </ion-col>
+                <ion-col class="justify-content-end">
+                  <ion-button size="small" color="primary" fill="clear" (click)="fillMaxRepay()">Max {{myAmountOwed | number:'1.2-5'}}</ion-button>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-input placeholder="0.0" class="bordered-input" type="number" (ionChange)="setRepayMode('repay')" #repayInput></ion-input>
+                </ion-col>
+              </ion-row>
+
               <ion-row>
                 <ion-col>
                   <ion-button *ngIf="repayMode == 'repay'" color="primary" fill="outline" expand="block">Repay {{assetSymbol}}</ion-button>

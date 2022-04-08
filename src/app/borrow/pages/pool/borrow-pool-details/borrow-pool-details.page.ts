@@ -58,6 +58,7 @@ export class BorrowPoolDetailsPage implements OnInit {
   depositListener
   borrowListener
   repayListener
+  withdrawListener
   borrowMode: BorrowMode = BorrowMode.collateral
   repayMode: RepayMode = RepayMode.repay
   routeSubscription: Subscription
@@ -99,7 +100,6 @@ export class BorrowPoolDetailsPage implements OnInit {
       this.collateralTokenSymbol = this.pool.collateral[0].symbol
       this.vaultContract = this.vaultService.contractAt(poolId)
       this.collateralContract = this.tokenService.contractAt(this.pool.collateral[0].address)
-      console.log('vaultcontract = ', this.vaultContract)
       if (!this.vaultContract) { 
         this.navigateBack()
         return
@@ -140,13 +140,25 @@ export class BorrowPoolDetailsPage implements OnInit {
     }
     if (found) {
       this.collateralTokenSymbol = symbol
-      this.myCollateralTokenBalance = ethers.utils.formatEther(
-        await this.tokenService.balanceOf(this.collateralContract, this.wallet.currentAccount)
-      )
+      await this.updateCollateralBalances()
+      await this.registerCollateralEvents()
     } else {
       this.alert.showToast('Invalid collateral')
     }
  
+  }
+
+  private async updateCollateralBalances() {
+    if (!(this.wallet && this.wallet.currentAccount)) {
+      return
+    }
+    this.myCollateralTokenBalance = ethers.utils.formatEther(
+      await this.tokenService.balanceOf(this.collateralContract, this.wallet.currentAccount)
+    )
+    this.myCollateralDeposited = ethers.utils.formatEther(
+      (await this.vaultService.collateral(
+        this.vaultContract, this.wallet.currentAccount, this.collateralContract.address)).amount
+    )
   }
 
   private async loadVaultStats() {
@@ -157,13 +169,7 @@ export class BorrowPoolDetailsPage implements OnInit {
     this.rewardsApy = ethers.utils.formatEther(stats.rewardsApr.mul(100))
     this.totalVaultAssets = ethers.utils.formatEther(stats.liquidity)
     if (this.wallet && this.wallet.currentAccount) {
-      this.myCollateralTokenBalance = ethers.utils.formatEther(
-        await this.tokenService.balanceOf(this.collateralContract, this.wallet.currentAccount)
-      )
-      this.myCollateralDeposited = ethers.utils.formatEther(
-        (await this.vaultService.collateral(
-          this.vaultContract, this.wallet.currentAccount, this.collateralContract.address)).amount
-      )
+      await this.updateCollateralBalances()
       const collateral = await this.vaultService.collateral(
         this.vaultContract, 
         this.wallet.currentAccount, 
@@ -310,7 +316,8 @@ export class BorrowPoolDetailsPage implements OnInit {
     await this.loader?.dismiss()
   }
 
-  private async registerForEvents() {
+  private async registerCollateralEvents() {
+    this.collateralContract.off('Approval')
     this.collateralApprovalListener = this.collateralContract.on('Approval', async (account, spender, amount) => {
       console.log('Approval: ', account, spender, amount)
       if (account.toLowerCase() === this.wallet.currentAccount.toLowerCase()) {
@@ -318,7 +325,11 @@ export class BorrowPoolDetailsPage implements OnInit {
         this.isApproved = true
       }
     })
+  }
 
+  private async registerForEvents() {
+
+    await this.registerCollateralEvents()
     this.depositListener = this.vaultContract.on('OnCollateralAdded', async (from, to, amount, shares) => {
       console.log('deposit posted: ', from, to, amount, shares)
       if (from.toLowerCase() == this.wallet.currentAccount.toLowerCase()) {
@@ -327,6 +338,16 @@ export class BorrowPoolDetailsPage implements OnInit {
         await this.loadVaultStats()
       }
     })
+    
+    this.withdrawListener = this.vaultContract.on('OnCollateralRemoved', async (token, address, type, amount) => {
+      console.log('withdrawn posted: ', token, address, type, amount)
+      if (address.toLowerCase() == this.wallet.currentAccount.toLowerCase()) {
+        this.hideLoading()
+        this.alert.showToast('Withdrawal confirmed')
+        await this.loadVaultStats()
+      }
+    })
+
     this.borrowListener = this.vaultContract.on('OnLoanOpened', async (from, to, amount, shares) => {
       if (from.toLowerCase() == this.wallet.currentAccount.toLowerCase()) {
         this.hideLoading()
