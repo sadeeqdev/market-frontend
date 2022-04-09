@@ -100,7 +100,7 @@
               </ion-row>
               <ion-row>
                 <ion-col>
-                  <ion-input placeholder="0.0" class="bordered-input" (ionChange)="setBorrowMode('collateral')" #addCollateralInput></ion-input>        
+                  <ion-input placeholder="0.0" class="bordered-input" (ionInput)="setBorrowMode('collateral')" #addCollateralInput></ion-input>        
                </ion-col>
               </ion-row>
               <ion-row>
@@ -114,14 +114,14 @@
               </ion-row>
               <ion-row>
                 <ion-col>
-                  <ion-input placeholder="0.0" class="bordered-input" (ionChange)="setBorrowMode('borrow')" #borrowInput></ion-input>        
+                  <ion-input placeholder="0.0" class="bordered-input" (ionInput)="setBorrowMode('borrow')" #borrowInput></ion-input>        
                </ion-col> 
               </ion-row>
               <ion-row>
                 <ion-col>
                   <ion-button *ngIf="!isApproved" color="primary" fill="solid" expand="block" (click)="approveCollateral()">Approve {{collateralTokenSymbol}}</ion-button>
                   <ion-button *ngIf="isApproved && borrowMode == 'collateral'" color="primary" expand="block" (click)="addCollateral()">Deposit {{collateralTokenSymbol}}</ion-button>
-                  <ion-button *ngIf="isApproved && borrowMode == 'borrow'" color="primary" expand="block" (click)="borrowAsset()" (ionChange)="setBorrowMode('borrow')">Borrow {{assetSymbol}}</ion-button>
+                  <ion-button *ngIf="isApproved && borrowMode == 'borrow'" color="primary" expand="block" (click)="borrowAsset()" (ionInput)="setBorrowMode('borrow')">Borrow {{assetSymbol}}</ion-button>
                 </ion-col>
               </ion-row>
             </div>
@@ -144,12 +144,12 @@
                   <ion-text>Withdraw {{collateralTokenSymbol}} collateral</ion-text>
                 </ion-col>
                 <ion-col class="justify-content-end">
-                  <ion-button size="small" color="primary" fill="clear" (click)="fillMaxWithdraw()">Max {{myCollateralDeposited | number:'1.2-5'}}</ion-button>
+                  <ion-button size="small" color="primary" fill="clear" (click)="fillMaxWithdraw()">Max {{myCollateralDeposited | number:'1.2-4'}}</ion-button>
                 </ion-col>
               </ion-row>
               <ion-row>
                 <ion-col>
-                  <ion-input placeholder="0.0" class="bordered-input" type="number" (ionChange)="setRepayMode('collateral')" #withdrawCollateralInput></ion-input>
+                  <ion-input placeholder="0.0" class="bordered-input" type="number" (ionInput)="setRepayMode('collateral')" #withdrawCollateralInput></ion-input>
                 </ion-col>
               </ion-row>
 
@@ -158,12 +158,12 @@
                   <ion-text>Repay {{assetSymbol}}</ion-text>
                 </ion-col>
                 <ion-col class="justify-content-end">
-                  <ion-button size="small" color="primary" fill="clear" (click)="fillMaxRepay()">Max {{myAmountOwed | number:'1.2-5'}}</ion-button>
+                  <ion-button size="small" color="primary" fill="clear" (click)="fillMaxRepay()">Max {{myAmountOwed | number:'1.2-4'}}</ion-button>
                 </ion-col>
               </ion-row>
               <ion-row>
                 <ion-col>
-                  <ion-input placeholder="0.0" class="bordered-input" type="number" (ionChange)="setRepayMode('repay')" #repayInput></ion-input>
+                  <ion-input placeholder="0.0" class="bordered-input" type="number" (ionInput)="setRepayMode('repay')" #repayInput></ion-input>
                 </ion-col>
               </ion-row>
 

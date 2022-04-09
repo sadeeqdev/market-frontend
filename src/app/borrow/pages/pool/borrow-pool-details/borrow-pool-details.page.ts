@@ -177,7 +177,6 @@ export class BorrowPoolDetailsPage implements OnInit {
         this.wallet.currentAccount
       )
       const maxLoanAmount = collateralValue.mul(this.maxLTV).div(100)
-      this.maxBorrowAmount = ethers.utils.formatEther(maxLoanAmount)
 
       const collateral = await this.vaultService.collateral(
         this.vaultContract, 
@@ -185,28 +184,32 @@ export class BorrowPoolDetailsPage implements OnInit {
         this.collateralContract.address
         )
       const borrowed = await this.vaultService.accountPendingAmount(this.vaultContract, this.wallet.currentAccount)
+      console.log('*** borrowed = ', borrowed.toString())
       this.myAmountOwed = ethers.utils.formatEther(borrowed)
-      console.log('collateral = ', collateral)
+      this.maxBorrowAmount = ethers.utils.formatEther(maxLoanAmount.sub(borrowed))
       this.myCollateral = ethers.utils.parseEther(collateral.amount.toString())
-      console.log('mycollateral = ', this.myCollateral)
     }
 
   }
 
   fillMaxDeposit() {
+    this.setBorrowMode(BorrowMode.collateral)
     this.addCollateralInput.value = this.myCollateralTokenBalance
   }
 
   fillMaxBorrow() {
+    this.setBorrowMode(BorrowMode.borrow)
     this.borrowInput.value = this.maxBorrowAmount
   }
 
   fillMaxWithdraw() {
+    this.setRepayMode(RepayMode.collateral)
     this.withdrawCollateralInput.value = this.myCollateralDeposited
   }
 
   fillMaxRepay() {
-
+    this.setRepayMode(RepayMode.repay)
+    this.repayInput.value = this.myAmountOwed
   }
 
   async approveCollateral() {

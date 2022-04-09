@@ -46,6 +46,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
   xCheddaDepositSubscription?: Subscription
   veCheddaDepositSubscription?: Subscription
   withdrawSubscription?: Subscription
+  lockExpiry: string
 
   tokens: Token[] = [
     {
@@ -121,6 +122,9 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       if (this.wallet.isConnected && this.wallet.currentAccount) {
         this.myVeCheddaBalance = ethers.utils.formatEther(await this.veChedda.balanceOf(this.wallet.currentAccount))
         this.myXCheddaLocked = ethers.utils.formatEther(await this.veChedda.lockedAmount(this.wallet.currentAccount))
+        const lockExpiry = (await this.veChedda.lockedEnd(this.wallet.currentAccount)).mul(1000).toString()
+        console.log(lockExpiry)
+        this.lockExpiry = lockExpiry
       } else {
         this.myVeCheddaBalance = '0'
         this.myXCheddaLocked = '0'
@@ -200,6 +204,10 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
   }
 
   async lock() {
+    if (!this.wallet.currentAccount) {
+      this.alert.showConnectAlert()
+      return
+    }
     try {
       console.log('total supply = ', await this.veChedda.totalSupply())
       const lockInputValue = this.lockInput.value
@@ -221,7 +229,15 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
   }
 
   async withdraw() {
-    await this.veChedda.withdraw()
+    if (!this.wallet.currentAccount) {
+      this.alert.showConnectAlert()
+      return
+    }
+    try {
+      await this.veChedda.withdraw()
+    } catch (error) {
+      this.alert.showErrorAlert(error)
+    }
   }
 
   async approveChedda() {

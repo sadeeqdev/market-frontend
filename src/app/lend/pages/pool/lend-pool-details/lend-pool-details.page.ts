@@ -131,7 +131,6 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
   }
 
   async approveAsset() {
-    console.log('asset address = ', this.asset.address)
     if (!this.wallet.currentAccount) {
       this.alert.showConnectAlert()
       return
@@ -171,7 +170,7 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
       await this.showLoading('Waiting for confirmation')
       const amount = ethers.utils.parseUnits(this.withdrawInput.value.toString() ?? '0')
       this.withdrawInput.value = ''
-      this.vaultService.redeem(this.vaultContract, amount, this.wallet.currentAccount) 
+      await this.vaultService.redeem(this.vaultContract, amount, this.wallet.currentAccount) 
     } catch (error) {
       await this.hideLoading()
       this.alert.showErrorAlert(error)

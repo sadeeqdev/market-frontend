@@ -28,7 +28,7 @@ export class VeCheddaService {
     return this.wallet.currentConfig.contracts.veChedda
   }
 
-  async lockedEnd(address: string) {
+  async lockedEnd(address: string): Promise<BigNumber> {
     return await this.veContract.lockedEnd(address)  
   }
 
