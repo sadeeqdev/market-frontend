@@ -4,6 +4,7 @@ import { IonInput, LoadingController, NavController } from '@ionic/angular';
 import { BigNumber, ethers } from 'ethers';
 import { Subscription } from 'rxjs';
 import { CheddaBaseTokenVaultService } from 'src/app/contracts/chedda-base-token-vault.service';
+import { CheddaDebtTokenService } from 'src/app/contracts/chedda-debt-token.service';
 import { TokenService } from 'src/app/contracts/token.service';
 import { LendingPool } from 'src/app/lend/lend.models';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
@@ -38,6 +39,7 @@ export class BorrowPoolDetailsPage implements OnInit {
   collateralType = ''
   collateralContract
   vaultContract
+  debtContract
   collateralTokeName
   collateralTokenSymbol
   loader
@@ -69,6 +71,7 @@ export class BorrowPoolDetailsPage implements OnInit {
   constructor(
     private tokenService: TokenService, 
     private vaultService: CheddaBaseTokenVaultService,
+    private debtService: CheddaDebtTokenService,
     private wallet: WalletProviderService,
     private loadingController: LoadingController,
     private route: ActivatedRoute,
@@ -102,6 +105,7 @@ export class BorrowPoolDetailsPage implements OnInit {
       this.collateralTokenSymbol = this.pool.collateral[0].symbol
       this.vaultContract = this.vaultService.contractAt(poolId)
       this.collateralContract = this.tokenService.contractAt(this.pool.collateral[0].address)
+      this.debtContract = this.debtService.contractAt(await this.vaultContract.debtToken())
       if (!this.vaultContract) { 
         this.navigateBack()
         return
@@ -177,19 +181,16 @@ export class BorrowPoolDetailsPage implements OnInit {
         this.wallet.currentAccount
       )
       const maxLoanAmount = collateralValue.mul(this.maxLTV).div(100)
-
       const collateral = await this.vaultService.collateral(
         this.vaultContract, 
         this.wallet.currentAccount, 
         this.collateralContract.address
         )
-      const borrowed = await this.vaultService.accountPendingAmount(this.vaultContract, this.wallet.currentAccount)
-      console.log('*** borrowed = ', borrowed.toString())
+      const borrowed = await this.debtService.debtOf(this.debtContract, this.wallet.currentAccount)
       this.myAmountOwed = ethers.utils.formatEther(borrowed)
       this.maxBorrowAmount = ethers.utils.formatEther(maxLoanAmount.sub(borrowed))
       this.myCollateral = ethers.utils.parseEther(collateral.amount.toString())
     }
-
   }
 
   fillMaxDeposit() {

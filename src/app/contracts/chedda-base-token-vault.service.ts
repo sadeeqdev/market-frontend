@@ -9,7 +9,7 @@ import CheddaBaseTokenVault from '../../artifacts/CheddaBaseTokenVault.json'
   providedIn: 'root'
 })
 export class CheddaBaseTokenVaultService {
-  constructor(private provider: DefaultProviderService, private wallet: WalletProviderService, private http: HttpClient) {
+  constructor(private provider: DefaultProviderService, private wallet: WalletProviderService,) {
   }
 
   // Vault
