@@ -12,8 +12,8 @@
                 </ion-text>
               </ion-col>
               <ion-col class="card-collateral-col">
-                <ion-avatar *ngFor="let collateral of pool.collateral" class="card-title-collateral-img logo-cascade">
-                  <ion-img [src]="collateral.logo"></ion-img>
+                <ion-avatar class="card-title-collateral-img logo-cascade">
+                  <ion-img [src]="pool.asset.logo"></ion-img>
                 </ion-avatar>
               </ion-col>
             </ion-row>
