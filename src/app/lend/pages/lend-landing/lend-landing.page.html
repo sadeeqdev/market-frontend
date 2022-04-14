@@ -18,13 +18,13 @@
           <ion-row class="loans-header">
             <ion-col size="2">Asset</ion-col>
             <ion-col size="3">Collateral</ion-col>
-            <ion-col size="2">APY</ion-col>
+            <ion-col size="2">Deposit APY</ion-col>
             <ion-col size="2">Utilization</ion-col>
             <ion-col size="3">Liquidity</ion-col>
           </ion-row>
           <ion-row *ngFor="let pool of lendingPools">
             <ion-col>
-              <ion-card [routerLink]="['/', 'lend', 'pool', pool.address]" class="lighter-background">
+              <ion-card [routerLink]="['/', 'lend', 'pool', pool.address]" class="lighter-background pool-row">
                 <ion-row class="pool-row">
                   <ion-col size="2" class="flex-col">
                     <ion-avatar class="asset-logo">
