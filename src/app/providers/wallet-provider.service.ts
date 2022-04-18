@@ -126,6 +126,7 @@ export class WalletProviderService {
   async disconnect() {
     // not the right call
     // await this.ethereum.disconnect()
+    this.setCurrentAccount(null)
   }
 
   async checkBalance(): Promise<BigNumber | BigNumber> {

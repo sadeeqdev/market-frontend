@@ -50,4 +50,8 @@ export interface LendingPool {
     collateral: any[]
     stats?: any
     votes?: BigNumber
+    claimAmount?: {
+        amount: BigNumber,
+        claimed: boolean
+    }
 }

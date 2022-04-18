@@ -30,10 +30,24 @@
             </ion-row>
             
             <ion-row>
-              <ion-col>
-                <ion-text class="centered-text">
-                  <!-- Current epoch ends: April 10, 10:00 PM UTC -->
+              <ion-col *ngIf="!hasEpochEnded" class="centered-text">
+                <ion-text>
+                  Current epoch ends: {{epochEnd * 1000 | date:'medium'}}
                 </ion-text>
+              </ion-col>
+              <ion-col *ngIf="hasEpochEnded" class="centered-text">
+                <ion-row>
+                  <ion-col>
+                  <ion-text>
+                    Epoch ended: {{epochEnd * 1000 | date:'medium'}}
+                  </ion-text>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col>
+                    <ion-button color="primary" (click)="rebalance()">Rebalance</ion-button>
+                  </ion-col>
+                </ion-row>
               </ion-col>
             </ion-row>
           </ion-card-content>
@@ -85,7 +99,16 @@
                     <ion-button fill="outline" [disabled]="!canVote" (click)="vote(pool)">Vote</ion-button>
                   </ion-col>
                   <ion-col size="2">
-                    <ion-button [disabled]="true" (click)="claim(pool)">Claim</ion-button>
+                    <ion-row>
+                      <ion-col>
+                        <ion-button [disabled]="!pool.claimAmount || pool.claimAmount.amount.isZero()" (click)="claim(pool)">Claim</ion-button>
+                      </ion-col>
+                    </ion-row>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col size="2" offset="10" *ngIf="pool.claimAmount" [ngClass]="pool.claimAmount.claimed? 'line-through' : ''">
+                    {{pool.claimAmount.amount| formatEth | number:'1.1-2' }} CHEDDA
                   </ion-col>
                 </ion-row>
               </ion-card>

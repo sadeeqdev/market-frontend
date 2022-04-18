@@ -13,6 +13,7 @@ export class GaugeControllerService {
 
   gaugeControllerContract
   votedSubject: BehaviorSubject<any> = new BehaviorSubject(null)
+  rebalanceSubject: BehaviorSubject<any> = new BehaviorSubject(null)
 
   constructor(provider: DefaultProviderService, private wallet: WalletProviderService, private http: HttpClient) {
     this.gaugeControllerContract = new ethers.Contract(
@@ -35,6 +36,14 @@ export class GaugeControllerService {
     return await this.gaugeControllerContract.allGaugeVotes()
   }
 
+  async currentEpoch() {
+    return await this.gaugeControllerContract.currentEpoch()
+  }
+
+  async rebalance(address: string) {
+    return await this.gaugeControllerContract.connect(this.wallet.signer).rebalance(address)
+  }
+
   registerForEvents() {
     this.gaugeControllerContract.on('Voted', (account, gauge, votes) => {
       console.log('Voted: ', account, gauge, votes)
@@ -44,5 +53,11 @@ export class GaugeControllerService {
         votes
       })
     })
+    // this.gaugeControllerContract.on('Rebalance', (res) => {
+    //   console.log('rebalance: ', res)
+    //   this.rebalanceSubject?.next({
+    //     res
+    //   })
+    // })
   }
 }

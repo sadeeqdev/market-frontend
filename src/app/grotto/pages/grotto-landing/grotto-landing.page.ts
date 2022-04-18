@@ -209,7 +209,6 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       return
     }
     try {
-      console.log('total supply = ', await this.veChedda.totalSupply())
       const lockInputValue = this.lockInput.value
       if (!lockInputValue) {
         this.alert.showToast('Invalid lock time')
@@ -217,7 +216,6 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       }
       const amount = ethers.utils.parseEther(lockInputValue.toString())
       const weeks = this.lockRange.value.toString()
-      console.log('weeks are ', weeks)  
       const unlockTime = moment().add(weeks, 'weeks').unix()
       console.log('unlock time = ', unlockTime)
       console.log('amount = ', amount)
