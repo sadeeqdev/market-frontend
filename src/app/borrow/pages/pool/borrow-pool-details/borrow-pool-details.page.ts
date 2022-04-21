@@ -343,9 +343,9 @@ export class BorrowPoolDetailsPage implements OnInit {
   private async registerForEvents() {
 
     await this.registerCollateralEvents()
-    this.depositListener = this.vaultContract.on('OnCollateralAdded', async (from, to, amount, shares) => {
-      console.log('deposit posted: ', from, to, amount, shares)
-      if (from.toLowerCase() == this.wallet.currentAccount.toLowerCase()) {
+    this.depositListener = this.vaultContract.on('OnCollateralAdded', async (token, by, amount, shares) => {
+      console.log('deposit posted: ', token, by, amount, shares)
+      if (by.toLowerCase() == this.wallet.currentAccount.toLowerCase()) {
         this.hideLoading()
         this.alert.showToast('Deposit confirmed')
         await this.loadVaultStats()

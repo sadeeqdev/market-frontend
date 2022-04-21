@@ -12,6 +12,7 @@ export interface CheddaConfig {
         CheddaLoanManager: string
         ChainlinkPriceConsumer: string
         CheddaBaseTokenVault: string
+        PriceFeed: string
         Chedda: string
         xChedda: string
         veChedda: string

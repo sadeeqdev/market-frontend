@@ -107,7 +107,12 @@
                   </ion-col>
                 </ion-row>
                 <ion-row>
-                  <ion-col size="2" offset="10" *ngIf="pool.claimAmount" [ngClass]="pool.claimAmount.claimed? 'line-through' : ''">
+                  <ion-col class="card-collateral-col pool-2nd-col" size="4">
+                    <ion-avatar *ngFor="let collateral of pool.collateral" class="vote-card-collateral-img logo-cascade">
+                      <ion-img [src]="collateral.logo"></ion-img>
+                    </ion-avatar>
+                  </ion-col>
+                  <ion-col size="2" offset="6" *ngIf="pool.claimAmount" [ngClass]="pool.claimAmount.claimed? 'line-through' : ''">
                     {{pool.claimAmount.amount| formatEth | number:'1.1-2' }} CHEDDA
                   </ion-col>
                 </ion-row>

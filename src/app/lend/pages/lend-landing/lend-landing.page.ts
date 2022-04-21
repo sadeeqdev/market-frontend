@@ -3,6 +3,7 @@ import { IonSegment } from '@ionic/angular';
 import { BigNumber, ethers } from 'ethers';
 import { Subscription } from 'rxjs';
 import { CheddaBaseTokenVaultService } from 'src/app/contracts/chedda-base-token-vault.service';
+import { PriceOracleService } from 'src/app/contracts/price-oracle.service';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { environment } from 'src/environments/environment';
 import { LendingPool, Loan, LoanRequest } from '../../lend.models';
@@ -29,6 +30,7 @@ export class LendLandingPage implements OnInit, OnDestroy {
 
   constructor(
     private wallet: WalletProviderService,
+    private priceFeed: PriceOracleService,
     private vaultService: CheddaBaseTokenVaultService) { }
 
   async ngOnInit() {
@@ -47,6 +49,7 @@ export class LendLandingPage implements OnInit, OnDestroy {
 
   private async loadVaultStats() {
     this.lendingPools = environment.config.pools
+    
     try {
       this.lendingPools.forEach(async pool => {
         await this.loadStats(pool)
@@ -59,10 +62,13 @@ export class LendLandingPage implements OnInit, OnDestroy {
   private async loadStats(pool: LendingPool) {
     const contract = this.vaultService.contractAt(pool.address) 
 
+    const price = await this.priceFeed.getAssetPrice(pool.asset.address)
+    console.log('***price = ', ethers.utils.formatEther(price))
+
     const stats = await this.vaultService.getVaultStats(contract)
     pool.stats = {
       supplied: BigNumber.from(1010101),
-      total: ethers.utils.formatEther(stats.liquidity),
+      total: ethers.utils.formatEther(stats.liquidity.mul(price).div(BigNumber.from(10).pow(18))),
       utilization: ethers.utils.formatEther(stats.utilization.mul(100)),
       apr: ethers.utils.formatEther(stats.depositApr.mul(1000)), // todo: Should be .mul(100)
     //rewardsApy: ethers.utils.formatEther(stats.rewardsApr.mul(100))

@@ -93,7 +93,7 @@ export class VoteLandingPage implements OnInit, OnDestroy {
       }
       if (allZeros) {
         voteShare = voteShare.map(v => {
-          return 0.25
+          return 0.2
         })
       }
       this.chartData = {

@@ -18,6 +18,7 @@ export const environment = {
           CheddaLoanManager: '',
           ChainlinkPriceConsumer: '',
           CheddaBaseTokenVault: '',
+          PriceFeed: '',
           Chedda: '',
           xChedda: '',
           USDC: '',
