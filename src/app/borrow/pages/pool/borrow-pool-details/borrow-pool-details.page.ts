@@ -148,6 +148,7 @@ export class BorrowPoolDetailsPage implements OnInit {
       this.collateralTokenSymbol = symbol
       await this.updateCollateralBalances()
       await this.registerCollateralEvents()
+      await this.checkAllowance()
     } else {
       this.alert.showToast('Invalid collateral')
     }
