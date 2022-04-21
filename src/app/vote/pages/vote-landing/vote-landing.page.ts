@@ -72,14 +72,12 @@ export class VoteLandingPage implements OnInit, OnDestroy {
         const gaugeContract = this.liquidityGauge.contractAt(gaugeAddress)
         if (this.wallet && this.wallet.currentAccount) {
           let amount = await this.liquidityGauge.claimAmount(gaugeContract, this.wallet.currentAccount)
-          console.log('result => ', amount)
           p.claimAmount = amount
         }
         return p
       }))
       this.currentEpoch = await this.gaugeController.currentEpoch()
       this.epochEnd = (this.currentEpoch.end.toString())
-      console.log('currnetEpoch = ', this.epochEnd)
       this.hasEpochEnded = moment().isAfter(moment.unix(this.epochEnd))
       let voteShare = await Promise.all(this.lendingPools.map(async p => {
         return Number(ethers.utils.formatEther(p.votes))
