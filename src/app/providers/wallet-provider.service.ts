@@ -5,7 +5,6 @@ import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { NetworkParams } from './network-params.interface';
 import { CheddaConfig } from './chedda-config.interface';
-import { StringifyOptions } from 'querystring';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +26,7 @@ export class WalletProviderService {
   constructor() {
     this.initializeNetworkConnection()
   }
+
   async connect(): Promise<boolean> {
     try {
       let ethereum = await detectEthereumProvider();
