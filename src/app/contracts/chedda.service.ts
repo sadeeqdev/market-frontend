@@ -37,7 +37,7 @@ export class CheddaService {
   }
 
   async apr(): Promise<BigNumber> {
-    return await this.cheddaContract.apr()
+    return (await this.cheddaContract.apr()).mul(10)
   }
 
   async rebase() {

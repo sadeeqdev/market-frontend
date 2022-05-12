@@ -7,18 +7,30 @@ export const environment = {
     environmentName: "Oasis Emerald Testnet",
     jsonRpcUrl: 'https://testnet.emerald.oasis.dev',
     config: {
-        contracts: {
-            CheddaAddressRegistry: '0x9e76C61A9f7Db397Db9f063B0762b3996b30C66B',
-            CheddaXP: '0x05E2921659D7C30d4a9ed1073adF20C9F51547b7',
-            CheddaDappStore: '0x1B08A8c19981e9D49632365cB20f23013a5f0095',
-            CheddaDappExplorer: '0x54f1419Cef425d6f32201A952c4cAAcBa906D10A',
-            CheddaMarket: '0x77E3A4e86CDBDDD506cA19a765456B3ed939e718',
-            CheddaMarketExplorer: '0x46e70bd04b9251D4cC253978944726b91A837AD9',
-            CheddaRewards: '0x235d01856E4F75e0fb5CC90571E5B4eF7FB6Af12',
-            CheddaDropManager: '0x187BfAd085926113c3918a599c7898219285e3bb',
-            CheddaLoanManager: '0x1f9Caf0c5BF82C07d05A3D14ce760f8adD612463',
-            ChainlinkPriceConsumer: '',
-          },
+      contracts: {
+        CheddaAddressRegistry: '',
+        CheddaXP: '',
+        CheddaDappStore: '',
+        CheddaDappExplorer: '',
+        CheddaMarket: '',
+        CheddaMarketExplorer: '',
+        CheddaRewards: '',
+        CheddaDropManager: '',
+        CheddaLoanManager: '',
+        ChainlinkPriceConsumer: '',
+        CheddaBaseTokenVault: '0xB0A47be6707E3122F1CF4C2259897E6e97380E1A',
+        PriceFeed: '0xEDFa988f9498165fE79f09dA9e39f9dC829507D7',
+        Chedda: '0x89658069fc4b3e528F651405c9d71583eB9D2344',
+        xChedda: '0x434fDe54E416d7c56c644E9b2AbCAff943D5163A',
+        veChedda: '0xc0B3a48DBe196ECfb14A65a2FA6aD5DaD07C866f',
+        USDC: '0x8457106E861a67B989a2ea398DF3A045331E5115',
+        mUSDC: '0xe88AF62fe2117565cB6B2c206e820Cb8d4Bce91a',
+        DAI: '0xd2D5708116Aad9bD6bC90058dC538aF6645c1daE',
+        FRAX: '0xdf95b12492A3B631Af60BbCD7F1Ba4306CdA6918',
+        WrappedNative: '0xb19B3D29931549c4EFE24bC5aC6DCf11f7a33A21',
+        Faucet: '0x5b3AaF77dd6E086241a101A47E8cDA34A1059ee6',
+        GaugeController: '0xb1bE9510691DfAa3D73C3A6C17E494EEC9899E4F',
+      },
           networkParams: {
             chainId: '0xA515',
             chainName: 'Oasis Emerald Testnet',
@@ -31,6 +43,139 @@ export const environment = {
             rpcUrls: ['https://testnet.emerald.oasis.dev/'],
             blockExplorerUrls: ['https://testnet.explorer.emerald.oasis.dev/']
           },
+          pools: [
+            {
+              name: 'USDC/ROSE Pool',
+              address: '0xe88AF62fe2117565cB6B2c206e820Cb8d4Bce91a',
+              asset: {
+                name: 'USD Coin',
+                symbol: 'USCD.c',
+                address: '0x8457106E861a67B989a2ea398DF3A045331E5115',
+                logo: '/assets/logos/usd-coin-logo.png'
+              },
+              collateral: [
+                {
+                  name: 'Wrapped ROSE',
+                  symbol: 'WROSE.c',
+                  address: '0xb19B3D29931549c4EFE24bC5aC6DCf11f7a33A21',
+                  logo: '/assets/logos/oasis-logo-sm.png'
+                },
+              ],
+              stats: {}
+            },
+            {
+              name: 'DAI/ROSE Pool',
+              address: '0x67CcB23977336be1eA1E65B8e85Dda525ebC8EaA',
+              asset: {
+                name: 'Dai StableCoin',
+                symbol: 'DAI.c',
+                address: '0xd2D5708116Aad9bD6bC90058dC538aF6645c1daE',
+                logo: '/assets/logos/dai-logo.png'
+              },
+              collateral: [
+                {
+                  name: 'Wrapped ROSE',
+                  symbol: 'WROSE.c',
+                  address: '0xb19B3D29931549c4EFE24bC5aC6DCf11f7a33A21',
+                  logo: '/assets/logos/oasis-logo-sm.png'
+                },
+              ],
+              stats: {}
+            },
+            {
+              name: 'FRAX/ROSE Pool',
+              address: '0xB8af6CD1B8cb85c871B92108A120f2E9BE48E826',
+              asset: {
+                name: 'Frax',
+                symbol: 'FRAX',
+                address: '0xdf95b12492A3B631Af60BbCD7F1Ba4306CdA6918',
+                logo: '/assets/logos/frax-logo.png'
+              },
+              collateral: [
+                {
+                  name: 'Wrapped ROSE',
+                  symbol: 'WROSE.c',
+                  address: '0xb19B3D29931549c4EFE24bC5aC6DCf11f7a33A21',
+                  logo: '/assets/logos/oasis-logo-sm.png'
+                },
+              ],
+              stats: {}
+            },
+            {
+              name: 'ROSE/Stable Pool',
+              address: '0xCD89dE2ED157ddaC4a67E233e0cAdB03Bb3106f6',
+              asset: {
+                name: 'Wrapped ROSE',
+                symbol: 'WROSE.c',
+                address: '0xb19B3D29931549c4EFE24bC5aC6DCf11f7a33A21',
+                logo: '/assets/logos/oasis-logo-sm.png'
+              },
+              collateral: [
+                {
+                  name: 'USD Coin',
+                  symbol: 'USCD.c',
+                  address: '0x8457106E861a67B989a2ea398DF3A045331E5115',
+                  logo: '/assets/logos/usd-coin-logo.png'
+                },
+                {
+                  name: 'UXD Coin',
+                  symbol: 'UXD',
+                  address: '0x1bf0aeb4C1A1C0896887814d679defcc1325EdE3',
+                  logo: '/assets/logos/uxd-protocol.jpeg'
+                },
+                {
+                  name: 'Dai StableCoin',
+                  symbol: 'DAI.c',
+                  address: '0xd2D5708116Aad9bD6bC90058dC538aF6645c1daE',
+                  logo: '/assets/logos/dai-logo.png'
+                },
+                {
+                  name: 'Frax',
+                  symbol: 'FRAX',
+                  address: '0xdf95b12492A3B631Af60BbCD7F1Ba4306CdA6918',
+                  logo: '/assets/logos/frax-logo.png'
+                }
+              ],
+              stats: {}
+            },
+            {
+              name: 'ROSE/Degen Pool',
+              address: '0xD992662A5E886336Ba42A1925AB584a30e4BeB7C',
+              asset: {
+                name: 'Wrapped ROSE',
+                symbol: 'WROSE.c',
+                address: '0xb19B3D29931549c4EFE24bC5aC6DCf11f7a33A21',
+                logo: '/assets/logos/oasis-logo-sm.png'
+              },
+              collateral: [
+                {
+                  name: 'Chedda',
+                  symbol: 'CHEDDA',
+                  address: '0x89658069fc4b3e528F651405c9d71583eB9D2344',
+                  logo: '/assets/logos/chedda-logo-square.png'
+                },
+                {
+                  name: 'Valley Swap',
+                  symbol: 'VS',
+                  address: '0xB0A47be6707E3122F1CF4C2259897E6e97380E1A',
+                  logo: '/assets/logos/valleyswap.png'
+                },
+                {
+                  name: 'YUZUSwap',
+                  symbol: 'YUZU',
+                  address: '0xA2cfE619cDd3bc1F051890Cea945CC145a45770B',
+                  logo: '/assets/logos/yuzuswap.jpeg'
+                },
+                {
+                  name: 'Fountain Protocol',
+                  symbol: 'FTP',
+                  address: '0x4c12c9C5E754360fb8e8Ed986300C60d588C9e72',
+                  logo: '/assets/logos/fountain-logo.png'
+                },
+              ],
+              stats: {}
+            }
+          ],
           faucets: [
             {
               name: 'Rose Testnet Faucet',
