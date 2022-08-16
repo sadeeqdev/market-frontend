@@ -55,12 +55,7 @@ export class WalletProviderService {
       this.setCurrentAccount(ethereum.selectedAddress)
     } else {
     }
-    // if (provider !== window.ethereum) {
-    //   console.error('multiple wallets installed')
-    // } else {
-    //   let trySigner = await eth.getSigner()
-    //   console.log('trySigner = ', trySigner)
-    // }
+
   }
 
   async addNetwork() {

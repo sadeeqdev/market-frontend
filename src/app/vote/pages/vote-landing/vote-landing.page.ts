@@ -67,7 +67,7 @@ export class VoteLandingPage implements OnInit, OnDestroy {
       this.lendingPools = await Promise.all(this.lendingPools.map(async p => {
         let vaultContract = this.vaultService.contractAt(p.address)
         let gaugeAddress = await this.vaultService.gauge(vaultContract)
-        let votes = await this.gaugeController.gaugeVotes(gaugeAddress)
+        let votes = await this.gaugeController.gaugeVotes(gaugeAddress) //TODO: error here
         p.votes = votes
         const gaugeContract = this.liquidityGauge.contractAt(gaugeAddress)
         if (this.wallet && this.wallet.currentAccount) {

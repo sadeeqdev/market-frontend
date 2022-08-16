@@ -121,7 +121,7 @@ export const environment = {
                   name: 'UXD Coin',
                   symbol: 'UXD',
                   address: '0x1bf0aeb4C1A1C0896887814d679defcc1325EdE3',
-                  logo: '/assets/logos/uxd-protocol.jpeg'
+                  logo: '/assets/logos/uxd-logo.png'
                 },
                 {
                   name: 'Dai StableCoin',
@@ -164,7 +164,7 @@ export const environment = {
                   name: 'YUZUSwap',
                   symbol: 'YUZU',
                   address: '0xA2cfE619cDd3bc1F051890Cea945CC145a45770B',
-                  logo: '/assets/logos/yuzuswap.jpeg'
+                  logo: '/assets/logos/yuzuswap-logo.png'
                 },
                 {
                   name: 'Fountain Protocol',

@@ -83,7 +83,6 @@ export class BorrowLandingPage implements OnInit {
       total: ethers.utils.formatEther(stats.liquidity.mul(price).div(BigNumber.from(10).pow(18))),
       utilization: ethers.utils.formatEther(stats.utilization.mul(100)),
       apr: ethers.utils.formatEther(stats.depositApr.mul(1000)), // todo: Should be .mul(100)
-    //rewardsApy: ethers.utils.formatEther(stats.rewardsApr.mul(100))
     }
   }
 

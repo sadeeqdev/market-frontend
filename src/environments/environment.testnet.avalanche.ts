@@ -22,7 +22,6 @@ export const environment = {
             Chedda: '0x30c54E9c99147620BD6fBC2D9b0CE90b4FBc80eF',
             xChedda: '0x0fFD5fB4B3160A2709E120A7484AEE03500c55b3',
             USDC: '0x55df0aF74eE7FA170AbBF7eb3F8D43d7c20De207',
-            mUSDC: '0xd2DA1a0D84DA053c88434A2a688798DB9E93365e',
             WrappedNative: '0x2c01212f051A59D88A1361db1E2041896dB4af64',
             Faucet: '0xF9BF842eA45AfBa3cd3A1aED2aA5a3ACE07B9DF4',
           },

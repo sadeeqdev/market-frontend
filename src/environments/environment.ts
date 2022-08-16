@@ -8,14 +8,6 @@ export const environment = {
   jsonRpcUrl: '',
   config: {
       contracts: {
-          CheddaXP: '',
-          CheddaDappStore: '',
-          CheddaDappExplorer: '',
-          CheddaMarket: '',
-          CheddaMarketExplorer: '',
-          CheddaRewards: '',
-          CheddaDropManager: '',
-          CheddaLoanManager: '',
           ChainlinkPriceConsumer: '',
           CheddaBaseTokenVault: '',
           PriceFeed: '',
@@ -24,6 +16,7 @@ export const environment = {
           USDC: '',
           DAI: '',
           FRAX: '',
+          UXD: '',
           mUSDC: '',
           WrappedNative: '',
           Faucet: '',

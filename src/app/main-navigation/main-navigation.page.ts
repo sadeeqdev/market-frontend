@@ -18,9 +18,9 @@ export class MainNavigationPage implements OnInit, AfterViewInit {
   }
 
   async ngAfterViewInit() {
-    if (!this.preferences.welcomeModalShown) {
-      await this.presentWelcomeModal()
-    }
+    // if (!this.preferences.welcomeModalShown) {
+    //   await this.presentWelcomeModal()
+    // }
   }
 
   async presentWelcomeModal() {

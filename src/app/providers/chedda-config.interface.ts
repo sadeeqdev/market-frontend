@@ -18,6 +18,9 @@ export interface CheddaConfig {
         veChedda: string
         USDC: string
         mUSDC: string
+        DAI: string
+        FRAX: string
+        UXD: string
         GaugeController: string,
         WrappedNative: string
         Faucet: string
