@@ -242,7 +242,10 @@
                           </ion-row>
                         </ion-col>
                         <ion-col size="3" class="justify-content-end align-items-center">
-                          <ion-button size="small" fill="solid" color="secondary" (click)="drip(token.address)">Drip</ion-button>
+                          <ion-button size="small" fill="solid" color="secondary" (click)="drip(token)">
+                            <span *ngIf="token.isNFT">Mint</span>
+                            <span *ngIf="!token.isNFT">Drip</span>
+                          </ion-button>
                           <ion-button (click)="addTokenToMetamask(token)" size="small" color="dark"><ion-icon name="add"></ion-icon></ion-button>
                         </ion-col>
                       </ion-row>

@@ -29,6 +29,18 @@ export class CheddaBaseTokenVaultService {
     return await contract.connect(this.wallet.signer).removeCollateral(token, amount)
   }
 
+  async addCollateral721(contract, token: string, tokenIds: string[]) {
+    return await contract.connect(this.wallet.signer).addCollateral721(token, tokenIds)
+  }
+
+  async removeCollateral721(contract, token: string, tokenIds: string[]) {
+    return await contract.connect(this.wallet.signer).removeCollateral721(token, tokenIds)
+  }
+
+  async accountCollateralTokenIds(contract, account: string, token: string) {
+    return await contract.accountCollateralTokenIds(account, token)
+  }
+
   async borrow(contract, amount: BigNumber) {
     return await contract.connect(this.wallet.signer).take(amount)
   }

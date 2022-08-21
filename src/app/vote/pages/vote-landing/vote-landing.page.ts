@@ -71,8 +71,7 @@ export class VoteLandingPage implements OnInit, OnDestroy {
         p.votes = votes
         const gaugeContract = this.liquidityGauge.contractAt(gaugeAddress)
         if (this.wallet && this.wallet.currentAccount) {
-          let amount = await this.liquidityGauge.claimAmount(gaugeContract, this.wallet.currentAccount)
-          p.claimAmount = amount
+          p.claimAmount = await this.liquidityGauge.claimAmount(gaugeContract, this.wallet.currentAccount)
         }
         return p
       }))
@@ -116,6 +115,7 @@ export class VoteLandingPage implements OnInit, OnDestroy {
     try {
       const vaultContract = this.vaultService.contractAt(pool.address)
       const gaugeAddress = await this.vaultService.gauge(vaultContract)
+      console.log('voting for gauge: ', gaugeAddress)
       await this.gaugeController.vote(gaugeAddress)
       this.canVote = false
     } catch (error) {

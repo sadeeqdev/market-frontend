@@ -21,6 +21,7 @@ export interface CheddaConfig {
         DAI: string
         FRAX: string
         UXD: string
+        NFT: string
         GaugeController: string,
         WrappedNative: string
         Faucet: string

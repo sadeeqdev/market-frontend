@@ -74,10 +74,8 @@ export class BorrowLandingPage implements OnInit {
 
   private async loadStats(pool: LendingPool) {
     const contract = this.vaultService.contractAt(pool.address) 
-    console.log('contract is for: ', contract.address)
     const price = await this.priceFeed.getAssetPrice(pool.asset.address)
     const stats = await this.vaultService.getVaultStats(contract)
-    console.log('stats = ', stats)
     pool.stats = {
       supplied: BigNumber.from(1010101),
       total: ethers.utils.formatEther(stats.liquidity.mul(price).div(BigNumber.from(10).pow(18))),

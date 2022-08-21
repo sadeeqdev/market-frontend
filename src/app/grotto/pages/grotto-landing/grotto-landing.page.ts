@@ -15,6 +15,7 @@ interface Token {
   name: string
   logo: string
   address: string
+  isNFT?: boolean
 }
 
 @Component({
@@ -73,6 +74,12 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       name: environment.config.pools[0].collateral[0].symbol,
       logo: environment.config.pools[0].collateral[0].logo,
       address: environment.config.pools[0].collateral[0].address
+    },
+    {
+      name: 'WGK',
+      logo: '/assets/logos/wgk-logo.png',
+      address: environment.config.contracts.NFT,
+      isNFT: true 
     }
   ]
   constructor(
@@ -142,7 +149,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     }
   }
 
-  async drip(token: string) {
+  async drip(token: Token) {
     if (!this.wallet.isConnected) {
       this.alert.showConnectAlert()
       return
@@ -153,7 +160,14 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       return
     }
     try {
-      await this.faucet.drip(token)
+      // if isNFT, mint
+      if (token.isNFT) {
+        const tx = await this.faucet.mint(token.address)
+        console.log('mint tx = ', tx)
+      } else {
+        const tx = await this.faucet.drip(token.address)
+        console.log('drip tx = ', tx)
+      }
       await this.alert.showToast('Drip request sent to faucet')
     } catch (error) {
       await this.hideLoading()
@@ -258,9 +272,10 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       return
     }
     try {
-      this.showLoading('Waiting for approval')
-      this.xChedda.approve(this.veChedda.address())
+      await this.showLoading('Waiting for approval')
+      await this.xChedda.approve(this.veChedda.address())
     } catch (error) {
+      this.hideLoading()
       await this.alert.showErrorAlert(error)
     }
   } 

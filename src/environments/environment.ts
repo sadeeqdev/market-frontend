@@ -19,6 +19,7 @@ export const environment = {
           UXD: '',
           mUSDC: '',
           WrappedNative: '',
+          NFT: '',
           Faucet: '',
           GaugeController: '',
         },

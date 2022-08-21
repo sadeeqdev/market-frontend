@@ -4,6 +4,8 @@ import { BigNumber, ethers } from 'ethers';
 import { DefaultProviderService } from '../providers/default-provider.service';
 import { WalletProviderService } from '../providers/wallet-provider.service';
 import ERC20 from '../../artifacts/ERC20.json'
+import ERC721 from '../../artifacts/ERC721.json'
+import MarketNFT from '../../artifacts/MarketNFT.json'
 
 @Injectable({
   providedIn: 'root'
@@ -23,15 +25,27 @@ export class TokenService {
   }
   
   async approve(contract, spender: string, amount: BigNumber) {
-    await contract.connect(this.wallet.signer).approve(spender, amount)
+    if (contract.isNFT) {
+      await contract.connect(this.wallet.signer).setApprovalForAll(spender, amount)
+    } else {
+      await contract.connect(this.wallet.signer).approve(spender, amount)
+    }
   }
 
   async allowance(contract, account: string, spender: string): Promise<BigNumber> {
-    return await contract.allowance(account, spender)
+    if (contract.isNFT) {
+      return await contract.isApprovedForAll(account, spender)
+    } else {
+      return await contract.allowance(account, spender)
+    }
   }
 
   async balanceOf(contract, account: string): Promise<BigNumber> {
     return await contract.balanceOf(account)
+  }
+
+  async ownedTokens(contract, account: string): Promise<string[]> {
+    return (await contract.ownedTokens(account)).map(t => t.toString())
   }
 
   async transfer(contract, to: string, amount: BigNumber) {
@@ -42,10 +56,16 @@ export class TokenService {
     return await contract.totalSupply()
   }
 
-  contractAt(address: string) {
+  contractAt(address: string, isNFT: boolean = false) {
+    let abi;
+    if (isNFT) {
+      abi = MarketNFT.abi
+    } else {
+      abi = ERC20.abi
+    }
     return new ethers.Contract(
       address,
-      ERC20.abi,
+      abi,
       this.provider.provider
       ) 
   }

@@ -29,6 +29,7 @@ export interface NFTMetadata {
     date: Date
     created: string
     attributes: NFTAttribute[]
+    isSelected?: boolean
 }
 
 export interface NFTProperties {

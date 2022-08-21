@@ -29,9 +29,10 @@ export const environment = {
       DAI: '0x7BCa6605845A9030e6943db2D16bF5AeE7E51d94',
       FRAX: '0x58913d4AB4bF61B97086708d55d167c4004CdcEb',
       UXD: '0x4F40FFC513FcCf60A354020Dbc1aE857f84797F2',
+      NFT: '0xc863a31cFB3F02c486e63971cb7D9Fb5aB302C86',
       WrappedNative: '0xb19B3D29931549c4EFE24bC5aC6DCf11f7a33A21',
-      Faucet: '0x5b3AaF77dd6E086241a101A47E8cDA34A1059ee6',
-      GaugeController: '0x5b6996DCCA7A84FEebAc43eC12683fAb5B713B40',
+      Faucet: '0xD83401901b49270b5f669922Df210a349a531E58',
+      GaugeController: '0x81bcb54608A0B16E07A33fE841900a3f0182211E',
     },
     networkParams: {
       chainId: '0x13881',
@@ -48,7 +49,7 @@ export const environment = {
     pools: [
       {
         name: 'USDC/WMATIC Pool',
-        address: '0x801CA2D77CC8e550883E1e649f8f4D6b94D090b5',
+        address: '0x0a6a91065e46a53Dc19Bd6bdeeb9C35E9D373AdA',
         asset: {
           name: 'USD Coin',
           symbol: 'USCD.c',
@@ -66,7 +67,7 @@ export const environment = {
       },
       {
         name: 'DAI/WMATIC Pool',
-        address: '0x89d4831ea7cC1d2f740ef269c33c9eEcB2B3e40C',
+        address: '0x06511E274bcc33d43af813b7dD68582Db72ad277',
         asset: {
           name: 'Dai Stalbcoin',
           symbol: 'DAI',
@@ -84,7 +85,7 @@ export const environment = {
       },
       {
         name: 'FRAX/WMATIC Pool',
-        address: '0xc9411075921c7c0DaB91FD55576ba9379228842f',
+        address: '0xF2baC7Eb51bfe329A50848b593428B8701C6fbf6',
         asset: {
           name: 'Frax',
           symbol: 'FRAX',
@@ -102,7 +103,7 @@ export const environment = {
       },
       {
         name: 'Native Asset Pool',
-        address: '0x9e28893A241841806F7EDEAf2DfE5E591D4FD564',
+        address: '0xd83d5C2174371FB0D72B3f194b5801E8D5b48108',
         asset: {
           name: 'Wrapped MATIC',
           symbol: 'WMATIC.c',
@@ -130,37 +131,44 @@ export const environment = {
           },
         ],
       },
-      // {
-      //   name: 'USDC/WMATIC/WGK Pool',
-      //   address: '0x53637c9dC575C66ce106F6e250c5e58E192DD5bD',
-      //   asset: {
-      //     name: 'USD Coin',
-      //     symbol: 'USCD.c',
-      //     address: '0xA485898266c91BcBBeF40F5d838423a751bb906d',
-      //     logo: '/assets/logos/usd-coin-logo.png',
-      //   },
-      //   collateral: [
-      //     {
-      //       name: 'Wrapped MATIC',
-      //       symbol: 'WMATIC.c',
-      //       address: '0xe8C7867Ee32479cc7cD60DE28AB18b170cda9313',
-      //       logo: '/assets/logos/matic-token-icon.png',
-      //     },
-      //     {
-      //       name: 'Weird geek',
-      //       symbol: 'WGK',
-      //       address: '0x0',
-      //       logo: '/assets/logos/wgk-logo.png',
-      //     },
-      //     {
-      //       name: 'Chedda Fancy Eye',
-      //       symbol: 'EYE',
-      //       address: '0x0',
-      //       logo: '/assets/logos/eye-logo.png',
-      //     },
-      //   ],
-      //   stats: {},
-      // },
+      {
+        name: 'USDC/WMATIC/WGK Pool',
+        address: '0x96Aef80C3E261EA8449f7295d13D72ade16cC215',
+        asset: {
+          name: 'USD Coin',
+          symbol: 'USCD.c',
+          address: '0xA485898266c91BcBBeF40F5d838423a751bb906d',
+          logo: '/assets/logos/usd-coin-logo.png',
+        },
+        collateral: [
+          {
+            name: 'Quickswap',
+            symbol: 'QUICK',
+            address: '0x997904432Be92B8f37b986a16E90aB31e4D54891',
+            logo: '/assets/logos/quickswap.png',
+          },
+          {
+            name: 'GALA Games',
+            symbol: 'GALA',
+            address: '0x76DA732A6fAF51ffd7877aA645BDD456Da686144',
+            logo: '/assets/logos/gala.jpeg',
+          },
+          {
+            name: 'MM Finance',
+            symbol: 'MMF',
+            address: '0x28518998DB48BEC4a1d6dFe2Dc2a288ad28CC862',
+            logo: '/assets/logos/mmfinance.png',
+          }, 
+          {
+            name: 'Weird geek',
+            symbol: 'WGK',
+            address: '0xc863a31cFB3F02c486e63971cb7D9Fb5aB302C86',
+            logo: '/assets/logos/wgk-logo.png',
+            isNFT: true
+          }
+        ],
+        stats: {},
+      },
     ],
     faucets: [
       {

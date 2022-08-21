@@ -79,20 +79,7 @@
                   </ion-select>
                 </ion-col>
               </ion-row>
-              <ion-row>
-                <div *ngIf="collateralType === 'wavax'"></div>
-                <div *ngIf="collateralType === 'nft'">
-                  <div *ngIf="myNftsCollateral.length === 0">
-                    <ion-text>No matching NFTs in wallet</ion-text>
-                  </div>
-                  <div *ngIf="myNftsCollateral.length !== 0">
-                    <ion-col *ngFor="let nft of myNftsCollateral">
-                      <ion-thumbnail [ngClass]="selectedNfts.includes(nft) ? '' : ''"> <!-- use ids -->
-                        <ion-img [src]="nft.image"></ion-img>
-                      </ion-thumbnail>
-                    </ion-col>
-                  </div>
-                </div>
+              <ion-row *ngIf="collateralContract && !collateralContract.isNFT">
                 <ion-col class="align-items-center">
                   <ion-text>Add {{collateralTokenSymbol}} Collateral</ion-text>&nbsp;
                   <ion-icon name="enter-outline"></ion-icon>
@@ -101,11 +88,23 @@
                   <ion-button size="small" color="primary" fill="clear" (click)="fillMaxDeposit()">Balance {{myCollateralTokenBalance | number:'1.2-4'}}</ion-button>
                 </ion-col>
               </ion-row>
-              <ion-row>
+              <ion-row *ngIf="collateralContract && !collateralContract.isNFT">
                 <ion-col>
                   <ion-input placeholder="0.0" class="bordered-input" (ionInput)="setBorrowMode('collateral')" #addCollateralInput></ion-input>        
                </ion-col>
               </ion-row>
+              <ion-row *ngIf="collateralContract && collateralContract.isNFT">
+                  <div *ngIf="ownedNFTs.length === 0">
+                    <ion-text>No matching NFTs in wallet</ion-text>
+                  </div>
+                  <div *ngIf="ownedNFTs.length !== 0">
+                    <ion-row>
+                        <ion-img *ngFor="let nft of ownedNFTs" [src]="nft.image" class="img-collateral" [ngClass]="nft.isSelected ? 'selected-nft' : ''" (click)="selectNFT(nft)">
+                        </ion-img>
+                    </ion-row>
+                  </div>
+              </ion-row>
+              
               <ion-row>
                 <ion-col class="align-items-center">
                   <ion-text>Borrow {{assetSymbol}}</ion-text> &nbsp;
@@ -142,7 +141,7 @@
                 </ion-col>
               </ion-row>
 
-              <ion-row>
+              <ion-row *ngIf="collateralContract && !collateralContract.isNFT">
                 <ion-col class="align-items-center">
                   <ion-text>Withdraw {{collateralTokenSymbol}} collateral</ion-text>
                 </ion-col>
@@ -150,11 +149,22 @@
                   <ion-button size="small" color="primary" fill="clear" (click)="fillMaxWithdraw()">Max {{myCollateralDeposited | number:'1.2-4'}}</ion-button>
                 </ion-col>
               </ion-row>
-              <ion-row>
+              <ion-row *ngIf="collateralContract && !collateralContract.isNFT">
                 <ion-col>
                   <ion-input placeholder="0.0" class="bordered-input" type="number" (ionInput)="setRepayMode('collateral')" #withdrawCollateralInput></ion-input>
                 </ion-col>
               </ion-row>
+              <ion-row *ngIf="collateralContract && collateralContract.isNFT">
+                <div *ngIf="myNftsCollateral.length === 0">
+                  <ion-text>No matching NFTs in wallet</ion-text>
+                </div>
+                <div *ngIf="myNftsCollateral.length !== 0">
+                  <ion-row>
+                      <ion-img *ngFor="let nft of myNftsCollateral" [src]="nft.image" class="img-collateral" [ngClass]="nft.isSelected ? 'selected-nft' : ''" (click)="selectNFT(nft)">
+                      </ion-img>
+                  </ion-row>
+                </div>
+            </ion-row>
 
               <ion-row>
                 <ion-col class="align-items-center">

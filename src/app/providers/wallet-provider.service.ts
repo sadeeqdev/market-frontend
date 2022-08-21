@@ -125,6 +125,7 @@ export class WalletProviderService {
   }
 
   async checkBalance(): Promise<BigNumber | BigNumber> {
+    console.log('checking balance')
     if (this.currentAccount) {
       return await this.provider.getBalance(this.currentAccount)
     } else {

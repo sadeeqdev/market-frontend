@@ -23,20 +23,24 @@ export class FaucetService {
 
   async dripChedda() {
     const tokenAddress = environment.config.contracts.Chedda
-    await this.drip(tokenAddress)
+    return await this.drip(tokenAddress)
   }
 
   async dripUSDC() {
     const tokenAddress = environment.config.contracts.USDC
-    await this.drip(tokenAddress)
+    return await this.drip(tokenAddress)
   }
 
   async dripWrappedNativeToken() {
     const tokenAddress = environment.config.contracts.WrappedNative
-    await this.drip(tokenAddress)
+    return await this.drip(tokenAddress)
   }
 
   async drip(token: string) {
-    await this.faucetContract.connect(this.wallet.signer).drip(token)
+    return await this.faucetContract.connect(this.wallet.signer).drip(token)
+  }
+
+  async mint(token: string) {
+    return await this.faucetContract.connect(this.wallet.signer).mint(token)
   }
 }

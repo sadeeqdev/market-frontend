@@ -2,7 +2,6 @@ import { Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@an
 import { Router } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
-import { CheddaRewardsService } from 'src/app/contracts/chedda-rewards.service';
 import { ProfilePopoverComponent } from 'src/app/profile/components/profile-popover/profile-popover.component';
 import { Profile } from 'src/app/profile/profile.interface';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
@@ -126,28 +125,19 @@ export class TopNavComponent implements OnInit, OnDestroy {
   }
 
   async setupListeners() {
-    this.accountSubscription = this.provider.accountSubject.subscribe(account => {
-      this.zone.run(async () => {
-        this.account = account
-        if (account) {
-          this.balance = await (await ethers.utils.formatEther(await this.chedda.balanceOf(account)))
-        }
-        this.createBlockie()
-      })
+    this.accountSubscription = this.provider.accountSubject.subscribe(async account => {
+      this.account = account
+      if (account) {
+        this.balance = ethers.utils.formatEther(await this.chedda.balanceOf(account))
+      }
+      this.createBlockie()
     })
-    this.networkSubscription = this.provider.networkSubject.subscribe(chainId => {
+    this.networkSubscription = this.provider.networkSubject.subscribe(async chainId => {
       if (chainId) {
-        this.zone.run(() => {
           this.isCorrectNetwork = chainId.toString(16).toLowerCase() == this.provider.currentNetwork.chainId.toLocaleLowerCase()
           console.log(`Networks: ${chainId} <=> ${this.provider.currentNetwork.chainId}`)
-        })
       }
     })
-    // this.balanceSubscription = this.chedda.balanceSubject.subscribe(balance => {
-    //   if (balance) {
-    //     this.balance = balance
-    //   }
-    // })
   }
 
   async checkRoute() {
