@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { BorrowPageRoutingModule } from './borrow-routing.module';
 
 import { BorrowPage } from './borrow.page';
-import { GetLoanModalComponent } from './components/get-loan-modal/get-loan-modal.component';
 import { SharedComponentsModule } from '../components/shared-components.module';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
@@ -21,6 +20,6 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     SharedComponentsModule,
     BorrowPageRoutingModule,
   ],
-  declarations: [BorrowPage, GetLoanModalComponent]
+  declarations: [BorrowPage,]
 })
 export class BorrowPageModule {}

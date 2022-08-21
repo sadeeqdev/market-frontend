@@ -12,26 +12,26 @@ const routes: Routes = [
         path: '',
         redirectTo: 'lend'
       },
-      {
-        path: 'dashboard',
-        loadChildren: () => import('../dashboard/dashboard.module').then( m => m.DashboardPageModule)
-      },
-      {
-        path: 'dapps',
-        loadChildren: () => import('../dapps/dapps.module').then( m => m.DappsPageModule)
-      },
-      {
-        path: 'market',
-        loadChildren: () => import('../nfts/nfts.module').then( m => m.NftsModule)
-      },
-      {
-        path: 'rewards',
-        loadChildren: () => import('../rewards/rewards.module').then( m => m.RewardsPageModule)
-      },
-      {
-        path:'launches',
-        loadChildren: () => import('../drops/drops.module').then(m => m.DropsPageModule)
-      },
+      // {
+      //   path: 'dashboard',
+      //   loadChildren: () => import('../dashboard/dashboard.module').then( m => m.DashboardPageModule)
+      // },
+      // {
+      //   path: 'dapps',
+      //   loadChildren: () => import('../dapps/dapps.module').then( m => m.DappsPageModule)
+      // },
+      // {
+      //   path: 'market',
+      //   loadChildren: () => import('../nfts/nfts.module').then( m => m.NftsModule)
+      // },
+      // {
+      //   path: 'rewards',
+      //   loadChildren: () => import('../rewards/rewards.module').then( m => m.RewardsPageModule)
+      // },
+      // {
+      //   path:'launches',
+      //   loadChildren: () => import('../drops/drops.module').then(m => m.DropsPageModule)
+      // },
       {
         path: 'governance',
         loadChildren: () => import('../governance/governance.module').then( m => m.GovernancePageModule)

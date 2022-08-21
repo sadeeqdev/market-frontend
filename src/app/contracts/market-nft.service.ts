@@ -5,7 +5,8 @@ import { DefaultProviderService } from '../providers/default-provider.service';
 import { WalletProviderService } from '../providers/wallet-provider.service';
 import MarketNFT from '../../artifacts/MarketNFT.json'
 import ERC721 from '../../artifacts/ERC721.json'
-import { NFTWithLikes, NFTMetadata } from '../nfts/models/nft.model';
+import { NFTMetadata } from '../shared/models/nft.model';
+
 @Injectable({
   providedIn: 'root'
 })

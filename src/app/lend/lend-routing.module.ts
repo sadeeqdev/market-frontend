@@ -13,14 +13,6 @@ const routes: Routes = [
         loadChildren: () => import('./pages/lend-landing/lend-landing.module').then( m => m.LendLandingPageModule)
       },
       {
-        path: 'loan/:loanId',
-        loadChildren: () => import('./pages/lend-loan/lend-loan.module').then( m => m.LendLoanPageModule)
-      },
-      {
-        path: 'request/:requestId',
-        loadChildren: () => import('./pages/lend-request/lend-request.module').then( m => m.LendRequestPageModule)
-      },
-      {
         path: 'pool/:id',
         loadChildren: () => import('./pages/pool/lend-pool-details/lend-pool-details.module').then( m => m.LendPoolDetailsPageModule)
       },

@@ -13,22 +13,6 @@ const routes: Routes = [
         loadChildren: () => import('./pages/borrow-landing/borrow-landing.module').then( m => m.BorrowLandingPageModule)
       },
       {
-        path: 'mynfts',
-        loadChildren: () => import('./pages/mynfts/mynfts.module').then( m => m.MynftsPageModule)
-      },
-      {
-        path: 'mycollateral',
-        loadChildren: () => import('./pages/mycollateral/mycollateral.module').then( m => m.MycollateralPageModule)
-      },
-      {
-        path: 'request/:id',
-        loadChildren: () => import('./pages/borrow-request/borrow-request.module').then( m => m.BorrowRequestPageModule)
-      },
-      {
-        path: 'request/:nftContract/:tokenID',
-        loadChildren: () => import('./pages/borrow-request/borrow-request.module').then( m => m.BorrowRequestPageModule)
-      },
-      {
         path: 'pool/:id',
         loadChildren: () => import('./pages/pool/borrow-pool-details/borrow-pool-details.module').then( m => m.BorrowPoolDetailsPageModule)
       },

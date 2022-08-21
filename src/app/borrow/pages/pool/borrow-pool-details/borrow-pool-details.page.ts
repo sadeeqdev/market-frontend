@@ -9,9 +9,9 @@ import { MarketNftService } from 'src/app/contracts/market-nft.service';
 import { PriceOracleService } from 'src/app/contracts/price-oracle.service';
 import { TokenService } from 'src/app/contracts/token.service';
 import { LendingPool } from 'src/app/lend/lend.models';
-import { NFTMetadata } from 'src/app/nfts/models/nft.model';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
+import { NFTMetadata } from 'src/app/shared/models/nft.model';
 import { environment } from 'src/environments/environment';
 
 enum BorrowMode {

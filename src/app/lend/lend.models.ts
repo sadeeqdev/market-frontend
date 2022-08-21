@@ -1,5 +1,5 @@
 import { BigNumber } from "ethers"
-import { NFT } from "../nfts/models/nft.model"
+import { NFT } from "../shared/models/nft.model"
 
 export enum LoanState {
     all = 0,

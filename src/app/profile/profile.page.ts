@@ -2,8 +2,6 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonSegment, NavController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
-import { CheddaXpService } from '../contracts/chedda-xp.service';
-import { MarketExplorerService } from '../contracts/market-explorer.service';
 import { Profile } from './profile.interface';
 import { accountInitials } from './profile.utils';
 
@@ -85,8 +83,6 @@ export class ProfilePage implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private navController: NavController,
-    private explorer: MarketExplorerService,
-    private cheddaXP: CheddaXpService,
     ) { }
 
   async ngOnInit() {
@@ -100,18 +96,15 @@ export class ProfilePage implements OnInit, OnDestroy {
         this.profile.address = this.address
         await this.loadProfile(this.address)
         this.initials = this.createInitials('')
-        let items = await this.fetchItems(this.address)
-        this.items = items
-        console.log('itemsOwned are ', items)
       } catch (err) {
         console.error('navigation error: ', err)
         this.navController.navigateBack('/')
       }
     })
-    this.balanceSubscription = this.cheddaXP.balanceSubject.subscribe(balance => {
-      this.balance = balance
-    })
-    this.balance = await this.cheddaXP.balanceOf(this.address)
+    // this.balanceSubscription = this.cheddaXP.balanceSubject.subscribe(balance => {
+    //   this.balance = balance
+    // })
+    // this.balance = await this.cheddaXP.balanceOf(this.address)
   }
 
   ngOnDestroy(): void {
@@ -125,9 +118,6 @@ export class ProfilePage implements OnInit, OnDestroy {
     console.log('segment changed: ', $event)
     this.currentSegment = this.segmentControl.value
   }  
-  async fetchItems(address: string) {
-    return await this.explorer.loadItemsOwned(address)
-  }
 
   private async loadProfile(address: string) {
 
