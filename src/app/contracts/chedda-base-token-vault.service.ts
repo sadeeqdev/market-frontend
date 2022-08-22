@@ -46,7 +46,7 @@ export class CheddaBaseTokenVaultService {
   }
 
   async repay(contract, amount:BigNumber) {
-    return await contract.connect(this.wallet.signer).put(amount)
+    return await contract.connect(this.wallet.signer).putAmount(amount)
   }
 
   async collateral(contract, account: string, token: string): Promise<any> {

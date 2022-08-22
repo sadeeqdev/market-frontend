@@ -62,8 +62,9 @@ export class LendLandingPage implements OnInit, OnDestroy {
   private async loadStats(pool: LendingPool) {
     const contract = this.vaultService.contractAt(pool.address) 
 
+    console.log('getting price for ', pool.asset.address)
     const price = await this.priceFeed.getAssetPrice(pool.asset.address)
-    console.log('***price = ', ethers.utils.formatEther(price))
+    console.log(`***price of = ${pool.asset.address} = ${ethers.utils.formatEther(price)}`)
 
     const stats = await this.vaultService.getVaultStats(contract)
     pool.stats = {

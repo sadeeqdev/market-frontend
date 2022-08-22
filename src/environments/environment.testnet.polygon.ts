@@ -32,7 +32,7 @@ export const environment = {
       NFT: '0xc863a31cFB3F02c486e63971cb7D9Fb5aB302C86',
       WrappedNative: '0xb19B3D29931549c4EFE24bC5aC6DCf11f7a33A21',
       Faucet: '0xD83401901b49270b5f669922Df210a349a531E58',
-      GaugeController: '0x81bcb54608A0B16E07A33fE841900a3f0182211E',
+      GaugeController: '0x0e745656CB8A037B468eC8fC1a53dD6A15efa1A8',
     },
     networkParams: {
       chainId: '0x13881',
@@ -49,7 +49,7 @@ export const environment = {
     pools: [
       {
         name: 'USDC/WMATIC Pool',
-        address: '0x0a6a91065e46a53Dc19Bd6bdeeb9C35E9D373AdA',
+        address: '0x16f2D05961cC81555b1f1320fF6289BAd5796616',
         asset: {
           name: 'USD Coin',
           symbol: 'USCD.c',
@@ -67,7 +67,7 @@ export const environment = {
       },
       {
         name: 'DAI/WMATIC Pool',
-        address: '0x06511E274bcc33d43af813b7dD68582Db72ad277',
+        address: '0xB61cAe70a7f31e8A9EE61e15B472019bE2dC7A81',
         asset: {
           name: 'Dai Stalbcoin',
           symbol: 'DAI',
@@ -84,13 +84,13 @@ export const environment = {
         ],
       },
       {
-        name: 'FRAX/WMATIC Pool',
-        address: '0xF2baC7Eb51bfe329A50848b593428B8701C6fbf6',
+        name: 'UXD/WMATIC Pool',
+        address: '0xDd58aD73b067fd6151802cEF41F823ecA7C7d111',
         asset: {
-          name: 'Frax',
-          symbol: 'FRAX',
-          address: '0x58913d4AB4bF61B97086708d55d167c4004CdcEb',
-          logo: '/assets/logos/frax-logo.png',
+          name: 'UXD',
+          symbol: 'UXD',
+          address: '0x4F40FFC513FcCf60A354020Dbc1aE857f84797F2',
+          logo: '/assets/logos/uxd-logo.png',
         },
         collateral: [
           {
@@ -103,7 +103,7 @@ export const environment = {
       },
       {
         name: 'Native Asset Pool',
-        address: '0xd83d5C2174371FB0D72B3f194b5801E8D5b48108',
+        address: '0x0FE9d9C463d377e8741F02FCaD6DaCd1D6A67B41',
         asset: {
           name: 'Wrapped MATIC',
           symbol: 'WMATIC.c',
@@ -133,7 +133,7 @@ export const environment = {
       },
       {
         name: 'USDC/WMATIC/WGK Pool',
-        address: '0x96Aef80C3E261EA8449f7295d13D72ade16cC215',
+        address: '0x704F620FA72299F4e3B7c9f848BDD136a9Ac8209',
         asset: {
           name: 'USD Coin',
           symbol: 'USCD.c',

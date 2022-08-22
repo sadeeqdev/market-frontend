@@ -20,11 +20,6 @@ export class NetworksPopoverComponent implements OnInit {
       icon: '/assets/logos/harmony-logo.png'
     },
     // {
-    //   name: 'IoTeX Testnet',
-    //   url: 'https://testnet-iotex.chedda.store',
-    //   icon: '/assets/logos/iotex-logo.png'
-    // },
-    // {
     //   name: 'Oasis Testnet',
     //   url: 'https://testnet-oasis.chedda.store',
     //   icon: '/assets/logos/oasis-logo-sm.png'
