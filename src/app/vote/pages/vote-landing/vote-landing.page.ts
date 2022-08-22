@@ -8,6 +8,7 @@ import { CheddaBaseTokenVaultService } from 'src/app/contracts/chedda-base-token
 import { CheddaService } from 'src/app/contracts/chedda.service';
 import { GaugeControllerService } from 'src/app/contracts/gauge-controller.service';
 import { LiqiudityGaugeService } from 'src/app/contracts/liqiudity-gauge.service';
+import { VeCheddaService } from 'src/app/contracts/ve-chedda.service';
 import { LendingPool } from 'src/app/lend/lend.models';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
@@ -30,6 +31,7 @@ export class VoteLandingPage implements OnInit, OnDestroy {
   epochEnd
   hasEpochEnded
   loader?
+  votePower
   voteEventSubscription?: Subscription
   rebalanceEventSubscription?: Subscription
   cheddaTransferSubscription?: Subscription
@@ -42,6 +44,7 @@ export class VoteLandingPage implements OnInit, OnDestroy {
     private vaultService: CheddaBaseTokenVaultService,
     private alert: GlobalAlertService,
     private chedda: CheddaService,
+    private veChedda: VeCheddaService,
     private loadingController: LoadingController
     ) { }
 
@@ -50,6 +53,7 @@ export class VoteLandingPage implements OnInit, OnDestroy {
 
     this.vaultContract = this.vaultService.contractAt(environment.config.contracts.CheddaBaseTokenVault)
     this.lendingPools = environment.config.pools
+    await this.loadVeChedda()
     this.loadGaugeData()
     this.registerForEvents()
   }
@@ -58,6 +62,12 @@ export class VoteLandingPage implements OnInit, OnDestroy {
     this.voteEventSubscription?.unsubscribe()
     this.rebalanceEventSubscription?.unsubscribe()
     this.cheddaTransferSubscription?.unsubscribe()
+  }
+
+  async loadVeChedda() {
+    if (this.wallet && this.wallet.currentAccount) {
+      this.votePower = await this.veChedda.balanceOf(this.wallet.currentAccount)
+    }
   }
 
   async loadGaugeData() {

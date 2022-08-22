@@ -32,7 +32,7 @@ export const environment = {
       NFT: '0xc863a31cFB3F02c486e63971cb7D9Fb5aB302C86',
       WrappedNative: '0xb19B3D29931549c4EFE24bC5aC6DCf11f7a33A21',
       Faucet: '0xD83401901b49270b5f669922Df210a349a531E58',
-      GaugeController: '0x0e745656CB8A037B468eC8fC1a53dD6A15efa1A8',
+      GaugeController: '0x7Eb31481723D355d8026A24332CD410A14cCe700',
     },
     networkParams: {
       chainId: '0x13881',
@@ -151,7 +151,7 @@ export const environment = {
             name: 'GALA Games',
             symbol: 'GALA',
             address: '0x76DA732A6fAF51ffd7877aA645BDD456Da686144',
-            logo: '/assets/logos/gala.jpeg',
+            logo: '/assets/logos/gala-games-logo.png',
           },
           {
             name: 'MM Finance',
