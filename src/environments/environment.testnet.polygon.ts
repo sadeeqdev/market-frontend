@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   environmentName: 'Polygon Mumbai Testnet',
   jsonRpcUrl:
-    'https://polygon-mumbai.g.alchemy.com/v2/-7eaLgpDD6dzJaDq2J2FlKM46uEzatAs',
+    'https://polygon-mumbai.g.alchemy.com/v2/Sim8lsitGIsbDqk6OPr32u1BTDnzXugC',
   config: {
     contracts: {
       CheddaAddressRegistry: '',
