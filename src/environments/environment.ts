@@ -10,8 +10,10 @@ export const environment = {
       contracts: {
           ChainlinkPriceConsumer: '',
           CheddaBaseTokenVault: '',
+          CheddaMarketExplorer: '',
           PriceFeed: '',
           Chedda: '',
+          veChedda: '',
           xChedda: '',
           USDC: '',
           DAI: '',

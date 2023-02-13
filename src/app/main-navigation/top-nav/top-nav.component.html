@@ -15,11 +15,11 @@
       <ion-button>
         <img src="/assets/images/chedda-logo-128.png" width="30px" />
       </ion-button>
-      <!-- <ion-button fill="solid" #networkBtn (click)="presentNetworksPopver($event)"> -->
-      <ion-button fill="solid" #networkBtn>
+      <ion-button fill="solid" #networkBtn (click)="presentNetworksPopver($event)">
+      <!-- <ion-button fill="solid" #networkBtn> -->
           <ion-img [src]="env.config.ui.logo" class="network-logo"></ion-img>
         {{ env.config.ui.chainName }}
-        <!-- <ion-icon name="chevron-down"></ion-icon> -->
+        <ion-icon name="chevron-down"></ion-icon>
       </ion-button>
       <ion-button fill="solid" (click)="toggleDarkTheme(!isDark)" class="darkmode-button">
         <ion-icon [name]="isDark ? 'sunny-outline' : 'moon-outline'"></ion-icon>

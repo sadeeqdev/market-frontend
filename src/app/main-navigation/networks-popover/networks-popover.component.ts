@@ -9,31 +9,31 @@ import { PopoverController } from '@ionic/angular';
 export class NetworksPopoverComponent implements OnInit {
 
   networkList = [
-    {
-      name: 'Avalanche Testnet',
-      url: 'https://testnet-avalanche.chedda.store',
-      icon: '/assets/logos/avalanche-avax-logo.png'
-    },
-    {
-      name: 'Harmony Testnet',
-      url: 'https://testnet-harmony.chedda.store',
-      icon: '/assets/logos/harmony-logo.png'
-    },
     // {
-    //   name: 'Oasis Testnet',
-    //   url: 'https://testnet-oasis.chedda.store',
-    //   icon: '/assets/logos/oasis-logo-sm.png'
+    //   name: 'Avalanche Testnet',
+    //   url: 'https://testnet-avalanche.chedda.store',
+    //   icon: '/assets/logos/avalanche-avax-logo.png'
     // },
+    // {
+    //   name: 'Harmony Testnet',
+    //   url: 'https://testnet-harmony.chedda.store',
+    //   icon: '/assets/logos/harmony-logo.png'
+    // },
+    {
+      name: 'Oasis Testnet',
+      url: 'https://testnet-oasis.chedda.store',
+      icon: '/assets/logos/oasis-logo-sm.png'
+    },
     {
       name: 'Polygon Testnet',
       url: 'https://testnet-polygon.chedda.store',
       icon: '/assets/logos/polygon-logo.svg'
     },
-    {
-      name: 'Telos Testnet',
-      url: 'https://telos-hackathon.chedda.store',
-      icon: '/assets/logos/tlos-logo.png'
-    },
+    // {
+    //   name: 'Telos Testnet',
+    //   url: 'https://telos-hackathon.chedda.store',
+    //   icon: '/assets/logos/tlos-logo.png'
+    // },
   ]
   constructor(private popoverController: PopoverController) { }
 

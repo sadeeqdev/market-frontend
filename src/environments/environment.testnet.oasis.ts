@@ -8,16 +8,8 @@ export const environment = {
     jsonRpcUrl: 'https://testnet.emerald.oasis.dev',
     config: {
       contracts: {
-        CheddaAddressRegistry: '',
-        CheddaXP: '',
-        CheddaDappStore: '',
-        CheddaDappExplorer: '',
-        CheddaMarket: '',
-        CheddaMarketExplorer: '',
-        CheddaRewards: '',
-        CheddaDropManager: '',
-        CheddaLoanManager: '',
         ChainlinkPriceConsumer: '',
+        CheddaMarketExplorer: '',
         CheddaBaseTokenVault: '0xB0A47be6707E3122F1CF4C2259897E6e97380E1A',
         PriceFeed: '0xEDFa988f9498165fE79f09dA9e39f9dC829507D7',
         Chedda: '0x89658069fc4b3e528F651405c9d71583eB9D2344',
@@ -27,9 +19,11 @@ export const environment = {
         mUSDC: '0xe88AF62fe2117565cB6B2c206e820Cb8d4Bce91a',
         DAI: '0xd2D5708116Aad9bD6bC90058dC538aF6645c1daE',
         FRAX: '0xdf95b12492A3B631Af60BbCD7F1Ba4306CdA6918',
+        UXD: '',
         WrappedNative: '0xb19B3D29931549c4EFE24bC5aC6DCf11f7a33A21',
         Faucet: '0x5b3AaF77dd6E086241a101A47E8cDA34A1059ee6',
         GaugeController: '0xb1bE9510691DfAa3D73C3A6C17E494EEC9899E4F',
+        NFT: ''
       },
           networkParams: {
             chainId: '0xA515',
