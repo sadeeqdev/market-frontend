@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { TruncateMiddlePipe } from '../pipes/truncate-middle.pipe';
-import { TruncateDecimalPipe } from '../pipes/truncate-decimal.pipe';
 import { ProfilePopoverComponent } from '../profile/components/profile-popover/profile-popover.component';
 import { RouterModule } from '@angular/router';
 import { WelcomeModalComponent } from './welcome-modal/welcome-modal.component';
@@ -17,7 +16,6 @@ import { RoundingPipe } from '../pipes/rounding-pipe';
 @NgModule({
   declarations: [
     TruncateMiddlePipe, 
-    TruncateDecimalPipe,
     EthFormattingPipe,
     BlockiePipe,
     LoanStatePipe,
@@ -36,7 +34,6 @@ import { RoundingPipe } from '../pipes/rounding-pipe';
   ],
   exports: [
     TruncateMiddlePipe, 
-    TruncateDecimalPipe,
     EthFormattingPipe,
     BlockiePipe,
     LoanStatePipe,

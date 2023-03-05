@@ -94,7 +94,7 @@
         </ion-row>
         <div *ngIf="account">
           <ion-row class="centered-content balance-row">
-            <span class="xp-balance">{{balance | truncateDecimal:[4]}} CHEDDA</span>
+            <span class="xp-balance">{{balance | number: '1.2-4'}} CHEDDA</span>
           </ion-row>
           <ion-row class="centered-content">
             <ion-menu-toggle>
