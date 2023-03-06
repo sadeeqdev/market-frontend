@@ -274,6 +274,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     try {
       await this.showLoading('Waiting for approval')
       await this.xChedda.approve(this.veChedda.address())
+      this.hideLoading()
     } catch (error) {
       this.hideLoading()
       await this.alert.showErrorAlert(error)
