@@ -28,6 +28,7 @@ export class TopNavComponent implements OnInit, OnDestroy {
   account?: string
   balance
   isCorrectNetwork = true
+  isConnected = false
   env = environment
   popover: any
   profile: Profile
@@ -75,6 +76,19 @@ export class TopNavComponent implements OnInit, OnDestroy {
     private popoverController: PopoverController,
     private preferences: PreferencesService,
     ) {
+
+      // Initialize Metamask provider
+      let eth:any = window.ethereum;
+  
+      // Watch for provider disconnection
+      eth.on('accountsChanged', (accounts: any) => {
+        if (accounts.length > 0) {
+          this.account = accounts[0]
+        }else{
+          // Metamask provider is disconnected
+          this.account = ''
+        }
+      });
     }
 
 
@@ -132,6 +146,7 @@ export class TopNavComponent implements OnInit, OnDestroy {
       }
       this.createBlockie()
     })
+
     this.networkSubscription = this.provider.networkSubject.subscribe(async chainId => {
       if (chainId) {
           this.isCorrectNetwork = chainId.toString(16).toLowerCase() == this.provider.currentNetwork.chainId.toLocaleLowerCase()
