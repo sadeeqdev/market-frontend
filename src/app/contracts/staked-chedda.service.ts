@@ -55,7 +55,6 @@ export class StakedCheddaService {
       amount = await this.stakedCheddaContract.totalSupply();
     }
     return this.stakedCheddaContract.connect(this.wallet.signer).approve(spender, amount)
-    
   }
 
   address(): string {

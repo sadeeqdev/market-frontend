@@ -89,7 +89,16 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     private xChedda: StakedCheddaService,
     private veChedda: VeCheddaService,
     private alert: GlobalAlertService,
-    private loadingController: LoadingController) { }
+    private loadingController: LoadingController) {
+
+      // Checks if acount is changed or disconnected
+      // Updates chedda balance according to account selected 
+      let eth:any = window.ethereum
+      eth.on('accountsChanged', (accounts: any) => {
+          this.loadCheddaStats()
+          this.loadVeCheddaStats()
+      });
+    }
 
 
   async ngOnInit() {
@@ -276,6 +285,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       await this.showLoading('Waiting for approval')
       await this.xChedda.approve(this.veChedda.address())
     } catch (error) {
+      this.isXCheddaApproved = false
       this.hideLoading()
       await this.alert.showErrorAlert(error)
     }
