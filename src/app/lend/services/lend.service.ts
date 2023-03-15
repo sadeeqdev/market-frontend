@@ -1,21 +1,16 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { IonSegment } from '@ionic/angular';
+import { Injectable } from '@angular/core';
 import { BigNumber, ethers } from 'ethers';
 import { Subscription } from 'rxjs';
 import { CheddaBaseTokenVaultService } from 'src/app/contracts/chedda-base-token-vault.service';
 import { PriceOracleService } from 'src/app/contracts/price-oracle.service';
-import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { environment } from 'src/environments/environment';
-import { LendingPool, Loan, LoanRequest } from '../../lend.models';
+import { LendingPool, LoanRequest } from '../lend.models';
 
-@Component({
-  selector: 'app-lend-landing',
-  templateUrl: './lend-landing.page.html',
-  styleUrls: ['./lend-landing.page.scss'],
+@Injectable({
+  providedIn: 'root'
 })
-export class LendLandingPage implements OnInit, OnDestroy {
 
-  @ViewChild('segmentControl') segmentControl: IonSegment;
+export class LendService {
 
   loanRequests: LoanRequest[] = [];
   currentSegment = 'requests';
@@ -29,28 +24,11 @@ export class LendLandingPage implements OnInit, OnDestroy {
   aprPrecision = BigNumber.from(100000000000);
 
   constructor(
-    private wallet: WalletProviderService,
     private priceFeed: PriceOracleService,
     private vaultService: CheddaBaseTokenVaultService
-  ) {}
-
-  async ngOnInit() {
-    this.currency = environment.config.networkParams.nativeCurrency.symbol;
-
-    this.vaultContract = this.vaultService.contractAt(
-      environment.config.contracts.CheddaBaseTokenVault
-    );
-    await this.loadVaultStats();
-    this.lendingPools = environment.config.pools;
-  }
-
-  async ngOnDestroy() {
-    this.openLoansSubscription?.unsubscribe();
-    this.openLoanRequestsSubscription?.unsubscribe();
-  }
-
-
-  private async loadVaultStats() {
+  ) { }
+  
+  async loadVaultStats() {
     this.lendingPools = environment.config.pools;
 
     try {
@@ -83,7 +61,5 @@ export class LendLandingPage implements OnInit, OnDestroy {
     };
   }
 
-  onSegmentChanged(event) {
-    this.currentSegment = this.segmentControl.value;
-  }
+
 }

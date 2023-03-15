@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { IonInput, LoadingController, NavController } from '@ionic/angular';
 import { BigNumber, ethers } from 'ethers';
 import { Subscription } from 'rxjs';
+import { BorrowService } from 'src/app/borrow/services/borrow.service';
 import { CheddaBaseTokenVaultService } from 'src/app/contracts/chedda-base-token-vault.service';
 import { CheddaDebtTokenService } from 'src/app/contracts/chedda-debt-token.service';
 import { MarketNftService } from 'src/app/contracts/market-nft.service';
@@ -80,7 +81,8 @@ export class BorrowPoolDetailsPage implements OnInit {
     private priceFeed: PriceOracleService,
     private route: ActivatedRoute,
     private navController: NavController,
-    private alert: GlobalAlertService
+    private alert: GlobalAlertService,
+    private borrowService: BorrowService,
   ) {}
 
   async ngOnInit() {
@@ -325,7 +327,7 @@ export class BorrowPoolDetailsPage implements OnInit {
           this.collateralContract.address,
           tokenIds
         )
-      } else {
+    } else {
         const amount = ethers.utils.parseUnits(
           this.withdrawCollateralInput.value.toString() ?? '0'
         );
@@ -494,6 +496,7 @@ export class BorrowPoolDetailsPage implements OnInit {
             await this.fetchDepositedNfts()
           }
           await this.loadVaultStats()
+          await this.borrowService.loadVaultStats();
         }
       }
     );
@@ -509,6 +512,7 @@ export class BorrowPoolDetailsPage implements OnInit {
             await this.fetchOwnedTokens()
           }
           await this.loadVaultStats()
+          await this.borrowService.loadVaultStats();
         }
       }
     );
@@ -520,6 +524,7 @@ export class BorrowPoolDetailsPage implements OnInit {
           this.hideLoading();
           this.alert.showToast('Borrow confirmed');
           await this.loadVaultStats();
+          await this.borrowService.loadVaultStats();
         }
       }
     );
@@ -530,7 +535,8 @@ export class BorrowPoolDetailsPage implements OnInit {
           this.hideLoading();
           this.alert.showToast('Repayment confirmed');
           await this.loadVaultStats();
-        }
+          await this.borrowService.loadVaultStats();
+    }
       }
     );
 

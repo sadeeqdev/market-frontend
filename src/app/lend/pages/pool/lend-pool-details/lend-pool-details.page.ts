@@ -8,6 +8,7 @@ import { TokenService } from 'src/app/contracts/token.service';
 import { LendingPool } from 'src/app/lend/lend.models';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
+import { LendService } from 'src/app/lend/services/lend.service';
 import { environment } from 'src/environments/environment';
 
 export interface VaultStats {
@@ -54,6 +55,7 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
   constructor(
     private tokenService: TokenService, 
     private vaultService: CheddaBaseTokenVaultService,
+    private lendService: LendService,
     private wallet: WalletProviderService,
     private loadingController: LoadingController,
     private route: ActivatedRoute,
@@ -200,6 +202,7 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
         this.hideLoading()
         this.alert.showToast('Deposit confirmed')
         await this.loadVaultStats()
+        await this.lendService.loadVaultStats()
       }
     })
     this.withdrawEventListener = this.vaultContract.on('Withdraw', async (from, to, amount, shares) => {
@@ -207,6 +210,7 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
         this.hideLoading()
         this.alert.showToast('Withdrawal confirmed')
         await this.loadVaultStats()
+        await this.lendService.loadVaultStats()
       }
     })
 
