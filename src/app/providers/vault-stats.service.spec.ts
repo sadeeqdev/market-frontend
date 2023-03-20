@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { BorrowService } from './borrow.service';
+import { VaultStatsService } from './vault-stats.service';
 
-describe('BorrowService', () => {
-  let service: BorrowService;
+describe('VaultStatsService', () => {
+  let service: VaultStatsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(BorrowService);
+    service = TestBed.inject(VaultStatsService);
   });
 
   it('should be created', () => {

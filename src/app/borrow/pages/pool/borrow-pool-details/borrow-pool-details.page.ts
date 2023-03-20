@@ -3,13 +3,13 @@ import { ActivatedRoute } from '@angular/router';
 import { IonInput, LoadingController, NavController } from '@ionic/angular';
 import { BigNumber, ethers } from 'ethers';
 import { Subscription } from 'rxjs';
-import { BorrowService } from 'src/app/borrow/services/borrow.service';
 import { CheddaBaseTokenVaultService } from 'src/app/contracts/chedda-base-token-vault.service';
 import { CheddaDebtTokenService } from 'src/app/contracts/chedda-debt-token.service';
 import { MarketNftService } from 'src/app/contracts/market-nft.service';
 import { PriceOracleService } from 'src/app/contracts/price-oracle.service';
 import { TokenService } from 'src/app/contracts/token.service';
 import { LendingPool } from 'src/app/lend/lend.models';
+import { VaultStatsService } from 'src/app/providers/vault-stats.service';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
 import { NFTMetadata } from 'src/app/shared/models/nft.model';
@@ -82,7 +82,7 @@ export class BorrowPoolDetailsPage implements OnInit {
     private route: ActivatedRoute,
     private navController: NavController,
     private alert: GlobalAlertService,
-    private borrowService: BorrowService,
+    private vaultStatsService: VaultStatsService,
   ) {}
 
   async ngOnInit() {
@@ -496,7 +496,7 @@ export class BorrowPoolDetailsPage implements OnInit {
             await this.fetchDepositedNfts()
           }
           await this.loadVaultStats()
-          await this.borrowService.loadVaultStats();
+          await this.vaultStatsService.loadVaultStats();
         }
       }
     );
@@ -512,7 +512,7 @@ export class BorrowPoolDetailsPage implements OnInit {
             await this.fetchOwnedTokens()
           }
           await this.loadVaultStats()
-          await this.borrowService.loadVaultStats();
+          await this.vaultStatsService.loadVaultStats();
         }
       }
     );
@@ -524,7 +524,7 @@ export class BorrowPoolDetailsPage implements OnInit {
           this.hideLoading();
           this.alert.showToast('Borrow confirmed');
           await this.loadVaultStats();
-          await this.borrowService.loadVaultStats();
+          await this.vaultStatsService.loadVaultStats();
         }
       }
     );
@@ -535,7 +535,7 @@ export class BorrowPoolDetailsPage implements OnInit {
           this.hideLoading();
           this.alert.showToast('Repayment confirmed');
           await this.loadVaultStats();
-          await this.borrowService.loadVaultStats();
+          await this.vaultStatsService.loadVaultStats();
     }
       }
     );

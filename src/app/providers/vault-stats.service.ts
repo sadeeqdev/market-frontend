@@ -1,59 +1,31 @@
 import { Injectable } from '@angular/core';
 import { BigNumber, ethers } from 'ethers';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { CheddaBaseTokenVaultService } from 'src/app/contracts/chedda-base-token-vault.service';
 import { PriceOracleService } from 'src/app/contracts/price-oracle.service';
 import { LendingPool, Loan } from 'src/app/lend/lend.models';
-import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { environment } from 'src/environments/environment';
-
 
 @Injectable({
   providedIn: 'root'
 })
-export class BorrowService {
+export class VaultStatsService {
   items = []
-  currentSegment = 'items'
-  filter = 'pending'
-  accountSubscription?: Subscription
-  account
-  requestColumns = [
-    {
-      name: 'Asset',
-      prop: '',
-      flexGrow: 1,
-    },
-    {
-      name: 'Requested',
-      prop: 'amount',
-      flexGrow: 2,
-    }, 
-    {
-      name: 'Period',
-      prop: 'duration',
-      flexGrow: 1,
-    },
-  ]
-
-  pendingLoans = []
-  loans: Loan[] = []
-  lendingPools: LendingPool[] = []
-  currency
-  vaultContract
-  borrowPrecision = BigNumber.from(1000000000000)
-  aprPrecision = BigNumber.from(100000000000)
+  pools: LendingPool[] = []
+  lendingPoolsSubject : BehaviorSubject<any> = new BehaviorSubject(null)
 
   constructor(
-    private wallet: WalletProviderService,
     private priceFeed: PriceOracleService,
     private vaultService: CheddaBaseTokenVaultService,
   ) { }
 
   async loadVaultStats() {
-    this.lendingPools = environment.config.pools
+    this.pools = environment.config.pools
+    this.lendingPoolsSubject.next(this.pools)
     try {
-      this.lendingPools.forEach(async pool => {
+      this.pools.forEach(async pool => {
         await this.loadStats(pool)
+
       }); 
     } catch (error) {
       console.error('caught error: ', error)
@@ -71,6 +43,4 @@ export class BorrowService {
       apr: ethers.utils.formatEther(stats.depositApr.mul(1000)), // todo: Should be .mul(100)
     }
   }
-
-
 }
