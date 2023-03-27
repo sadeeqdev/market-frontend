@@ -9,6 +9,7 @@ import { LendingPool } from 'src/app/lend/lend.models';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
 import { environment } from 'src/environments/environment';
+import { VaultStatsService } from 'src/app/providers/vault-stats.service';
 
 export interface VaultStats {
   borrowApr: number
@@ -54,6 +55,7 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
   constructor(
     private tokenService: TokenService, 
     private vaultService: CheddaBaseTokenVaultService,
+    private vaultStatsService: VaultStatsService,
     private wallet: WalletProviderService,
     private loadingController: LoadingController,
     private route: ActivatedRoute,
@@ -200,6 +202,7 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
         this.hideLoading()
         this.alert.showToast('Deposit confirmed')
         await this.loadVaultStats()
+        await this.vaultStatsService.loadVaultStats()
       }
     })
     this.withdrawEventListener = this.vaultContract.on('Withdraw', async (from, to, amount, shares) => {
@@ -207,6 +210,7 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
         this.hideLoading()
         this.alert.showToast('Withdrawal confirmed')
         await this.loadVaultStats()
+        await this.vaultStatsService.loadVaultStats()
       }
     })
 

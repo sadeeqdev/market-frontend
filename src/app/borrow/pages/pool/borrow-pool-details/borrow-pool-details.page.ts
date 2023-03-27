@@ -9,6 +9,7 @@ import { MarketNftService } from 'src/app/contracts/market-nft.service';
 import { PriceOracleService } from 'src/app/contracts/price-oracle.service';
 import { TokenService } from 'src/app/contracts/token.service';
 import { LendingPool } from 'src/app/lend/lend.models';
+import { VaultStatsService } from 'src/app/providers/vault-stats.service';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
 import { NFTMetadata } from 'src/app/shared/models/nft.model';
@@ -80,7 +81,8 @@ export class BorrowPoolDetailsPage implements OnInit {
     private priceFeed: PriceOracleService,
     private route: ActivatedRoute,
     private navController: NavController,
-    private alert: GlobalAlertService
+    private alert: GlobalAlertService,
+    private vaultStatsService: VaultStatsService,
   ) {}
 
   async ngOnInit() {
@@ -325,7 +327,7 @@ export class BorrowPoolDetailsPage implements OnInit {
           this.collateralContract.address,
           tokenIds
         )
-      } else {
+    } else {
         const amount = ethers.utils.parseUnits(
           this.withdrawCollateralInput.value.toString() ?? '0'
         );
@@ -494,6 +496,7 @@ export class BorrowPoolDetailsPage implements OnInit {
             await this.fetchDepositedNfts()
           }
           await this.loadVaultStats()
+          await this.vaultStatsService.loadVaultStats();
         }
       }
     );
@@ -509,6 +512,7 @@ export class BorrowPoolDetailsPage implements OnInit {
             await this.fetchOwnedTokens()
           }
           await this.loadVaultStats()
+          await this.vaultStatsService.loadVaultStats();
         }
       }
     );
@@ -520,6 +524,7 @@ export class BorrowPoolDetailsPage implements OnInit {
           this.hideLoading();
           this.alert.showToast('Borrow confirmed');
           await this.loadVaultStats();
+          await this.vaultStatsService.loadVaultStats();
         }
       }
     );
@@ -530,7 +535,8 @@ export class BorrowPoolDetailsPage implements OnInit {
           this.hideLoading();
           this.alert.showToast('Repayment confirmed');
           await this.loadVaultStats();
-        }
+          await this.vaultStatsService.loadVaultStats();
+    }
       }
     );
 

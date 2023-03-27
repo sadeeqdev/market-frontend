@@ -12,6 +12,7 @@ import { Profile } from '../../profile.interface';
   templateUrl: './profile-popover.component.html',
   styleUrls: ['./profile-popover.component.scss'],
 })
+
 export class ProfilePopoverComponent implements OnInit {
 
   address: string
