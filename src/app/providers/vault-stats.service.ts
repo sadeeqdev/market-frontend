@@ -32,7 +32,7 @@ export class VaultStatsService {
     }
   }
 
-  private async loadStats(pool: LendingPool) {
+  async loadStats(pool: LendingPool) {
     const contract = this.vaultService.contractAt(pool.address) 
     const price = await this.priceFeed.getAssetPrice(pool.asset.address)
     const stats = await this.vaultService.getVaultStats(contract)

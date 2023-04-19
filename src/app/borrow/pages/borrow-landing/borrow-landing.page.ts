@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonSegment, IonSelect, NavController } from '@ionic/angular';
-import { BigNumber, ethers } from 'ethers';
+import { IonSegment, IonSelect } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { CheddaBaseTokenVaultService } from 'src/app/contracts/chedda-base-token-vault.service';
 import { PriceOracleService } from 'src/app/contracts/price-oracle.service';
@@ -17,37 +16,13 @@ import { environment } from 'src/environments/environment';
 export class BorrowLandingPage implements OnInit {
   @ViewChild('segmentControl') segmentControl: IonSegment
   @ViewChild('filterSelect') filterSelect: IonSelect
-  items = []
   currentSegment = 'items'
-  filter = 'pending'
   accountSubscription?: Subscription
   account
   lendingPoolsSubscription:Subscription
-  requestColumns = [
-    {
-      name: 'Asset',
-      prop: '',
-      flexGrow: 1,
-    },
-    {
-      name: 'Requested',
-      prop: 'amount',
-      flexGrow: 2,
-    }, 
-    {
-      name: 'Period',
-      prop: 'duration',
-      flexGrow: 1,
-    },
-  ]
-
-  pendingLoans = []
-  loans: Loan[] = []
   lendingPools: LendingPool[] = []
   currency
   vaultContract
-  borrowPrecision = BigNumber.from(1000000000000)
-  aprPrecision = BigNumber.from(100000000000)
 
   constructor(
     private wallet: WalletProviderService,
