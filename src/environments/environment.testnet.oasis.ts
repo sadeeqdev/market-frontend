@@ -45,14 +45,14 @@ export const environment = {
                 name: 'USD Coin',
                 symbol: 'USCD.c',
                 address: '0x8457106E861a67B989a2ea398DF3A045331E5115',
-                logo: '/assets/logos/usd-coin-logo.png'
+                logo: '/assets/logos/usdc-logo.png'
               },
               collateral: [
                 {
                   name: 'Wrapped ROSE',
                   symbol: 'WROSE.c',
                   address: '0xb19B3D29931549c4EFE24bC5aC6DCf11f7a33A21',
-                  logo: '/assets/logos/oasis-logo-sm.png'
+                  logo: '/assets/logos/oasis-logo.png'
                 },
               ],
               stats: {}
@@ -71,7 +71,7 @@ export const environment = {
                   name: 'Wrapped ROSE',
                   symbol: 'WROSE.c',
                   address: '0xb19B3D29931549c4EFE24bC5aC6DCf11f7a33A21',
-                  logo: '/assets/logos/oasis-logo-sm.png'
+                  logo: '/assets/logos/oasis-logo.png'
                 },
               ],
               stats: {}
@@ -90,7 +90,7 @@ export const environment = {
                   name: 'Wrapped ROSE',
                   symbol: 'WROSE.c',
                   address: '0xb19B3D29931549c4EFE24bC5aC6DCf11f7a33A21',
-                  logo: '/assets/logos/oasis-logo-sm.png'
+                  logo: '/assets/logos/oasis-logo.png'
                 },
               ],
               stats: {}
@@ -102,14 +102,14 @@ export const environment = {
                 name: 'Wrapped ROSE',
                 symbol: 'WROSE.c',
                 address: '0xb19B3D29931549c4EFE24bC5aC6DCf11f7a33A21',
-                logo: '/assets/logos/oasis-logo-sm.png'
+                logo: '/assets/logos/oasis-logo.png'
               },
               collateral: [
                 {
                   name: 'USD Coin',
                   symbol: 'USCD.c',
                   address: '0x8457106E861a67B989a2ea398DF3A045331E5115',
-                  logo: '/assets/logos/usd-coin-logo.png'
+                  logo: '/assets/logos/usdc-logo.png'
                 },
                 {
                   name: 'UXD Coin',
@@ -139,7 +139,7 @@ export const environment = {
                 name: 'Wrapped ROSE',
                 symbol: 'WROSE.c',
                 address: '0xb19B3D29931549c4EFE24bC5aC6DCf11f7a33A21',
-                logo: '/assets/logos/oasis-logo-sm.png'
+                logo: '/assets/logos/oasis-logo.png'
               },
               collateral: [
                 {
@@ -179,7 +179,7 @@ export const environment = {
           ],
           ui: {
             chainName: 'Oasis',
-            logo: '/assets/logos/oasis-logo-sm.png',
+            logo: '/assets/logos/oasis-logo.png',
             txUrlPrefix: 'https://testnet.explorer.emerald.oasis.dev/txs/'
           }
     },
