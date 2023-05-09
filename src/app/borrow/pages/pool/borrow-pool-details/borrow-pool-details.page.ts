@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonInput, LoadingController, NavController } from '@ionic/angular';
 import { BigNumber, ethers } from 'ethers';
@@ -31,12 +31,11 @@ enum RepayMode {
   styleUrls: ['./borrow-pool-details.page.scss'],
 })
 export class BorrowPoolDetailsPage implements OnInit {
-  @ViewChild('addCollateralInput') addCollateralInput: IonInput;
-  @ViewChild('borrowInput') borrowInput: IonInput;
-  @ViewChild('withdrawCollateralInput') withdrawCollateralInput: IonInput;
-  @ViewChild('repayInput') repayInput: IonInput;
+  @ViewChild('addCollateralInput') addCollateralInput: ElementRef;
+  @ViewChild('borrowInput') borrowInput: ElementRef;
+  @ViewChild('withdrawCollateralInput') withdrawCollateralInput: ElementRef;
+  @ViewChild('repayInput') repayInput: ElementRef;
 
-  currentSegment = 'borrow';
   isApproved = false;
   myCollateral;
   collateralType = '';
@@ -70,6 +69,7 @@ export class BorrowPoolDetailsPage implements OnInit {
   repayMode: RepayMode = RepayMode.repay;
   routeSubscription: Subscription;
   pool: LendingPool;
+  isBorrowCheddaTab: boolean = true;
 
   constructor(
     private tokenService: TokenService,
@@ -135,8 +135,8 @@ export class BorrowPoolDetailsPage implements OnInit {
     return null;
   }
 
-  onSegmentChanged($event) {
-    this.currentSegment = $event.target.value;
+  async switchBorrowCheddaTab(isBorrowTab:boolean){
+    this.isBorrowCheddaTab = isBorrowTab
     this.selectedNfts = []
   }
 
@@ -242,22 +242,22 @@ export class BorrowPoolDetailsPage implements OnInit {
 
   fillMaxDeposit() {
     this.setBorrowMode(BorrowMode.collateral);
-    this.addCollateralInput.value = this.myCollateralTokenBalance;
+    this.addCollateralInput.nativeElement.value = this.myCollateralTokenBalance;
   }
 
   fillMaxBorrow() {
     this.setBorrowMode(BorrowMode.borrow);
-    this.borrowInput.value = this.maxBorrowAmount;
+    this.borrowInput.nativeElement.value = this.maxBorrowAmount;
   }
 
   fillMaxWithdraw() {
     this.setRepayMode(RepayMode.collateral);
-    this.withdrawCollateralInput.value = this.myCollateralDeposited;
+    this.withdrawCollateralInput.nativeElement.value = this.myCollateralDeposited;
   }
 
   fillMaxRepay() {
     this.setRepayMode(RepayMode.repay);
-    this.repayInput.value = this.myAmountOwed;
+    this.repayInput.nativeElement.value = this.myAmountOwed;
   }
 
   async approveCollateral() {
@@ -297,9 +297,9 @@ export class BorrowPoolDetailsPage implements OnInit {
         )
       } else {
         const amount = ethers.utils.parseUnits(
-          this.addCollateralInput.value.toString() ?? '0'
+          this.addCollateralInput.nativeElement.value.toString() ?? '0'
         );
-        this.addCollateralInput.value = '';
+        this.addCollateralInput.nativeElement.value = '';
         await this.vaultService.addCollateral(
           this.vaultContract,
           this.collateralContract.address,
@@ -329,9 +329,9 @@ export class BorrowPoolDetailsPage implements OnInit {
         )
     } else {
         const amount = ethers.utils.parseUnits(
-          this.withdrawCollateralInput.value.toString() ?? '0'
+          this.withdrawCollateralInput.nativeElement.value.toString() ?? '0'
         );
-        this.withdrawCollateralInput.value = '';
+        this.withdrawCollateralInput.nativeElement.value = '';
         await this.vaultService.removeCollateral(
           this.vaultContract,
           this.collateralContract.address,
@@ -353,9 +353,9 @@ export class BorrowPoolDetailsPage implements OnInit {
     try {
       await this.showLoading('Waiting for confirmation');
       const amount = ethers.utils.parseUnits(
-        this.borrowInput.value.toString() ?? '0'
+        this.borrowInput.nativeElement.value.toString() ?? '0'
       );
-      this.borrowInput.value = '';
+      this.borrowInput.nativeElement.value = '';
       await this.vaultService.borrow(this.vaultContract, amount);
     } catch (error) {
       this.hideLoading();
@@ -371,9 +371,9 @@ export class BorrowPoolDetailsPage implements OnInit {
     try {
       await this.showLoading('Waiting for confirmation');
       const amount = ethers.utils.parseUnits(
-        this.repayInput.value.toString() ?? '0'
+        this.repayInput.nativeElement.value.toString() ?? '0'
       );
-      this.repayInput.value = '';
+      this.repayInput.nativeElement.value = '';
       await this.vaultService.repay(this.vaultContract, amount);
     } catch (error) {
       this.hideLoading();
@@ -384,18 +384,18 @@ export class BorrowPoolDetailsPage implements OnInit {
   setBorrowMode(mode) {
     this.borrowMode = mode;
     if (mode == BorrowMode.borrow && this.addCollateralInput) {
-      this.addCollateralInput.value = '';
+      this.addCollateralInput.nativeElement.value = '';
     } else if (this.borrowInput) {
-      this.borrowInput.value = '';
+      this.borrowInput.nativeElement.value = '';
     }
   }
 
   setRepayMode(mode) {
     this.repayMode = mode;
     if (mode == RepayMode.repay && this.withdrawCollateralInput) {
-      this.withdrawCollateralInput.value = '';
+      this.withdrawCollateralInput.nativeElement.value = '';
     } else if (this.repayInput) {
-      this.repayInput.value = '';
+      this.repayInput.nativeElement.value = '';
     }
   }
 

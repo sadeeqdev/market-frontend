@@ -32,6 +32,12 @@
 @import '~@swimlane/ngx-datatable/themes/dark.scss';
 @import '~@swimlane/ngx-datatable/assets/icons.css';
 
+
+/* Tailwing CSS directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 ion-modal.stack-modal {
   --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
   --backdrop-opacity: var(--ion-backdrop-opacity, 0.32);
@@ -276,8 +282,8 @@ ion-card.main-card:hover {
 }
 
 .asset-avatar {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
 }
 
 .asset-name {
@@ -336,10 +342,11 @@ ion-card.main-card:hover {
 }
 
 body, main {
-  background-color: var(--chedda-default-background) !important;
+  background: radial-gradient(67.06% 67.06% at 50% 51.68%, #48419E 0%, #000000 100%) !important;
 }
 
 .default-background {
+  background: radial-gradient(67.06% 67.06% at 50% 51.68%, #48419E 0%, #000000 100%) !important;
   // background-color: var(--chedda-default-background);
 }
 
@@ -370,6 +377,53 @@ ion-item-divider {
 }
 .logo-cascade {
   margin: -5px;
-  border-radius: 50%;
+  border-radius: 50% !important;
   border: 1px solid gray;
+}
+
+.round-image {
+  border-radius: 50%;
+  &::part(image) {
+      border-radius: 50%;
+  }
+}
+
+.leftbox_bg{
+  background: linear-gradient(99.71deg, rgba(232, 136, 56, 0.17) 7.51%, rgba(146, 113, 247, 0.17) 97.98%);
+}
+
+.rightbox_bg{
+  background: linear-gradient(98.29deg, rgba(130, 93, 237, 0.17) 13.27%, rgba(97, 219, 216, 0.17) 125.98%);
+}
+
+.gridrow_bg{
+  background: radial-gradient(48.98% 14130.72% at 51.02% 50%, rgba(166, 106, 50, 0.295) 45.83%, rgba(72, 65, 158, 0.2) 100%) 
+}
+
+.card-bg {
+  background: radial-gradient(67.06% 67.06% at 50% 51.68%, #48419E 0%, #000000 100%) 
+}
+
+.primary-button-bg{
+  background: linear-gradient(86.02deg, #F3943D -8.86%, #FDE34D 129.9%);
+}
+
+.secondary-button{
+  border: 2px solid #FF9933;
+  border-radius: 8px !important; /* round the corners of the button */
+  color: #FF9933; /* set the text color to white for contrast */
+  background-color: transparent; 
+}
+
+.primary-button:hover{
+  background: linear-gradient(86.02deg, #a46326 -8.86%, #0c0c0b 129.9%);
+}
+
+.activeTab{
+  border-bottom: 2px solid #FDE34D;
+  color: #FDE34D;
+}
+
+.faucets-bg{
+  background: radial-gradient(40.19% 4106.68% at 41.31% 70.62%, rgba(98, 87, 242, 0.15) 30.21%, rgba(0, 0, 0, 0.15) 100%)
 }

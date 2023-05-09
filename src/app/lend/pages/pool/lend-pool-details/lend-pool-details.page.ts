@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonInput, LoadingController, NavController } from '@ionic/angular';
 import { BigNumber, ethers } from 'ethers';
@@ -25,10 +25,9 @@ export interface VaultStats {
 })
 export class LendPoolDetailsPage implements OnInit, OnDestroy {
 
-  @ViewChild('depositInput') depositInput: IonInput
-  @ViewChild('withdrawInput') withdrawInput: IonInput
+  @ViewChild('depositInput') depositInput:ElementRef;
+  @ViewChild('withdrawInput') withdrawInput:ElementRef;
   isApproved = false
-  currentSegment = 'deposit'
   asset
   vaultContract
   stats?: VaultStats
@@ -51,6 +50,7 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
   aprPrecision = BigNumber.from(100000000000)
   routeSubscription: Subscription
   pool: LendingPool
+  isDepositCheddaTab: boolean = true;
 
   constructor(
     private tokenService: TokenService, 
@@ -110,10 +110,6 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
     }
     return null
   }
-  
-  onSegmentChanged($event) {
-    this.currentSegment = $event.target.value
-  }
 
   private async loadVaultStats() {
     const stats = await this.vaultService.getVaultStats(this.vaultContract)
@@ -154,8 +150,8 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
     }
     try {
       await this.showLoading('Waiting for confirmation')
-      const amount = ethers.utils.parseUnits(this.depositInput.value.toString() ?? '0')
-      this.depositInput.value = ''
+      const amount = ethers.utils.parseUnits(this.depositInput.nativeElement.value.toString() ?? '0')
+      this.depositInput.nativeElement.value = ''
       await this.vaultService.depositAsset(this.vaultContract, amount, this.wallet.currentAccount) 
     } catch (error) {
       await this.hideLoading()
@@ -170,8 +166,8 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
     }
     try {
       await this.showLoading('Waiting for confirmation')
-      const amount = ethers.utils.parseUnits(this.withdrawInput.value.toString() ?? '0')
-      this.withdrawInput.value = ''
+      const amount = ethers.utils.parseUnits(this.withdrawInput.nativeElement.value.toString() ?? '0')
+      this.withdrawInput.nativeElement.value = ''
       await this.vaultService.redeem(this.vaultContract, amount, this.wallet.currentAccount) 
     } catch (error) {
       await this.hideLoading()
@@ -180,11 +176,11 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
   }  
 
   fillMaxDeposit() {
-    this.depositInput.value = this.myAssetBalance
+    this.depositInput.nativeElement.value = this.myAssetBalance
   }
 
   fillMaxWithdraw() {
-    this.withdrawInput.value = this.myVaultSharesBalance
+    this.withdrawInput.nativeElement.value = this.myVaultSharesBalance
   }
 
   private async registerEventListeners() {
@@ -217,6 +213,10 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
     this.wallet.accountSubject.subscribe(wallet => {
       this.loadVaultStats()
     })
+  }
+
+  async switchDepositCheddaTab(isDepositTab:boolean){
+    this.isDepositCheddaTab = isDepositTab
   }
 
   private async checkAllowance() {

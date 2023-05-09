@@ -1,4 +1,4 @@
-<ion-header [translucent]="false" class="main-nav">
+ <ion-header [translucent]="false" class="main-nav">
   <ion-toolbar *ngIf="!isCorrectNetwork" color="danger" class="centered-text text-middle">
     <ion-text class="text-middle white-text">
       <ion-icon name="warning"></ion-icon>
@@ -6,7 +6,93 @@
     </ion-text>
     <ion-button size="small" color="secondary" class="switch-button" (click)="switchNetwork()">Switch Network</ion-button>
   </ion-toolbar>
-  <ion-toolbar color="dark">
+  <!-- New Header -->
+  <div class="h-24 bg-black border-b border-gray-600  flex items-center" >
+    <div class="flex flex-row justify-between py-4 w-11/12 xl:w-5/6 2xl:w-9/12 mx-auto items-center">
+      <div>
+        <img src="/assets/logos/app-logo.svg" width="70%" class="md:hidden lg:flex"/>
+        <img src="/assets/logos/chedda-logo.svg" width="50px" class="flex lg:hidden"/>
+      </div>
+      <div class="flex flex-row text-white gap-x-10 mt-2 text-sm lg:text-xl font-semibold">
+        <button *ngFor="let item of menuItems" class="hover:opacity-80" [routerLink]="item.path" routerLinkActive="top-nav-active"  >
+          {{item.name}}
+        </button>
+      </div>
+      <div class="flex flex-row gap-2 text-white">
+        <div class="relative network-menu-container">
+          <button 
+            (click)="openNetworkMenu()"
+            class="h-9 w-32 lg:h-11 lg:w-40 p-2 rounded-lg network_button flex gap-2 justify-between items-center text-sm lg:text-xl font-semibold hover:opacity-90"
+            >
+            <div class="flex gap-1 items-center">
+              <img [src]="env.config.ui.logo" class="w-6 h- lg:h-8 lg:w-8"/>
+              {{ env.config.ui.chainName }}
+            </div>
+            <img src="/assets/icon/arrow-down.svg"/>
+          </button>
+          <div 
+            [class.hidden]="!isOpenNetworkMenu"
+            id="mySelectMenu" 
+            class="absolute mt-1 w-full bg-[#13161F] text-white menu-bg rounded-[10px] shadow-lg z-10"
+          >
+            <ul class="list-reset">
+              <li 
+                *ngFor="let network of networkList; index as i" 
+                (click)="onNetworkSelected(network)" 
+                class="py-2 px-2 border-b border-gray-700 hover:bg-gray-700 hover:rounded-t-md cursor-pointer flex text-xl font-semibold gap-2 last:border-none hover:last:rounded-t-none last:rounded-b-md"
+              >
+                <img [src]="network.icon"/>
+                {{ network.name }}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="relative profile-menu-container"  *ngIf="account">
+          <button 
+            (click)="openProfileMenu()"c
+            class="h-9 w-32 lg:h-11 lg:w-40 px-2 rounded-lg text-sm account_button flex justify-between items-center hover:opacity-90"
+            >
+            <div class="flex gap-1 items-center">
+              <img src="/assets/logos/account-img.svg"/>
+              {{account | truncateMiddle:[6, '...', 4 ]}}
+            </div>
+            <img src="/assets/icon/arrow-down.svg"/>
+          </button>
+          <div id="mySelectMenu" class="absolute mt-1 w-56 bg-[#13161F] menu-bg text-white rounded-md shadow-lg z-10" [class.hidden]="!isOpenProfileMenu">
+            <ul class="list-reset text-center font-semibold">
+              <li class="py-4 px-2 hover:opacity-70 rounded-t-md cursor-pointer border-b border-gray-700">
+                <div class="flex gap-3 justify-center items-center">
+                  <img src="/assets/logos/account-img.svg"/>
+                    {{account | truncateMiddle:[6, '...', 4 ]}}
+                  <img src="/assets/icon/copy-icon.svg" width="17px"/>
+                </div>
+              </li>
+              <li class="py-2 px-2 border-b border-gray-700">{{balance | number: '1.2-4'}} xCHEDDA</li>
+              <li class="py-2 px-2 border-b border-gray-700">{{veBalance | number: '1.2-4'}} xCHEDDA</li>
+              <li class="py-4 px-5 rounded-b-md cursor-pointer flex items-center">
+                <button
+                  (click)="disconnect()"
+                  class="h-8 borrow-button-bg w-full rounded-lg font-bold uppercase text-md hover:opacity-90"
+                >
+                  Disconnect
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div *ngIf="!account">
+          <button 
+            (click)="onConnectTapped()"
+            class="h-11 w-40 px-2 flex rounded-lg justify-center font-semibold text-lg account_button items-center hover:opacity-90"
+            >
+              Connect wallet
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Old header -->
+  <!-- <ion-toolbar color="dark">
     <ion-row>
       <ion-col></ion-col>
     </ion-row>
@@ -16,7 +102,6 @@
         <img src="/assets/images/chedda-logo-128.png" width="30px" />
       </ion-button>
       <ion-button fill="solid" #networkBtn (click)="presentNetworksPopver($event)">
-      <!-- <ion-button fill="solid" #networkBtn> -->
           <ion-img [src]="env.config.ui.logo" class="network-logo"></ion-img>
         {{ env.config.ui.chainName }}
         <ion-icon name="chevron-down"></ion-icon>
@@ -33,7 +118,6 @@
     </ion-title>
 
     <ion-buttons slot="end" *ngIf="!account">
-
       <ion-button fill="outline" color="light" (click)="onConnectTapped()">
         <ion-icon name="wallet-outline" class="connect-icon"></ion-icon>
         <ion-text>Connect Wallet</ion-text>
@@ -41,20 +125,111 @@
     </ion-buttons>
     
     <ion-buttons slot="end" *ngIf="account">
-      <!-- <ion-button routerLink="/market/create" color="primary" fill="solid">
-        Create
-      </ion-button> -->
       <ion-fab-button class="profile-button" (click)="presentProfilePopover($event)">
         <ion-avatar class="wallet-avatar">
           <ion-img [src]="imageDataUrl" class="wallet-avatar"></ion-img>
         </ion-avatar>
       </ion-fab-button>
     </ion-buttons>
-  </ion-toolbar>
+  </ion-toolbar> -->
 </ion-header>
 
 <div class="mobile-nav">
-  <ion-toolbar color="dark">
+  <!-- New header -->
+ <div class="h-20 z-10 w-full bg-black flex items-center mobile-nav-bg">
+  <div class="h-16 w-full items-center grid grid-cols-12">
+    <div class="col-span-5 pl-3">
+      <img src="/assets/logos/chedda-logo.svg" width="50px"/>
+    </div>
+    <div class="col-span-5">
+      <div class="relative network-menu-container">
+        <button 
+          (click)="openNetworkMenu()"
+          class="h-10 w-36 p-2 rounded network_button flex gap-2 justify-between items-center text-lg font-semibold hover:opacity-90"
+          >
+          <div class="flex gap-2 text-white">
+            <img src="/assets/logos/Oasis-logo.svg" width="20px"/>
+            {{ env.config.ui.chainName }}
+          </div>
+          <img src="/assets/icon/arrow-down.svg"/>
+        </button>
+        <div 
+          [class.hidden]="!isOpenNetworkMenu"
+          id="mySelectMenu" 
+          class="absolute mt-1 w-full bg-[#13161F] text-white menu-bg rounded-[10px] shadow-lg z-10"
+        >
+          <ul class="list-reset">
+            <li 
+              *ngFor="let network of networkList; index as i" 
+              (click)="onNetworkSelected(network)" 
+              class="py-2 px-2 border-b border-gray-700 hover:bg-gray-700 hover:rounded-t-md cursor-pointer flex text-xl font-semibold gap-2 last:border-none hover:last:rounded-t-none last:rounded-b-md"
+            >
+              <img [src]="network.icon"/>
+              {{ network.name }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-span-2 flex justify-end pr-5">
+      <button (click)="openMenu()">
+        <img src="/assets/icon/menu-icon.svg"/>
+      </button>
+    </div>
+  </div>
+ </div>
+ <!-- Mobile nav drawer -->
+ <div class="absolute text-white z-50 w-screen h-screen mobile-nav-bg top-0 bottom-0" [class.hidden]="!isMenuOpen">
+    <div class="flex w-full justify-between px-5 mt-6 items-start">
+      <div class="">
+        <img src="/assets/logos/chedda-logo.svg" width="60px"/>
+      </div>
+      <button class="mt-2" (click)="closeMenu()">
+        <img src="/assets/icon/close-icon.svg" width="17px"/>
+      </button>
+    </div>
+    <div>
+      <div class="mt-1 w-full text-white rounded-md shadow-lg z-10" *ngIf="account">
+        <ul class="list-reset text-center text-lg font-semibold">
+          <li class="flex justify-center mt-5">
+            <img src="/assets/logos/account-img.svg" width="95px"/>
+          </li>
+          <li class="py-4 px-2 hover:opacity-70 rounded-t-md cursor-pointer border-b border-gray-700">
+            <div class="flex gap-3 justify-center items-center text-2xl">
+                {{account | truncateMiddle:[6, '...', 4 ]}}
+              <img src="/assets/icon/copy-icon.svg" width="17px"/>
+            </div>
+          </li>
+          <li class="py-2 px-2 border-b border-gray-700">{{balance | number: '1.2-4'}} CHEDDA</li>
+          <li class="py-2 px-2 border-b border-gray-700">{{veBalance | number: '1.2-4'}} xCHEDDA</li>
+          <li class="py-4 px-5 rounded-b-md cursor-pointer flex justify-center items-center">
+            <button
+              (click)="disconnect()"
+              class="h-8 borrow-button-bg w-48 rounded-lg font-bold uppercase text-xs hover:opacity-90"
+            >
+              Disconnect wallet
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div *ngIf="!account" class="flex justify-center mt-5">
+      <button
+        (click)="onConnectTapped()"
+        class="h-10 borrow-button-bg w-48 rounded-lg font-bold uppercase text-lg hover:opacity-90"
+      >
+        Connect wallet
+      </button>
+    </div>
+    <div class="mt-5">
+      <div class="flex flex-col text-white gap-y-7 mt-2 text-3xl font-semibold">
+        <button *ngFor="let item of menuItems" class="hover:opacity-80" [routerLink]="item.path" routerLinkActive="top-nav-active" (click)="closeMenu()" >
+          {{item.name}}
+        </button>
+      </div>
+    </div>
+ </div>
+  <!-- <ion-toolbar color="dark">
     <ion-buttons slot="start">
       <ion-menu-toggle>
         <ion-button>
@@ -121,5 +296,5 @@
         </ion-item>
       </ion-menu-toggle>
     </ion-content>
-  </ion-menu>
+  </ion-menu> -->
 </div>

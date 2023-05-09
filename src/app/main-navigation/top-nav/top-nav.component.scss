@@ -126,3 +126,23 @@ ion-img.circle::part(image) {
     margin-right: 20px;
     margin-left: 20px;
 }
+
+.network_button {
+    background: linear-gradient(252.74deg, #F3943D 18.99%, rgba(72, 65, 158, 0.81) 58.87%);
+}
+
+.account_button {
+    background: linear-gradient(252.74deg, #F3943D 18.99%, #6257F2 98.75%)
+}
+
+.borrow-button-bg{
+    background: linear-gradient(86.02deg, #F3943D -8.86%, #FDE34D 129.9%);
+}
+
+.menu-bg{
+    background: radial-gradient(48.98% 14130.72% at 51.02% 50%, rgb(40, 25, 80) 45.83%, rgb(18, 9, 37) 100%) 
+}
+
+.mobile-nav-bg{
+   background: radial-gradient(66.36% 66.36% at 50% 50%, #1D123A 0%, #000000 100%);
+}

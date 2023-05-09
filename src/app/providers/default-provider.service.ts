@@ -5,12 +5,14 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
+
 export class DefaultProviderService {
 
-  provider: ethers.providers.JsonRpcProvider
+  provider: ethers.providers.StaticJsonRpcProvider
 
   constructor() {
-    this.provider = new ethers.providers.JsonRpcProvider(environment.jsonRpcUrl);
+    this.provider = new ethers.providers.StaticJsonRpcProvider(environment.jsonRpcUrl);
+    this.provider.pollingInterval = 20000
   }
 
   async getBlockNumber() {

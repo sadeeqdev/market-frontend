@@ -1,4 +1,4 @@
-import { Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
@@ -10,6 +10,7 @@ import { PreferencesService } from 'src/app/shared/preferences.service';
 import { NetworksPopoverComponent } from '../networks-popover/networks-popover.component';
 import { environment } from 'src/environments/environment';
 import { CheddaService } from 'src/app/contracts/chedda.service';
+import { VeCheddaService } from 'src/app/contracts/ve-chedda.service';
 import { ethers } from 'ethers';
 
 declare const blockies
@@ -27,13 +28,14 @@ export class TopNavComponent implements OnInit, OnDestroy {
   isDark = false;
   account?: string
   balance
+  veBalance
   isCorrectNetwork = true
   isConnected = false
   env = environment
   popover: any
   profile: Profile
   title = 'Dapps'
-
+  isMenuOpen: boolean = false
   imageDataUrl = ''
   private accountSubscription?: Subscription
   private networkSubscription?: Subscription
@@ -67,11 +69,43 @@ export class TopNavComponent implements OnInit, OnDestroy {
     }, 
   ]
 
+  networkList = [
+    // {
+    //   name: 'Avalanche Testnet',
+    //   url: 'https://testnet-avalanche.chedda.store',
+    //   icon: '/assets/logos/avalanche-avax-logo.png'
+    // },
+    // {
+    //   name: 'Harmony Testnet',
+    //   url: 'https://testnet-harmony.chedda.store',
+    //   icon: '/assets/logos/harmony-logo.png'
+    // },
+    {
+      name: 'Oasis',
+      url: 'https://testnet-oasis.chedda.store',
+      icon: '/assets/logos/Oasis-logo.svg'
+    },
+    {
+      name: 'Polygon',
+      url: 'https://testnet-polygon.chedda.store',
+      icon: '/assets/logos/polygon-logo.svg'
+    },
+    // {
+    //   name: 'Telos Testnet',
+    //   url: 'https://telos-hackathon.chedda.store',
+    //   icon: '/assets/logos/tlos-logo.png'
+    // },
+  ]
+  isOpenProfileMenu: boolean = false;
+  isOpenNetworkMenu: boolean = false;
+
   constructor(
     private router: Router,
     private zone: NgZone,
     private provider: WalletProviderService, 
     private chedda: CheddaService,
+    private veChedda: VeCheddaService,
+    private wallet: WalletProviderService,
     private alertService: GlobalAlertService,
     private popoverController: PopoverController,
     private preferences: PreferencesService,
@@ -81,14 +115,16 @@ export class TopNavComponent implements OnInit, OnDestroy {
       let eth:any = window.ethereum;
   
       // Watch for provider disconnection
-      eth.on('accountsChanged', (accounts: any) => {
-        if (accounts.length > 0) {
-          this.account = accounts[0]
-        }else{
-          // Metamask provider is disconnected
-          this.account = ''
-        }
-      });
+      if(eth){
+        eth.on('accountsChanged', (accounts: any) => {
+          if (accounts.length > 0) {
+            this.account = accounts[0]
+          }else{
+            // Metamask provider is disconnected
+            this.account = ''
+          }
+        });
+      }
     }
 
 
@@ -143,6 +179,7 @@ export class TopNavComponent implements OnInit, OnDestroy {
       this.account = account
       if (account) {
         this.balance = ethers.utils.formatEther(await this.chedda.balanceOf(account))
+        this.veBalance = ethers.utils.formatEther(await this.veChedda.balanceOf(account))
       }
       this.createBlockie()
     })
@@ -220,4 +257,42 @@ export class TopNavComponent implements OnInit, OnDestroy {
     this.setTitle('Profile')
     this.router.navigate(['/', 'profile', this.account])
   }
+
+  async disconnect() {
+    await this.wallet.disconnect()
+  }
+
+  openProfileMenu(){
+    this.isOpenProfileMenu = !this.isOpenProfileMenu
+  }
+
+  openNetworkMenu(){
+    this.isOpenNetworkMenu = !this.isOpenNetworkMenu
+  }
+
+  onNetworkSelected(network: any) {
+    this.popoverController.dismiss()
+    window.open(network.url, '_self').focus()
+  }
+
+  closeMenu(){
+    this.isMenuOpen = false;
+  }
+
+  openMenu(){
+    this.isMenuOpen = true;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (!(event.target as HTMLElement).closest('.network-menu-container')) {
+      this.isOpenNetworkMenu = false;
+    }
+
+    if (!(event.target as HTMLElement).closest('.profile-menu-container')) {
+      this.isOpenProfileMenu = false;
+    }
+  }
 }
+
+  

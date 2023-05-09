@@ -1,271 +1,310 @@
 <ion-content>
   <ion-grid>
-        <!-- stake -->
-        <ion-row>
-          <ion-col size-xs="12" size-sm="10" offset-sm="1" size-md="8" offset-md="2" size-lg="8" offset-lg="2" size-xl="6" offset-xl="3">
-            <ion-card class="light-background">
-              <ion-card-title>
-                <ion-row class="card-title-row">
-                  <ion-col>
-                    <ion-text class="card-title">
-                      Stake CHEDDA
-                    </ion-text>
-                  </ion-col>
-                </ion-row>
-                
-              </ion-card-title>
-              <ion-item-divider class="light-background"></ion-item-divider>
-              <ion-card-content>
-    
-                <ion-row>
-                  <ion-col size="6">
-                    <ion-text>Total Supply</ion-text>
-                  </ion-col>
-                  <ion-col size="6">{{ cheddaTotalSupply | number:'1.2-5':'en-us' }} CHEDDA</ion-col>
-                </ion-row>
-                <ion-row>
-                  <ion-col size="6">
-                    <ion-text>My Balance</ion-text>
-                  </ion-col>
-                  <ion-col size="6">{{ myCheddaBalance | number:'1.2-5':'en-us' }} CHEDDA </ion-col>
-                </ion-row>
-                <ion-row>
-                  <ion-col size="6">
-                    <ion-text>My Stake</ion-text>
-                  </ion-col>
-                  <ion-col size="6">{{ myStakedCheddaBalance | number:'1.2-5':'en-us'}} xCHEDDA </ion-col>
-                </ion-row>
-                <ion-row>
-                  <ion-col size="6">
-                    <ion-text>Current APR</ion-text>
-                  </ion-col>
-                  <ion-col size="6">
-                    <ion-text>{{cheddaStakingAPR | number}}%</ion-text>
-                  </ion-col>
-                </ion-row>
-                <ion-item-divider class="light-background"></ion-item-divider>
-                <ion-segment value="stake" (ionChange)="onStakeSegmentChanged($event)">
-                  <ion-segment-button value="stake">Stake</ion-segment-button>
-                  <ion-segment-button value="unstake">Unstake</ion-segment-button>
-                </ion-segment>
-                <div *ngIf="currentStakeSegment === 'stake'">
-                  <ion-row>
-                    <ion-col class="align-items-center">
-                      <ion-text>Amount</ion-text>
-                    </ion-col>
-                    <ion-col class="justify-content-end">
-                      <ion-button size="small" color="primary" fill="clear" (click)="fillMaxStake()">Max {{myCheddaBalance | number:'1.1-4'}}</ion-button>
-                    </ion-col>
-                  </ion-row>
-                  <ion-row>
-                    <ion-col>
-                      <ion-input placeholder="0.0" class="bordered-input" type="number" #stakeInput></ion-input>
-                    </ion-col>
-                  </ion-row>
-                  <ion-row>
-                    <ion-col>
-                      <ion-button *ngIf="isCheddaApproved" color="primary" fill="solid" expand="block" (click)="stake()">Stake</ion-button>
-                      <ion-button *ngIf="!isCheddaApproved" color="primary" fill="solid" expand="block" (click)="approveChedda()">Approve Chedda</ion-button>
-                    </ion-col>
-                  </ion-row>
-                </div>
-    
-                <div *ngIf="currentStakeSegment === 'unstake'">
-                <ion-row>
-                  <ion-col class="align-items-center">
-                    <ion-text>Amount</ion-text>
-                  </ion-col>
-                  <ion-col class="justify-content-end">
-                    <ion-button size="small" color="primary" fill="clear" (click)="fillMaxUnstake()">Max {{myStakedCheddaBalance | number:'1.1-4'}}</ion-button>
-                  </ion-col>
-                </ion-row>
-                <ion-row>
-                  <ion-col>
-                    <ion-input placeholder="0.0" class="bordered-input" type="number" #unstakeInput></ion-input>
-                  </ion-col>
-                </ion-row>
-                <ion-row>
-                  <ion-col>
-                    <ion-button color="primary" fill="outline" expand="block" (click)="unstake()">Unstake</ion-button>
-                  </ion-col>
-                </ion-row>
-                </div>
-              </ion-card-content>
-            </ion-card>
-          </ion-col>
-        </ion-row>
+    <div class="h-24 border-b border-gray-600 w-full flex items-center">
+      <div class="w-11/12 xl:w-5/6 2xl:w-9/12 mx-auto flex-col text-white">
+        <div class="font-semibold text-xl sm:text-3xl mb-1 sm:mb-2">Stake Chedda</div>
+        <div class="text-gray-400 text-xs sm:text-lg">
+          Stake your CHEDDA tokens to secure the protocol and earn more tokens.
+        </div>
+      </div>
+    </div>
+    <div
+      class="w-11/12 md:w-9/12 lg:w-8/12 xl:w-6/12 h-auto mx-auto rounded-[30px] mt-10 pt-5 pb-10 px-6 sm:px-16 text-white card-bg"
+    >
+      <div class="h-auto w-full flex text-[#B5C2EB]">
+        <div
+          [class.activeTab]="isStakeTab"
+          class="text-sm sm:text-lg py-3 w-full text-center hover:opacity-75 hover:bg-transparent"
+        >
+          <button class="w-full font-semibold uppercase" (click)="switchStakeTab(true)">
+            Stake
+          </button>
+        </div>
+        <div
+          [class.activeTab]="!isStakeTab"
+          class="text-sm sm:text-lg py-3 w-full text-center hover:opacity-75 hover:bg-transparent"
+        >
+          <button class="w-full font-semibold uppercase" (click)="switchStakeTab(false)">
+            Unstake
+          </button>
+        </div>
+      </div>
+      <div *ngIf="isStakeTab">
+        <div class="mt-8 flex justify-between opacity-50 text-sm sm:text-lg">
+          <div>Stake CHEDDA</div>
+          <div>Available: {{myCheddaBalance | number:'1.1-4'}}</div>
+        </div>
+        <div class="text-xs sm:text-sm opacity-50 mt-9">
+          Enter CHEDDA amount to stake
+        </div>
+        <div class="relative">
+          <input
+            type="text"
+            placeholder="Amount"
+            #stakeInput
+            class="bg-black w-full rounded mt-3 h-10 sm:h-14 px-4 font-semibold text-[#BCC1E780] text-xs sm:text-lg focus:outline-none focus:shadow-outline"
+          />
+          <div class="absolute top-0 right-0 mt-4 sm:mt-5 mr-1 sm:mr-2">
+            <button
+              (click)="fillMaxStake()"
+              class="w-auto px-3 h-[31px] sm:h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-xs sm:text-[17px] text-[#ffffff50] hover:text-white"
+            >
+              MAX
+            </button>
+          </div>
+        </div>
+        <button
+          *ngIf="isCheddaApproved"
+          (click)="stake()"
+          class="h-10 sm:h-12 primary-button-bg w-full mt-5 sm:mt-3 rounded-lg font-bold uppercase text-lg hover:opacity-90"
+        >
+          Stake Chedda
+        </button>
+        <button
+          *ngIf="!isCheddaApproved"
+          (click)="approveChedda()"
+          class="h-10 sm:h-12 primary-button-bg w-full mt-5 sm:mt-3 rounded-lg font-bold uppercase text-lg hover:opacity-90"
+        >
+          Approve Chedda
+        </button>
+      </div>
+      <div *ngIf="!isStakeTab">
+        <div class="mt-8 flex justify-between opacity-50 text-sm sm:text-lg">
+          <div>Unstake CHEDDA</div>
+          <div>Available: {{myStakedCheddaBalance | number:'1.1-4'}}</div>
+        </div>
+        <div class="text-xs sm:text-sm  opacity-50 mt-9">
+          Enter CHEDDA amount to unstake
+        </div>
+        <div class="relative">
+          <input
+            type="text"
+            placeholder="Amount"
+            #unstakeInput
+            class="bg-black w-full rounded mt-3 h-10 sm:h-14 px-4 font-semibold text-[#BCC1E780] text-xs sm:text-lg focus:outline-none focus:shadow-outline"
+          />
+          <div class="absolute top-0 right-0 mt-4 sm:mt-5 mr-1 sm:mr-2">
+            <button
+              (click)="fillMaxUnstake()"
+              class="w-auto px-3 sm:px-5 h-[31px] sm:h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-xs sm:text-[17px] text-[#ffffff50] hover:text-white"
+            >
+              MAX
+            </button>
+          </div>
+        </div>
+        <button
+          (click)="unstake()"
+          class="h-10 sm:h-12 secondary-button w-full mt-5 sm:mt-3 rounded-lg font-bold uppercase text-lg hover:opacity-90"
+        >
+          Unstake Chedda
+        </button>
+      </div>
+      <div
+        class="w-full h-auto mt-12 rounded-[20px] border-[1px] border-[#bab9bb] text-white px-3 pb-5 pt-1 sm:pt-3 sm:pb-7"
+      >
+        <div class="grid grid-cols-12 mt-4">
+          <div class="col-span-5 text-xs sm:text-[16px] text-[#999898]">Total Supply</div>
+          <div class="col-span-7 font-bold text-xs sm:text-[20px]">{{ cheddaTotalSupply | number:'1.2-5':'en-us' }} CHEDDA</div>
+        </div>
+        <div class="grid grid-cols-12 mt-4">
+          <div class="col-span-5 text-xs sm:text-[16px] text-[#999898]">My Balance</div>
+          <div class="col-span-7 font-bold text-xs sm:text-[20px]">{{ myCheddaBalance | number:'1.2-5':'en-us' }} CHEDDA</div>
+        </div>
+        <div class="grid grid-cols-12 mt-4">
+          <div class="col-span-5 text-xs sm:text-[16px] text-[#999898]">My Stake</div>
+          <div class="col-span-7 font-bold text-xs sm:text-[20px]">{{ myStakedCheddaBalance | number:'1.2-5':'en-us'}} xCHEDDA </div>
+        </div>
+        <div class="grid grid-cols-12 mt-4">
+          <div class="col-span-5 text-xs sm:text-[16px] text-[#999898]">Current APR</div>
+          <div class="col-span-7 font-bold text-xs sm:text-[20px]">{{cheddaStakingAPR | number}}%</div>
+        </div>
+      </div>
+    </div>
+    <!-- Lock xChedda ------------------------------------------------------->
+    <div
+      class="h-24 border-b border-t mt-16 border-gray-600 w-full flex items-center"
+    >
+      <div class="w-11/12 xl:w-5/6 2xl:w-9/12 mx-auto flex-col text-white">
+        <div class="font-semibold text-xl sm:text-3xl mb-1 sm:mb-2">Lock xChedda</div>
+        <div class="text-gray-400 text-xs sm:text-lg">
+          Lock xCHEDDA to earn voting power in veCHEDDA
+        </div>
+      </div>
+    </div>
+    <div
+      class="w-11/12 md:w-9/12 lg:w-8/12 xl:w-6/12 h-auto mx-auto rounded-[30px] pt-5 pb-10 px-6 sm:px-16 mt-10 text-white card-bg"
+    >
+      <div class="h-auto w-full flex text-[#B5C2EB]">
+        <div
+          [class.activeTab]="isLockCheddaTab"
+          class="text-sm sm:text-lg py-3 w-full text-center hover:opacity-75 hover:bg-transparent"
+        >
+          <button
+            class="w-full font-semibold uppercase"
+            (click)="switchLockCheddaTab(true)"
+          >
+            Lock
+          </button>
+        </div>
+        <div
+          [class.activeTab]="!isLockCheddaTab"
+          class="text-sm sm:text-lg py-3 w-full text-center hover:opacity-75 font-semibold"
+        >
+          <button class="w-full uppercase" (click)="switchLockCheddaTab(false)">
+            Withdraw
+          </button>
+        </div>
+      </div>
+      <div *ngIf="isLockCheddaTab">
+        <div class="mt-8 flex justify-between opacity-50  text-sm sm:text-lg">
+          <div>Lock xChedda</div>
+          <div>Available: {{myStakedCheddaBalance | number:'1.1-4'}}</div>
+        </div>
+        <div class="text-xs sm:text-sm opacity-50 mt-9">Enter xCHEDDA amount to lock</div>
+        <div class="relative">
+          <input
+            type="text"
+            #lockInput
+            placeholder="Amount"
+            class="bg-black w-full rounded mt-3 h-10 sm:h-14 px-4 font-semibold text-[#BCC1E780] text-xs sm:text-lg focus:outline-none focus:shadow-outline"
+          />
+          <div class="absolute top-0 right-0 mt-4 sm:mt-5 mr-1 sm:mr-2">
+            <button
+              (click)="fillMaxLock()"
+              class="w-auto px-3 h-[31px] sm:h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-xs sm:text-[17px] text-[#ffffff50] hover:text-white"
+            >
+              MAX
+            </button>
+          </div>
+        </div>
+        <div class="text-xs sm:text-sm mt-5">
+          <span class="opacity-50">Lock time in weeks:</span>
+          <span class="text-sm sm:text-lg font-semibold text-white"> {{ lockRangeValue }}</span>
+        </div>
+        <div class="flex-col items-center space-x-4 mt-5">
+          <input 
+            type="range" id="volume" name="volume"
+            min="1" max="156" value="1"
+            [(ngModel)] = "lockRangeValue"
+            #lockRange
+            class="w-full h-1 slider rounded-none appearance-none focus:outline-none focus:ring-none"
+          />
+          <div class="flex w-full justify-between mt-5">
+            <div class="text-sm opacity-50">1 week</div>
+            <div class="text-sm opacity-50">156 weeks</div>
+          </div>
+        </div>
+        <button
+          (click)="lock()"
+          *ngIf="isXCheddaApproved"
+          class="h-10 sm:h-12 primary-button-bg w-full mt-5 sm:mt-3 rounded-lg font-bold uppercase text-lg hover:opacity-90"
+        >
+          LOCK xCHEDDA
+        </button>
+        <button
+          (click)="approveStakedChedda()"
+          *ngIf="!isXCheddaApproved"
+          class="h-10 sm:h-12 primary-button-bg w-full mt-5 sm:mt-3 rounded-lg font-bold uppercase text-lg hover:opacity-90"
+        >
+          APPROVE xCHEDDA
+        </button>
+      </div>
+      <div *ngIf="!isLockCheddaTab">
+        <div class="mt-8 flex justify-between opacity-50 text-sm sm:text-lg">
+          <div>Withdraw xCHEDDA</div>
+          <!-- <div>Available:0</div> -->
+        </div>
+        <!-- <div class="text-sm opacity-50 mt-9">
+          Enter xCHEDDA amount to withdraw
+        </div>
+        <div class="relative">
+          <input
+            type="text"
+            placeholder="Amount"
+            class="bg-black w-full rounded mt-3 h-14 px-4 font-semibold text-[#BCC1E780] focus:outline-none focus:shadow-outline"
+          />
+          <div class="absolute top-0 right-0 mt-5 mr-2">
+            <button
+              class="w-[70px] h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-md font-semibold text-[#ffffff50] hover:text-white"
+            >
+              MAX
+            </button>
+          </div>
+        </div> -->
 
-    <!-- Lock -->
-    <ion-row>
-      <ion-col size-xs="12" size-sm="10" offset-sm="1" size-md="8" offset-md="2" size-lg="8" offset-lg="2" size-xl="6" offset-xl="3">        <ion-card class="light-background">
-          <ion-card-title>
-            <ion-row class="card-title-row">
-              <ion-col>
-                <ion-text class="card-title">
-                  Lock xCHEDDA
-                </ion-text>
-              </ion-col>
-            </ion-row>
-            
-          </ion-card-title>
-          <ion-item-divider class="light-background"></ion-item-divider>
-          <ion-card-content>
-
-            <ion-row>
-              <ion-col size="6">
-                <ion-text>xCHEDDA Locked</ion-text>
-              </ion-col>
-              <ion-col size="6">{{ myXCheddaLocked | number:'1.2-5':'en-us' }} xCHEDDA </ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col size="6">
-                <ion-text>Voting Power</ion-text>
-              </ion-col>
-              <ion-col size="6">{{ myVeCheddaBalance | number:'1.2-5':'en-us'}} veCHEDDA </ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col size="6">
-                <ion-text>Weekly Rewards APR</ion-text>
-              </ion-col>
-              <ion-col size="6">
-                <ion-text>{{cheddaStakingAPR | number}}%</ion-text>
-              </ion-col>
-            </ion-row>
-            <ion-item-divider class="light-background"></ion-item-divider>
-            <ion-segment value="lock" (ionChange)="onLockSegmentChanged($event)">
-              <ion-segment-button value="lock">Lock</ion-segment-button>
-              <ion-segment-button value="withdraw">Withdraw</ion-segment-button>
-            </ion-segment>
-            <div *ngIf="currentLockSegment === 'lock'">
-              <ion-row>
-                <ion-col class="align-items-center">
-                  <ion-text>Amount</ion-text>
-                </ion-col>
-                <ion-col class="justify-content-end">
-                  <ion-button size="small" color="primary" fill="clear" (click)="fillMaxLock()">Max {{myStakedCheddaBalance | number:'1.1-4'}}</ion-button>
-                </ion-col>
-              </ion-row>
-
-              <ion-row>
-                <ion-col>
-                  <ion-input placeholder="0.0" class="bordered-input" type="number" #lockInput></ion-input>
-                </ion-col>
-              </ion-row>
-              <ion-row>
-                <ion-col class="align-items-center">
-                  <ion-text>Lock Time (In Weeks)</ion-text>
-                </ion-col>
-                <ion-col class="justify-content-end">
-                </ion-col>
-              </ion-row>
-              <ion-row>
-                <ion-col>
-                  <ion-range pin min="1" max="156" value="1" #lockRange>
-                    <ion-label slot="start">1 week</ion-label>
-                    <ion-label slot="end">3 years</ion-label>
-                  </ion-range>
-                </ion-col>
-              </ion-row>
-              <ion-row>
-                <ion-text class="subtext">
-                  Note: Locking can not be undone until the lock expires. Use with caution.
-                </ion-text>
-              </ion-row>
-              <ion-row>
-                <ion-col>
-                  <ion-button *ngIf="isXCheddaApproved" color="primary" fill="solid" expand="block" (click)="lock()">Lock</ion-button>
-                  <ion-button *ngIf="!isXCheddaApproved" color="primary" fill="solid" expand="block" (click)="approveStakedChedda()">Approve xChedda</ion-button>
-                </ion-col>
-              </ion-row>
-            </div>
-
-            <div *ngIf="currentLockSegment === 'withdraw'">
-              <ion-row>
-                <ion-col>
-                  Lock Expiry
-                </ion-col>
-                <ion-col>{{ lockExpiry | date}}</ion-col>
-              </ion-row>
-              <ion-row>
-                <ion-col>
-                <ion-text>
-                  Withdrawals only possible when the lock expires. 
-                </ion-text>
-                </ion-col>
-              </ion-row>
-            <ion-row>
-              <ion-col>
-                <ion-button color="primary" fill="outline" expand="block" (click)="withdraw()">Withdraw</ion-button>
-              </ion-col>
-            </ion-row>
-            </div>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-
-    <!-- Faucets -->
-    <ion-row>
-      <ion-col size-xs="12" size-sm="10" offset-sm="1" size-md="8" offset-md="2" size-lg="8" offset-lg="2" size-xl="6" offset-xl="3">        <ion-card class="light-background">
-          <ion-card-title>
-            <ion-row class="card-title-row">
-              <ion-col>
-                <ion-text class="card-title">
-                  Testnet Faucets
-                </ion-text>
-              </ion-col>
-            </ion-row>
-            <ion-row class="card-title-row">
-              <ion-col>
-                <ion-text class="subheading">
-                  Testnet faucets for minting tokens to use in Lending and Borrowing
-                </ion-text>
-              </ion-col>
-            </ion-row>
-            
-          </ion-card-title>
-          <ion-item-divider class="light-background"></ion-item-divider>
-          <ion-card-content>
-            <ion-row>
-              <ion-col>
-                <!---->
-                <ion-col class="no-padding">
-                  <ion-card class="lighter-background" *ngFor="let token of tokens">
-                    <ion-card-content class="no-padding faucet-row">
-                      <ion-row>
-                        <ion-col size="9" class="loan-info-col">
-                          <ion-row class="asset-row">
-                              <ion-col class="loan-info-col loan-content"> 
-                                <ion-img [src]="token.logo" class="asset-thumb round-image"></ion-img>
-                                <ion-text class="token-name">{{ token.name }}</ion-text>
-                              </ion-col> 
-                          </ion-row>
-                        </ion-col>
-                        <ion-col size="3" class="justify-content-end align-items-center">
-                          <ion-button size="small" fill="solid" color="secondary" (click)="drip(token)">
-                            <span *ngIf="token.isNFT">Mint</span>
-                            <span *ngIf="!token.isNFT">Drip</span>
-                          </ion-button>
-                          <ion-button (click)="addTokenToMetamask(token)" size="small" color="dark"><ion-icon name="add"></ion-icon></ion-button>
-                        </ion-col>
-                      </ion-row>
-                    </ion-card-content>
-                  </ion-card>
-                  <ion-row>
-                    <ion-col>
-                      <ion-text class="subtext">
-                        Note: You can only drip once a day.
-                      </ion-text>
-                    </ion-col>
-                  </ion-row>
-                </ion-col>
-                <!---->
-              </ion-col>
-            </ion-row>
-          </ion-card-content>
-          </ion-card>
-      </ion-col>
-    </ion-row>
+        <div class="text-sm opacity-50 mt-9">
+          Lock Expiry: {{ lockExpiry | date}}
+        </div>
+        <div class="text-sm opacity-50 mt-9">
+          Withdrawals are only possible when the lock expires. 
+        </div>
+        <button
+          (click)="withdraw()"
+          class="h-10 sm:h-12 secondary-button w-full mt-5 sm:mt-3 rounded-lg font-bold uppercase text-lg hover:opacity-90"
+        >
+          WITHDRAW xCHEDDA
+        </button>
+      </div>
+      <div class="opacity-50 mt-9  text-xs sm:text-lg">
+        Note: Locking can not be undone until the lock expires. Use with caution. 
+      </div>
+      <div
+        class="w-full h-auto mt-3 rounded-[20px] border-[1px] border-[#bab9bb] text-white px-3 pb-4 pt-1 sm:pt-7 sm:pb-7"
+      >
+        <div class="grid grid-cols-2 justify-between mt-4">
+          <div class="text-xs sm:text-[16px] text-[#999898]">xCHEDDA Locked</div>
+          <div class="font-bold text-xs sm:text-[20px]">{{ myXCheddaLocked | number:'1.2-5':'en-us' }} xCHEDDA</div>
+        </div>
+        <div class="grid grid-cols-2 justify-between mt-4">
+          <div class="text-xs sm:text-[16px] text-[#999898]">Voting Power</div>
+          <div class="font-bold text-xs sm:text-[20px]">{{ myVeCheddaBalance | number:'1.2-5':'en-us'}}</div>
+        </div>
+        <div class="grid grid-cols-2 justify-between mt-4">
+          <div class="text-xs sm:text-[16px] text-[#999898]">Weekly Rewards APR</div>
+          <div class="font-bold text-xs sm:text-[20px]">{{cheddaStakingAPR | number}}%</div>
+        </div>
+      </div>
+    </div>
+    <!-- Test faucets ------------------------------------------>
+    <div
+      class="h-24 border-b border-t mt-16 border-gray-600 w-full flex items-center"
+    >
+      <div class="w-11/12 xl:w-5/6 2xl:w-9/12 mx-auto flex-col text-white">
+        <div class="font-semibold text-xl sm:text-3xl mb-1 sm:mb-2">Test Faucets</div>
+        <div class="text-gray-400 text-xs sm:text-lg">
+          Drip tokens to your wallet
+        </div>
+      </div>
+    </div>
+    <div class="my-5 w-11/12 sm:w-11/12 xl:w-7/12 mx-auto">
+      <div class="text-gray-400 my-2 text-xs sm:text-lgtts">
+        Testnet faucets for minting tokens to use in Lending and Borrowing
+      </div>
+      <div
+        *ngFor="let token of tokens"
+        class="w-full rounded-[19px] mt-3 h-16 sm:h-20 faucets-bg px-0 sm:px-10 flex justify-between items-center"
+      >
+        <div class="flex space-x-2 items-center">
+          <img [src]="token.logo" class="asset-thumb round-image" />
+          <div class="font-bold text-white text-xs sm:text-lg uppercase">
+            {{ token.name }}
+          </div>
+        </div>
+        <div class="flex space-x-3 items-center">
+          <button
+            (click)="drip(token)"
+            class="h-8 w-20 sm:h-11 sm:w-44 drip-btn rounded-md sm:rounded-lg uppercase font-bold text-white text-xs sm:text-xl hover:opacity-70"
+          >
+          <span *ngIf="token.isNFT">MINT</span>
+          <span *ngIf="!token.isNFT">DRIP</span>
+          </button>
+          <button 
+            (click)="addTokenToMetamask(token)"
+            class="h-8 w-12 sm:h-11 sm:w-16 add-drip-btn rounded-md sm:rounded-lg font-bold text-xl sm:text-3xl hover:opacity-50 flex justify-center items-center"
+          >+</button>
+        </div>
+      </div>
+      <div class="text-gray-400 my-2 text-xs sm:text-lg">Note: You can only drip once a day</div>
+    </div>
   </ion-grid>
-
 </ion-content>

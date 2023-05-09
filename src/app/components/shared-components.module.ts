@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { BlockiePipe } from '../pipes/blockie.pipe';
 import { LoanRequestStatePipe, LoanStatePipe } from '../pipes/loan-state.pipe';
 import { RoundingPipe } from '../pipes/rounding-pipe';
+import { AssetTabComponent } from '../shared/components/asset-tab/asset-tab.component';
 
 @NgModule({
   declarations: [
@@ -25,12 +26,13 @@ import { RoundingPipe } from '../pipes/rounding-pipe';
     ProfilePopoverComponent,
     NetworksPopoverComponent,
     WelcomeModalComponent,
+    AssetTabComponent,
   ],
   imports: [
     CommonModule,
     IonicModule,
     FormsModule,
-    RouterModule
+    RouterModule,
   ],
   exports: [
     TruncateMiddlePipe, 
@@ -42,7 +44,8 @@ import { RoundingPipe } from '../pipes/rounding-pipe';
     IonicRatingComponent,
     ProfilePopoverComponent,
     NetworksPopoverComponent,
-    WelcomeModalComponent
+    WelcomeModalComponent,
+    AssetTabComponent,
   ]
 })
 export class SharedComponentsModule { }

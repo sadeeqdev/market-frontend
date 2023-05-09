@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { IonInput, IonRange, LoadingController } from '@ionic/angular';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { IonRange, LoadingController } from '@ionic/angular';
 import { BigNumber, ethers } from 'ethers';
 import moment from 'moment';
 import { Subscription } from 'rxjs';
@@ -25,19 +25,17 @@ interface Token {
 })
 export class GrottoLandingPage implements OnInit, OnDestroy {
 
-  @ViewChild('stakeInput') stakeInput: IonInput
-  @ViewChild('unstakeInput') unstakeInput: IonInput
-  @ViewChild('lockInput') lockInput: IonInput
-  @ViewChild('unlockInput') unlockInput: IonInput
-  @ViewChild('lockRange')lockRange: IonRange
+  @ViewChild('stakeInput') stakeInput: ElementRef
+  @ViewChild('unstakeInput') unstakeInput: ElementRef
+  @ViewChild('lockInput') lockInput: ElementRef
+  @ViewChild('unlockInput') unlockInput: ElementRef
+  @ViewChild('lockRange')lockRange: ElementRef
   cheddaTotalSupply
   myCheddaBalance = '0'
   myStakedCheddaBalance = '0'
   myVeCheddaBalance = '0'
   myXCheddaLocked = '0'
   cheddaStakingAPR
-  currentStakeSegment = 'stake'
-  currentLockSegment = 'lock'
   loader?
   isCheddaApproved = false
   isXCheddaApproved = false
@@ -48,11 +46,13 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
   veCheddaDepositSubscription?: Subscription
   withdrawSubscription?: Subscription
   lockExpiry: string
-
+  isStakeTab: boolean = true;
+  isLockCheddaTab: boolean = true
+  lockRangeValue: any = 1
   tokens: Token[] = [
     {
       name: 'CHEDDA',
-      logo: '/assets/logos/chedda-logo-square.png',
+      logo: '/assets/logos/chedda-new-logo.png',
       address: environment.config.contracts.Chedda
     },
     {
@@ -62,12 +62,12 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     },
     {
       name: 'DAI.c',
-      logo: '/assets/logos/dai-logo.png',
+      logo: '/assets/logos/dai-new-logo.png',
       address: environment.config.contracts.DAI
     },
     {
-      name: 'UXD',
-      logo: '/assets/logos/uxd-logo.png',
+      name: 'FRAX',
+      logo: '/assets/logos/frax-new-logo.png',
       address: environment.config.contracts.UXD
     },
     {
@@ -94,10 +94,13 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       // Checks if acount is changed or disconnected
       // Updates chedda balance according to account selected 
       let eth:any = window.ethereum
-      eth.on('accountsChanged', (accounts: any) => {
+
+      if(eth){
+        eth.on('accountsChanged', (accounts: any) => {
           this.loadCheddaStats()
           this.loadVeCheddaStats()
-      });
+        });
+      }
     }
 
 
@@ -189,7 +192,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       this.alert.showConnectAlert()
       return
     }
-    const amount = ethers.utils.parseEther(this.stakeInput.value.toString() ?? '0')
+    const amount = ethers.utils.parseEther(this.stakeInput.nativeElement.value.toString() ?? '0')
     const cheddaBalance = ethers.utils.parseEther(this.myCheddaBalance)
     console.log('amount to stake: ', amount)
     if (amount.gt(cheddaBalance)){
@@ -199,7 +202,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     try {
       await this.showLoading('Waiting for confirmation')
       await this.xChedda.stake(amount)
-      this.stakeInput.value = ''
+      this.stakeInput.nativeElement.value = ''
     } catch (error) {
       await this.hideLoading()
       this.alert.showErrorAlert(error)
@@ -211,7 +214,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       this.alert.showConnectAlert()
       return
     }
-    const amount = ethers.utils.parseEther(this.unstakeInput.value.toString() ?? '0')
+    const amount = ethers.utils.parseEther(this.unstakeInput.nativeElement.value.toString() ?? '0')
     const stakedBalance = ethers.utils.parseEther(this.myStakedCheddaBalance)
     if (amount.gt(stakedBalance)){
       this.alert.showMessageAlert('Can not unstake', 'Insufficient sCHEDDA balance')
@@ -220,7 +223,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     try {
       this.showLoading('Waiting for confirmation')
       await this.xChedda.unstake(amount)
-      this.unstakeInput.value = ''
+      this.unstakeInput.nativeElement.value = ''
     } catch (error) {
       this.alert.showErrorAlert(error)
     }
@@ -232,13 +235,13 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       return
     }
     try {
-      const lockInputValue = this.lockInput.value
+      const lockInputValue = this.lockInput.nativeElement.value
       if (!lockInputValue) {
         this.alert.showToast('Invalid lock time')
         return
       }
       const amount = ethers.utils.parseEther(lockInputValue.toString())
-      const weeks = this.lockRange.value.toString()
+      const weeks = this.lockRange.nativeElement.value.toString()
       const unlockTime = moment().add(weeks, 'weeks').unix()
       console.log('unlock time = ', unlockTime)
       console.log('amount = ', amount)
@@ -259,6 +262,14 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     } catch (error) {
       this.alert.showErrorAlert(error)
     }
+  }
+
+  switchStakeTab(isStakeTab:boolean) {
+    this.isStakeTab = isStakeTab;
+  }
+
+  switchLockCheddaTab(isLockTab:boolean){
+    this.isLockCheddaTab = isLockTab
   }
 
   async approveChedda() {
@@ -291,28 +302,20 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     }
   } 
 
-  onStakeSegmentChanged($event) {
-    this.currentStakeSegment = $event.target.value
-  }
-
-  onLockSegmentChanged($event) {
-    this.currentLockSegment = $event.target.value
-  }
-
   fillMaxStake() {
-    this.stakeInput.value = this.myCheddaBalance
+    this.stakeInput.nativeElement.value = this.myCheddaBalance
   }
 
   fillMaxUnstake() {
-    this.unstakeInput.value = this.myStakedCheddaBalance
+    this.unstakeInput.nativeElement.value = this.myStakedCheddaBalance
   }
 
   fillMaxLock() {
-    this.lockInput.value = this.myStakedCheddaBalance
+    this.lockInput.nativeElement.value = this.myStakedCheddaBalance
   }
 
   fillMaxUnlock() {
-    this.unlockInput.value = ''
+    this.unlockInput.nativeElement.value = ''
   }
 
   private async showLoading(message: string) {

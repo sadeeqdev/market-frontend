@@ -3,6 +3,7 @@ import { LoadingController } from '@ionic/angular';
 import { ChartType } from 'chart.js';
 import { BigNumber, ethers } from 'ethers';
 import moment from 'moment';
+import { start } from 'repl';
 import { Subscription } from 'rxjs';
 import { CheddaBaseTokenVaultService } from 'src/app/contracts/chedda-base-token-vault.service';
 import { CheddaService } from 'src/app/contracts/chedda.service';
@@ -31,11 +32,45 @@ export class VoteLandingPage implements OnInit, OnDestroy {
   epochEnd
   hasEpochEnded
   loader?
+  backgroundColor = ["#F3943D", "#FEF851", "#5DDEFA", "#6257F2", "#9C8DFF"]
   votePower
   voteEventSubscription?: Subscription
   rebalanceEventSubscription?: Subscription
   cheddaTransferSubscription?: Subscription
-
+  options = {
+    plugins: {
+      cutoutPercentage: 80,
+      legend: {
+        display: false,
+        position: "right",
+        align: "start",
+        labels: {
+          boxWidth: 90,
+          boxHeight: 25,
+          borderRadius: 10,
+          font: {
+            size: 14
+          }
+        }
+      },
+      tooltip: {
+        enabled: true
+      },
+    },
+    hover: {
+      mode: "nearest",
+      intersect: true,
+      animationDuration: 100
+    }
+  };
+   chartLabelsWithBg = [
+  //   {label: '', backgroundColor: 'bg-[#F3943D]'},
+  //   {label: '', backgroundColor: 'bg-[#FEF851]'},
+  //   {label: '', backgroundColor: 'bg-[#5DDEFA]'},
+  //   {label: '', backgroundColor: 'bg-[#6257F2]'},
+  //   {label: '', backgroundColor: 'bg-[#9C8DFF]'},
+  ]
+  
   public chartType: ChartType = 'doughnut';
   constructor(
     private wallet: WalletProviderService,
@@ -72,6 +107,14 @@ export class VoteLandingPage implements OnInit, OnDestroy {
 
   async loadGaugeData() {
     this.chartLabels = this.lendingPools.map(p => p.name)
+    let mappedLabels = []
+    for(let i = 0; i<this.backgroundColor.length; i++){
+    mappedLabels.push({
+        label: this.chartLabels[i],
+        backgroundColor: `bg-[${this.backgroundColor[i]}]`
+      })
+    }
+    this.chartLabelsWithBg = mappedLabels
 
     try {
       this.lendingPools = await Promise.all(this.lendingPools.map(async p => {
@@ -107,7 +150,10 @@ export class VoteLandingPage implements OnInit, OnDestroy {
         labels: this.chartLabels,
         datasets: [
           { 
-            data: voteShare
+            data: voteShare,
+            backgroundColor: this.backgroundColor,
+            borderWidth: 0,
+            hoverOffset: 1
           },
         ]
       }
