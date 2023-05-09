@@ -12,7 +12,7 @@ export class DefaultProviderService {
 
   constructor() {
     this.provider = new ethers.providers.StaticJsonRpcProvider(environment.jsonRpcUrl);
-    this.provider.pollingInterval = 20000
+    this.provider.pollingInterval = 20000;
   }
 
   async getBlockNumber() {

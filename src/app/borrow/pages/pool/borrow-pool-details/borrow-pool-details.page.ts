@@ -496,7 +496,7 @@ export class BorrowPoolDetailsPage implements OnInit {
             await this.fetchDepositedNfts()
           }
           await this.loadVaultStats()
-          await this.vaultStatsService.loadVaultStats();
+          await this.vaultStatsService.loadStats(this.pool);
         }
       }
     );
@@ -512,7 +512,7 @@ export class BorrowPoolDetailsPage implements OnInit {
             await this.fetchOwnedTokens()
           }
           await this.loadVaultStats()
-          await this.vaultStatsService.loadVaultStats();
+          await this.vaultStatsService.loadStats(this.pool);
         }
       }
     );
@@ -524,7 +524,7 @@ export class BorrowPoolDetailsPage implements OnInit {
           this.hideLoading();
           this.alert.showToast('Borrow confirmed');
           await this.loadVaultStats();
-          await this.vaultStatsService.loadVaultStats();
+          await this.vaultStatsService.loadStats(this.pool);
         }
       }
     );
@@ -535,7 +535,7 @@ export class BorrowPoolDetailsPage implements OnInit {
           this.hideLoading();
           this.alert.showToast('Repayment confirmed');
           await this.loadVaultStats();
-          await this.vaultStatsService.loadVaultStats();
+          await this.vaultStatsService.loadStats(this.pool);
     }
       }
     );

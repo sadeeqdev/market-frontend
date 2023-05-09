@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { CheddaBaseTokenVaultService } from 'src/app/contracts/chedda-base-token-vault.service';
 import { VaultStatsService } from 'src/app/providers/vault-stats.service';
 import { environment } from 'src/environments/environment';
-import { LendingPool, Loan, LoanRequest } from '../../lend.models';
+import { LendingPool } from '../../lend.models';
 
 @Component({
   selector: 'app-lend-landing',

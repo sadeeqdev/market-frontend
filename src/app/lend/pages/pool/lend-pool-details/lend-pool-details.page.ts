@@ -190,7 +190,7 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
         this.hideLoading()
         this.isApproved = true
       }
-    })
+    }) 
 
     this.depositEventListener = this.vaultContract.on('Deposit', async (from, to, amount, shares) => {
       console.log('deposit posted: ', from, to, amount, shares)
@@ -198,7 +198,7 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
         this.hideLoading()
         this.alert.showToast('Deposit confirmed')
         await this.loadVaultStats()
-        await this.vaultStatsService.loadVaultStats()
+        await this.vaultStatsService.loadStats(this.pool)
       }
     })
     this.withdrawEventListener = this.vaultContract.on('Withdraw', async (from, to, amount, shares) => {
@@ -206,7 +206,7 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
         this.hideLoading()
         this.alert.showToast('Withdrawal confirmed')
         await this.loadVaultStats()
-        await this.vaultStatsService.loadVaultStats()
+        await this.vaultStatsService.loadStats(this.pool)
       }
     })
 
