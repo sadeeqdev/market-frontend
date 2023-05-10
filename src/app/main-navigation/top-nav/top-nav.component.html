@@ -14,8 +14,22 @@
         <img src="/assets/logos/chedda-logo.svg" width="50px" class="flex lg:hidden"/>
       </div>
       <div class="flex flex-row text-white gap-x-10 mt-2 text-sm lg:text-xl font-semibold">
-        <button *ngFor="let item of menuItems" class="hover:opacity-80" [routerLink]="item.path" routerLinkActive="top-nav-active"  >
-          {{item.name}}
+        <button *ngFor="let item of menuItems" class="relative h-12 hover:opacity-80" [routerLink]="item.path" routerLinkActive="top-nav-active">
+          <div class="h-7">
+            {{item.name}}
+          </div>
+          <div class="absolute justify-center h-5 hidden pacman-logo">
+            <div class="logo">
+              <div class="circle"></div>
+              <div class="triangle"></div>
+            </div>
+            <div class="flex ml-2 space-x-2">
+              <div class="circle-pac"></div>
+              <div class="circle-pac"></div>
+              <div class="circle-pac"></div>
+              <div class="circle-pac"></div>
+            </div>
+          </div>
         </button>
       </div>
       <div class="flex flex-row gap-2 text-white">
@@ -223,8 +237,22 @@
     </div>
     <div class="mt-5">
       <div class="flex flex-col text-white gap-y-7 mt-2 text-3xl font-semibold">
-        <button *ngFor="let item of menuItems" class="hover:opacity-80" [routerLink]="item.path" routerLinkActive="top-nav-active" (click)="closeMenu()" >
-          {{item.name}}
+        <button *ngFor="let item of menuItems" class="relative hover:opacity-80" [routerLink]="item.path" routerLinkActive="top-nav-active" (click)="closeMenu()" >
+          <div>
+            {{item.name}}
+          </div>
+          <div class="mt-2 hidden pacman-logo">
+            <div class="logo">
+              <div class="circle"></div>
+              <div class="triangle"></div>
+            </div>
+            <div class="flex ml-2 space-x-2">
+              <div class="circle-pac"></div>
+              <div class="circle-pac"></div>
+              <div class="circle-pac"></div>
+              <div class="circle-pac"></div>
+            </div>
+          </div>
         </button>
       </div>
     </div>
