@@ -14,11 +14,11 @@
         <img src="/assets/logos/chedda-logo.svg" width="50px" class="flex lg:hidden"/>
       </div>
       <div class="flex flex-row text-white gap-x-10 mt-2 text-sm lg:text-xl font-semibold">
-        <button *ngFor="let item of menuItems" class="relative h-12 hover:opacity-80" [routerLink]="item.path" routerLinkActive="top-nav-active">
-          <div class="h-7">
+        <button *ngFor="let item of menuItems" class="relative hover:opacity-80" [routerLink]="item.path" routerLinkActive="top-nav-active">
+          <div class="">
             {{item.name}}
           </div>
-          <div class="absolute justify-center h-5 hidden pacman-logo">
+          <div class="absolute justify-center hidden pacman-logo">
             <div class="logo">
               <div class="circle"></div>
               <div class="triangle"></div>
@@ -193,7 +193,7 @@
   </div>
  </div>
  <!-- Mobile nav drawer -->
- <div class="absolute text-white z-50 w-screen h-screen mobile-nav-bg top-0 bottom-0" [class.hidden]="!isMenuOpen">
+ <div class="absolute text-white z-50 w-screen h-screen mobile-nav-bg top-0 transition-all" [class.mobile-translate]="isMenuOpen" [class.mobile-drawer]="!isMenuOpen">
     <div class="flex w-full justify-between px-5 mt-6 items-start">
       <div class="">
         <img src="/assets/logos/chedda-logo.svg" width="60px"/>
@@ -235,8 +235,8 @@
         Connect wallet
       </button>
     </div>
-    <div class="mt-5">
-      <div class="flex flex-col text-white gap-y-7 mt-2 text-3xl font-semibold">
+    <div class="mt-2">
+      <div class="flex flex-col text-white gap-y-5 mt-2 text-2xl font-semibold">
         <button *ngFor="let item of menuItems" class="relative hover:opacity-80" [routerLink]="item.path" routerLinkActive="top-nav-active" (click)="closeMenu()" >
           <div>
             {{item.name}}

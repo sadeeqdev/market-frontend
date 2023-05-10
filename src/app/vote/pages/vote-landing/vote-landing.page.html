@@ -1,5 +1,4 @@
 <!-- <ion-content>
-
   <ion-grid>
     <ion-row>
       <ion-col size-xs="12" size-sm="12" size-md="12" size-lg="10" offset-lg="1" size-xl="8" offset-xl="2">
@@ -194,7 +193,7 @@
             Claim
           </div>
         </div>
-        <div *ngFor="let pool of lendingPools" class="hidden sm:grid grid-cols-12 w-full rounded-[19px] mt-3 h-20 text-white faucets-bg sm:px-5 xl:px-10 items-center">
+        <div *ngFor="let pool of lendingPools" class="hidden sm:grid grid-cols-12 w-full 2xl:w-8/12 rounded-[19px] mt-3 h-20 text-white faucets-bg sm:px-5 xl:px-10 items-center">
           <div class="col-span-4">
             <div class="grid grid-cols-12">
               <div class="col-span-4 mt-3 ">
@@ -243,6 +242,7 @@
           </button>
           </div>
         </div>
+        <!-- Mobile Gauge-------------------- -->
         <div *ngFor="let pool of lendingPools" class="sm:hidden w-full rounded-[19px] mt-6 h-auto text-white faucets-bg ">
           <div class="grid grid-cols-2 border-b border-gray-500">
             <div class="flex flex-col justify-between h-32 border-r border-gray-500 px-5 py-3">
