@@ -315,3 +315,11 @@ ion-img.circle::part(image) {
 .mobile-nav-bg{
    background: radial-gradient(66.36% 66.36% at 50% 50%, #1D123A 0%, #000000 100%);
 }
+
+.mobile-drawer{
+    margin-top: -100vh;
+}
+
+.mobile-translate{
+    transform: translateY(0px)
+}
