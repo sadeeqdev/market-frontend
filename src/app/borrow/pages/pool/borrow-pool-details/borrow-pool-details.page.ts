@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IonInput, LoadingController, NavController } from '@ionic/angular';
 import { BigNumber, ethers } from 'ethers';
 import { Subscription } from 'rxjs';
@@ -83,6 +83,7 @@ export class BorrowPoolDetailsPage implements OnInit {
     private navController: NavController,
     private alert: GlobalAlertService,
     private vaultStatsService: VaultStatsService,
+    private router: Router,
   ) {}
 
   async ngOnInit() {
@@ -147,6 +148,10 @@ export class BorrowPoolDetailsPage implements OnInit {
     } catch (error) {
       console.error('changeCollateral error: ', error);
     }
+  }
+
+  navigateToMarkets(){
+    this.router.navigate(['/borrow']);
   }
 
   private async changeCollateral(symbol: string) {
