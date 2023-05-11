@@ -183,6 +183,10 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
     this.withdrawInput.nativeElement.value = this.myVaultSharesBalance
   }
 
+  navigateToMarkets(){
+    this.router.navigate(['/lend']);
+  }
+
   private async registerEventListeners() {
     this.assetApprovalSubjet = this.asset.on('Approval', async (account, spender, amount) => {
       console.log('Approval: ', account, spender, amount)
