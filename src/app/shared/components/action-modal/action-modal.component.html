@@ -1,15 +1,15 @@
 <div class="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center">
-  <div class="inner-card-bg p-[0.4px] rounded-lg w-5/6">
-    <div class="card-bg rounded-lg p-10 shadow-md flex flex-col items-center">
-      <h2 class="text-3xl font-semibold mb-1 text-white">{{heading}}</h2>
-      <div class="text-center mt-7 text-lg">
+  <div class="inner-card-bg p-[0.4px] rounded-lg w-11/12 sm:w-5/6">
+    <div class="card-bg rounded-lg p-6 sm:p-10 shadow-md flex flex-col items-center">
+      <h2 class="text-xl sm:text-3xl font-semibold mb-1 text-white">{{heading}}</h2>
+      <div class="text-center mt-3 sm:mt-7 text-sm sm:text-lg">
         {{message}}
       </div>  
-      <div class="flex space-x-4 mt-7" *ngIf="actionText">
+      <div class="flex text-sm sm:text-lg flex-col-reverse gap-y-2 sm:gap-y-0 sm:flex-row gap-x-4 mt-3 sm:mt-7 items-center justify-center" *ngIf="actionText">
         <button class="reset button-gradient font-semibold hover:opacity-80" (click)="cancelAction()">Cancel</button>
         <button class="reset get-more-btn font-semibold hover:opacity-80" (click)="modalAction()">{{actionText}}</button>
       </div>    
-      <div class="flex space-x-4 mt-7" (click)="cancelAction()" *ngIf="!actionText">
+      <div class="flex text-sm sm:text-lg gap-x-4 mt-3 sm:mt-7" (click)="cancelAction()" *ngIf="!actionText">
         <button class="reset button-gradient font-semibold hover:opacity-80">Close</button>
       </div>    
     </div>

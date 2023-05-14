@@ -282,11 +282,11 @@
             class="relative"
           >
             <input
-              type="text"
+              type="number"
               placeholder="Amount"
               (ionInput)="setBorrowMode('collateral')"
               #addCollateralInput
-              class="bg-black w-full rounded mt-3 h-10 sm:h-14 px-4 font-semibold text-[#BCC1E780] text-xs sm:text-lg focus:outline-none focus:shadow-outline"
+              class="bg-black w-full rounded mt-3 h-10 sm:h-14 px-4 font-semibold text-white text-xs sm:text-lg focus:outline-none focus:shadow-outline"
             />
             <div class="absolute top-0 right-0 mt-4 sm:mt-5 mr-1 sm:mr-2">
               <button
@@ -304,16 +304,23 @@
               </div>
             </div>
             <div *ngIf="ownedNFTs.length !== 0">
-              <ion-row>
-                <ion-img
-                  *ngFor="let nft of ownedNFTs"
-                  [src]="nft.image"
-                  class="img-collateral"
+              <div class="text-sm opacity-50 mt-5">
+                Select NFTs to be deposited
+              </div>
+              <div class="flex gap-x-4 flex-wrap" >
+                <div *ngFor="let nft of ownedNFTs" 
+                  class="w-24 h-36 mt-5 bg-black rounded-sm nft-container" 
                   [ngClass]="nft.isSelected ? 'selected-nft' : ''"
                   (click)="selectNFT(nft)"
                 >
-                </ion-img>
-              </ion-row>
+                  <img
+                    [src]="nft.image"
+                    class="img-collateral rounded-t-sm "
+                  >
+                  <div class="p-1 text-xs">{{nft.description}}</div>
+                  <div class="px-1 text-xs">{{nft.name}}</div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="text-xs sm:text-sm opacity-50 mt-5">
@@ -321,10 +328,10 @@
           </div>
           <div class="relative">
             <input
-              type="text"
+              type="number"
               placeholder="Amount"
               #borrowInput
-              class="bg-black w-full rounded mt-3 h-10 sm:h-14 px-4 font-semibold text-[#BCC1E780] text-xs sm:text-lg focus:outline-none focus:shadow-outline"
+              class="bg-black w-full rounded mt-3 h-10 sm:h-14 px-4 font-semibold text-white text-xs sm:text-lg focus:outline-none focus:shadow-outline"
             />
             <div class="absolute top-0 right-0 mt-4 sm:mt-5 mr-1 sm:mr-2">
               <button
@@ -390,11 +397,11 @@
             class="relative"
           >
             <input
-              type="text"
+              type="number"
               placeholder="Amount"
               (input)="setRepayMode('collateral')"
               #withdrawCollateralInput
-              class="bg-black w-full rounded mt-3 h-10 sm:h-14 px-4 font-semibold text-[#BCC1E780] text-xs sm:text-lg focus:outline-none focus:shadow-outline"
+              class="bg-black w-full rounded mt-3 h-10 sm:h-14 px-4 font-semibold text-white text-xs sm:text-lg focus:outline-none focus:shadow-outline"
             />
             <div class="absolute top-0 right-0 mt-4 mr-1 sm:mt-5 sm:mr-2">
               <button
@@ -406,22 +413,29 @@
             </div>
           </div>
           <div *ngIf="collateralContract && collateralContract.isNFT">
-            <div *ngIf="ownedNFTs.length === 0">
+            <div *ngIf="myNftsCollateral.length === 0">
               <div class="text-sm opacity-50 mt-5">
                 No matching NFTs in wallet
               </div>
             </div>
-            <div *ngIf="ownedNFTs.length !== 0">
-              <ion-row>
-                <ion-img
-                  *ngFor="let nft of ownedNFTs"
-                  [src]="nft.image"
-                  class="img-collateral"
+            <div *ngIf="myNftsCollateral.length !== 0">
+              <div class="text-sm opacity-50 mt-5">
+                Select NFTs to be deposited
+              </div>
+              <div class="flex gap-x-4 flex-wrap" >
+                <div *ngFor="let nft of myNftsCollateral" 
+                  class="w-24 h-36 mt-5 bg-black rounded-sm nft-container" 
                   [ngClass]="nft.isSelected ? 'selected-nft' : ''"
                   (click)="selectNFT(nft)"
                 >
-                </ion-img>
-              </ion-row>
+                  <img
+                    [src]="nft.image"
+                    class="img-collateral rounded-t-sm "
+                  >
+                  <div class="p-1 text-xs">{{nft.description}}</div>
+                  <div class="px-1 text-xs">{{nft.name}}</div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="text-xs sm:text-sm opacity-50 mt-5">
@@ -429,11 +443,11 @@
           </div>
           <div class="relative">
             <input
-              type="text"
+              type="number"
               placeholder="Amount"
               (ionInput)="setRepayMode('repay')"
               #repayInput
-              class="bg-black w-full rounded mt-3 h-10 sm:h-14 px-4 font-semibold text-[#BCC1E780] text-xs sm:text-lg focus:outline-none focus:shadow-outline"
+              class="bg-black w-full rounded mt-3 h-10 sm:h-14 px-4 font-semibold text-white text-xs sm:text-lg focus:outline-none focus:shadow-outline"
             />
             <div class="absolute top-0 right-0 mt-4 mr-1 sm:mt-5 sm:mr-2">
               <button
