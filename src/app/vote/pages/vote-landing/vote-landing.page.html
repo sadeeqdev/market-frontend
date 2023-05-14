@@ -138,7 +138,7 @@
           </div>
         </div>
       </div>
-      <div class="w-full flex justify-center mt-5 mx-auto">
+      <div class="w-full flex justify-center mt-12 mx-auto">
         <div class="w-11/12 sm:w-11/12 xl:w-3/4 grid grid-cols-1 place-items-center items-start sm:grid-cols-2">
           <ion-col size="10" offset-xs="0" offset-sm="1" offset-md="2" offset-lg="5">
             <canvas
@@ -175,7 +175,7 @@
           </div>
         </div>
       </div>
-      <div class="my-10 w-11/12 sm:w-[97%] xl:w-9/12 mx-auto">
+      <div class="my-10 w-11/12 sm:w-[97%] xl:w-9/12 2xl:w-8/12 mx-auto">
         <div *ngIf="votePower" class="text-white text-center font-semibold">
           veCHEDDA: {{votePower | formatEth | rounding:[0] }}
         </div>
@@ -193,7 +193,7 @@
             Claim
           </div>
         </div>
-        <div *ngFor="let pool of lendingPools" class="hidden sm:grid grid-cols-12 w-full 2xl:w-8/12 rounded-[19px] mt-3 h-20 text-white faucets-bg sm:px-5 xl:px-10 items-center">
+        <div *ngFor="let pool of lendingPools" class="hidden sm:grid grid-cols-12 w-full rounded-[19px] mt-3 h-20 text-white faucets-bg sm:px-5 xl:px-10 items-center">
           <div class="col-span-4">
             <div class="grid grid-cols-12">
               <div class="col-span-4 mt-3 ">

@@ -10,6 +10,8 @@ import { WalletProviderService } from 'src/app/providers/wallet-provider.service
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
 import { environment } from 'src/environments/environment';
 import { VaultStatsService } from 'src/app/providers/vault-stats.service';
+import { ModalController } from '@ionic/angular';
+import { LoadingModalComponent } from 'src/app/shared/components/loading-modal/loading-modal.component';
 
 export interface VaultStats {
   borrowApr: number
@@ -42,7 +44,6 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
   assetSymbol
   vaultTokenSymbol
   loader?
-
   utilizationRate = '0'
   depositApy = '0'
   rewardsApy = '0'
@@ -57,11 +58,12 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
     private vaultService: CheddaBaseTokenVaultService,
     private vaultStatsService: VaultStatsService,
     private wallet: WalletProviderService,
-    private loadingController: LoadingController,
     private route: ActivatedRoute,
     private router: Router,
     private navController: NavController,
-    private alert: GlobalAlertService) { }
+    private alert: GlobalAlertService,
+    private modalController: ModalController, 
+    ) { }
 
   async ngOnInit() {
     await this.setup()
@@ -134,7 +136,7 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
       return
     }
     try {
-      this.showLoading('Waiting for approval')
+      this.showLoading('Waiting for Approval')
       const totalSupply = await this.tokenService.totalSupply(this.asset)
       await this.tokenService.approve(this.asset, this.vaultContract.address, totalSupply)
     } catch (error) {
@@ -149,7 +151,7 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
       return
     }
     try {
-      await this.showLoading('Waiting for confirmation')
+      await this.showLoading('Waiting for Confirmation')
       const amount = ethers.utils.parseUnits(this.depositInput.nativeElement.value.toString() ?? '0')
       this.depositInput.nativeElement.value = ''
       await this.vaultService.depositAsset(this.vaultContract, amount, this.wallet.currentAccount) 
@@ -165,7 +167,7 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
       return
     }
     try {
-      await this.showLoading('Waiting for confirmation')
+      await this.showLoading('Waiting for Confirmation')
       const amount = ethers.utils.parseUnits(this.withdrawInput.nativeElement.value.toString() ?? '0')
       this.withdrawInput.nativeElement.value = ''
       await this.vaultService.redeem(this.vaultContract, amount, this.wallet.currentAccount) 
@@ -232,10 +234,13 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
   }
 
   private async showLoading(message: string) {
-    this.loader = await this.loadingController.create({
-      message
+    this.loader = await this.modalController.create({
+      component: LoadingModalComponent,
+      componentProps:{
+        'message': message
+      }
     })
-    await this.loader?.present()
+    return await this.loader?.present()
   }
 
   private async hideLoading() {

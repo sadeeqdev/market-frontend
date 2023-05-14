@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IonInput, LoadingController, NavController } from '@ionic/angular';
+import { IonInput, LoadingController, ModalController, NavController } from '@ionic/angular';
 import { BigNumber, ethers } from 'ethers';
 import { Subscription } from 'rxjs';
 import { CheddaBaseTokenVaultService } from 'src/app/contracts/chedda-base-token-vault.service';
@@ -11,6 +11,7 @@ import { TokenService } from 'src/app/contracts/token.service';
 import { LendingPool } from 'src/app/lend/lend.models';
 import { VaultStatsService } from 'src/app/providers/vault-stats.service';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
+import { LoadingModalComponent } from 'src/app/shared/components/loading-modal/loading-modal.component';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
 import { NFTMetadata } from 'src/app/shared/models/nft.model';
 import { environment } from 'src/environments/environment';
@@ -77,7 +78,7 @@ export class BorrowPoolDetailsPage implements OnInit {
     private debtService: CheddaDebtTokenService,
     private wallet: WalletProviderService,
     private nftService: MarketNftService,
-    private loadingController: LoadingController,
+    private modalController: ModalController,
     private priceFeed: PriceOracleService,
     private route: ActivatedRoute,
     private navController: NavController,
@@ -271,7 +272,7 @@ export class BorrowPoolDetailsPage implements OnInit {
       return;
     }
     try {
-      this.showLoading('Waiting for approval');
+      this.showLoading('Waiting for Approval');
       const totalSupply = await this.tokenService.totalSupply(
         this.collateralContract
       );
@@ -292,7 +293,7 @@ export class BorrowPoolDetailsPage implements OnInit {
       return;
     }
     try {
-      await this.showLoading('Waiting for confirmation');
+      await this.showLoading('Waiting for Confirmation');
       if (this.collateralContract.isNFT) {
         const tokenIds = this.selectedNfts.map(t => t.edition.toString())
         await this.vaultService.addCollateral721(
@@ -324,7 +325,7 @@ export class BorrowPoolDetailsPage implements OnInit {
       return;
     }
     try {
-      await this.showLoading('Waiting for confirmation');
+      await this.showLoading('Waiting for Confirmation');
       if (this.collateralContract.isNFT) {
         const tokenIds = this.selectedNfts.map(t => t.edition.toString())
         await this.vaultService.removeCollateral721(
@@ -356,7 +357,7 @@ export class BorrowPoolDetailsPage implements OnInit {
       return;
     }
     try {
-      await this.showLoading('Waiting for confirmation');
+      await this.showLoading('Waiting for Confirmation');
       const amount = ethers.utils.parseUnits(
         this.borrowInput.nativeElement.value.toString() ?? '0'
       );
@@ -374,7 +375,7 @@ export class BorrowPoolDetailsPage implements OnInit {
       return;
     }
     try {
-      await this.showLoading('Waiting for confirmation');
+      await this.showLoading('Waiting for Confirmation');
       const amount = ethers.utils.parseUnits(
         this.repayInput.nativeElement.value.toString() ?? '0'
       );
@@ -451,10 +452,13 @@ export class BorrowPoolDetailsPage implements OnInit {
   }
 
   private async showLoading(message: string) {
-    this.loader = await this.loadingController.create({
-      message,
-    });
-    await this.loader?.present();
+    this.loader = await this.modalController.create({
+      component: LoadingModalComponent,
+      componentProps:{
+        'message': message
+      }
+    })
+    return await this.loader?.present()
   }
 
   private async hideLoading() {

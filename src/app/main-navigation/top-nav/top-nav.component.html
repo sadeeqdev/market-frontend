@@ -1,4 +1,4 @@
- <ion-header [translucent]="false" class="main-nav">
+ <div class="main-nav">
   <ion-toolbar *ngIf="!isCorrectNetwork" color="danger" class="centered-text text-middle">
     <ion-text class="text-middle white-text">
       <ion-icon name="warning"></ion-icon>
@@ -7,7 +7,7 @@
     <ion-button size="small" color="secondary" class="switch-button" (click)="switchNetwork()">Switch Network</ion-button>
   </ion-toolbar>
   <!-- New Header -->
-  <div class="h-24 bg-black border-b border-gray-600  flex items-center" >
+  <div class="h-24 bg-black border-b border-gray-600 flex items-center" >
     <div class="flex flex-row justify-between py-4 w-11/12 xl:w-5/6 2xl:w-9/12 mx-auto items-center">
       <div>
         <img src="/assets/logos/app-logo.svg" width="70%" class="md:hidden lg:flex"/>
@@ -20,8 +20,9 @@
           </div>
           <div class="absolute justify-center hidden pacman-logo">
             <div class="logo">
-              <div class="circle"></div>
-              <div class="triangle"></div>
+              <svg width="10" height="10" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M31.4776 10.3006L18.8514 15.9998L31.4777 21.699C29.1813 27.7216 23.3515 32 16.5225 32C7.6859 32 0.522461 24.8366 0.522461 16C0.522461 7.16344 7.6859 0 16.5225 0C23.3514 0 29.1811 4.27821 31.4776 10.3006Z" fill="#EFD53D"/>
+              </svg>
             </div>
             <div class="flex ml-2 space-x-2">
               <div class="circle-pac"></div>
@@ -66,7 +67,7 @@
             (click)="openProfileMenu()"c
             class="h-9 w-32 lg:h-11 lg:w-40 px-2 rounded-lg text-sm account_button flex justify-between items-center hover:opacity-90"
             >
-            <div class="flex gap-1 items-center">
+            <div class="flex gap-1 items-center font-semibold">
               <img src="/assets/logos/account-img.svg"/>
               {{account | truncateMiddle:[6, '...', 4 ]}}
             </div>
@@ -81,7 +82,7 @@
                   <img src="/assets/icon/copy-icon.svg" width="17px"/>
                 </div>
               </li>
-              <li class="py-2 px-2 border-b border-gray-700">{{balance | number: '1.2-4'}} xCHEDDA</li>
+              <li class="py-2 px-2 border-b border-gray-700">{{balance | number: '1.2-4'}} CHEDDA</li>
               <li class="py-2 px-2 border-b border-gray-700">{{veBalance | number: '1.2-4'}} xCHEDDA</li>
               <li class="py-4 px-5 rounded-b-md cursor-pointer flex items-center">
                 <button
@@ -146,9 +147,9 @@
       </ion-fab-button>
     </ion-buttons>
   </ion-toolbar> -->
-</ion-header>
+</div>
 
-<div class="mobile-nav">
+<div class="mobile-nav relative">
   <!-- New header -->
  <div class="h-20 z-10 w-full bg-black flex items-center mobile-nav-bg">
   <div class="h-16 w-full items-center grid grid-cols-12">
@@ -241,10 +242,11 @@
           <div>
             {{item.name}}
           </div>
-          <div class="mt-2 hidden pacman-logo">
+          <div class="mt-2 hidden pacman-container">
             <div class="logo">
-              <div class="circle"></div>
-              <div class="triangle"></div>
+              <svg width="10" height="10" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M31.4776 10.3006L18.8514 15.9998L31.4777 21.699C29.1813 27.7216 23.3515 32 16.5225 32C7.6859 32 0.522461 24.8366 0.522461 16C0.522461 7.16344 7.6859 0 16.5225 0C23.3514 0 29.1811 4.27821 31.4776 10.3006Z" fill="#EFD53D"/>
+              </svg>
             </div>
             <div class="flex ml-2 space-x-2">
               <div class="circle-pac"></div>

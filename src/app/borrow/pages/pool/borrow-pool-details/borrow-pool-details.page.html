@@ -224,10 +224,10 @@
       <div
         class="h-16 sm:h-20 border-b font-semibold text-lg sm:text-3xl flex items-center space-x-4 justify-center border-gray-500"
       >
-        <div class="w-10 h-10">
+        <div class="w-10 h-10" *ngIf="pool">
           <img [src]="pool.asset.logo">
         </div>
-        <div>Borrow {{ pool.asset.name }}</div>
+        <div *ngIf="pool">Borrow {{ pool.asset.name }}</div>
       </div>
       <div class="pt-5 pb-10 px-6 sm:px-16">
         <div class="h-auto w-full flex text-[#B5C2EB]">

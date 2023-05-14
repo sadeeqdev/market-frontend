@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { LoadingController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { ChartType } from 'chart.js';
 import { BigNumber, ethers } from 'ethers';
 import moment from 'moment';
@@ -12,6 +12,7 @@ import { LiqiudityGaugeService } from 'src/app/contracts/liqiudity-gauge.service
 import { VeCheddaService } from 'src/app/contracts/ve-chedda.service';
 import { LendingPool } from 'src/app/lend/lend.models';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
+import { LoadingModalComponent } from 'src/app/shared/components/loading-modal/loading-modal.component';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
 import { environment } from 'src/environments/environment';
 
@@ -80,7 +81,7 @@ export class VoteLandingPage implements OnInit, OnDestroy {
     private alert: GlobalAlertService,
     private chedda: CheddaService,
     private veChedda: VeCheddaService,
-    private loadingController: LoadingController
+    private modalController: ModalController
     ) { }
 
   async ngOnInit() {
@@ -185,7 +186,7 @@ export class VoteLandingPage implements OnInit, OnDestroy {
       return
     }
     try {
-      await this.showLoading('rebalancing in progress')
+      await this.showLoading('Rebalancing in progress')
       await this.gaugeController.rebalance(this.wallet.currentAccount)
     } catch (error) {
       this.hideLoading()
@@ -231,10 +232,13 @@ export class VoteLandingPage implements OnInit, OnDestroy {
   }
 
   private async showLoading(message: string) {
-    this.loader = await this.loadingController.create({
-      message
+    const modal = await this.modalController.create({
+      component: LoadingModalComponent,
+      componentProps:{
+        'message': message
+      }
     })
-    await this.loader?.present()
+    return await modal.present()
   }
 
   private async hideLoading() {
