@@ -116,7 +116,6 @@
                 </ion-col>
               </ion-row>
             </div>
-
           </ion-card-content>
         </ion-card>
       </ion-col>
@@ -173,7 +172,7 @@
             [class.activeTab]="!isDepositCheddaTab"
             class="text-sm sm:text-lg py-3 w-full text-center hover:opacity-75 hover:bg-transparent"
           >
-            <button class="w-full uppercase" (click)="switchDepositCheddaTab(false)">
+            <button class="w-full font-semibold uppercase" (click)="switchDepositCheddaTab(false)">
               Withdraw
             </button>
           </div>
@@ -188,10 +187,10 @@
           </div>
           <div class="relative">
             <input
-              type="text"
+              type="number"
               placeholder="Amount"
               #depositInput
-              class="bg-black w-full rounded mt-3 h-10 sm:h-14 px-4 font-semibold text-[#BCC1E780] text-xs sm:text-lg focus:outline-none focus:shadow-outline"
+              class="bg-black w-full rounded mt-3 h-10 sm:h-14 px-4 font-semibold text-white text-xs sm:text-lg focus:outline-none focus:shadow-outline"
             />
             <div class="absolute top-0 right-0 mt-4 sm:mt-5 mr-1 sm:mr-2">
               <button
@@ -227,10 +226,10 @@
           </div>
           <div class="relative">
             <input
-              type="text"
+              type="number"
               placeholder="Amount"
               #withdrawInput
-              class="bg-black w-full rounded mt-3 h-10 sm:h-14 px-4 font-semibold text-[#BCC1E780] text-xs sm:text-lg focus:outline-none focus:shadow-outline"
+              class="bg-black w-full rounded mt-3 h-10 sm:h-14 px-4 font-semibold text-white text-xs sm:text-lg focus:outline-none focus:shadow-outline"
             />
             <div class="absolute top-0 right-0 mt-4 sm:mt-5 mr-1 sm:mr-2">
               <button

@@ -13,6 +13,8 @@ import { BlockiePipe } from '../pipes/blockie.pipe';
 import { LoanRequestStatePipe, LoanStatePipe } from '../pipes/loan-state.pipe';
 import { RoundingPipe } from '../pipes/rounding-pipe';
 import { AssetTabComponent } from '../shared/components/asset-tab/asset-tab.component';
+import { LoadingModalComponent } from '../shared/components/loading-modal/loading-modal.component';
+import { ActionModalComponent } from '../shared/components/action-modal/action-modal.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import { AssetTabComponent } from '../shared/components/asset-tab/asset-tab.comp
     NetworksPopoverComponent,
     WelcomeModalComponent,
     AssetTabComponent,
+    LoadingModalComponent,
+    ActionModalComponent,
   ],
   imports: [
     CommonModule,
@@ -46,6 +50,8 @@ import { AssetTabComponent } from '../shared/components/asset-tab/asset-tab.comp
     NetworksPopoverComponent,
     WelcomeModalComponent,
     AssetTabComponent,
+    LoadingModalComponent,
+    ActionModalComponent,
   ]
 })
 export class SharedComponentsModule { }

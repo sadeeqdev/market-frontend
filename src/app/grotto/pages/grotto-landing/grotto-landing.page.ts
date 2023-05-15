@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { IonRange, LoadingController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { BigNumber, ethers } from 'ethers';
 import moment from 'moment';
 import { Subscription } from 'rxjs';
@@ -8,6 +8,7 @@ import { FaucetService } from 'src/app/contracts/faucet.service';
 import { StakedCheddaService } from 'src/app/contracts/staked-chedda.service';
 import { VeCheddaService } from 'src/app/contracts/ve-chedda.service';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
+import { LoadingModalComponent } from 'src/app/shared/components/loading-modal/loading-modal.component';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
 import { environment } from 'src/environments/environment';
 
@@ -89,7 +90,8 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     private xChedda: StakedCheddaService,
     private veChedda: VeCheddaService,
     private alert: GlobalAlertService,
-    private loadingController: LoadingController) {
+    private modalController: ModalController
+    ) {
 
       // Checks if acount is changed or disconnected
       // Updates chedda balance according to account selected 
@@ -200,7 +202,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       return
     }
     try {
-      await this.showLoading('Waiting for confirmation')
+      await this.showLoading('Waiting for Confirmation')
       await this.xChedda.stake(amount)
       this.stakeInput.nativeElement.value = ''
     } catch (error) {
@@ -221,7 +223,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       return
     }
     try {
-      this.showLoading('Waiting for confirmation')
+      this.showLoading('Waiting for Confirmation')
       await this.xChedda.unstake(amount)
       this.unstakeInput.nativeElement.value = ''
     } catch (error) {
@@ -278,7 +280,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       return
     }
     try {
-      await this.showLoading('Waiting for approval')
+      await this.showLoading('Waiting for Approval')
       await this.chedda.approve(this.xChedda.address())
     } catch (error) {
       this.isCheddaApproved = false
@@ -293,7 +295,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       return
     }
     try {
-      await this.showLoading('Waiting for approval')
+      await this.showLoading('Waiting for Approval')
       await this.xChedda.approve(this.veChedda.address())
     } catch (error) {
       this.isXCheddaApproved = false
@@ -319,10 +321,13 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
   }
 
   private async showLoading(message: string) {
-    this.loader = await this.loadingController.create({
-      message
+    this.loader = await this.modalController.create({
+      component: LoadingModalComponent,
+      componentProps:{
+        'message': message
+      }
     })
-    await this.loader?.present()
+    return await this.loader?.present()
   }
 
   private async hideLoading() {
