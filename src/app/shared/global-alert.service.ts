@@ -46,9 +46,10 @@ export class GlobalAlertService {
         'heading': 'Connect!',
         'message': 'Please connect your wallet to proceed.',
         'actionText': 'Go To Metamask',
-        'modalAction': () => {
+        'modalAction': async () => {
           console.log('Confirm Okay')
           this.connect()
+          await alert.dismiss();
         },
         'cancelAction': async () => {
           await alert.dismiss();
