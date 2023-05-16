@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { WelcomeModalComponent } from './welcome-modal/welcome-modal.component';
 import { IonicRatingComponent } from '../external/ionic-rating/ionic-rating.component';
 import { NetworksPopoverComponent } from '../main-navigation/networks-popover/networks-popover.component';
+import { NavProfilePopoverComponent } from '../main-navigation/profile-popover/profile-popover.component';
 import { EthFormattingPipe } from '../pipes/eth-formatting.pipe';
 import { FormsModule } from '@angular/forms';
 import { BlockiePipe } from '../pipes/blockie.pipe';
@@ -15,6 +16,7 @@ import { RoundingPipe } from '../pipes/rounding-pipe';
 import { AssetTabComponent } from '../shared/components/asset-tab/asset-tab.component';
 import { LoadingModalComponent } from '../shared/components/loading-modal/loading-modal.component';
 import { ActionModalComponent } from '../shared/components/action-modal/action-modal.component';
+import { PageTitleComponent } from '../shared/components/page-title/page-title.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,8 @@ import { ActionModalComponent } from '../shared/components/action-modal/action-m
     AssetTabComponent,
     LoadingModalComponent,
     ActionModalComponent,
+    NavProfilePopoverComponent,
+    PageTitleComponent,
   ],
   imports: [
     CommonModule,
@@ -52,6 +56,8 @@ import { ActionModalComponent } from '../shared/components/action-modal/action-m
     AssetTabComponent,
     LoadingModalComponent,
     ActionModalComponent,
+    NavProfilePopoverComponent,
+    PageTitleComponent,
   ]
 })
 export class SharedComponentsModule { }

@@ -17,7 +17,8 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     IonicModule,
     SharedComponentsModule,
     NgxDatatableModule,
-    BorrowLandingPageRoutingModule
+    BorrowLandingPageRoutingModule,
+    SharedComponentsModule
   ],
   declarations: [BorrowLandingPage]
 })

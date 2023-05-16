@@ -50,7 +50,7 @@ export const environment = {
                 name: 'USD Coin',
                 symbol: 'USCD.c',
                 address: '0x464e5fD82cacA90375C27f08D9D68f4433C71fA7',
-                logo: '/assets/logos/usd-coin-logo.png'
+                logo: '/assets/logos/usdc-logo.png'
               },
               collateral: [
                 {
@@ -114,7 +114,7 @@ export const environment = {
                   name: 'USD Coin',
                   symbol: 'USCD.c',
                   address: '0x464e5fD82cacA90375C27f08D9D68f4433C71fA7',
-                  logo: '/assets/logos/usd-coin-logo.png'
+                  logo: '/assets/logos/usdc-logo.png'
                 },
                 {
                   name: 'Dai StableCoin',
@@ -145,7 +145,7 @@ export const environment = {
                   name: 'Chedda',
                   symbol: 'CHEDDA',
                   address: '0x578628A324e0af99231D202aBE99f5Ad57BAdC3D',
-                  logo: '/assets/logos/chedda-logo-square.png'
+                  logo: '/assets/logos/chedd-3d-logo.png'
                 },
                 {
                   name: 'Zappy',

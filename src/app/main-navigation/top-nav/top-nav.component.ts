@@ -40,7 +40,7 @@ export class TopNavComponent implements OnInit, OnDestroy {
   private accountSubscription?: Subscription
   private networkSubscription?: Subscription
   private balanceSubscription?: Subscription
-
+  isScrolled: boolean = false;
   menuItems = [
     // {
     //   name: 'Dashboard',
@@ -110,21 +110,6 @@ export class TopNavComponent implements OnInit, OnDestroy {
     private popoverController: PopoverController,
     private preferences: PreferencesService,
     ) {
-
-      // Initialize Metamask provider
-      let eth:any = window.ethereum;
-  
-      // Watch for provider disconnection
-      if(eth){
-        eth.on('accountsChanged', (accounts: any) => {
-          if (accounts.length > 0) {
-            this.account = accounts[0]
-          }else{
-            // Metamask provider is disconnected
-            this.account = ''
-          }
-        });
-      }
     }
 
 
@@ -281,6 +266,11 @@ export class TopNavComponent implements OnInit, OnDestroy {
 
   openMenu(){
     this.isMenuOpen = true;
+  }
+
+  @HostListener('window:scroll')
+  onWindowScroll() {
+    this.isScrolled = window.scrollY > 0;
   }
 
   @HostListener('document:click', ['$event'])

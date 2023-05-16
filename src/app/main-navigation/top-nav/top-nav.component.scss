@@ -165,10 +165,6 @@ ion-img.circle::part(image) {
     background: linear-gradient(252.74deg, #F3943D 18.99%, rgba(72, 65, 158, 0.81) 58.87%);
 }
 
-.account_button {
-    background: linear-gradient(252.74deg, #F3943D 18.99%, #6257F2 98.75%)
-}
-
 .borrow-button-bg{
     background: linear-gradient(86.02deg, #F3943D -8.86%, #FDE34D 129.9%);
 }
@@ -187,4 +183,8 @@ ion-img.circle::part(image) {
 
 .mobile-translate{
     transform: translateY(0px)
+}
+
+.top-nav-border{
+    border-bottom: 1px solid var(--ion-color-contrast);
 }
