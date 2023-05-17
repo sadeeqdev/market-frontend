@@ -11,11 +11,14 @@
   </button>
   <div id="mySelectMenu" class="absolute mt-1 w-56 bg-[#13161F] menu-bg text-white rounded-md shadow-lg z-10" [class.hidden]="!isOpenProfileMenu">
     <ul class="list-reset text-center font-semibold">
-      <li class="py-4 px-2 hover:opacity-70 rounded-t-md cursor-pointer border-b border-gray-700" (click)="copyAddress()">
+      <li class=" py-4 px-2 rounded-t-md cursor-pointer border-b border-gray-700" (click)="copyAddress()">
         <div class="flex gap-3 justify-center items-center">
           <img src="/assets/logos/account-img.svg"/>
-            {{address | truncateMiddle:[6, '...', 4 ]}} 
-          <img src="/assets/icon/copy-icon.svg" width="17px"/>
+          {{address | truncateMiddle:[6, '...', 4 ]}} 
+          <button class="relative address-container hover:opacity-70">
+            <img src="/assets/icon/copy-icon.svg" width="17px" />
+            <div class="tooltip">{{addressCopyText}}</div>
+          </button>
         </div>
       </li>
       <li class="py-2 px-2 border-b border-gray-700">{{cheddaBalance | number: '1.2-4'}} CHEDDA</li>

@@ -11,6 +11,7 @@ export class ProfilePopoverComponent implements OnInit {
   @Input() cheddaBalance: string
   @Input() xCheddaBalance: string
   isOpenProfileMenu: boolean;
+  addressCopyText: string = 'Copy';
 
   constructor(
     private router: Router,
@@ -21,7 +22,12 @@ export class ProfilePopoverComponent implements OnInit {
 
 
   copyAddress() {
-    navigator.clipboard.writeText(this.address).then().catch(e => console.log(e));
+    navigator.clipboard.writeText(this.address).then(() => {
+      this.addressCopyText = 'Copied!';
+      setTimeout(() => {
+        this.addressCopyText = 'Copy';
+      }, 2000)
+    }).catch(e => console.log(e));
   }
 
   async navigateToProfile() {

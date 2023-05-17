@@ -5,3 +5,22 @@
 .menu-bg{
     background: radial-gradient(48.98% 14130.72% at 51.02% 50%, rgb(40, 25, 80) 45.83%, rgb(18, 9, 37) 100%) 
 }
+
+.tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 4px;
+    background-color: #000;
+    color: #fff;
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    font-size: 10px;
+  }
+  
+  .address-container:hover .tooltip {
+    opacity: 1;
+  }
