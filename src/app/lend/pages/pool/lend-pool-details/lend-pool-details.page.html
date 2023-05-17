@@ -197,20 +197,16 @@
               </button>
             </div>
           </div>
-          <button
-            *ngIf="!isApproved"
-            (click)="approveAsset()"
-            class="h-10 sm:h-12 primary-button-bg w-full mt-5 sm:mt-3 rounded-lg font-bold uppercase text-lg hover:opacity-90"
-          >
-            Approve {{ assetSymbol }}
-          </button>
-          <button
-            *ngIf="isApproved"
-            (click)="deposit()"
-            class="h-10 sm:h-12 primary-button-bg w-full mt-5 sm:mt-3 rounded-lg font-bold uppercase text-lg hover:opacity-90"
-          >
-            Deposit {{ assetSymbol }}
-          </button>
+          <app-primary-button
+            [buttonText]="'Approve ' + assetSymbol"
+            [visibility]="!isApproved"
+            (clicked)="approveAsset()"
+          ></app-primary-button>
+          <app-primary-button
+            [buttonText]="'Deposit ' + assetSymbol"
+            [visibility]="isApproved"
+            (clicked)="deposit()"
+          ></app-primary-button>
         </div>
         <div *ngIf="!isDepositCheddaTab">
           <div class="mt-8 flex justify-between opacity-50 text-sm sm:text-lg">
@@ -236,12 +232,11 @@
               </button>
             </div>
           </div>
-          <button
-            (click)="redeem()"
-            class="h-10 sm:h-12 secondary-button w-full mt-5 sm:mt-3 rounded-lg font-bold uppercase text-lg hover:opacity-90"
-          >
-            WITHDRAW xCHEDDA
-          </button>
+          <app-secondary-button
+            [buttonText]="'WITHDRAW ' + assetSymbol"
+            [visibility]="true"
+            (clicked)="redeem()"
+          ></app-secondary-button>
         </div>
         <div
           class="w-full h-auto mt-12 rounded-[20px] border-[1px] border-[#bab9bb] text-white px-3 py-7"

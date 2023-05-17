@@ -38,43 +38,10 @@
 
 .top-nav-active {
     font-weight: 700;
-    .pacman-logo{
+    .pacman-loader{
         display: flex;
-        flex-direction: row;
-        place-items: center;
-        align-items: center;
-        justify-content: center;
-        left: 50%;
-        right: 50%;
     }
 }
-
-.circle-pac{
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background-color: #7CCEF3;
-}
-
-// .pacman {
-//     width: 0;
-//     height: 0;
-//     border-top: 5px solid transparent;
-//     border-right: 5px solid gray;
-//     border-bottom: 5px solid transparent;
-//     border-radius: 50%;
-//     position: relative;
-//     animation: eat 1s infinite;
-//   }
-  
-//   .pacman:before {
-//     content: "";
-//     width: 10px;
-//     height: 10px;
-//     background-color: yellow;
-//     border-radius: 50%;
-//     position: absolute;
-//   }
 
 .top-nav-button {
     padding: 0 12px;

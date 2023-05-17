@@ -49,20 +49,16 @@
             </button>
           </div>
         </div>
-        <button
-          *ngIf="isCheddaApproved"
-          (click)="stake()"
-          class="h-10 sm:h-12 primary-button-bg w-full mt-5 sm:mt-3 rounded-lg font-bold uppercase text-lg hover:opacity-90"
-        >
-          Stake Chedda
-        </button>
-        <button
-          *ngIf="!isCheddaApproved"
-          (click)="approveChedda()"
-          class="h-10 sm:h-12 primary-button-bg w-full mt-5 sm:mt-3 rounded-lg font-bold uppercase text-lg hover:opacity-90"
-        >
-          Approve Chedda
-        </button>
+        <app-primary-button
+          buttonText="Stake Chedda"
+          [visibility]="isCheddaApproved"
+          (clicked)="stake()"
+        ></app-primary-button>
+        <app-primary-button
+          buttonText="Approve Chedda"
+          [visibility]="!isCheddaApproved"
+          (clicked)="approveChedda()"
+        ></app-primary-button>
       </div>
       <div *ngIf="!isStakeTab">
         <div class="mt-8 flex justify-between opacity-50 text-sm sm:text-lg">
@@ -88,12 +84,11 @@
             </button>
           </div>
         </div>
-        <button
-          (click)="unstake()"
-          class="h-10 sm:h-12 secondary-button w-full mt-5 sm:mt-3 rounded-lg font-bold uppercase text-lg hover:opacity-90"
-        >
-          Unstake Chedda
-        </button>
+        <app-secondary-button
+          buttonText="Unstake Chedda"
+          [visibility]="true"
+          (clicked)="unstake()"
+        ></app-secondary-button>
       </div>
       <div
         class="w-full h-auto mt-12 rounded-[20px] border-[1px] border-[#bab9bb] text-white px-3 pb-5 pt-1 sm:pt-3 sm:pb-7"
@@ -184,20 +179,16 @@
             <div class="text-sm opacity-50">156 weeks</div>
           </div>
         </div>
-        <button
-          (click)="lock()"
-          *ngIf="isXCheddaApproved"
-          class="h-10 sm:h-12 primary-button-bg w-full mt-5 sm:mt-3 rounded-lg font-bold uppercase text-lg hover:opacity-90"
-        >
-          LOCK xCHEDDA
-        </button>
-        <button
-          (click)="approveStakedChedda()"
-          *ngIf="!isXCheddaApproved"
-          class="h-10 sm:h-12 primary-button-bg w-full mt-5 sm:mt-3 rounded-lg font-bold uppercase text-lg hover:opacity-90"
-        >
-          APPROVE xCHEDDA
-        </button>
+        <app-primary-button
+          buttonText="LOCK xCHEDDA"
+          [visibility]="isXCheddaApproved"
+          (clicked)="lock()"
+        ></app-primary-button>
+        <app-primary-button
+          buttonText="APPROVE xCHEDDA"
+          [visibility]="!isXCheddaApproved"
+          (clicked)="approveStakedChedda()"
+        ></app-primary-button>
       </div>
       <div *ngIf="!isLockCheddaTab">
         <div class="mt-8 flex justify-between opacity-50 text-sm sm:text-lg">
@@ -228,12 +219,11 @@
         <div class="text-sm opacity-50 mt-9">
           Withdrawals are only possible when the lock expires. 
         </div>
-        <button
-          (click)="withdraw()"
-          class="h-10 sm:h-12 secondary-button w-full mt-5 sm:mt-3 rounded-lg font-bold uppercase text-lg hover:opacity-90"
-        >
-          WITHDRAW xCHEDDA
-        </button>
+        <app-secondary-button
+          buttonText="WITHDRAW xCHEDDA"
+          [visibility]="true"
+          (clicked)="withdraw()"
+        ></app-secondary-button>
       </div>
       <div class="opacity-50 mt-9  text-xs sm:text-sm">
         Note: Locking can not be undone until the lock expires. Use with caution. 

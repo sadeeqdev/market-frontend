@@ -18,24 +18,16 @@
           <div class="">
             {{item.name}}
           </div>
-          <div class="absolute justify-center hidden pacman-logo">
-            <div class="logo">
-              <svg width="10" height="10" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M31.4776 10.3006L18.8514 15.9998L31.4777 21.699C29.1813 27.7216 23.3515 32 16.5225 32C7.6859 32 0.522461 24.8366 0.522461 16C0.522461 7.16344 7.6859 0 16.5225 0C23.3514 0 29.1811 4.27821 31.4776 10.3006Z" fill="#EFD53D"/>
-              </svg>
-            </div>
-            <div class="flex ml-2 space-x-2">
-              <div class="circle-pac"></div>
-              <div class="circle-pac"></div>
-              <div class="circle-pac"></div>
-              <div class="circle-pac"></div>
-            </div>
+          <div class="hidden pacman-loader">
+            <app-pacman-loader></app-pacman-loader>
           </div>
         </button>
       </div>
       <div class="flex flex-row gap-2 text-white">
         <app-networks-popover></app-networks-popover>
-        <app-nav-profile-popover></app-nav-profile-popover>
+        <div *ngIf="account">
+          <app-profile-popover [address]="account" [cheddaBalance]="cheddaBalance" [xCheddaBalance]="xCheddaBalance"></app-profile-popover>
+        </div>
         <div *ngIf="!account">
           <button 
             (click)="onConnectTapped()"
@@ -98,49 +90,22 @@
       <img src="/assets/logos/chedda-logo.svg" width="50px"/>
     </div>
     <div class="col-span-5">
-      <div class="relative network-menu-container">
-        <button 
-          (click)="openNetworkMenu()"
-          class="h-10 w-36 p-2 rounded network_button flex gap-2 justify-between items-center text-lg font-semibold hover:opacity-90"
-          >
-          <div class="flex gap-2 text-white">
-            <img src="/assets/logos/Oasis-logo.svg" width="20px"/>
-            {{ env.config.ui.chainName }}
-          </div>
-          <img src="/assets/icon/arrow-down.svg"/>
-        </button>
-        <div 
-          [class.hidden]="!isOpenNetworkMenu"
-          id="mySelectMenu" 
-          class="absolute mt-1 w-full bg-[#13161F] text-white menu-bg rounded-[10px] shadow-lg z-10"
-        >
-          <ul class="list-reset">
-            <li 
-              *ngFor="let network of networkList; index as i" 
-              (click)="onNetworkSelected(network)" 
-              class="py-2 px-2 border-b border-gray-700 hover:bg-gray-700 hover:rounded-t-md cursor-pointer flex text-xl font-semibold gap-2 last:border-none hover:last:rounded-t-none last:rounded-b-md"
-            >
-              <img [src]="network.icon"/>
-              {{ network.name }}
-            </li>
-          </ul>
-        </div>
-      </div>
+      <app-networks-popover></app-networks-popover>
     </div>
     <div class="col-span-2 flex justify-end pr-5">
-      <button (click)="openMenu()">
+      <button (click)="openMobileNav()">
         <img src="/assets/icon/menu-icon.svg"/>
       </button>
     </div>
   </div>
  </div>
  <!-- Mobile nav drawer -->
- <div class="absolute text-white z-50 w-screen h-screen mobile-nav-bg top-0 transition-all" [class.mobile-translate]="isMenuOpen" [class.mobile-drawer]="!isMenuOpen">
+ <div class="absolute text-white z-50 w-screen h-screen mobile-nav-bg top-0 transition-all" [class.mobile-translate]="isMobileNavOpen" [class.mobile-drawer]="!isMobileNavOpen">
     <div class="flex w-full justify-between px-5 mt-6 items-start">
       <div class="">
         <img src="/assets/logos/chedda-logo.svg" width="60px"/>
       </div>
-      <button class="mt-2" (click)="closeMenu()">
+      <button class="mt-2" (click)="closeMobileNav()">
         <img src="/assets/icon/close-icon.svg" width="17px"/>
       </button>
     </div>
