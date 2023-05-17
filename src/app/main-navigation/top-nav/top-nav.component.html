@@ -121,12 +121,12 @@
               <img src="/assets/icon/copy-icon.svg" width="17px"/>
             </div>
           </li>
-          <li class="py-2 px-2 border-b border-gray-700">{{balance | number: '1.2-4'}} CHEDDA</li>
-          <li class="py-2 px-2 border-b border-gray-700">{{veBalance | number: '1.2-4'}} xCHEDDA</li>
+          <li class="py-2 px-2 border-b border-gray-700">{{cheddaBalance | number: '1.2-4'}} CHEDDA</li>
+          <li class="py-2 px-2 border-b border-gray-700">{{xCheddaBalance | number: '1.2-4'}} xCHEDDA</li>
           <li class="py-4 px-5 rounded-b-md cursor-pointer flex justify-center items-center">
             <button
               (click)="disconnect()"
-              class="h-8 borrow-button-bg w-48 rounded-lg font-bold uppercase text-xs hover:opacity-90"
+              class="h-8 primary-button-bg w-48 rounded-lg font-bold uppercase text-xs hover:opacity-90"
             >
               Disconnect wallet
             </button>
@@ -144,22 +144,12 @@
     </div>
     <div class="mt-2">
       <div class="flex flex-col text-white gap-y-5 mt-2 text-2xl font-semibold">
-        <button *ngFor="let item of menuItems" class="relative hover:opacity-80" [routerLink]="item.path" routerLinkActive="top-nav-active" (click)="closeMenu()" >
+        <button *ngFor="let item of menuItems" class="relative hover:opacity-80" [routerLink]="item.path" routerLinkActive="top-nav-active" (click)="closeMobileNav()" >
           <div>
             {{item.name}}
           </div>
-          <div class="mt-2 hidden pacman-container">
-            <div class="logo">
-              <svg width="10" height="10" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M31.4776 10.3006L18.8514 15.9998L31.4777 21.699C29.1813 27.7216 23.3515 32 16.5225 32C7.6859 32 0.522461 24.8366 0.522461 16C0.522461 7.16344 7.6859 0 16.5225 0C23.3514 0 29.1811 4.27821 31.4776 10.3006Z" fill="#EFD53D"/>
-              </svg>
-            </div>
-            <div class="flex ml-2 space-x-2">
-              <div class="circle-pac"></div>
-              <div class="circle-pac"></div>
-              <div class="circle-pac"></div>
-              <div class="circle-pac"></div>
-            </div>
+          <div class="mt-2 hidden pacman-loader">
+            <app-pacman-loader></app-pacman-loader>
           </div>
         </button>
       </div>
