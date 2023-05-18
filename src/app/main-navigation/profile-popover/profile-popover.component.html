@@ -1,0 +1,36 @@
+<div class="relative profile-menu-container">
+  <button 
+    (click)="openProfileMenu()"
+    class="h-9 w-32 sm:h-11 sm:w-40 px-2 rounded-lg text-sm account_button flex justify-between items-center hover:opacity-90"
+    >
+    <div class="flex gap-1 items-center font-semibold">
+      <img src="/assets/logos/account-img.svg"/>
+      {{address | truncateMiddle:[6, '...', 4 ]}}
+    </div>
+    <img src="/assets/icon/arrow-down.svg"/>
+  </button>
+  <div id="mySelectMenu" class="absolute mt-1 w-56 right-0 bg-[#13161F] menu-bg text-white rounded-md shadow-lg z-10" [class.hidden]="!isOpenProfileMenu">
+    <ul class="list-reset text-center font-semibold">
+      <li class=" py-4 px-2 rounded-t-md border-b border-gray-700" (click)="copyAddress()">
+        <div class="flex gap-3 justify-center items-center">
+          <img src="/assets/logos/account-img.svg"/>
+          {{address | truncateMiddle:[6, '...', 4 ]}} 
+          <button class="relative address-container hover:opacity-70">
+            <img src="/assets/icon/copy-icon.svg" width="17px" />
+            <div class="tooltip">{{addressCopyText}}</div>
+          </button>
+        </div>
+      </li>
+      <li class="py-2 px-2 border-b border-gray-700">{{cheddaBalance | number: '1.2-4'}} CHEDDA</li>
+      <li class="py-2 px-2 border-b border-gray-700">{{xCheddaBalance | number: '1.2-4'}} xCHEDDA</li>
+      <li class="py-4 px-5 rounded-b-md cursor-pointer flex items-center">
+        <button
+          (click)="disconnect()"
+          class="h-8 primary-button-bg w-full rounded-lg font-bold uppercase text-md hover:opacity-90"
+        >
+          Disconnect
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>

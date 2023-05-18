@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-networks-popover',
@@ -7,6 +8,7 @@ import { PopoverController } from '@ionic/angular';
   styleUrls: ['./networks-popover.component.scss'],
 })
 export class NetworksPopoverComponent implements OnInit {
+  env = environment
 
   networkList = [
     // {
@@ -20,14 +22,14 @@ export class NetworksPopoverComponent implements OnInit {
     //   icon: '/assets/logos/harmony-logo.png'
     // },
     {
-      name: 'Oasis Testnet',
+      name: 'Oasis',
       url: 'https://testnet-oasis.chedda.store',
-      icon: '/assets/logos/oasis-logo-sm.png'
+      icon: '/assets/logos/wrose-logo.png'
     },
     {
-      name: 'Polygon Testnet',
+      name: 'Polygon',
       url: 'https://testnet-polygon.chedda.store',
-      icon: '/assets/logos/polygon-logo.svg'
+      icon: '/assets/logos/matic-logo.png'
     },
     // {
     //   name: 'Telos Testnet',
@@ -35,12 +37,19 @@ export class NetworksPopoverComponent implements OnInit {
     //   icon: '/assets/logos/tlos-logo.png'
     // },
   ]
+  isOpenNetworkMenu: boolean;
   constructor(private popoverController: PopoverController) { }
 
   ngOnInit() {}
 
-  onNetworkSelected(network: any) {
-    this.popoverController.dismiss()
-    window.open(network.url, '_self').focus()
+  openNetworkMenu(){
+    this.isOpenNetworkMenu = !this.isOpenNetworkMenu
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (!(event.target as HTMLElement).closest('.network-menu-container')) {
+      this.isOpenNetworkMenu = false;
+    }
   }
 }

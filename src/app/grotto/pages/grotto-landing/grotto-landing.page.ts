@@ -58,7 +58,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     },
     {
       name: 'USDC.c',
-      logo: '/assets/logos/usd-coin-logo.png',
+      logo: '/assets/logos/usdc-logo.png',
       address: environment.config.contracts.USDC
     },
     {

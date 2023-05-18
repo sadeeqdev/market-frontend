@@ -232,13 +232,13 @@ export class VoteLandingPage implements OnInit, OnDestroy {
   }
 
   private async showLoading(message: string) {
-    const modal = await this.modalController.create({
+    this.loader = await this.modalController.create({
       component: LoadingModalComponent,
       componentProps:{
         'message': message
       }
     })
-    return await modal.present()
+    return await this.loader?.present()
   }
 
   private async hideLoading() {

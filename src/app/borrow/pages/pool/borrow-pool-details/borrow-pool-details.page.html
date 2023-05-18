@@ -206,14 +206,10 @@
 
 <ion-content>
   <ion-grid>
-    <div class="h-24 border-b border-gray-600 w-full flex items-center">
-      <div class="w-11/12 xl:w-5/6 3xl:w-9/12 mx-auto flex-col text-white">
-        <div class="font-semibold text-xl sm:text-3xl mb-1 sm:mb-2">Borrow Assets</div>
-        <div class="text-gray-400 text-xs sm:text-lg">
-          Borrow and Repay assets against your collaterals even in NFTs.
-        </div>
-      </div>
-    </div>
+    <app-page-title
+      heading="Borrow Assets"
+      subHeading="Borrow and Repay assets against your collaterals even in NFTs."
+    ></app-page-title>
     <button class="w-11/12 xl:w-5/6 3xl:w-9/12 mx-auto flex items-center mt-4 text-[#8CD6D4] text-sm hover:opacity-80" (click)="navigateToMarkets()">
       <img src="/assets/icon/back-icon.png" class="w-3 mr-2">
       Back to markets
@@ -284,7 +280,7 @@
             <input
               type="number"
               placeholder="Amount"
-              (ionInput)="setBorrowMode('collateral')"
+              (input)="setBorrowMode('collateral')"
               #addCollateralInput
               class="bg-black w-full rounded mt-3 h-10 sm:h-14 px-4 font-semibold text-white text-xs sm:text-lg focus:outline-none focus:shadow-outline"
             />
@@ -330,6 +326,7 @@
             <input
               type="number"
               placeholder="Amount"
+              (input)="setBorrowMode('borrow')"
               #borrowInput
               class="bg-black w-full rounded mt-3 h-10 sm:h-14 px-4 font-semibold text-white text-xs sm:text-lg focus:outline-none focus:shadow-outline"
             />
@@ -342,28 +339,21 @@
               </button>
             </div>
           </div>
-          <button
-            *ngIf="!isApproved"
-            (click)="approveCollateral()"
-            class="h-10 sm:h-12 primary-button-bg w-full mt-5 sm:mt-3 rounded-lg font-bold uppercase text-lg hover:opacity-90"
-          >
-            Approve {{collateralTokenSymbol}}
-          </button>
-          <button
-            *ngIf="isApproved && borrowMode == 'collateral'"
-            (click)="addCollateral()"
-            class="h-10 sm:h-12 primary-button-bg w-full mt-5 sm:mt-3 rounded-lg font-bold uppercase text-lg hover:opacity-90"
-          >
-            Deposit {{collateralTokenSymbol}}
-          </button>
-          <button
-            *ngIf="isApproved && borrowMode == 'borrow'"
-            (click)="borrowAsset()"
-            (input)="setBorrowMode('borrow')"
-            class="h-10 sm:h-12 primary-button-bg w-full mt-5 sm:mt-3 rounded-lg font-bold uppercase text-lg hover:opacity-90"
-          >
-            Borrow {{assetSymbol}}
-          </button>
+          <app-primary-button
+            [buttonText]="'Approve ' + collateralTokenSymbol"
+            [visibility]="!isApproved"
+            (clicked)="approveCollateral()"
+          ></app-primary-button>
+          <app-primary-button
+            [buttonText]="'Deposit ' + collateralTokenSymbol"
+            [visibility]="isApproved && borrowMode == 'collateral'"
+            (clicked)="addCollateral()"
+          ></app-primary-button>
+          <app-primary-button
+            [buttonText]="'Borrow ' + assetSymbol"
+            [visibility]="isApproved && borrowMode == 'borrow'"
+            (clicked)="borrowAsset()"
+          ></app-primary-button>
         </div>
         <!-- Repay -->
         <div *ngIf="!isBorrowCheddaTab">
@@ -445,7 +435,7 @@
             <input
               type="number"
               placeholder="Amount"
-              (ionInput)="setRepayMode('repay')"
+              (input)="setRepayMode('repay')"
               #repayInput
               class="bg-black w-full rounded mt-3 h-10 sm:h-14 px-4 font-semibold text-white text-xs sm:text-lg focus:outline-none focus:shadow-outline"
             />
@@ -458,20 +448,16 @@
               </button>
             </div>
           </div>
-          <button
-            *ngIf="repayMode == 'repay'"
-            (click)="approveCollateral()"
-            class="h-10 sm:h-12 secondary-button w-full mt-5 sm:mt-3 rounded-lg font-bold uppercase text-lg hover:opacity-90"
-          >
-            Repay {{assetSymbol}}
-          </button> 
-          <button
-            *ngIf="repayMode == 'collateral'"
-            (click)="addCollateral()"
-            class="h-10 sm:h-12 secondary-button w-full mt-5 sm:mt-3 rounded-lg font-bold uppercase text-lg hover:opacity-90"
-          >
-            Withdraw {{collateralTokenSymbol}}
-          </button>
+          <app-secondary-button
+            [buttonText]="'Repay ' + assetSymbol"
+            [visibility]="repayMode == 'repay'"
+            (clicked)="repay()"
+          ></app-secondary-button>
+          <app-secondary-button
+            [buttonText]="'Withdraw ' + collateralTokenSymbol"
+            [visibility]="repayMode == 'collateral'"
+            (clicked)="removeCollateral()"
+          ></app-secondary-button>
         </div>
         <div
           class="w-full h-auto mt-12 rounded-[20px] border-[1px] border-[#bab9bb] text-white px-3 py-7"

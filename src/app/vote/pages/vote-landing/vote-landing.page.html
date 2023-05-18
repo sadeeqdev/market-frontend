@@ -130,16 +130,12 @@
 
   <ion-content>
     <ion-grid>
-      <div class="h-24 border-b border-gray-600 w-full flex items-center">
-        <div class="w-11/12 xl:w-5/6 3xl:w-9/12 mx-auto flex-col text-white">
-          <div class="font-semibold text-xl sm:text-3xl mb-1 sm:mb-2">CHEDDA Rewards Distribution</div>
-          <div class="text-gray-400 text-xs sm:text-lg">
-            Vote to direct the emission of CHEDDA tokens 
-          </div>
-        </div>
-      </div>
+      <app-page-title
+        heading="CHEDDA Rewards Distribution"
+        subHeading="Vote to direct the emission of CHEDDA tokens "
+      ></app-page-title>
       <div class="w-full flex justify-center mt-12 mx-auto">
-        <div class="w-11/12 sm:w-11/12 xl:w-3/4 grid grid-cols-1 place-items-center items-start sm:grid-cols-2">
+        <div class="w-11/12 sm:w-11/12 xl:w-3/4 grid grid-cols-1 place-items-center items-center sm:grid-cols-2">
           <ion-col size="10" offset-xs="0" offset-sm="1" offset-md="2" offset-lg="5">
             <canvas
               baseChart
@@ -157,7 +153,7 @@
           </div>
         </div>
       </div>
-      <div  class="flex-col justify-center mt-7 items-center">
+      <div  class="flex-col justify-center mt-7 my-10 items-center">
         <div *ngIf="!hasEpochEnded" class="text-white font-semibold text-xs sm:text-lg">Current epoch ends: {{epochEnd * 1000 | date:'medium'}}</div>
         <div *ngIf="hasEpochEnded" class="text-white font-semibold text-xs sm:text-lg">Epoch ended: {{epochEnd * 1000 | date:'medium'}}</div>
         <button
@@ -167,14 +163,10 @@
             Rebalance
         </button>
       </div>
-      <div class="h-24 border-b border-t mt-20 border-gray-600 w-full flex items-center">
-        <div class="w-11/12 xl:w-5/6 3xl:w-9/12 mx-auto flex-col text-white">
-          <div class="font-semibold text-xl sm:text-3xl mb-1 sm:mb-2">Gauages</div>
-          <div class="text-gray-400 text-xs sm:text-lg">
-            Use your voting power to direct token emissions.
-          </div>
-        </div>
-      </div>
+      <app-page-title
+        heading="Gauages"
+        subHeading="Use your voting power to direct token emissions."
+      ></app-page-title>
       <div class="my-10 w-11/12 sm:w-[97%] xl:w-9/12 2xl:w-8/12 mx-auto">
         <div *ngIf="votePower" class="text-white text-center font-semibold">
           veCHEDDA: {{votePower | formatEth | rounding:[0] }}
@@ -204,7 +196,7 @@
               </div>
               <div class="col-span-8 ">
                 <div class="flex mt-3">
-                  <div *ngFor="let collateral of pool.collateral" class="my-2 vote-card-collateral-img logo-cascade bg-white">
+                  <div *ngFor="let collateral of pool.collateral" class="my-2 vote-card-collateral-img logo-cascade">
                     <img [src]="collateral.logo" class="cascade-img"/>
                   </div>
                 </div>
