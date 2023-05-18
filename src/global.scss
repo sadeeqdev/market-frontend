@@ -411,15 +411,8 @@ ion-item-divider {
   background: linear-gradient(86.02deg, #F3943D -8.86%, #FDE34D 129.9%);
 }
 
-.secondary-button{
-  border: 2px solid #FF9933;
-  border-radius: 8px !important; /* round the corners of the button */
-  color: #FF9933; /* set the text color to white for contrast */
-  background-color: transparent; 
-}
-
-.primary-button:hover{
-  background: linear-gradient(86.02deg, #a46326 -8.86%, #0c0c0b 129.9%);
+.primary-button-bg:hover{
+  background: linear-gradient(86.02deg, #dc802a -8.86%, #dfc94c 129.9%);
 }
 
 .activeTab{
@@ -431,3 +424,21 @@ ion-item-divider {
   background: radial-gradient(40.19% 4106.68% at 41.31% 70.62%, rgba(98, 87, 242, 0.15) 30.21%, rgba(0, 0, 0, 0.15) 100%)
 }
 
+.secondary-button {
+  position: relative;
+  color: #F3943D;
+}
+
+.secondary-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 10px; 
+  padding: 2px; 
+  background: linear-gradient(86.02deg, #F3943D -8.86%, #FDE34D 129.9%); 
+  -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude; 
+}
