@@ -111,7 +111,7 @@
                   <ion-icon name="exit-outline"></ion-icon>
                 </ion-col>
                 <ion-col class="justify-content-end">
-                  <ion-button size="small" color="primary" fill="clear" (click)="fillMaxBorrow()">Max {{maxBorrowAmount | number:'1.2'}}</ion-button>
+                  <ion-button size="small" color="primary" fill="clear" (click)="fillMaxBorrow()">Max {{maxBorrowAmount  | number:'1.2' | number:'1.2'}}</ion-button>
                 </ion-col>
               </ion-row>
               <ion-row>
@@ -215,21 +215,21 @@
       Back to markets
     </button>
     <div
-      class="w-11/12 md:w-9/12 lg:w-8/12 xl:w-6/12 2xl:w-[740px] h-auto mx-auto rounded-[30px] my-10 text-white card-bg"
+      class="w-11/12 md:w-9/12 lg:w-8/12 xl:w-5/12 2xl:w-[740px] h-auto mx-auto rounded-[30px] my-10 text-white card-bg"
     >
       <div
-        class="h-16 sm:h-20 border-b font-semibold text-lg sm:text-3xl flex items-center space-x-4 justify-center border-gray-500"
+        class="h-16 sm:h-20 border-b flex items-center space-x-2 justify-center border-gray-700"
       >
-        <div class="w-10 h-10" *ngIf="pool">
+        <div class="w-7 h-7" *ngIf="pool">
           <img [src]="pool.asset.logo">
         </div>
-        <div *ngIf="pool">Borrow {{ pool.asset.name }}</div>
+        <div *ngIf="pool" class="text-lg sm:text-xl">Borrow {{ pool.asset.name }}</div>
       </div>
       <div class="pt-5 pb-10 px-6 sm:px-16">
         <div class="h-auto w-full flex text-[#B5C2EB]">
           <div
             [class.activeTab]="isBorrowCheddaTab"
-            class="text-sm sm:text-lg py-3 w-full text-center hover:opacity-75 uppercase hover:bg-transparent"
+            class="text-sm py-3 w-full text-center hover:opacity-75 uppercase hover:bg-transparent"
           >
             <button
               class="w-full font-semibold uppercase"
@@ -240,16 +240,19 @@
           </div>
           <div
             [class.activeTab]="!isBorrowCheddaTab"
-            class="text-sm sm:text-lg py-3 w-full text-center hover:opacity-75 uppercase font-semibold"
+            class="py-3 w-full text-center hover:opacity-75 uppercase font-semibold"
           >
-            <button class="w-full font-semibold uppercase" (click)="switchBorrowCheddaTab(false)">
+            <button 
+              class="text-sm w-full font-semibold uppercase" 
+              (click)="switchBorrowCheddaTab(false)"
+            >
               Repay
             </button>
           </div>
         </div>
         <div *ngIf="isBorrowCheddaTab">
           <div class="mt-8 flex justify-between text-sm sm:text-lg">
-            <div class="opacity-50">Deposit collateral</div>
+            <div class="opacity-50">Deposit Collateral</div>
             <div class="relative hover:opacity-80">
               <select 
                 name="collateral"
@@ -269,9 +272,10 @@
           </div>
           <div
             *ngIf="collateralContract && !collateralContract.isNFT"
-            class="text-xs sm:text-sm opacity-50 mt-9"
+            class="text-xs sm:text-sm mt-9 flex justify-between text-lavendar-purple"
           >
-            Enter {{collateralTokenSymbol}} amount to be deposited
+            <div class="opacity-50 ">Add Collateral</div>
+            <div><span class="font-semibold">Wallet Balance: </span>{{myCollateralTokenBalance | number:'1.2-4'}}</div>
           </div>
           <div
             *ngIf="collateralContract && !collateralContract.isNFT"
@@ -282,12 +286,12 @@
               placeholder="Amount"
               (input)="setBorrowMode('collateral')"
               #addCollateralInput
-              class="bg-black w-full rounded mt-3 h-10 sm:h-14 px-4 font-semibold text-white text-xs sm:text-lg focus:outline-none focus:shadow-outline"
+              class="bg-black w-full rounded mt-3 h-10 sm:h-14 px-4 font-semibold text-white text-xs sm:text-sm focus:outline-none focus:shadow-outline"
             />
             <div class="absolute top-0 right-0 mt-4 sm:mt-5 mr-1 sm:mr-2">
               <button
                 (click)="fillMaxDeposit()"
-                class="w-auto px-4 h-[31px] sm:h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-xs  sm:text-[17px] text-[#ffffff50] hover:text-white"
+                class="w-auto px-4 h-[31px] sm:h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-xs sm:text-sm text-[#ffffff50] hover:text-white"
               >
                 Balance
               </button>
@@ -319,8 +323,12 @@
               </div>
             </div>
           </div>
-          <div class="text-xs sm:text-sm opacity-50 mt-5">
-            Enter {{assetSymbol}} amount to borrow
+          <div
+            *ngIf="collateralContract && !collateralContract.isNFT"
+            class="text-xs sm:text-sm mt-9 flex justify-between text-lavendar-purple"
+          >
+            <div class="opacity-50 ">Borrow {{assetSymbol}}</div>
+            <div><span class="font-semibold">Max: </span>{{myAmountOwed | number:'1.2'}}</div>
           </div>
           <div class="relative">
             <input
@@ -328,12 +336,12 @@
               placeholder="Amount"
               (input)="setBorrowMode('borrow')"
               #borrowInput
-              class="bg-black w-full rounded mt-3 h-10 sm:h-14 px-4 font-semibold text-white text-xs sm:text-lg focus:outline-none focus:shadow-outline"
+              class="bg-black w-full rounded mt-3 h-10 sm:h-14 px-4 font-semibold text-white text-xs sm:text-sm focus:outline-none focus:shadow-outline"
             />
             <div class="absolute top-0 right-0 mt-4 sm:mt-5 mr-1 sm:mr-2">
               <button
                 (click)="fillMaxBorrow()"
-                class="w-auto px-3 sm:px-5 h-[31px] sm:h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-xs sm:text-[17px] text-[#ffffff50] hover:text-white"
+                class="w-auto px-3 h-[31px] sm:h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-xs sm:text-sm text-[#ffffff50] hover:text-white"
               >
                 Max
               </button>
@@ -358,7 +366,7 @@
         <!-- Repay -->
         <div *ngIf="!isBorrowCheddaTab">
           <div class="mt-8 flex justify-between text-sm sm:text-lg">
-            <div class="opacity-50">Remove collateral</div>
+            <div class="opacity-50">Withdraw Collateral</div>
             <div class="relative hover:opacity-80">
               <select 
                 name="collateral"
@@ -378,9 +386,10 @@
           </div>
           <div
             *ngIf="collateralContract && !collateralContract.isNFT"
-            class="text-xs sm:text-sm opacity-50 mt-9"
+            class="text-xs mt-9 sm:text-sm flex justify-between text-lavendar-purple"
           >
-            Enter {{collateralTokenSymbol}} amount to be withdrawn
+            <div class="opacity-50 ">Withdraw {{collateralTokenSymbol}}</div>
+            <div><span class="font-semibold">Wallet Balance: </span>{{myCollateralDeposited | number:'1.2'}}</div>
           </div>
           <div
             *ngIf="collateralContract && !collateralContract.isNFT"
@@ -391,12 +400,12 @@
               placeholder="Amount"
               (input)="setRepayMode('collateral')"
               #withdrawCollateralInput
-              class="bg-black w-full rounded mt-3 h-10 sm:h-14 px-4 font-semibold text-white text-xs sm:text-lg focus:outline-none focus:shadow-outline"
+              class="bg-black w-full rounded mt-3 h-10 sm:h-14 px-4 font-semibold text-white text-xs sm:text-sm focus:outline-none focus:shadow-outline"
             />
             <div class="absolute top-0 right-0 mt-4 mr-1 sm:mt-5 sm:mr-2">
               <button
                 (click)="fillMaxWithdraw()"
-                class="w-auto px-4 h-[31px] sm:h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-xs  sm:text-[17px] text-[#ffffff50] hover:text-white"
+                class="w-auto px-4 h-[31px] sm:h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-xs sm:text-sm text-[#ffffff50] hover:text-white"
               >
                 Balance
               </button>
@@ -428,8 +437,11 @@
               </div>
             </div>
           </div>
-          <div class="text-xs sm:text-sm opacity-50 mt-5">
-            Enter {{assetSymbol}} amount to repay
+          <div
+            class="text-xs sm:text-sm mt-9 flex justify-between text-lavendar-purple"
+          >
+            <div class="opacity-50 ">Repay {{assetSymbol}}</div>
+            <div><span class="font-semibold">Max: </span>{{myAmountOwed | number:'1.2'}}</div>
           </div>
           <div class="relative">
             <input
@@ -437,12 +449,12 @@
               placeholder="Amount"
               (input)="setRepayMode('repay')"
               #repayInput
-              class="bg-black w-full rounded mt-3 h-10 sm:h-14 px-4 font-semibold text-white text-xs sm:text-lg focus:outline-none focus:shadow-outline"
+              class="bg-black w-full rounded mt-3 h-10 sm:h-14 px-4 font-semibold text-white text-xs sm:text-sm focus:outline-none focus:shadow-outline"
             />
             <div class="absolute top-0 right-0 mt-4 mr-1 sm:mt-5 sm:mr-2">
               <button
                 (click)="fillMaxRepay()"
-                class="w-auto px-3 sm:px-5 h-[31px] sm:h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-xs sm:text-[17px] text-[#ffffff50] hover:text-white"
+                class="w-auto px-3 h-[31px] sm:h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-xs sm:text-sm text-[#ffffff50] hover:text-white"
               >
                 Max
               </button>
@@ -463,33 +475,33 @@
           class="w-full h-auto mt-12 rounded-[20px] border-[1px] border-[#bab9bb] text-white px-3 py-7"
         >
           <div class="grid grid-cols-2 justify-between mt-4">
-            <div class="text-xs sm:text-[16px] text-[#999898]">My Collateral</div>
-            <div class="font-bold text-xs sm:text-[20px]">
+            <div class="text-xs sm:text-sm text-[#999898]">My Collateral</div>
+            <div class="font-bold text-xs sm:text-sm">
               {{ myCollateralDeposited | number:'1.2-4'}}
               {{collateralTokenSymbol}}
             </div>
           </div>
           <div class="grid grid-cols-2 justify-between mt-4">
-            <div class="text-xs sm:text-[16px] text-[#999898]">Available Liquidity</div>
-            <div class="font-bold text-xs sm:text-[20px]">
+            <div class="text-xs sm:text-sm text-[#999898]">Available Liquidity</div>
+            <div class="font-bold text-xs sm:text-sm">
               {{totalVaultAssets | number:'1.2-6'}} {{ assetSymbol }}
             </div>
           </div>
           <div class="grid grid-cols-2 justify-between mt-4">
-            <div class="text-xs sm:text-[16px] text-[#999898]">Utilization</div>
-            <div class="font-bold text-xs sm:text-[20px]">
+            <div class="text-xs sm:text-sm text-[#999898]">Utilization</div>
+            <div class="font-bold text-xs sm:text-sm">
               {{utilizationRate | number:'1.2-3'}}%
             </div>
           </div>
           <div class="grid grid-cols-2 justify-between mt-4">
-            <div class="text-xs sm:text-[16px] text-[#999898]">Deposit APY</div>
-            <div class="font-bold text-xs sm:text-[20px]">
+            <div class="text-xs sm:text-sm text-[#999898]">Deposit APY</div>
+            <div class="font-bold text-xs sm:text-sm">
               {{depositApy | number:'1.2-3'}}%
             </div>
           </div>
           <div class="grid grid-cols-2 justify-between mt-4">
-            <div class="text-xs sm:text-[16px] text-[#999898]">Rewards APY</div>
-            <div class="font-bold text-xs sm:text-[20px]">
+            <div class="text-xs sm:text-sm text-[#999898]">Rewards APY</div>
+            <div class="font-bold text-xs sm:text-sm">
               {{rewardsApy | number:'1.2-3'}}%
             </div>
           </div>

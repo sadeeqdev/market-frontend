@@ -9,6 +9,9 @@ module.exports = {
       screens: {
         '3xl': "1920px",
       },
+      colors: {
+        'lavendar-purple': '#BCC3E7'
+      }
     },
   },
   plugins: [],
