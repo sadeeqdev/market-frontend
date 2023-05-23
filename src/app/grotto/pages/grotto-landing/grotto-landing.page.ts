@@ -53,7 +53,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
   tokens: Token[] = [
     {
       name: 'CHEDDA',
-      logo: '/assets/logos/chedda-new-logo.png',
+      logo: '/assets/logos/chedda-3d-logo.png',
       address: environment.config.contracts.Chedda
     },
     {
@@ -63,12 +63,12 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     },
     {
       name: 'DAI.c',
-      logo: '/assets/logos/dai-new-logo.png',
+      logo: '/assets/logos/dai-logo.png',
       address: environment.config.contracts.DAI
     },
     {
       name: 'FRAX',
-      logo: '/assets/logos/frax-new-logo.png',
+      logo: '/assets/logos/frax-logo.png',
       address: environment.config.contracts.UXD
     },
     {
