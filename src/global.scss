@@ -48,6 +48,11 @@ ion-modal{
   --box-shadow: none;
 }
 
+ion-grid{
+  padding: 0;
+  margin: 0;
+}
+
 #container {
   text-align: center;
   position: absolute;
@@ -392,15 +397,18 @@ ion-item-divider {
 }
 
 .leftbox_bg{
-  background: linear-gradient(99.71deg, rgba(232, 136, 56, 0.17) 7.51%, rgba(146, 113, 247, 0.17) 97.98%);
+  background: linear-gradient(92.31deg, rgba(255, 136, 0, 0.15) 25.71%, rgba(98, 87, 242, 0.15) 100.24%);
+  // background: linear-gradient(99.71deg, rgba(232, 136, 56, 0.17) 7.51%, rgba(146, 113, 247, 0.17) 97.98%);
 }
 
 .rightbox_bg{
-  background: linear-gradient(98.29deg, rgba(130, 93, 237, 0.17) 13.27%, rgba(97, 219, 216, 0.17) 125.98%);
+  background: linear-gradient(104.2deg, rgba(98, 87, 242, 0.17) 18.94%, rgba(93, 222, 250, 0.17) 94.84%);
+  // background: linear-gradient(98.29deg, rgba(130, 93, 237, 0.17) 13.27%, rgba(97, 219, 216, 0.17) 125.98%);
 }
 
 .gridrow_bg{
-  background: radial-gradient(48.98% 14130.72% at 51.02% 50%, rgba(166, 106, 50, 0.295) 45.83%, rgba(72, 65, 158, 0.2) 100%) 
+  background: linear-gradient(90.17deg, rgba(98, 87, 242, 0.17) 1.78%, rgba(93, 222, 250, 0.17) 101.44%);
+  // background: radial-gradient(48.98% 14130.72% at 51.02% 50%, rgba(166, 106, 50, 0.295) 45.83%, rgba(72, 65, 158, 0.2) 100%) 
 }
 
 .card-bg {
@@ -411,15 +419,8 @@ ion-item-divider {
   background: linear-gradient(86.02deg, #F3943D -8.86%, #FDE34D 129.9%);
 }
 
-.secondary-button{
-  border: 2px solid #FF9933;
-  border-radius: 8px !important; /* round the corners of the button */
-  color: #FF9933; /* set the text color to white for contrast */
-  background-color: transparent; 
-}
-
-.primary-button:hover{
-  background: linear-gradient(86.02deg, #a46326 -8.86%, #0c0c0b 129.9%);
+.primary-button-bg:hover{
+  background: linear-gradient(86.02deg, #dc802a -8.86%, #dfc94c 129.9%);
 }
 
 .activeTab{
@@ -431,3 +432,21 @@ ion-item-divider {
   background: radial-gradient(40.19% 4106.68% at 41.31% 70.62%, rgba(98, 87, 242, 0.15) 30.21%, rgba(0, 0, 0, 0.15) 100%)
 }
 
+.secondary-button {
+  position: relative;
+  color: #F3943D;
+}
+
+.secondary-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 10px; 
+  padding: 2px; 
+  background: linear-gradient(86.02deg, #F3943D -8.86%, #FDE34D 129.9%); 
+  -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude; 
+}

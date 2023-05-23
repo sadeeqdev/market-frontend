@@ -135,7 +135,7 @@
         subHeading="Vote to direct the emission of CHEDDA tokens "
       ></app-page-title>
       <div class="w-full flex justify-center mt-12 mx-auto">
-        <div class="w-11/12 sm:w-11/12 xl:w-3/4 grid grid-cols-1 place-items-center items-center sm:grid-cols-2">
+        <div class="w-11/12 sm:w-11/12 xl:w-3/5 2xl:w-2/4 xl:gap-x-10 grid grid-cols-1 place-items-center items-center sm:grid-cols-2">
           <ion-col size="10" offset-xs="0" offset-sm="1" offset-md="2" offset-lg="5">
             <canvas
               baseChart
@@ -146,14 +146,14 @@
             </canvas>
           </ion-col>
           <div class="flex sm:flex-col justify-evenly flex-wrap sm:flex-nowrap order-first sm:order-last mb-5 sm:mb-0">
-            <div *ngFor="let item of chartLabelsWithBg" class="flex flex-col sm:flex-row items-center  space-x-3 mt-3">
-              <div class="w-16 h-5 sm:w-24 sm:h-7 rounded-sm" [ngClass]="[item.backgroundColor]"></div>
-              <div class="font-bold flex justify-center items-center place-items-center text-white text-xs sm:text-lg mt-1 sm:mt-0">{{item.label}}</div>
+            <div *ngFor="let item of chartLabelsWithBg" class="flex flex-col sm:flex-row items-center space-x-3 mt-3">
+              <div class="w-16 h-5 sm:w-20 sm:h-6 rounded-sm" [ngClass]="[item.backgroundColor]"></div>
+              <div class="font-bold flex justify-center items-center place-items-center text-white text-xs sm:text-sm mt-1 sm:mt-0">{{item.label}}</div>
             </div>
           </div>
         </div>
       </div>
-      <div  class="flex-col justify-center mt-7 my-10 items-center">
+      <div  class="flex-col justify-center xl:mt-12 my-12 items-center">
         <div *ngIf="!hasEpochEnded" class="text-white font-semibold text-xs sm:text-lg">Current epoch ends: {{epochEnd * 1000 | date:'medium'}}</div>
         <div *ngIf="hasEpochEnded" class="text-white font-semibold text-xs sm:text-lg">Epoch ended: {{epochEnd * 1000 | date:'medium'}}</div>
         <button
@@ -167,7 +167,7 @@
         heading="Gauages"
         subHeading="Use your voting power to direct token emissions."
       ></app-page-title>
-      <div class="my-10 w-11/12 sm:w-[97%] xl:w-9/12 2xl:w-8/12 mx-auto">
+      <div class="my-10 w-11/12 sm:w-[97%] xl:w-9/12 2xl:w-7/12 mx-auto">
         <div *ngIf="votePower" class="text-white text-center font-semibold">
           veCHEDDA: {{votePower | formatEth | rounding:[0] }}
         </div>
@@ -216,7 +216,7 @@
             <button
               [disabled]="!canVote" 
               (click)="vote(pool)"
-              class="h-8 w-52 primary-button-bg text-white rounded-lg font-bold uppercase text-lg hover:opacity-90"
+              class="h-9 w-52 primary-button-bg text-white rounded-lg font-bold uppercase text-sm hover:opacity-90"
             >
               Vote
             </button>
@@ -225,7 +225,7 @@
             <button
               [disabled]="!pool.claimAmount || pool.claimAmount.amount.isZero()"
               (click)="claim(pool)"
-              class="h-8 w-52 secondary-button flex justify-center items-center gap-1 rounded-lg secondary-button font-bold text-sm uppercase hover:opacity-90"
+              class="h-9 w-52 secondary-button flex justify-center items-center gap-1 rounded-lg secondary-button font-bold text-sm uppercase hover:opacity-90"
             >
               Claim  
             <div *ngIf="pool.claimAmount">

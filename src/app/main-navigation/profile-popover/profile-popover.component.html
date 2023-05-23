@@ -4,10 +4,10 @@
     class="h-9 w-32 sm:h-11 sm:w-40 px-2 rounded-lg text-sm account_button flex justify-between items-center hover:opacity-90"
     >
     <div class="flex gap-1 items-center font-semibold">
-      <img src="/assets/logos/account-img.svg"/>
+      <img src="/assets/logos/account-img.svg" class="w-7 h-7"/>
       {{address | truncateMiddle:[6, '...', 4 ]}}
     </div>
-    <img src="/assets/icon/arrow-down.svg"/>
+    <img src="/assets/icon/arrow-down.svg"  class="w-2.5 h-2.5"/>
   </button>
   <div id="mySelectMenu" class="absolute mt-1 w-56 right-0 bg-[#13161F] menu-bg text-white rounded-md shadow-lg z-10" [class.hidden]="!isOpenProfileMenu">
     <ul class="list-reset text-center font-semibold">

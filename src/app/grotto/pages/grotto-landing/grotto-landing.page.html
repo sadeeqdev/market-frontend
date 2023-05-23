@@ -5,12 +5,12 @@
       subHeading="Stake your CHEDDA tokens to secure the protocol and earn more tokens."
     ></app-page-title>
     <div
-      class="w-11/12 md:w-9/12 lg:w-8/12 xl:w-6/12 2xl:w-[740px] h-auto mx-auto rounded-[30px] mt-10 mb-16 pt-8 pb-12 px-6 sm:px-16 text-white card-bg"
+      class="w-11/12 md:w-[600px] h-auto mx-auto rounded-[30px] mt-10 mb-16 pt-8 pb-12 px-6 sm:px-16 text-white card-bg"
     >
       <div class="h-auto w-full flex text-[#B5C2EB]">
         <div
           [class.activeTab]="isStakeTab"
-          class="text-sm sm:text-lg py-3 w-full text-center hover:opacity-75 hover:bg-transparent"
+          class="text-sm py-3 w-full text-center hover:opacity-75 hover:bg-transparent"
         >
           <button class="w-full font-semibold uppercase" (click)="switchStakeTab(true)">
             Stake
@@ -18,7 +18,7 @@
         </div>
         <div
           [class.activeTab]="!isStakeTab"
-          class="text-sm sm:text-lg py-3 w-full text-center hover:opacity-75 hover:bg-transparent"
+          class="text-sm py-3 w-full text-center hover:opacity-75 hover:bg-transparent"
         >
           <button class="w-full font-semibold uppercase" (click)="switchStakeTab(false)">
             Unstake
@@ -26,26 +26,26 @@
         </div>
       </div>
       <div *ngIf="isStakeTab">
-        <div class="mt-8 flex justify-between opacity-50 text-sm sm:text-lg">
+        <div class="mt-8  opacity-50 text-sm sm:text-lg">
           <div>Stake CHEDDA</div>
-          <div>Available: {{myCheddaBalance | number:'1.1-4'}}</div>
         </div>
-        <div class="text-xs sm:text-sm opacity-50 mt-9">
-          Enter CHEDDA amount to stake
+        <div class="text-xs sm:text-sm  mt-9 flex justify-between text-lavendar-purple">
+          <div class="opacity-50">Enter CHEDDA amount to stake</div>
+          <div class="font-semibold">Chedda Balance: {{myCheddaBalance | number:'1.1-4'}}</div>
         </div>
         <div class="relative">
           <input
             type="number"
             placeholder="Amount"
             #stakeInput
-            class="bg-black w-full rounded mt-3 h-10 sm:h-14 px-4 font-semibold text-white text-xs sm:text-lg focus:outline-none focus:shadow-outline"
+            class="bg-black w-full rounded mt-3 h-10 sm:h-14 px-4 font-semibold text-white text-xs sm:text-sm focus:outline-none focus:shadow-outline"
           />
           <div class="absolute top-0 right-0 mt-4 sm:mt-5 mr-1 sm:mr-2">
             <button
               (click)="fillMaxStake()"
-              class="w-auto px-3 h-[31px] sm:h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-xs sm:text-[17px] text-[#ffffff50] hover:text-white"
+              class="w-auto px-3 sm:px-4 h-[31px] sm:h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-xs sm:text-sm text-[#ffffff50] hover:text-white"
             >
-              MAX
+              Max
             </button>
           </div>
         </div>
@@ -61,26 +61,26 @@
         ></app-primary-button>
       </div>
       <div *ngIf="!isStakeTab">
-        <div class="mt-8 flex justify-between opacity-50 text-sm sm:text-lg">
+        <div class="mt-8 opacity-50 text-sm sm:text-lg">
           <div>Unstake CHEDDA</div>
-          <div>Available: {{myStakedCheddaBalance | number:'1.1-4'}}</div>
         </div>
-        <div class="text-xs sm:text-sm  opacity-50 mt-9">
-          Enter CHEDDA amount to unstake
+        <div class="text-xs sm:text-sm  mt-9 flex justify-between text-lavendar-purple">
+          <div class="opacity-50">Enter CHEDDA amount to unstake</div>
+          <div class="font-semibold">Chedda Balance: {{myStakedCheddaBalance | number:'1.1-4'}}</div>
         </div>
         <div class="relative">
           <input
             type="number"
             placeholder="Amount"
             #unstakeInput
-            class="bg-black w-full rounded mt-3 h-10 sm:h-14 px-4 font-semibold text-white text-xs sm:text-lg focus:outline-none focus:shadow-outline"
+            class="bg-black w-full rounded mt-3 h-10 sm:h-14 px-4 font-semibold text-white text-xs sm:text-sm focus:outline-none focus:shadow-outline"
           />
           <div class="absolute top-0 right-0 mt-4 sm:mt-5 mr-1 sm:mr-2">
             <button
               (click)="fillMaxUnstake()"
-              class="w-auto px-3 sm:px-5 h-[31px] sm:h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-xs sm:text-[17px] text-[#ffffff50] hover:text-white"
+              class="w-auto px-3 sm:px-4 h-[31px] sm:h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-xs sm:text-sm text-[#ffffff50] hover:text-white"
             >
-              MAX
+              Max
             </button>
           </div>
         </div>
@@ -94,20 +94,20 @@
         class="w-full h-auto mt-12 rounded-[20px] border-[1px] border-[#bab9bb] text-white px-3 pb-5 pt-1 sm:pt-3 sm:pb-7"
       >
         <div class="grid grid-cols-12 mt-4">
-          <div class="col-span-5 text-xs sm:text-[16px] text-[#999898]">Total Supply</div>
-          <div class="col-span-7 font-bold text-xs sm:text-[20px]">{{ cheddaTotalSupply | number:'1.2-5':'en-us' }} CHEDDA</div>
+          <div class="col-span-5 text-xs sm:text-sm text-[#999898]">Total Supply</div>
+          <div class="col-span-7 font-bold text-xs sm:text-sm">{{ cheddaTotalSupply | number:'1.2-5':'en-us' }} CHEDDA</div>
         </div>
         <div class="grid grid-cols-12 mt-4">
-          <div class="col-span-5 text-xs sm:text-[16px] text-[#999898]">My Balance</div>
-          <div class="col-span-7 font-bold text-xs sm:text-[20px]">{{ myCheddaBalance | number:'1.2-5':'en-us' }} CHEDDA</div>
+          <div class="col-span-5 text-xs sm:text-sm text-[#999898]">My Balance</div>
+          <div class="col-span-7 font-bold text-xs sm:text-sm">{{ myCheddaBalance | number:'1.2-5':'en-us' }} CHEDDA</div>
         </div>
         <div class="grid grid-cols-12 mt-4">
-          <div class="col-span-5 text-xs sm:text-[16px] text-[#999898]">My Stake</div>
-          <div class="col-span-7 font-bold text-xs sm:text-[20px]">{{ myStakedCheddaBalance | number:'1.2-5':'en-us'}} xCHEDDA </div>
+          <div class="col-span-5 text-xs sm:text-sm text-[#999898]">My Stake</div>
+          <div class="col-span-7 font-bold text-xs sm:text-sm">{{ myStakedCheddaBalance | number:'1.2-5':'en-us'}} xCHEDDA </div>
         </div>
         <div class="grid grid-cols-12 mt-4">
-          <div class="col-span-5 text-xs sm:text-[16px] text-[#999898]">Current APR</div>
-          <div class="col-span-7 font-bold text-xs sm:text-[20px]">{{cheddaStakingAPR | number}}%</div>
+          <div class="col-span-5 text-xs sm:text-sm text-[#999898]">Current APR</div>
+          <div class="col-span-7 font-bold text-xs sm:text-sm">{{cheddaStakingAPR | number}}%</div>
         </div>
       </div>
     </div>
@@ -117,12 +117,12 @@
       subHeading="Lock xCHEDDA to earn voting power in veCHEDDA"
     ></app-page-title>
     <div
-      class="w-11/12 md:w-9/12 lg:w-8/12 xl:w-6/12 2xl:w-[740px] h-auto mx-auto rounded-[30px] pt-8 pb-12 px-6 sm:px-16 mt-10 mb-16 text-white card-bg"
+      class="w-11/12 md:w-[600px] h-auto mx-auto rounded-[30px] pt-8 pb-12 px-6 sm:px-16 mt-10 mb-16 text-white card-bg"
     >
       <div class="h-auto w-full flex text-[#B5C2EB]">
         <div
           [class.activeTab]="isLockCheddaTab"
-          class="text-sm sm:text-lg py-3 w-full text-center hover:opacity-75 hover:bg-transparent"
+          class="text-sm py-3 w-full text-center hover:opacity-75 hover:bg-transparent"
         >
           <button
             class="w-full font-semibold uppercase"
@@ -133,7 +133,7 @@
         </div>
         <div
           [class.activeTab]="!isLockCheddaTab"
-          class="text-sm sm:text-lg py-3 w-full text-center hover:opacity-75 font-semibold"
+          class="text-sm py-3 w-full text-center hover:opacity-75 font-semibold"
         >
           <button class="w-full uppercase" (click)="switchLockCheddaTab(false)">
             Withdraw
@@ -141,11 +141,13 @@
         </div>
       </div>
       <div *ngIf="isLockCheddaTab">
-        <div class="mt-8 flex justify-between opacity-50  text-sm sm:text-lg">
+        <div class="mt-8 opacity-50 text-sm sm:text-lg">
           <div>Lock xChedda</div>
-          <div>Available: {{myStakedCheddaBalance | number:'1.1-4'}}</div>
         </div>
-        <div class="text-xs sm:text-sm opacity-50 mt-9">Enter xCHEDDA amount to lock</div>
+        <div class="text-xs sm:text-sm  mt-9 flex justify-between text-lavendar-purple">
+          <div class="opacity-50">Enter xCHEDDA amount to lock</div>
+          <div class="font-semibold">Chedda Balance: {{myStakedCheddaBalance | number:'1.1-4'}}</div>
+        </div>
         <div class="relative">
           <input
             type="number"
@@ -156,15 +158,15 @@
           <div class="absolute top-0 right-0 mt-4 sm:mt-5 mr-1 sm:mr-2">
             <button
               (click)="fillMaxLock()"
-              class="w-auto px-3 h-[31px] sm:h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-xs sm:text-[17px] text-[#ffffff50] hover:text-white"
+              class="w-auto px-3 h-[31px] sm:h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-xs sm:text-sm text-[#ffffff50] hover:text-white"
             >
-              MAX
+              Max
             </button>
           </div>
         </div>
-        <div class="text-xs sm:text-sm mt-5">
-          <span class="opacity-50">Lock time in weeks:</span>
-          <span class="text-sm sm:text-lg font-semibold text-white"> {{ lockRangeValue }}</span>
+        <div class="flex items-center gap-x-2 text-xs sm:text-sm mt-5">
+          <div class="opacity-50">Lock time in weeks:</div>
+          <div class="text-sm sm:text-sm font-semibold text-white bg-black rounded flex justify-center items-center w-8 h-8"> {{ lockRangeValue }}</div>
         </div>
         <div class="flex-col items-center space-x-4 mt-5">
           <input 
@@ -225,23 +227,23 @@
           (clicked)="withdraw()"
         ></app-secondary-button>
       </div>
-      <div class="opacity-50 mt-9  text-xs sm:text-sm">
+      <div class="opacity-50 mt-9 text-xs">
         Note: Locking can not be undone until the lock expires. Use with caution. 
       </div>
       <div
         class="w-full h-auto mt-3 rounded-[20px] border-[1px] border-[#bab9bb] text-white px-4 pb-4 pt-1 sm:pt-3 sm:pb-7"
       >
         <div class="grid grid-cols-2 justify-between mt-4">
-          <div class="text-xs sm:text-[16px] text-[#999898]">xCHEDDA Locked</div>
-          <div class="font-bold text-xs sm:text-[20px]">{{ myXCheddaLocked | number:'1.2-5':'en-us' }} xCHEDDA</div>
+          <div class="text-xs sm:text-sm text-[#999898]">xCHEDDA Locked</div>
+          <div class="font-bold text-xs sm:text-sm">{{ myXCheddaLocked | number:'1.2-5':'en-us' }} xCHEDDA</div>
         </div>
         <div class="grid grid-cols-2 justify-between mt-4">
-          <div class="text-xs sm:text-[16px] text-[#999898]">Voting Power</div>
-          <div class="font-bold text-xs sm:text-[20px]">{{ myVeCheddaBalance | number:'1.2-5':'en-us'}}</div>
+          <div class="text-xs sm:text-sm text-[#999898]">Voting Power</div>
+          <div class="font-bold text-xs sm:text-sm">{{ myVeCheddaBalance | number:'1.2-5':'en-us'}}</div>
         </div>
         <div class="grid grid-cols-2 justify-between mt-4">
-          <div class="text-xs sm:text-[16px] text-[#999898]">Weekly Rewards APR</div>
-          <div class="font-bold text-xs sm:text-[20px]">{{cheddaStakingAPR | number}}%</div>
+          <div class="text-xs sm:text-sm text-[#999898]">Weekly Rewards APR</div>
+          <div class="font-bold text-xs sm:text-sm">{{cheddaStakingAPR | number}}%</div>
         </div>
       </div>
     </div>
@@ -250,8 +252,8 @@
       heading="Test Faucets"
       subHeading="Drip tokens to your wallet"
     ></app-page-title>
-    <div class="my-5 w-11/12 sm:w-11/12 xl:w-7/12 2xl:w-[850px] mx-auto">
-      <div class="text-gray-400 my-2 text-xs sm:text-lg">
+    <div class="my-5 w-11/12 sm:w-11/12 xl:w-5/12 2xl:w-[650px] mx-auto">
+      <div class="text-gray-400 my-2 text-xs sm:text-sm">
         Testnet faucets for minting tokens to use in Lending and Borrowing
       </div>
       <div
@@ -260,21 +262,21 @@
       >
         <div class="flex space-x-2 items-center">
           <img [src]="token.logo" class="asset-thumb round-image" />
-          <div class="font-bold text-white text-xs sm:text-lg uppercase">
+          <div class="font-bold text-white text-xs sm:text-sm uppercase">
             {{ token.name }}
           </div>
         </div>
         <div class="flex space-x-3 items-center">
           <button
             (click)="drip(token)"
-            class="h-8 w-20 sm:h-11 sm:w-44 drip-btn rounded-md sm:rounded-lg uppercase font-bold text-white text-xs sm:text-xl hover:opacity-70"
+            class="h-8 w-20 sm:h-9 sm:w-28 drip-btn rounded-md sm:rounded-lg uppercase font-bold text-white text-xs sm:text-sm hover:opacity-70"
           >
           <span *ngIf="token.isNFT">MINT</span>
           <span *ngIf="!token.isNFT">DRIP</span>
           </button>
           <button 
             (click)="addTokenToMetamask(token)"
-            class="h-8 w-12 sm:h-11 sm:w-16 add-drip-btn rounded-md sm:rounded-lg font-bold text-xl sm:text-3xl hover:opacity-50 flex justify-center items-center"
+            class="h-8 w-8 sm:h-9 sm:w-12 add-drip-btn rounded-md sm:rounded-lg font-bold text-xl sm:text-xl hover:opacity-50 flex justify-center items-center"
           >+</button>
         </div>
       </div>
