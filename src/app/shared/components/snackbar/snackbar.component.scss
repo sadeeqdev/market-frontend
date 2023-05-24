@@ -1,0 +1,17 @@
+.border-gradient {
+    border-image-slice: 1;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 10px !important;
+    box-sizing: content-box;
+    border-image-source: linear-gradient(to right, red, orange);
+}
+
+.inner-card-bg{
+    background: linear-gradient(252.74deg, #F3943D 18.99%, rgba(72, 65, 158, 0.81) 58.87%);
+}
+
+.snackbar-bg{
+  background: radial-gradient(67.06% 72.06% at 50% 35.68%, #271779 0%, #07012c 100%) !important;
+}
+  

@@ -4,6 +4,8 @@ import { ModalController, ToastController } from '@ionic/angular';
 import { WalletProviderService } from '../providers/wallet-provider.service';
 import { environment } from 'src/environments/environment';
 import { ActionModalComponent } from './components/action-modal/action-modal.component';
+import { SnackbarComponent } from './components/snackbar/snackbar.component';
+import { time } from 'console';
 
 @Injectable({
   providedIn: 'root'
@@ -88,17 +90,6 @@ export class GlobalAlertService {
         }  
       }
     })
-    // const alerts = await this.modalController.create({
-    //   header: 'An Error Occured',
-    //   message: (anyError.data && anyError.data.message)? anyError.data.message : anyError.message,
-    //   buttons: [
-    //     {
-    //       text: 'Okay',
-    //       role: 'okay',
-    //       cssClass: 'primary',
-    //     }
-    //   ]
-    // });
 
     await alert.present(); 
   }
@@ -141,26 +132,6 @@ export class GlobalAlertService {
         }   
       }
     })
-    // const alerts = await this.modalController.create({
-    //   header: 'Insufficient Balance',
-    //   message: 'The balance in your account is less than the required amount to proceed.',
-    //   buttons: [
-    //     {
-    //       text: 'Cancel',
-    //       role: 'cancel',
-    //       cssClass: 'secondary',
-    //     }, {
-    //       text: 'Get More Tokens',
-    //       handler: () => {
-    //         const faucets = environment.config.faucets
-    //         if (faucets.length > 0) {
-    //           const url = faucets[0].url
-    //           window.open(url, '_blank').focus()
-    //         }
-    //       }
-    //     }
-    //   ]
-    // });
 
     await alert.present();
   }
@@ -200,21 +171,6 @@ export class GlobalAlertService {
         }   
       }
     })
-    // const alert = await this.modalController.create({
-    //   header: 'Transaction sent',
-    //   message: 'Your purchased NFT will show up in your owned items once the transaction is confirmed.',
-    //   buttons: [
-    //     {
-    //       text: 'Okay',
-    //       role: 'okay',
-    //     }, {
-    //       text: 'View transaction',
-    //       handler: () => {
-    //         window.open(environment.config.ui.txUrlPrefix + txHash, '_blank').focus
-    //       }
-    //     }
-    //   ]
-    // });
 
     await alert.present(); 
   }
@@ -230,16 +186,6 @@ export class GlobalAlertService {
         }   
       }
     })
-    // const alert = await this.modalController.create({
-    //   header: title,
-    //   message: message,
-    //   buttons: [
-    //     {
-    //       text: 'Okay',
-    //       role: 'okay',
-    //     }
-    //   ]
-    // });
 
     await alert.present(); 
   }
@@ -256,38 +202,60 @@ export class GlobalAlertService {
         }   
       }
     })
-    // const alert = await this.modalController.create({
-    //   header: 'Reward!',
-    //   message: `Thanks for rating. 
-    //   Your reward of ${amount} Chedda XP will be posted to your account once the transaction confirms on the blockchain.`,
-    //   buttons: [
-    //     {
-    //       text: 'Okay',
-    //       role: 'okay',
-    //     }
-    //   ]
-    // });
 
     await alert.present(); 
   }
   
-  async showRewardReceivedToast(amount) {
-    const toast =  await this.toastController.create({
-      header: 'Chedda XP earned',
-      message: `You just earned ${amount} XP`,
-      position: 'bottom',
-      duration: 3000
+  // async showRewardReceivedToast(amount) {
+  //   const toast =  await this.toastController.create({
+  //     header: 'Chedda XP earned',
+  //     message: `You just earned ${amount} XP`,
+  //     position: 'bottom',
+  //     duration: 3000
+  //   })
+
+  //   await toast.present()
+  // }
+
+  async showRewardReceivedToast(amount: string, timeout: number = 3000) {
+    const toast = await this.modalController.create({
+      component: SnackbarComponent,
+      backdropDismiss: true,
+      componentProps:{
+        'header': 'Chedda XP earned',
+        'message': `You just earned ${amount} XP`,
+      },
+      cssClass: 'modal-shadowless',
     })
 
     await toast.present()
+    setTimeout(async () => {
+      await toast.dismiss()
+    }, timeout)
   }
 
-  async showToast(message: string, timeout: number = 3000) {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: timeout
+  // async showToast(message: string, timeout: number = 3000) {
+  //   const toast = await this.toastController.create({
+  //     message: message,
+  //     duration: timeout,
+  //   })
+  //   await toast.present()
+  // }
+
+  async showToast(message: string, timeout: number = 2500) {
+    const toast = await this.modalController.create({
+      component: SnackbarComponent,
+      backdropDismiss: true,
+      componentProps:{
+        'message': message
+      },
+      cssClass: 'modal-shadowless',
     })
+
     await toast.present()
+    setTimeout(async () => {
+      await toast.dismiss()
+    }, timeout)
   }
 
   async connect() {
