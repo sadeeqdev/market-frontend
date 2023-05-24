@@ -46,6 +46,8 @@ ion-modal.stack-modal {
 ion-modal{
   --background: none;
   --box-shadow: none;
+  --width: 100vw;
+  --height: 100vh;
 }
 
 ion-grid{
@@ -406,7 +408,7 @@ ion-item-divider {
   // background: linear-gradient(98.29deg, rgba(130, 93, 237, 0.17) 13.27%, rgba(97, 219, 216, 0.17) 125.98%);
 }
 
-.gridrow_bg{
+.grid-row-bg{
   background: linear-gradient(90.17deg, rgba(98, 87, 242, 0.17) 1.78%, rgba(93, 222, 250, 0.17) 101.44%);
   // background: radial-gradient(48.98% 14130.72% at 51.02% 50%, rgba(166, 106, 50, 0.295) 45.83%, rgba(72, 65, 158, 0.2) 100%) 
 }
@@ -424,8 +426,8 @@ ion-item-divider {
 }
 
 .activeTab{
-  border-bottom: 2px solid #FDE34D;
-  color: #FDE34D;
+  border-bottom: 2px solid #eda562;
+  color: #eaab2d;
 }
 
 .faucets-bg{
@@ -434,7 +436,7 @@ ion-item-divider {
 
 .secondary-button {
   position: relative;
-  color: #F3943D;
+  color: #e7a420;
 }
 
 .secondary-button::before {
@@ -449,4 +451,8 @@ ion-item-divider {
       linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
           mask-composite: exclude; 
+}
+
+.modal-shadowless {
+  --ion-backdrop-opacity: 0;
 }

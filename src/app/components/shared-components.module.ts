@@ -20,7 +20,7 @@ import { PageTitleComponent } from '../shared/components/page-title/page-title.c
 import { PacmanLoaderComponent } from '../shared/components/pacman-loader/pacman-loader.component';
 import { PrimaryButtonComponent } from '../shared/components/primary-button/primary-button.component';
 import { SecondaryButtonComponent } from '../shared/components/secondary-button/secondary-button.component';
-
+import { SnackbarComponent } from '../shared/components/snackbar/snackbar.component';
 @NgModule({
   declarations: [
     TruncateMiddlePipe, 
@@ -39,7 +39,8 @@ import { SecondaryButtonComponent } from '../shared/components/secondary-button/
     PageTitleComponent,
     PacmanLoaderComponent,
     PrimaryButtonComponent,
-    SecondaryButtonComponent
+    SecondaryButtonComponent,
+    SnackbarComponent,
   ],
   imports: [
     CommonModule,
@@ -64,7 +65,8 @@ import { SecondaryButtonComponent } from '../shared/components/secondary-button/
     PageTitleComponent,
     PacmanLoaderComponent,
     PrimaryButtonComponent,
-    SecondaryButtonComponent
+    SecondaryButtonComponent,
+    SnackbarComponent,
   ]
 })
 export class SharedComponentsModule { }
