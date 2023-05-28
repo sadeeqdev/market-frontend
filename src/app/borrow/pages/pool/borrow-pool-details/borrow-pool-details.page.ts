@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IonInput, LoadingController, ModalController, NavController } from '@ionic/angular';
-import { BigNumber, ethers } from 'ethers';
+import { ModalController, NavController } from '@ionic/angular';
+import { ethers } from 'ethers';
 import { Subscription } from 'rxjs';
 import { CheddaBaseTokenVaultService } from 'src/app/contracts/chedda-base-token-vault.service';
 import { CheddaDebtTokenService } from 'src/app/contracts/chedda-debt-token.service';
@@ -60,7 +60,6 @@ export class BorrowPoolDetailsPage implements OnInit {
   assetSymbol;
   maxBorrowAmount; // TODO: update maxLTV to 75% and use remaining borrow amount instead of total borrow
   maxLTV = 65; // 65 %
-
   collateralApprovalListener;
   depositListener;
   borrowListener;
@@ -142,10 +141,9 @@ export class BorrowPoolDetailsPage implements OnInit {
     this.selectedNfts = []
   }
 
-  onCollateralTypeChanged($event) {
-    const newValue = $event.target.value;
+  onCollateralTypeChanged(selectValue: string) {
     try {
-      this.changeCollateral(newValue);
+      this.changeCollateral(selectValue);
     } catch (error) {
       console.error('changeCollateral error: ', error);
     }
