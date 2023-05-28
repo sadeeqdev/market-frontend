@@ -21,6 +21,7 @@ import { PacmanLoaderComponent } from '../shared/components/pacman-loader/pacman
 import { PrimaryButtonComponent } from '../shared/components/primary-button/primary-button.component';
 import { SecondaryButtonComponent } from '../shared/components/secondary-button/secondary-button.component';
 import { SnackbarComponent } from '../shared/components/snackbar/snackbar.component';
+import { SelectPopoverComponent } from '../shared/components/select-popover/select-popover.component';
 @NgModule({
   declarations: [
     TruncateMiddlePipe, 
@@ -41,6 +42,7 @@ import { SnackbarComponent } from '../shared/components/snackbar/snackbar.compon
     PrimaryButtonComponent,
     SecondaryButtonComponent,
     SnackbarComponent,
+    SelectPopoverComponent,
   ],
   imports: [
     CommonModule,
@@ -67,6 +69,7 @@ import { SnackbarComponent } from '../shared/components/snackbar/snackbar.compon
     PrimaryButtonComponent,
     SecondaryButtonComponent,
     SnackbarComponent,
+    SelectPopoverComponent,
   ]
 })
 export class SharedComponentsModule { }

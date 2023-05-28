@@ -1,0 +1,21 @@
+<div class="relative profile-menu-container">
+  <button 
+    (click)="openSelectMenu()"
+    class="h-8 min-w-24 px-3 rounded text-xs flex bg-black justify-between items-center hover:opacity-90"
+    >
+    <div class="flex gap-1 mr-2 items-center font-semibold">
+      {{selectedCollateral}}
+    </div>
+    <img src="/assets/icon/arrow-down.svg"  class="w-2.5 h-2.5"/>
+  </button>
+  <div id="mySelectMenu" class="transition-all absolute mt-1 w-32 right-0 sm:left-0 bg-[#0f131d] menu-ng text-white rounded-md shadow-lg z-10" [class.hidden]="!isOpenSelectMenu">
+    <ul class="list-reset text-center font-semibold">
+      <li *ngFor="let c of collaterals" 
+          class="py-2 px-2 border-b-[0.5px] shadow-sm border-gray-700 text-sm hover:cursor-pointer hover:bg-black transition-all last:border-none "
+          (click)="handleCollateralSelect(c.symbol)"
+      >
+        {{c.symbol}}
+      </li>
+    </ul>
+  </div>
+</div>
