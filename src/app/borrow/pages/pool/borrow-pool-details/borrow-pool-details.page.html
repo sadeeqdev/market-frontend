@@ -253,8 +253,8 @@
           </div>
         </div>
         <div *ngIf="isBorrowCheddaTab">
-          <div class="mt-8 flex justify-between text-sm sm:text-lg">
-            <div class="opacity-50">Deposit Collateral</div>
+          <div class="mt-8 flex justify-between items-center">
+            <div class="opacity-50 text-sm sm:text-[17px] font-semibold">Deposit Collateral</div>
             <app-select-popover 
               [collaterals]="collaterals" 
               [selectedCollateral]="collateralTokenSymbol" 
@@ -263,7 +263,7 @@
           </div>
           <div
             *ngIf="collateralContract && !collateralContract.isNFT"
-            class="text-xs sm:text-sm mt-9 flex justify-between text-lavendar-purple"
+            class="text-xs mt-9 flex justify-between text-lavendar-purple"
           >
             <div class="opacity-50 ">Add Collateral</div>
             <div><span class="font-semibold">Wallet Balance: </span>{{myCollateralTokenBalance | number:'1.2-4'}}</div>
@@ -314,9 +314,10 @@
               </div>
             </div>
           </div>
+          <div class="opacity-50 mt-9 text-sm sm:text-[17px] font-semibold">Borrow</div>
           <div
             *ngIf="collateralContract && !collateralContract.isNFT"
-            class="text-xs sm:text-sm mt-9 flex justify-between text-lavendar-purple"
+            class="text-xs mt-4 flex justify-between text-lavendar-purple"
           >
             <div class="opacity-50 ">Borrow {{assetSymbol}}</div>
             <div><span class="font-semibold">Max: </span>{{myAmountOwed | number:'1.2'}}</div>
@@ -356,8 +357,8 @@
         </div>
         <!-- Repay -->
         <div *ngIf="!isBorrowCheddaTab">
-          <div class="mt-8 flex justify-between text-sm sm:text-lg">
-            <div class="opacity-50">Withdraw Collateral</div>
+          <div class="mt-8 flex justify-between items-center">
+            <div class="opacity-50 text-sm sm:text-[17px] font-semibold">Withdraw Collateral</div>
             <app-select-popover 
               [collaterals]="collaterals" 
               [selectedCollateral]="collateralTokenSymbol" 
@@ -366,7 +367,7 @@
           </div>
           <div
             *ngIf="collateralContract && !collateralContract.isNFT"
-            class="text-xs mt-9 sm:text-sm flex justify-between text-lavendar-purple"
+            class="text-xs mt-9 flex justify-between text-lavendar-purple"
           >
             <div class="opacity-50 ">Withdraw {{collateralTokenSymbol}}</div>
             <div><span class="font-semibold">Wallet Balance: </span>{{myCollateralDeposited | number:'1.2'}}</div>
@@ -417,8 +418,9 @@
               </div>
             </div>
           </div>
+          <div class="opacity-50 mt-9 text-sm sm:text-[17px] font-semibold">Repay</div>
           <div
-            class="text-xs sm:text-sm mt-9 flex justify-between text-lavendar-purple"
+            class="text-xs sm:text-sm mt-4 flex justify-between text-lavendar-purple"
           >
             <div class="opacity-50 ">Repay {{assetSymbol}}</div>
             <div><span class="font-semibold">Max: </span>{{myAmountOwed | number:'1.2'}}</div>

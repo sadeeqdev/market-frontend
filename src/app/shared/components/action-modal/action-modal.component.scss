@@ -11,35 +11,9 @@
     background: linear-gradient(252.74deg, #F3943D 18.99%, rgba(72, 65, 158, 0.81) 58.87%);
 }
 
-.button-gradient {
-    position: relative;
-    width: 160px;
-    height: 32px;
-}
-
-.button-gradient::before {
-    content: "";
-    position: absolute;
-    width: inherit;
-    height: inherit;
-    inset: 0;
-    border-radius: 10px; 
-    padding: 2px; 
-    background:linear-gradient(90deg,#48419ECF, #F3943D); 
-    -webkit-mask: 
-        linear-gradient(#fff 0 0) content-box, 
-        linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-            mask-composite: exclude; 
-}
-
-.get-more-btn {
-    position: relative;
-    width: 160px;
-    height: 32px;
-    border:1px solid #0000;
-    border-radius:10px;
-    background:
-        linear-gradient(90deg, #48419ECF,#F3943D) padding-box,
-        linear-gradient(90deg, #F3943D, #FDE34D) border-box;
-}
+.gradient-text {
+    background: linear-gradient(to right, #F3943D, #FDE34D);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
