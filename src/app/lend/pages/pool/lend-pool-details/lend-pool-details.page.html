@@ -138,11 +138,11 @@
     ></app-page-title>
     <div class="w-11/12 xl:w-11/12 2xl:w-5/6 3xl:w-9/12 mx-auto">
       <button
-        class="flex items-center mt-4 text-[#5DDEFA] text-xs font-semibold hover:opacity-80"
+        class="flex items-center mt-6 text-[#5DDEFA] text-xs font-semibold hover:opacity-80"
         (click)="navigateToMarkets()"
       >
         <img src="/assets/icon/back-icon.png" class="w-2 mr-1.5" />
-        Back to markets
+        Back to Market
       </button>
     </div>
     <div
@@ -182,13 +182,13 @@
           </div>
         </div>
         <div *ngIf="isDepositCheddaTab">
-          <div class="mt-6 flex justify-between opacity-50 text-lg">
+          <div class="mt-6 flex justify-between opacity-50 text-lg font-semibold">
             <div>Deposit {{ pool.asset.name }}</div>
           </div>
           <div class="mt-4 flex justify-between text-lavendar-purple text-xs">
             <div class="opacity-50">Enter amount to deposit</div>
-            <div class="font-bold">
-              Balance: {{myAssetBalance | number:'1.2-4'}}
+            <div class="font-semibold">
+              Balance: {{myAssetBalance | number:'1.2-4'}} {{ assetSymbol }}
             </div>
           </div>
           <div class="relative">
@@ -219,14 +219,13 @@
           ></app-primary-button>
         </div>
         <div *ngIf="!isDepositCheddaTab">
-          <div class="mt-6 flex justify-between opacity-50 text-lg">
+          <div class="mt-6 flex justify-between opacity-50 text-lg font-semibold">
             <div>Withdraw {{ pool.asset.name }}</div>
           </div>
           <div class="mt-4 flex justify-between text-xs text-lavendar-purple">
             <div class="opacity-50">Enter amount to deposit</div>
-            <div>
-              <span class="font-bold">Wallet Balance:</span>
-              {{myVaultSharesBalance | number:'1.2-4'}}
+            <div class="font-semibold">
+              Balance: {{myVaultSharesBalance | number:'1.2-4'}} {{ assetSymbol }}
             </div>
           </div>
           <div class="relative">
