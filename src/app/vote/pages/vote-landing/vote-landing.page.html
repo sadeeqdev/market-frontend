@@ -136,7 +136,7 @@
       ></app-page-title>
       <div class="w-full flex justify-center mt-12 mx-auto">
         <div class="w-11/12 sm:w-11/12 xl:w-3/5 2xl:w-2/4 xl:gap-x-10 grid grid-cols-1 place-items-center items-center sm:grid-cols-2">
-          <ion-col size="10" offset-xs="0" offset-sm="1" offset-md="2" offset-lg="5">
+          <ion-col size="10" offset-xs="0" offset-sm="1" offset-md="2" offset-lg="9">
             <canvas
               baseChart
               [data]="chartData"
@@ -168,10 +168,7 @@
         subHeading="Use your voting power to direct token emissions."
       ></app-page-title>
       <div class="my-10 w-11/12 sm:w-[97%] xl:w-9/12 2xl:w-8/12 mx-auto">
-        <div *ngIf="votePower" class="text-white text-center font-semibold">
-          veCHEDDA: {{votePower | formatEth | rounding:[0] }}
-        </div>
-        <div class="hidden mt-7 sm:grid grid-cols-12 text-white font-semibold sm:px-5 xl:px-10">
+        <div class="hidden mt-16 text-sm sm:grid grid-cols-12 text-white font-semibold sm:px-5 xl:px-10">
           <div class="col-span-4">
             Pool
           </div>
@@ -185,7 +182,7 @@
             Claim
           </div>
         </div>
-        <div *ngFor="let pool of lendingPools" class="hidden sm:grid grid-cols-12 w-full rounded-xl mt-3 h-20 text-white grid-row-bg sm:px-5 xl:px-10 items-center">
+        <div *ngFor="let pool of lendingPools" class="hidden md:grid grid-cols-12 w-full rounded-xl mt-3 h-20 text-white grid-row-bg sm:px-5 xl:px-10 items-center">
           <div class="col-span-4">
             <div class="grid grid-cols-12">
               <div class="col-span-4 mt-3 ">
@@ -235,7 +232,7 @@
           </div>
         </div>
         <!-- Mobile Gauge-------------------- -->
-        <div *ngFor="let pool of lendingPools" class="sm:hidden w-full rounded-[19px] mt-6 h-auto text-white faucets-bg ">
+        <div *ngFor="let pool of lendingPools" class="md:hidden w-full rounded-[19px] mt-6 h-auto text-white faucets-bg ">
           <div class="grid grid-cols-2 border-b border-gray-500">
             <div class="flex flex-col justify-between h-32 border-r border-gray-500 px-5 py-3">
               <div class="text-lg">Pool</div>

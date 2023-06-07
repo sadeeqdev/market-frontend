@@ -266,7 +266,7 @@
             class="text-xs mt-6 flex justify-between text-lavendar-purple"
           >
             <div class="opacity-50 ">Add Collateral</div>
-            <div><span class="font-semibold">Balance: </span>{{myCollateralTokenBalance | number:'1.2-4'}}</div>
+            <div class="font-bold">Balance: {{myCollateralTokenBalance | number:'1.2-4'}}</div>
           </div>
           <div
             *ngIf="collateralContract && !collateralContract.isNFT"
@@ -282,7 +282,7 @@
             <div class="absolute top-0 right-0 mt-3 sm:mt-4 mr-1 sm:mr-2">
               <button
                 (click)="fillMaxDeposit()"
-                class="w-auto px-4 h-[31px] sm:h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-xs sm:text-sm text-[#ffffff50] hover:text-white"
+                class="w-auto px-4 h-[31px] sm:h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-xs sm:text-sm text-[#ffffff50] hover:text-white uppercase"
               >
                 Balance
               </button>
@@ -320,7 +320,7 @@
             class="text-xs mt-4 flex justify-between text-lavendar-purple"
           >
             <div class="opacity-50 ">Borrow {{assetSymbol}}</div>
-            <div><span class="font-semibold">Max: </span>{{myAmountOwed | number:'1.2'}}</div>
+            <div class="font-bold">Max: {{myAmountOwed | number:'1.2'}}</div>
           </div>
           <div class="relative">
             <input
@@ -333,7 +333,7 @@
             <div class="absolute top-0 right-0 mt-3 sm:mt-4 mr-1 sm:mr-2">
               <button
                 (click)="fillMaxBorrow()"
-                class="w-auto px-3 sm:px-4 h-[31px] sm:h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-xs sm:text-sm text-[#ffffff50] hover:text-white"
+                class="w-auto px-3 sm:px-4 h-[31px] sm:h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-xs sm:text-sm text-[#ffffff50] hover:text-white uppercase"
               >
                 Max
               </button>
@@ -370,7 +370,7 @@
             class="text-xs mt-6 flex justify-between text-lavendar-purple"
           >
             <div class="opacity-50 ">Withdraw {{collateralTokenSymbol}}</div>
-            <div><span class="font-semibold">Wallet Balance: </span>{{myCollateralDeposited | number:'1.2'}}</div>
+            <div class="font-bold">Wallet Balance: {{myCollateralDeposited | number:'1.2'}}</div>
           </div>
           <div
             *ngIf="collateralContract && !collateralContract.isNFT"
@@ -386,7 +386,7 @@
             <div class="absolute top-0 right-0 mt-3 mr-1 sm:mt-4 sm:mr-2">
               <button
                 (click)="fillMaxWithdraw()"
-                class="w-auto px-4 h-[31px] sm:h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-xs sm:text-sm text-[#ffffff50] hover:text-white"
+                class="w-auto px-4 h-[31px] sm:h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-xs sm:text-sm text-[#ffffff50] hover:text-white uppercase"
               >
                 Balance
               </button>
@@ -423,7 +423,7 @@
             class="text-xs mt-4 flex justify-between text-lavendar-purple"
           >
             <div class="opacity-50 ">Repay {{assetSymbol}}</div>
-            <div><span class="font-semibold">Max: </span>{{myAmountOwed | number:'1.2'}}</div>
+            <div class="font-bold">Max: {{myAmountOwed | number:'1.2'}}</div>
           </div>
           <div class="relative">
             <input
@@ -436,7 +436,7 @@
             <div class="absolute top-0 right-0 mt-3 mr-1 sm:mt-4 sm:mr-2">
               <button
                 (click)="fillMaxRepay()"
-                class="w-auto px-3 sm:px-4 h-[31px] sm:h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-xs sm:text-sm text-[#ffffff50] hover:text-white"
+                class="w-auto px-3 sm:px-4 h-[31px] sm:h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-xs sm:text-sm text-[#ffffff50] hover:text-white uppercase"
               >
                 Max
               </button>
