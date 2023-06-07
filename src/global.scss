@@ -398,14 +398,30 @@ ion-item-divider {
   }
 }
 
-.leftbox_bg{
-  background: linear-gradient(92.31deg, rgba(255, 136, 0, 0.15) 25.71%, rgba(98, 87, 242, 0.15) 100.24%);
-  // background: linear-gradient(99.71deg, rgba(232, 136, 56, 0.17) 7.51%, rgba(146, 113, 247, 0.17) 97.98%);
+.leftbox_bg{ 
+  position: relative;
+  background: linear-gradient(92.31deg, rgba(255, 136, 0, 0.20) 25.71%, rgba(98, 87, 242, 0.22) 100.24%);
 }
 
+
+
 .rightbox_bg{
+  position: relative;
   background: linear-gradient(104.2deg, rgba(98, 87, 242, 0.17) 18.94%, rgba(93, 222, 250, 0.17) 94.84%);
-  // background: linear-gradient(98.29deg, rgba(130, 93, 237, 0.17) 13.27%, rgba(97, 219, 216, 0.17) 125.98%);
+}
+
+.leftbox_bg::before, .rightbox_bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 8px; 
+  padding: 1px; 
+  background: linear-gradient(110.02deg, #29255a 50%, #F3943D 81%); 
+  -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude; 
 }
 
 .grid-row-bg{
@@ -426,7 +442,7 @@ ion-item-divider {
 }
 
 .activeTab{
-  border-bottom: 2px solid #eda562;
+  border-bottom: 1px solid #eda562;
   color: #eaab2d;
 }
 
