@@ -154,8 +154,8 @@
         </div>
       </div>
       <div  class="flex-col justify-center xl:mt-12 my-12 items-center">
-        <div *ngIf="!hasEpochEnded" class="text-white font-semibold text-xs">Current epoch ends: {{epochEnd * 1000 | date:'medium'}}</div>
-        <div *ngIf="hasEpochEnded" class="text-white font-semibold text-xs">Epoch ended: {{epochEnd * 1000 | date:'medium'}}</div>
+        <div *ngIf="!hasEpochEnded" class="text-white font-semibold text-xs opacity-50">Current epoch ends: {{epochEnd * 1000 | date:'medium'}}</div>
+        <div *ngIf="hasEpochEnded" class="text-white font-semibold text-xs opacity-50">Epoch ended: {{epochEnd * 1000 | date:'medium'}}</div>
         <button
             (click)="rebalance()"
             class="h-8 w-44 sm:h-11 sm:w-60 primary-button-bg text-white mt-3 rounded-lg font-bold uppercase text-sm sm:text-lg hover:opacity-90"
@@ -222,7 +222,7 @@
             <button
               [disabled]="!pool.claimAmount || pool.claimAmount.amount.isZero()"
               (click)="claim(pool)"
-              class="h-9 w-52 secondary-button flex justify-center items-center gap-1 rounded-lg secondary-button font-bold text-xs uppercase hover:opacity-90"
+              class="h-9 w-52 secondary-button flex justify-center items-center gap-1 rounded-lg font-bold text-xs uppercase hover:opacity-90 disabled:hover:opacity-70"
             >
               Claim  
             <div *ngIf="pool.claimAmount">
@@ -274,7 +274,7 @@
             <button
               [disabled]="!pool.claimAmount || pool.claimAmount.amount.isZero()"
               (click)="claim(pool)"
-              class="h-10 w-60 secondary-button flex justify-center items-center gap-1 rounded-lg secondary-button font-bold text-md uppercase hover:opacity-90"
+              class="h-10 w-60 secondary-button flex justify-center items-center gap-1 rounded-lg secondary-button font-bold text-md uppercase"
             >
               Claim  
               <div *ngIf="pool.claimAmount">
