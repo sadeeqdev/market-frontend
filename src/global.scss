@@ -469,6 +469,10 @@ ion-item-divider {
           mask-composite: exclude; 
 }
 
+.secondary-button:disabled{
+  opacity: 70%;
+}
+
 .modal-shadowless {
   --ion-backdrop-opacity: 0;
 }

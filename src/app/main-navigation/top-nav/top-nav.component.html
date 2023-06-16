@@ -26,7 +26,7 @@
       <div class="flex flex-row gap-2 text-white">
         <app-networks-popover></app-networks-popover>
         <div *ngIf="account">
-          <app-profile-popover [address]="account" [cheddaBalance]="cheddaBalance" [xCheddaBalance]="xCheddaBalance"></app-profile-popover>
+          <app-profile-popover [address]="account"></app-profile-popover>
         </div>
         <div *ngIf="!account">
           <button 
@@ -113,7 +113,7 @@
       <div class="mt-1 w-full text-white rounded-md shadow-lg z-10" *ngIf="account">
         <ul class="list-reset text-center text-lg font-semibold">
           <li class="flex justify-center mt-5">
-            <img src="/assets/logos/account-img.svg" width="95px"/>
+            <img [src]="address | blockie:[12, 4]" class="rounded-full" width="95px"/>
           </li>
           <li class="py-4 px-2 hover:opacity-70 rounded-t-md cursor-pointer border-b border-gray-700">
             <div class="flex gap-3 justify-center items-center text-2xl">

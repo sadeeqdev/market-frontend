@@ -3,7 +3,7 @@
     (click)="openProfileMenu()"
     class="h-9 w-32 sm:h-11 sm:w-40 px-2 rounded-lg text-sm account_button flex justify-evenly items-center hover:opacity-90 font-semibold"
     >
-      <div><img src="/assets/logos/account-img.svg" class="w-7 h-7"/></div>
+      <div><img [src]="address | blockie:[12, 4]" class="rounded-full w-7 h-7"/></div>
       <div>{{address | truncateMiddle:[6, '...', 4 ]}}</div>
       <div><img src="/assets/icon/arrow-down.svg"  class="w-2.5 h-2.5"/></div>
   </button>
@@ -11,7 +11,7 @@
     <ul class="list-reset text-center font-semibold">
       <li class=" py-4 px-2 rounded-t-md border-b border-gray-700" (click)="copyAddress()">
         <div class="flex gap-3 justify-center items-center">
-          <img src="/assets/logos/account-img.svg"/>
+          <img [src]="address | blockie:[12, 4]" class="rounded-full w-7 h-7"/>
           {{address | truncateMiddle:[6, '...', 4 ]}} 
           <button class="relative address-container hover:opacity-70">
             <img src="/assets/icon/copy-icon.svg" width="17px" />
