@@ -9,7 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedComponentsModule } from './components/shared-components.module';
 import { NgChartsModule } from 'ng2-charts'
-
+import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -20,6 +20,7 @@ import { NgChartsModule } from 'ng2-charts'
     AppRoutingModule, 
     HttpClientModule, 
     SharedComponentsModule, 
+    FormsModule
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

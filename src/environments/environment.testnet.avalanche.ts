@@ -44,7 +44,7 @@ export const environment = {
                 name: 'USD Coin',
                 symbol: 'USCD.c',
                 address: '0x55df0aF74eE7FA170AbBF7eb3F8D43d7c20De207',
-                logo: '/assets/logos/usd-coin-logo.png'
+                logo: '/assets/logos/usd-logo.png'
               },
               collateral: [
                 {

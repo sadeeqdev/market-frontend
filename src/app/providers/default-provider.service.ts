@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
+
 export class DefaultProviderService {
 
   provider: ethers.providers.StaticJsonRpcProvider

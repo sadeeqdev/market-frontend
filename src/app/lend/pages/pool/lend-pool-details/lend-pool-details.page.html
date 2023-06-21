@@ -1,6 +1,5 @@
-<ion-content>
+<!-- <ion-content>
   <ion-grid>
-    <!-- main -->
     <ion-row>
       <ion-col size-xs="12" size-sm="10" offset-sm="1" size-md="8" offset-md="2" size-lg="8" offset-lg="2" size-xl="6" offset-xl="3">
         <ion-card class="light-background">
@@ -117,13 +116,10 @@
                 </ion-col>
               </ion-row>
             </div>
-
           </ion-card-content>
         </ion-card>
       </ion-col>
     </ion-row>
-
-    <!-- Pool details -->
     <ion-row>
       <ion-col>
         <ion-card>
@@ -133,4 +129,150 @@
     </ion-row>
   </ion-grid>
 
+</ion-content> -->
+<ion-content>
+  <ion-grid>
+    <app-page-title
+      heading="Lend Assets"
+      subHeading="Deposit and Withdraw tokens. "
+    ></app-page-title>
+    <div class="w-11/12 xl:w-11/12 2xl:w-5/6 3xl:w-9/12 mx-auto">
+      <button
+        class="flex items-center mt-6 text-[#5DDEFA] text-xs font-semibold hover:opacity-80"
+        (click)="navigateToMarkets()"
+      >
+        <img src="/assets/icon/back-icon.png" class="w-2 mr-1.5" />
+        Back to Market
+      </button>
+    </div>
+    <div
+      class="w-11/12 md:w-[540px] h-auto mx-auto rounded-[30px] my-10 text-white card-bg"
+    >
+      <div
+        class="py-8 sm:h-20 border-b flex items-center justify-center space-x-3 border-gray-500"
+      >
+        <div class="w-7 h-7">
+          <img [src]="pool.asset.logo" />
+        </div>
+        <div class="text-lg sm:text-xl">Lend {{ pool.asset.name }}</div>
+      </div>
+      <div class="pt-3 pb-8 px-6 sm:px-8">
+        <div class="h-auto w-full flex text-[#B5C2EB]">
+          <div
+            [class.activeTab]="isDepositCheddaTab"
+            class="text-sm py-3 w-full text-center hover:opacity-75 hover:bg-transparent"
+          >
+            <button
+              class="w-full font-semibold uppercase"
+              (click)="switchDepositCheddaTab(true)"
+            >
+              Deposit
+            </button>
+          </div>
+          <div
+            [class.activeTab]="!isDepositCheddaTab"
+            class="text-sm py-3 w-full text-center hover:opacity-75 hover:bg-transparent"
+          >
+            <button
+              class="w-full font-semibold uppercase"
+              (click)="switchDepositCheddaTab(false)"
+            >
+              Withdraw
+            </button>
+          </div>
+        </div>
+        <div *ngIf="isDepositCheddaTab">
+          <div class="mt-6 flex justify-between opacity-50 text-lg font-semibold">
+            <div>Deposit {{ pool.asset.name }}</div>
+          </div>
+          <div class="mt-4 flex justify-between text-lavendar-purple text-xs">
+            <div class="opacity-50">Enter amount to deposit</div>
+            <div class="font-semibold">
+              Balance: {{myAssetBalance | number:'1.2-4'}} {{ assetSymbol }}
+            </div>
+          </div>
+          <div class="relative">
+            <input
+              type="number"
+              placeholder="Amount"
+              #depositInput
+              class="bg-black w-full rounded mt-2 h-10 sm:h-14 px-4 font-semibold text-white text-xs sm:text-sm focus:outline-none focus:shadow-outline"
+            />
+            <div class="absolute top-0 right-0 mt-3 sm:mt-4 mr-1 sm:mr-2">
+              <button
+                (click)="fillMaxDeposit()"
+                class="w-auto px-3 sm:px-4 h-[31px] sm:h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-xs sm:text-sm font-semibold text-[#ffffff50] hover:text-white uppercase"
+              >
+                Max
+              </button>
+            </div>
+          </div>
+          <app-primary-button
+            [buttonText]="'Approve ' + assetSymbol"
+            [visibility]="!isApproved"
+            (clicked)="approveAsset()"
+          ></app-primary-button>
+          <app-primary-button
+            [buttonText]="'Deposit ' + assetSymbol"
+            [visibility]="isApproved"
+            (clicked)="deposit()"
+          ></app-primary-button>
+        </div>
+        <div *ngIf="!isDepositCheddaTab">
+          <div class="mt-6 flex justify-between opacity-50 text-lg font-semibold">
+            <div>Withdraw {{ pool.asset.name }}</div>
+          </div>
+          <div class="mt-4 flex justify-between text-xs text-lavendar-purple">
+            <div class="opacity-50">Enter amount to deposit</div>
+            <div class="font-semibold">
+              Balance: {{myVaultSharesBalance | number:'1.2-4'}} {{ assetSymbol }}
+            </div>
+          </div>
+          <div class="relative">
+            <input
+              type="number"
+              placeholder="Amount"
+              #withdrawInput
+              class="bg-black w-full rounded mt-2 h-10 sm:h-14 px-4 font-semibold text-white text-xs sm:text-sm focus:outline-none focus:shadow-outline"
+            />
+            <div class="absolute top-0 right-0 mt-3 sm:mt-4 mr-1 sm:mr-2">
+              <button
+                (click)="fillMaxWithdraw()"
+                class="w-auto px-3 sm:px-4 h-[31px] sm:h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-xs sm:text-sm font-semibold text-[#ffffff50] hover:text-white uppercase"
+              >
+                Max
+              </button>
+            </div>
+          </div>
+          <app-secondary-button
+            [buttonText]="'WITHDRAW ' + assetSymbol"
+            [visibility]="true"
+            (clicked)="redeem()"
+          ></app-secondary-button>
+        </div>
+        <div
+          class="w-full h-auto flex justify-between mt-4 rounded-[20px] border-[1px] border-[#bab9bb] text-white px-5 py-4 sm:px-8 sm:py-6"
+        >
+          <div
+            class="flex flex-col gap-y-4 font-bold text-xs sm:text-sm text-[#999898]"
+          >
+            <div>My Deposits</div>
+            <div>Available Liquidity</div>
+            <div>Utilization</div>
+            <div>Deposit APY</div>
+            <div>Rewards APY</div>
+          </div>
+          <div class="flex flex-col gap-y-4 font-bold text-xs sm:text-sm">
+            <div>
+              {{myVaultSharesBalance | number:'1.2-6'}} {{vaultTokenSymbol}}
+            </div>
+            <div>{{totalVaultAssets | number:'1.2-6'}} {{ assetSymbol }}</div>
+            <div>{{utilizationRate | number:'1.2-3'}}%</div>
+            <div>{{depositApy | number:'1.2-3'}}%</div>
+            <div>{{rewardsApy | number:'1.2-3'}}%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-grid>
 </ion-content>

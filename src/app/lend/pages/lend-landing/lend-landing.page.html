@@ -1,8 +1,5 @@
-<ion-content>
-
-  <ion-grid>
-
-  <!-- Lending Pools -->
+  <!--
+   Lending Pools
   <ion-row>
     <ion-col size-xs="12" size-sm="12" size-md="12" size-lg="10" offset-lg="1" size-xl="8" offset-xl="2">
       <ion-card class="light-background">
@@ -46,12 +43,126 @@
                 </ion-row>
               </ion-card>
             </ion-col>
-            <!-- columns for pools -->
           </ion-row>
         </ion-card-content>
       </ion-card>
     </ion-col>
   </ion-row>
-  <!-- P2P Markets -->
+-->
+<ion-content>
+  <ion-grid>
+    <app-page-title
+        heading="Lend Assets"
+        subHeading="Deposit and Withdraw tokens. "
+    ></app-page-title>
+    <div class="w-11/12 xl:w-11/12 2xl:w-5/6 3xl:w-9/12 mt-8 gap-3 mx-auto flex text-white">
+      <div class="w-full lg:w-48 h-28 rounded-lg lg:rounded flex-col gap-2 justify-center items-center leftbox_bg">
+        <div class="font-semibold text-left text-sm">Total market size</div>
+        <div class="font-bold text-2xl">$500,000</div>
+      </div>
+      <div class="w-full lg:w-48 h-28 rounded-lg lg:rounded flex-col gap-2 justify-center items-center rightbox_bg">
+        <div class="font-semibold text-left text-sm">Total available</div>
+        <div class="font-bold text-2xl">$400,000</div>
+      </div>
+    </div>
+    <div class="w-11/12 xl:w-11/12 2xl:w-5/6 3xl:w-9/12 my-14 mx-auto">
+      <div class="font-semibold mb-4 text-white text-lg sm:text-2xl">
+        Markets
+      </div>
+      <div class="w-full mt-8 mb-4 hidden sm:block">
+        <div class="grid grid-cols-12 text-xs text-white px-8 font-semibold">
+          <div class="col-span-2">Asset</div>
+          <div class="col-span-4">Collateral</div>
+          <div class="col-span-2">Deposit APY</div>
+          <div class="col-span-2">Utilization</div>
+          <div class="col-span-2">Liquidity</div>
+        </div>
+      </div>
+      <div *ngFor="let pool of lendingPools">
+        <div [routerLink]="['/', 'lend', 'pool', pool.address]"  class="h-20 w-full rounded-lg mt-2 sm:grid grid-cols-12 px-8 grid-row-bg text-white hover:opacity-80 hover: cursor-pointer hidden">
+          <div class="flex flex-col justify-center text-sm col-span-2 space-y-1 mt-2">
+            <div class="ml-1">
+              <img [src]="pool.asset.logo" class="asset-avatar round-image"/>
+            </div>
+            <div class="font-bold">
+              {{pool.asset.symbol}} 
+            </div>
+          </div>
+          <div class="flex flex-col justify-center text-sm col-span-4 space-y-2 mt-2">
+            <div class="flex ml-1">
+              <div *ngFor="let collateral of pool.collateral" class="my-2 logo-cascade round-image">
+                <img [src]="collateral.logo" class="cascade-img h-8 w-8 round-image"/>
+              </div>
+            </div>
+            <div class="font-bold flex">
+              <div *ngFor="let collateral of pool.collateral; index as i">
+                {{collateral.symbol}}
+                <span *ngIf="i !== pool.collateral.length - 1">, </span>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="pool.stats" class="text-sm flex items-center font-semibold col-span-2">{{ pool.stats.apr | number:'1.2' }}%</div>
+          <div *ngIf="pool.stats" class="text-sm flex items-center font-semibold col-span-2">{{ pool.stats.utilization | number:'1.2' }}</div>
+          <div *ngIf="pool.stats" class="text-sm flex items-center font-semibold col-span-2">{{ pool.stats.total | currency }}</div>
+        </div>
+        <!-- Mobile view -->
+        <div [routerLink]="['/', 'lend', 'pool', pool.address]"  class="h-auto w-full rounded-lg mt-2 px-8 py-5 grid-row-bg text-white hover:opacity-80 hover: cursor-pointer sm:hidden">
+          <!-- First row -->
+          <div class="flex justify-between">
+            <div>
+              <div  class="flex justify-center text-lg">
+                Asset
+              </div> 
+              <div class="flex flex-col items-center mt-2">
+                <div>
+                  <img [src]="pool.asset.logo" class="asset-avatar rounded-image"/>
+                </div>
+                <div class="font-bold mt-2 text-sm">
+                  {{pool.asset.symbol}} 
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-col justify-center col-span-4">
+              <div class="flex text-lg" [class.justify-end]="pool.collateral.length > 1" [class.justify-center]="pool.collateral.length === 1">
+                Collateral
+              </div> 
+              <div class="flex flex-col mt-2" [class.items-end]="pool.collateral.length > 1" [class.items-center]="pool.collateral.length === 1">
+                <div>
+                  <img [src]="pool.asset.logo" class="asset-avatar"/>
+                </div>
+                <div class="font-bold flex mt-2 text-sm">
+                  <div *ngFor="let collateral of pool.collateral; index as i">
+                    {{collateral.symbol}}
+                    <span *ngIf="i !== pool.collateral.length - 1">, </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Second row -->
+          <div class="flex justify-between mt-4 border-t pt-4 border-gray-500">
+            <div *ngIf="pool.stats" >
+              <div class="flex justify-center text-lg">
+                Utilization
+              </div> 
+              <div class="text-sm flex justify-center font-bold col-span-2">{{ pool.stats.apr | number:'1.2' }}%</div>
+            </div>
+            <div *ngIf="pool.stats" >
+              <div class="flex justify-center text-lg">
+                Deposit APY
+              </div> 
+              <div class="text-sm flex justify-center font-bold col-span-2">{{ pool.stats.utilization | number:'1.2' }}</div>
+            </div>
+          </div>
+          <!-- Third row -->
+          <div *ngIf="pool.stats" class="flex flex-col items-center justify-center mt-4">
+            <div class="flex flex-col justify-center gap-2 text-lg">
+              Liquidity
+            </div> 
+            <div class="text-sm flex justify-center font-bold col-span-2">{{ pool.stats.total | currency }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </ion-grid>
-  </ion-content>
+</ion-content>

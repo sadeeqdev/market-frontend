@@ -8,6 +8,7 @@ import { LendPageRoutingModule } from './lend-routing.module';
 
 import { LendPage } from './lend.page';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { SharedComponentsModule } from '../components/shared-components.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     FormsModule,
     IonicModule,
     NgxDatatableModule,
-    LendPageRoutingModule
+    LendPageRoutingModule,
+    SharedComponentsModule,
   ],
   declarations: [LendPage]
 })

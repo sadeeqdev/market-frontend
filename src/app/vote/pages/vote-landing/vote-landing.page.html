@@ -1,7 +1,5 @@
-<ion-content>
-
+<!-- <ion-content>
   <ion-grid>
-
     <ion-row>
       <ion-col size-xs="12" size-sm="12" size-md="12" size-lg="10" offset-lg="1" size-xl="8" offset-xl="2">
         <ion-card class="light-background">
@@ -54,7 +52,6 @@
         </ion-card>
       </ion-col>
     </ion-row>
-  <!-- Lending Pools -->
   <ion-row>
     <ion-col size-xs="12" size-sm="12" size-md="12" size-lg="10" offset-lg="1" size-xl="8" offset-xl="2">
       <ion-card class="light-background">
@@ -123,12 +120,170 @@
                 </ion-row>
               </ion-card>
             </ion-col>
-            <!-- columns for pools -->
           </ion-row>
         </ion-card-content>
       </ion-card>
     </ion-col>
   </ion-row>
-  <!-- P2P Markets -->
   </ion-grid>
+  </ion-content> -->
+
+  <ion-content>
+    <ion-grid>
+      <app-page-title
+        heading="CHEDDA Rewards Distribution"
+        subHeading="Vote to direct the emission of CHEDDA tokens "
+      ></app-page-title>
+      <div class="w-full flex justify-center mt-12 mx-auto">
+        <div class="w-11/12 sm:w-11/12 xl:w-3/5 2xl:w-2/4 xl:gap-x-10 grid grid-cols-1 place-items-center items-center sm:grid-cols-2">
+          <ion-col size="10" offset-xs="0" offset-sm="1" offset-md="2" offset-lg="9">
+            <canvas
+              baseChart
+              [data]="chartData"
+              [type]="chartType"
+              [options]="options"
+            >
+            </canvas>
+          </ion-col>
+          <div class="flex sm:flex-col justify-evenly flex-wrap sm:flex-nowrap order-first sm:order-last mb-5 sm:mb-0">
+            <div *ngFor="let item of chartLabelsWithBg" class="flex flex-col sm:flex-row items-center space-x-3 mt-3">
+              <div class="w-16 h-5 sm:w-8 sm:h-4 rounded-sm" [ngClass]="[item.backgroundColor]"></div>
+              <div class="font-bold flex justify-center items-center place-items-center text-white text-xs mt-1 sm:mt-0">{{item.label}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div  class="flex-col justify-center xl:mt-12 my-12 items-center">
+        <div *ngIf="!hasEpochEnded" class="text-white font-semibold text-xs opacity-50">Current epoch ends: {{epochEnd * 1000 | date:'medium'}}</div>
+        <div *ngIf="hasEpochEnded" class="text-white font-semibold text-xs opacity-50">Epoch ended: {{epochEnd * 1000 | date:'medium'}}</div>
+        <button
+            (click)="rebalance()"
+            class="h-8 w-44 sm:h-11 sm:w-60 primary-button-bg text-white mt-3 rounded-lg font-bold uppercase text-sm sm:text-lg hover:opacity-90"
+          >
+            Rebalance
+        </button>
+      </div>
+      <app-page-title
+        heading="Gauages"
+        subHeading="Use your voting power to direct token emissions."
+      ></app-page-title>
+      <div class="my-10 w-11/12 sm:w-[97%] xl:w-9/12 2xl:w-8/12 mx-auto">
+        <div class="hidden mt-16 text-sm sm:grid grid-cols-12 text-white font-semibold sm:px-5 xl:px-10">
+          <div class="col-span-4">
+            Pool
+          </div>
+          <div class="col-span-2">
+            Votes
+          </div>
+          <div class="col-span-3 flex justify-center">
+            Vote
+          </div>
+          <div class="col-span-3 flex justify-center">
+            Claim
+          </div>
+        </div>
+        <div *ngFor="let pool of lendingPools" class="hidden md:grid grid-cols-12 w-full rounded-xl mt-3 h-20 text-white grid-row-bg sm:px-5 xl:px-10 items-center">
+          <div class="col-span-4">
+            <div class="grid grid-cols-12">
+              <div class="col-span-4 mt-3 ">
+                <div class="mt-2 vote-card-collateral-img logo-cascade">
+                  <img [src]="pool.asset.logo" class="cascade-img" />
+                </div>
+                <div class="font-bold mt-2 text-sm">{{pool.asset.symbol}}</div> 
+              </div>
+              <div class="col-span-8 ">
+                <div class="flex mt-3">
+                  <div *ngFor="let collateral of pool.collateral" class="my-2 vote-card-collateral-img logo-cascade">
+                    <img [src]="collateral.logo" class="cascade-img"/>
+                  </div>
+                </div>
+                <div class="font-bold flex mt-2 items-end text-sm">
+                  <div *ngFor="let collateral of pool.collateral; index as i" class="">
+                    {{collateral.symbol}}
+                    <span *ngIf="i !== pool.collateral.length - 1">, </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-span-2">
+            {{pool.votes | formatEth | rounding:[0]}} votes
+          </div>
+          <div class="col-span-3 flex justify-center">
+            <button
+              [disabled]="!canVote" 
+              (click)="vote(pool)"
+              class="h-9 w-52 primary-button-bg text-white rounded-lg font-bold uppercase text-xs hover:opacity-90"
+            >
+              Vote
+            </button>
+          </div>
+          <div class="col-span-3 flex justify-center">
+            <button
+              [disabled]="!pool.claimAmount || pool.claimAmount.amount.isZero()"
+              (click)="claim(pool)"
+              class="h-9 w-52 secondary-button flex justify-center items-center gap-1 rounded-lg font-bold text-xs uppercase hover:opacity-90 disabled:hover:opacity-70"
+            >
+              Claim  
+            <div *ngIf="pool.claimAmount">
+              {{pool.claimAmount.amount| formatEth | number:'1.1-2' }} CHEDDA
+            </div>
+          </button>
+          </div>
+        </div>
+        <!-- Mobile Gauge-------------------- -->
+        <div *ngFor="let pool of lendingPools" class="md:hidden w-full rounded-[19px] mt-6 h-auto text-white faucets-bg ">
+          <div class="grid grid-cols-2 border-b border-gray-500">
+            <div class="flex flex-col justify-between h-32 border-r border-gray-500 px-5 py-3">
+              <div class="text-lg">Pool</div>
+              <div class="flex gap-2 space-x-2">
+                <div class="mt-3 ">
+                  <div class="mt-2 vote-card-collateral-img logo-cascade">
+                    <img [src]="pool.asset.logo" class="cascade-img" />
+                  </div>
+                  <div class="font-bold mt-2 text-sm">{{pool.asset.symbol}}</div> 
+                </div>
+                <div class="hidden">
+                  <div class="flex mt-3">
+                    <div *ngFor="let collateral of pool.collateral" class="my-2 vote-card-collateral-img logo-cascade">
+                      <img [src]="collateral.logo" class="cascade-img"/>
+                    </div>
+                  </div>
+                  <div class="font-bold flex mt-2 items-end text-sm">
+                    <div *ngFor="let collateral of pool.collateral; index as i" class="">
+                      {{collateral.symbol}}
+                      <span *ngIf="i !== pool.collateral.length - 1">, </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-col items-end justify-between h-32 px-5 py-3">
+              <div class="text-lg">Votes</div>
+              <div class="font-semibold text-lg">{{pool.votes | formatEth | rounding:[0]}} votes</div>
+            </div>
+          </div>
+          <div class="flex flex-col mt-5 items-center justify-center gap-4 pb-4" >
+            <button
+              [disabled]="!canVote" 
+              (click)="vote(pool)"
+              class="h-10 w-60 primary-button-bg text-white rounded-lg font-bold uppercase text-lg hover:opacity-90"
+            >
+              Vote
+            </button>
+            <button
+              [disabled]="!pool.claimAmount || pool.claimAmount.amount.isZero()"
+              (click)="claim(pool)"
+              class="h-10 w-60 secondary-button flex justify-center items-center gap-1 rounded-lg secondary-button font-bold text-md uppercase"
+            >
+              Claim  
+              <div *ngIf="pool.claimAmount">
+                {{pool.claimAmount.amount| formatEth | number:'1.1-2' }} CHEDDA
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </ion-grid>
   </ion-content>
+  

@@ -8,12 +8,12 @@ import { environment } from 'src/environments/environment';
 import { Profile } from '../../profile.interface';
 
 @Component({
-  selector: 'app-profile-popover',
+  selector: 'app-no-profile-popover',
   templateUrl: './profile-popover.component.html',
   styleUrls: ['./profile-popover.component.scss'],
 })
 
-export class ProfilePopoverComponent implements OnInit {
+export class NoProfilePopoverComponent implements OnInit {
 
   address: string
   profile: Profile
