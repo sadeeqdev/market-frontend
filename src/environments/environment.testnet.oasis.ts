@@ -6,6 +6,7 @@ export const environment = {
     production: false,
     environmentName: "Oasis Emerald Testnet",
     jsonRpcUrl: 'https://testnet.emerald.oasis.dev',
+    webSocketUrl: 'wss://testnet.emerald.oasis.dev/ws',
     config: {
       contracts: {
         ChainlinkPriceConsumer: '',
