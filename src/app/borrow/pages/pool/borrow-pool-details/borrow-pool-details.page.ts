@@ -14,7 +14,8 @@ import { WalletProviderService } from 'src/app/providers/wallet-provider.service
 import { LoadingModalComponent } from 'src/app/shared/components/loading-modal/loading-modal.component';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
 import { NFTMetadata } from 'src/app/shared/models/nft.model';
-import { environment } from 'src/environments/environment';
+import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';
+
 
 enum BorrowMode {
   borrow = 'borrow',
@@ -84,6 +85,8 @@ export class BorrowPoolDetailsPage implements OnInit {
     private alert: GlobalAlertService,
     private vaultStatsService: VaultStatsService,
     private router: Router,
+    private environmentService: EnvironmentProviderService
+
   ) {}
 
   async ngOnInit() {
@@ -128,7 +131,7 @@ export class BorrowPoolDetailsPage implements OnInit {
   }
 
   private findPoolWithId(id: string): LendingPool | null {
-    for (const pool of environment.config.pools) {
+    for (const pool of this.environmentService.environment.config.pools) {
       if (pool.address.toLowerCase() == id.toLocaleLowerCase()) {
         return pool;
       }

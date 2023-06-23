@@ -8,8 +8,7 @@ import { TokenService } from 'src/app/contracts/token.service';
 import { LendingPool } from 'src/app/lend/lend.models';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
-import { environment } from 'src/environments/environment';
-import { VaultStatsService } from 'src/app/providers/vault-stats.service';
+import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';import { VaultStatsService } from 'src/app/providers/vault-stats.service';
 import { ModalController } from '@ionic/angular';
 import { LoadingModalComponent } from 'src/app/shared/components/loading-modal/loading-modal.component';
 
@@ -63,6 +62,7 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
     private navController: NavController,
     private alert: GlobalAlertService,
     private modalController: ModalController, 
+    private environmentService: EnvironmentProviderService
     ) { }
 
   async ngOnInit() {
@@ -105,7 +105,7 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
   }
 
   private findPoolWithId(id: string): LendingPool | null {
-    for (const pool of environment.config.pools) {
+    for (const pool of this.environmentService.environment.config.pools) {
       if (pool.address.toLowerCase() == id.toLocaleLowerCase()) {
         return pool
       }

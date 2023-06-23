@@ -10,8 +10,7 @@ import { VeCheddaService } from 'src/app/contracts/ve-chedda.service';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { LoadingModalComponent } from 'src/app/shared/components/loading-modal/loading-modal.component';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
-import { environment } from 'src/environments/environment';
-
+import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';
 interface Token {
   name: string
   logo: string
@@ -50,39 +49,8 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
   isStakeTab: boolean = true;
   isLockCheddaTab: boolean = true
   lockRangeValue: any = 1
-  tokens: Token[] = [
-    {
-      name: 'CHEDDA',
-      logo: '/assets/logos/chedda-3d-logo.png',
-      address: environment.config.contracts.Chedda
-    },
-    {
-      name: 'USDC.c',
-      logo: '/assets/logos/usdc-logo.png',
-      address: environment.config.contracts.USDC
-    },
-    {
-      name: 'DAI.c',
-      logo: '/assets/logos/dai-logo.png',
-      address: environment.config.contracts.DAI
-    },
-    {
-      name: 'FRAX',
-      logo: '/assets/logos/frax-logo.png',
-      address: environment.config.contracts.UXD
-    },
-    {
-      name: environment.config.pools[0].collateral[0].symbol,
-      logo: environment.config.pools[0].collateral[0].logo,
-      address: environment.config.pools[0].collateral[0].address
-    },
-    {
-      name: 'WGK',
-      logo: '/assets/logos/wgk-logo.png',
-      address: environment.config.contracts.NFT,
-      isNFT: true 
-    }
-  ]
+  environment: any = []
+  tokens: Token[]; 
   constructor(
     private faucet: FaucetService,
     private wallet: WalletProviderService,
@@ -90,20 +58,57 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     private xChedda: StakedCheddaService,
     private veChedda: VeCheddaService,
     private alert: GlobalAlertService,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private environmentService: EnvironmentProviderService
+
     ) {
 
       // Checks if acount is changed or disconnected
       // Updates chedda balance according to account selected 
-      let eth:any = window.ethereum
+    this.environment = this.environmentService.environment
+    let eth:any = window.ethereum
 
-      if(eth){
-        eth.on('accountsChanged', (accounts: any) => {
-          this.loadCheddaStats()
-          this.loadVeCheddaStats()
-        });
-      }
+    if(eth){
+      eth.on('accountsChanged', (accounts: any) => {
+        this.loadCheddaStats()
+        this.loadVeCheddaStats()
+      });
     }
+
+    this.tokens = [
+      {
+        name: 'CHEDDA',
+        logo: '/assets/logos/chedda-3d-logo.png',
+        address: this.environment.config.contracts.Chedda
+      },
+      {
+        name: 'USDC.c',
+        logo: '/assets/logos/usdc-logo.png',
+        address: this.environment.config.contracts.USDC
+      },
+      {
+        name: 'DAI.c',
+        logo: '/assets/logos/dai-logo.png',
+        address: this.environment.config.contracts.DAI
+      },
+      {
+        name: 'FRAX',
+        logo: '/assets/logos/frax-logo.png',
+        address: this.environment.config.contracts.UXD
+      },
+      {
+        name: this.environment.config.pools[0].collateral[0].symbol,
+        logo: this.environment.config.pools[0].collateral[0].logo,
+        address: this.environment.config.pools[0].collateral[0].address
+      },
+      {
+        name: 'WGK',
+        logo: '/assets/logos/wgk-logo.png',
+        address: this.environment.config.contracts.NFT,
+        isNFT: true 
+      }
+    ]
+  }
 
 
   async ngOnInit() {
@@ -111,6 +116,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     await this.loadVeCheddaStats()
     await this.checkAllowance()
     await this.listenForEvents()
+    this.environment = this.environmentService.environment
   }
 
   ngOnDestroy(): void {

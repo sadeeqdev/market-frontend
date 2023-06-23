@@ -4,8 +4,7 @@ import { PopoverController } from '@ionic/angular';
 import { ethers } from 'ethers';
 import { TokenService } from 'src/app/contracts/token.service';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
-import { environment } from 'src/environments/environment';
-import { Profile } from '../../profile.interface';
+import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';import { Profile } from '../../profile.interface';
 
 @Component({
   selector: 'app-no-profile-popover',

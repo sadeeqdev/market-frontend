@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ethers, providers } from 'ethers';
-import { environment } from 'src/environments/environment';
-
+import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -10,8 +9,10 @@ export class DefaultProviderService {
 
   provider: ethers.providers.StaticJsonRpcProvider
 
-  constructor() {
-    this.provider = new ethers.providers.StaticJsonRpcProvider(environment.jsonRpcUrl);
+  constructor(
+    private environmentService: EnvironmentProviderService
+  ) {
+    this.provider = new ethers.providers.StaticJsonRpcProvider(this.environmentService.environment.jsonRpcUrl);
     this.provider.pollingInterval = 20000;
   }
 

@@ -5,8 +5,7 @@ import { Subscription } from 'rxjs';
 import { Profile } from 'src/app/profile/profile.interface';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
-import { environment } from 'src/environments/environment';
-import { CheddaService } from 'src/app/contracts/chedda.service';
+import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';import { CheddaService } from 'src/app/contracts/chedda.service';
 import { ethers } from 'ethers';
 import { StakedCheddaService } from 'src/app/contracts/staked-chedda.service';
 
@@ -28,7 +27,8 @@ export class TopNavComponent implements OnInit, OnDestroy {
   xCheddaBalance
   isCorrectNetwork = true
   isConnected = false
-  env = environment
+  environment = {}
+  env = this.environment
   popover: any
   profile: Profile
   title = 'Dapps'
@@ -74,8 +74,9 @@ export class TopNavComponent implements OnInit, OnDestroy {
     private wallet: WalletProviderService,
     private alertService: GlobalAlertService,
     private popoverController: PopoverController,
+    private environmentService: EnvironmentProviderService
     ) {
-
+      this.environment = this.environmentService.environment
       // Initialize Metamask provider
       let eth:any = window.ethereum;
   

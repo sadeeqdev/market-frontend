@@ -21,6 +21,6 @@ export class PriceOracleService {
   }
 
   async getAssetPrice(address: string): Promise<BigNumber> {
-    return this.oracleContract.readPrice(address, 1)
+    return await this.oracleContract.readPrice(address, 1)
   }
 }

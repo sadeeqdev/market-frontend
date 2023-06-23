@@ -3,8 +3,7 @@ import { IonSegment } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { CheddaBaseTokenVaultService } from 'src/app/contracts/chedda-base-token-vault.service';
 import { VaultStatsService } from 'src/app/providers/vault-stats.service';
-import { environment } from 'src/environments/environment';
-import { LendingPool } from '../../lend.models';
+import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';import { LendingPool } from '../../lend.models';
 
 @Component({
   selector: 'app-lend-landing',
@@ -21,19 +20,20 @@ export class LendLandingPage implements OnInit, OnDestroy {
   openLoanRequestsSubscription?: Subscription;
   lendingPools: LendingPool[] = [];
   vaultContract;
-  lendingPoolsSubscription: Subscription
+  lendingPoolsSubscription: Subscription;
   
   constructor(
     private vaultService: CheddaBaseTokenVaultService,
-    private vaultStatsService: VaultStatsService
-  ) {
+    private vaultStatsService: VaultStatsService,
+    private environmentService: EnvironmentProviderService,
+    ) {
   }
 
   async ngOnInit() {
-    this.currency = environment.config.networkParams.nativeCurrency.symbol;
+    this.currency = this.environmentService.environment.config.networkParams.nativeCurrency.symbol;
 
     this.vaultContract = this.vaultService.contractAt(
-      environment.config.contracts.CheddaBaseTokenVault
+      this.environmentService.environment.config.contracts.CheddaBaseTokenVault
     );
     await this.vaultStatsService.loadVaultStats()
     this.registerEventListener()

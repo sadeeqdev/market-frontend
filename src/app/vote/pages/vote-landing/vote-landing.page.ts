@@ -14,8 +14,7 @@ import { LendingPool } from 'src/app/lend/lend.models';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { LoadingModalComponent } from 'src/app/shared/components/loading-modal/loading-modal.component';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
-import { environment } from 'src/environments/environment';
-
+import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';
 @Component({
   selector: 'app-vote-landing',
   templateUrl: './vote-landing.page.html',
@@ -81,14 +80,15 @@ export class VoteLandingPage implements OnInit, OnDestroy {
     private alert: GlobalAlertService,
     private chedda: CheddaService,
     private veChedda: VeCheddaService,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private environmentService: EnvironmentProviderService
     ) { }
 
   async ngOnInit() {
-    this.currency = environment.config.networkParams.nativeCurrency.symbol
+    this.currency = this.environmentService.environment.config.networkParams.nativeCurrency.symbol
 
-    this.vaultContract = this.vaultService.contractAt(environment.config.contracts.CheddaBaseTokenVault)
-    this.lendingPools = environment.config.pools
+    this.vaultContract = this.vaultService.contractAt(this.environmentService.environment.config.contracts.CheddaBaseTokenVault)
+    this.lendingPools = this.environmentService.environment.config.pools
     await this.loadVeChedda()
     this.loadGaugeData()
     this.registerForEvents()

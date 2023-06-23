@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { BigNumber, ethers, providers, Signer,  } from 'ethers'
 import detectEthereumProvider from '@metamask/detect-provider';
 import { BehaviorSubject } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { NetworkParams } from './network-params.interface';
+import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';import { NetworkParams } from './network-params.interface';
 import { CheddaConfig } from './chedda-config.interface';
 
 @Injectable({
@@ -23,7 +22,10 @@ export class WalletProviderService {
   accountSubject: BehaviorSubject<any> = new BehaviorSubject(null)
   networkSubject: BehaviorSubject<any> = new BehaviorSubject(null)
 
-  constructor() {
+  constructor(
+    private environmentService: EnvironmentProviderService
+
+  ) {
     this.initializeNetworkConnection()
 
     // Checks if acount is changed or disconnected
@@ -205,11 +207,11 @@ export class WalletProviderService {
     } else {
       console.log('no ethereum')
     }
-    let currentNetwork: NetworkParams = environment.config.networkParams
+    let currentNetwork: NetworkParams = this.environmentService.environment.config.networkParams
     if (currentNetwork && currentNetwork.chainId) {
     }
     this.currentNetwork = currentNetwork
-    this.currentConfig = environment.config
+    this.currentConfig = this.environmentService.environment.config
   }
 
   private getHexString(networkCode) {
@@ -217,7 +219,7 @@ export class WalletProviderService {
   }
 
   currencyName(): string {
-    return environment.config.networkParams.nativeCurrency.symbol
+    return this.environmentService.environment.config.networkParams.nativeCurrency.symbol
   }
 
   onboard() {}

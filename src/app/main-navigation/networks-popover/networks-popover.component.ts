@@ -1,14 +1,13 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { PopoverController } from '@ionic/angular';
-import { environment } from 'src/environments/environment';
-
+import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';
+import { VaultStatsService } from 'src/app/providers/vault-stats.service';
 @Component({
   selector: 'app-networks-popover',
   templateUrl: './networks-popover.component.html',
   styleUrls: ['./networks-popover.component.scss'],
 })
 export class NetworksPopoverComponent implements OnInit {
-  env = environment
+  env 
 
   networkList = [
     // {
@@ -38,12 +37,28 @@ export class NetworksPopoverComponent implements OnInit {
     // },
   ]
   isOpenNetworkMenu: boolean;
-  constructor(private popoverController: PopoverController) { }
+  constructor(
+    private environmentService: EnvironmentProviderService,
+    private vaultStatsService: VaultStatsService,
+    
+  ) { 
+    this.env = this.environmentService.environment;
+  }
 
   ngOnInit() {}
 
   openNetworkMenu(){
     this.isOpenNetworkMenu = !this.isOpenNetworkMenu
+  }
+
+  async onNetworkSelected(network){
+    if(network.name == 'Oasis'){
+      this.environmentService.changeEnvironment1();
+      await this.vaultStatsService.loadVaultStats();
+    }else{
+      this.environmentService.changeEnvironment2();
+      await this.vaultStatsService.loadVaultStats();
+    }
   }
 
   @HostListener('document:click', ['$event'])

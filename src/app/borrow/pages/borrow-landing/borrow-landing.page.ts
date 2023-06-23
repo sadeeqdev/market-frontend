@@ -4,10 +4,9 @@ import { Subscription } from 'rxjs';
 import { CheddaBaseTokenVaultService } from 'src/app/contracts/chedda-base-token-vault.service';
 import { PriceOracleService } from 'src/app/contracts/price-oracle.service';
 import { LendingPool, Loan } from 'src/app/lend/lend.models';
+import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';
 import { VaultStatsService } from 'src/app/providers/vault-stats.service';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
-import { environment } from 'src/environments/environment';
-
 @Component({
   selector: 'app-borrow-landing',
   templateUrl: './borrow-landing.page.html',
@@ -28,13 +27,14 @@ export class BorrowLandingPage implements OnInit {
     private wallet: WalletProviderService,
     private priceFeed: PriceOracleService,
     private vaultService: CheddaBaseTokenVaultService,
-    private vaultStatsService: VaultStatsService
+    private vaultStatsService: VaultStatsService,
+    private environmentService: EnvironmentProviderService
     
     ) { }
   
   async ngOnInit() {
-    this.currency = environment.config.networkParams.nativeCurrency.name
-    this.vaultContract = this.vaultService.contractAt(environment.config.contracts.CheddaBaseTokenVault)
+    this.currency = this.environmentService.environment.config.networkParams.nativeCurrency.name
+    this.vaultContract = this.vaultService.contractAt(this.environmentService.environment.config.contracts.CheddaBaseTokenVault)
     await this.vaultStatsService.loadVaultStats()
     this.registerEventListener()
   }

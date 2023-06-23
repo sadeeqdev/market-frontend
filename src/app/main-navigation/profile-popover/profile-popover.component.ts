@@ -1,8 +1,7 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ethers } from 'ethers';
-import { environment } from 'src/environments/environment';
-import { TokenService } from 'src/app/contracts/token.service';
+import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';import { TokenService } from 'src/app/contracts/token.service';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 @Component({
   selector: 'app-profile-popover',
@@ -22,11 +21,12 @@ export class ProfilePopoverComponent implements OnInit {
     private router: Router,
     private wallet: WalletProviderService,
     private tokenService: TokenService,
+    private environmentService: EnvironmentProviderService
     ) { }
 
   async ngOnInit() {
-    this.cheddaContract = this.tokenService.contractAt(environment.config.contracts.Chedda)
-    this.stakedCheddaContract = this.tokenService.contractAt(environment.config.contracts.xChedda)
+    this.cheddaContract = this.tokenService.contractAt(this.environmentService.environment.config.contracts.Chedda)
+    this.stakedCheddaContract = this.tokenService.contractAt(this.environmentService.environment.config.contracts.xChedda)
     this.listenForTransfers()
     this.checkBalance()
   }
