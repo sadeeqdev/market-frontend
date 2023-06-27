@@ -42,6 +42,7 @@ export class LendLandingPage implements OnInit, OnDestroy {
   async ngOnDestroy() {
     this.openLoansSubscription?.unsubscribe();
     this.openLoanRequestsSubscription?.unsubscribe();
+    this.lendingPoolsSubscription?.unsubscribe();
   }
 
   onSegmentChanged(event) {

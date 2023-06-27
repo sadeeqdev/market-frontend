@@ -12,6 +12,12 @@ export class DefaultProviderService {
   constructor(
     private environmentService: EnvironmentProviderService
   ) {
+    this.environmentService.getEvent().subscribe((network) => {
+      if(network){
+        this.provider = new ethers.providers.StaticJsonRpcProvider(network.jsonRpcUrl);
+        return
+      }
+    });
     this.provider = new ethers.providers.StaticJsonRpcProvider(this.environmentService.environment.jsonRpcUrl);
     this.provider.pollingInterval = 20000;
   }

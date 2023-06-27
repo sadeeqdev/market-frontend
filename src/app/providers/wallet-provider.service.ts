@@ -13,11 +13,10 @@ export class WalletProviderService {
   provider: any
   ethereum
   signer: Signer
-
+  environment
   currentAccount
   currentNetwork: NetworkParams
   currentConfig: CheddaConfig
-
   connectedSubject: BehaviorSubject<boolean> = new BehaviorSubject(false)
   accountSubject: BehaviorSubject<any> = new BehaviorSubject(null)
   networkSubject: BehaviorSubject<any> = new BehaviorSubject(null)
@@ -26,6 +25,14 @@ export class WalletProviderService {
     private environmentService: EnvironmentProviderService
 
   ) {
+    this.environmentService.getEvent().subscribe((network) => {
+      if(network){
+        this.currentConfig = network.config
+        this.environment = network
+      }
+    });
+
+    this.environment = environmentService.environment
     this.initializeNetworkConnection()
 
     // Checks if acount is changed or disconnected
@@ -78,6 +85,21 @@ export class WalletProviderService {
     if (!this.provider || !this.currentNetwork) {
       return
     }
+
+    if(this.currentNetwork != this.environment.config.networkParams){
+      console.log('about to add: ', this.currentNetwork)
+      this.provider
+      .send(
+        'wallet_addEthereumChain',
+        [this.environment.config.networkParams]
+      )
+      .catch((error: any) => {
+        console.log(error)
+      })
+      this.currentNetwork = this.environment.config.networkParams;
+      return
+    }
+
     console.log('about to add: ', this.currentNetwork)
     this.provider
     .send(
@@ -207,11 +229,11 @@ export class WalletProviderService {
     } else {
       console.log('no ethereum')
     }
-    let currentNetwork: NetworkParams = this.environmentService.environment.config.networkParams
+    let currentNetwork: NetworkParams = this.environment.config.networkParams
     if (currentNetwork && currentNetwork.chainId) {
     }
     this.currentNetwork = currentNetwork
-    this.currentConfig = this.environmentService.environment.config
+    this.currentConfig = this.environment.config
   }
 
   private getHexString(networkCode) {
@@ -219,7 +241,7 @@ export class WalletProviderService {
   }
 
   currencyName(): string {
-    return this.environmentService.environment.config.networkParams.nativeCurrency.symbol
+    return this.environment.config.networkParams.nativeCurrency.symbol
   }
 
   onboard() {}

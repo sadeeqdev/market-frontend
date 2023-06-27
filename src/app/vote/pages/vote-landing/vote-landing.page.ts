@@ -72,6 +72,7 @@ export class VoteLandingPage implements OnInit, OnDestroy {
   ]
   
   public chartType: ChartType = 'doughnut';
+  netWorkChangeSubscription: Subscription;
   constructor(
     private wallet: WalletProviderService,
     private gaugeController: GaugeControllerService,
@@ -98,6 +99,7 @@ export class VoteLandingPage implements OnInit, OnDestroy {
     this.voteEventSubscription?.unsubscribe()
     this.rebalanceEventSubscription?.unsubscribe()
     this.cheddaTransferSubscription?.unsubscribe()
+    this.netWorkChangeSubscription?.unsubscribe()
   }
 
   async loadVeChedda() {
@@ -226,6 +228,15 @@ export class VoteLandingPage implements OnInit, OnDestroy {
       if (res && res.to.toLowerCase() === this.wallet.currentAccount.toLowerCase()) {
         await this.hideLoading()
         await this.alert.showToast('CHEDDA transfer received')
+        await this.loadGaugeData()
+      }
+    })
+    this.netWorkChangeSubscription = this.environmentService.environmentSubject.subscribe(async network => {
+      if(network){
+        this.currency = this.environmentService.environment.config.networkParams.nativeCurrency.symbol
+        this.vaultContract = this.vaultService.contractAt(this.environmentService.environment.config.contracts.CheddaBaseTokenVault)
+        this.lendingPools = this.environmentService.environment.config.pools
+        await this.loadVeChedda()
         await this.loadGaugeData()
       }
     })

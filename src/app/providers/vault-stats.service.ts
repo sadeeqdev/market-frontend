@@ -12,19 +12,28 @@ export class VaultStatsService {
   items = []
   pools: LendingPool[] = []
   lendingPoolsSubject : BehaviorSubject<any> = new BehaviorSubject(null)
+  environment;
+
 
   constructor(
     private priceFeed: PriceOracleService,
     private vaultService: CheddaBaseTokenVaultService,
     private environmentService: EnvironmentProviderService
-  ) { }
+  ) {
+    this.environmentService.getEvent().subscribe((network) => {
+      if(network){
+        this.environment = network
+      }
+    });
+    this.environment = environmentService.environment
+  }
 
   async loadVaultStats() {
-    this.pools = this.environmentService.environment.config.pools
+    this.pools = this.environment.config.pools
     this.lendingPoolsSubject.next(this.pools)
     try {
       this.pools.forEach(async pool => {
-        await this.loadStats(pool)
+        await this.loadStats(pool);
       }); 
     } catch (error) {
       console.error('caught error: ', error)
@@ -34,7 +43,6 @@ export class VaultStatsService {
   async loadStats(pool: LendingPool) {
     const contract = this.vaultService.contractAt(pool.address) 
     const price = await this.priceFeed.getAssetPrice(pool.asset.address)
-    console.log(price)
     const stats = await this.vaultService.getVaultStats(contract)
     pool.stats = {
       supplied: BigNumber.from(1010101),

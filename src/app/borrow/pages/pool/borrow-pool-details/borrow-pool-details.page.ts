@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController, NavController } from '@ionic/angular';
 import { ethers } from 'ethers';
@@ -32,7 +32,7 @@ enum RepayMode {
   templateUrl: './borrow-pool-details.page.html',
   styleUrls: ['./borrow-pool-details.page.scss'],
 })
-export class BorrowPoolDetailsPage implements OnInit {
+export class BorrowPoolDetailsPage implements OnInit, OnDestroy {
   @ViewChild('addCollateralInput') addCollateralInput: ElementRef;
   @ViewChild('borrowInput') borrowInput: ElementRef;
   @ViewChild('withdrawCollateralInput') withdrawCollateralInput: ElementRef;
@@ -71,6 +71,7 @@ export class BorrowPoolDetailsPage implements OnInit {
   routeSubscription: Subscription;
   pool: LendingPool;
   isBorrowCheddaTab: boolean = true;
+  netWorkChangeSubscription: Subscription;
 
   constructor(
     private tokenService: TokenService,
@@ -91,6 +92,9 @@ export class BorrowPoolDetailsPage implements OnInit {
 
   async ngOnInit() {
     await this.setup();
+  }
+  ngOnDestroy(): void {
+    this.netWorkChangeSubscription?.unsubscribe();
   }
 
   private async setup() {
@@ -128,6 +132,13 @@ export class BorrowPoolDetailsPage implements OnInit {
       await this.checkAllowance();
       this.registerForEvents();
     });
+
+    this.netWorkChangeSubscription = this.environmentService.environmentSubject.subscribe(async network => {
+      if(network && (network !== this.environmentService.environment)){
+        this.navigateBack();
+        return
+      }
+    })
   }
 
   private findPoolWithId(id: string): LendingPool | null {

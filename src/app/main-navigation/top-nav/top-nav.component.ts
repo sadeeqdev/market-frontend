@@ -37,6 +37,7 @@ export class TopNavComponent implements OnInit, OnDestroy {
   private accountSubscription?: Subscription
   private networkSubscription?: Subscription
   private balanceSubscription?: Subscription
+  private changeNetworkSubscription?: Subscription
 
   menuItems = [
     // {
@@ -136,6 +137,12 @@ export class TopNavComponent implements OnInit, OnDestroy {
       if (chainId) {
           this.isCorrectNetwork = chainId.toString(16).toLowerCase() == this.provider.currentNetwork.chainId.toLocaleLowerCase()
           console.log(`Networks: ${chainId} <=> ${this.provider.currentNetwork.chainId}`)
+      }
+    })
+
+    this.changeNetworkSubscription = this.environmentService.environmentSubject.subscribe(async network => {
+      if(network){
+        this.isCorrectNetwork = network.config.networkParams.chainId.toLocaleLowerCase() == this.provider.currentNetwork.chainId.toLocaleLowerCase()
       }
     })
   }

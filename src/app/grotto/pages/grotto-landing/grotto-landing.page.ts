@@ -51,6 +51,8 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
   lockRangeValue: any = 1
   environment: any = []
   tokens: Token[]; 
+  netWorkChangeSubscription: Subscription;
+
   constructor(
     private faucet: FaucetService,
     private wallet: WalletProviderService,
@@ -125,6 +127,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     this.cheddaTransferSubscription?.unsubscribe()
     this.xCheddaDepositSubscription?.unsubscribe()
     this.withdrawSubscription?.unsubscribe()
+    this.netWorkChangeSubscription?.unsubscribe()
   }
 
   async loadCheddaStats() {
@@ -396,6 +399,15 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
         await this.hideLoading()
         await this.alert.showToast('Withdrawal confirmed')
         await this.loadCheddaStats()
+      }
+    })
+
+    this.netWorkChangeSubscription = this.environmentService.environmentSubject.subscribe(async network => {
+      if(network){
+        await this.loadCheddaStats()
+        await this.loadVeCheddaStats()
+        await this.checkAllowance()
+        return
       }
     })
   }

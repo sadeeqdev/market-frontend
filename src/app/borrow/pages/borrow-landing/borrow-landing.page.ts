@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { IonSegment, IonSelect } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { CheddaBaseTokenVaultService } from 'src/app/contracts/chedda-base-token-vault.service';
@@ -12,7 +12,7 @@ import { WalletProviderService } from 'src/app/providers/wallet-provider.service
   templateUrl: './borrow-landing.page.html',
   styleUrls: ['./borrow-landing.page.scss'],
 })
-export class BorrowLandingPage implements OnInit {
+export class BorrowLandingPage implements OnInit, OnDestroy {
   @ViewChild('segmentControl') segmentControl: IonSegment
   @ViewChild('filterSelect') filterSelect: IonSelect
   currentSegment = 'items'
@@ -37,6 +37,11 @@ export class BorrowLandingPage implements OnInit {
     this.vaultContract = this.vaultService.contractAt(this.environmentService.environment.config.contracts.CheddaBaseTokenVault)
     await this.vaultStatsService.loadVaultStats()
     this.registerEventListener()
+  }
+
+  async ngOnDestroy() {
+    this.accountSubscription?.unsubscribe();
+    this.lendingPoolsSubscription?.unsubscribe();
   }
 
   onSegmentChanged(event) {

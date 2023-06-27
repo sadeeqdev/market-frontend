@@ -51,6 +51,7 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
   routeSubscription: Subscription
   pool: LendingPool
   isDepositCheddaTab: boolean = true;
+  netWorkChangeSubscription: Subscription;
 
   constructor(
     private tokenService: TokenService, 
@@ -70,7 +71,8 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.walletSubscription?.unsubscribe()
+    this.walletSubscription?.unsubscribe();
+    this.netWorkChangeSubscription?.unsubscribe();
   }
 
   private async setup() {
@@ -101,6 +103,12 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
       await this.loadVaultStats()
       await this.checkAllowance()
       this.registerEventListeners()
+    })
+
+    this.netWorkChangeSubscription = this.environmentService.environmentSubject.subscribe(async network => {
+      if(network){
+        this.navigateBack();
+      }
     })
   }
 

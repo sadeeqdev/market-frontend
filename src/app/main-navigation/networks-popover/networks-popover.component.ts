@@ -1,14 +1,17 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';
 import { VaultStatsService } from 'src/app/providers/vault-stats.service';
+
 @Component({
   selector: 'app-networks-popover',
   templateUrl: './networks-popover.component.html',
   styleUrls: ['./networks-popover.component.scss'],
 })
-export class NetworksPopoverComponent implements OnInit {
-  env 
 
+export class NetworksPopoverComponent implements OnInit {
+
+  env 
   networkList = [
     // {
     //   name: 'Avalanche Testnet',
@@ -37,15 +40,30 @@ export class NetworksPopoverComponent implements OnInit {
     // },
   ]
   isOpenNetworkMenu: boolean;
+  netWorkChangeSubscription: Subscription;
+  selectedNetwork: string;
+
   constructor(
     private environmentService: EnvironmentProviderService,
     private vaultStatsService: VaultStatsService,
     
   ) { 
     this.env = this.environmentService.environment;
+    this.selectedNetwork = this.env.config.ui.chainName
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.netWorkChangeSubscription = this.environmentService.environmentSubject.subscribe(async network => {
+      if(network){
+        this.env = network
+        return
+      }
+    })
+  }
+
+  ngOnDestroy(){
+    this.netWorkChangeSubscription?.unsubscribe;
+  }
 
   openNetworkMenu(){
     this.isOpenNetworkMenu = !this.isOpenNetworkMenu
@@ -54,11 +72,11 @@ export class NetworksPopoverComponent implements OnInit {
   async onNetworkSelected(network){
     if(network.name == 'Oasis'){
       this.environmentService.changeEnvironment1();
-      await this.vaultStatsService.loadVaultStats();
     }else{
       this.environmentService.changeEnvironment2();
-      await this.vaultStatsService.loadVaultStats();
     }
+    this.isOpenNetworkMenu = false;
+    await this.vaultStatsService.loadVaultStats();
   }
 
   @HostListener('document:click', ['$event'])

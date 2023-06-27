@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -363,15 +364,38 @@ export class EnvironmentProviderService {
       },
     }
   ]
-  environment = this.environments[0]
+  environment: any
+  environmentSubject  : BehaviorSubject<any> = new BehaviorSubject(null)
 
-  constructor() {}
-
-  changeEnvironment1(){
-    this.environment = this.environments[0]
+    constructor() {
+    const savedEnvironment = localStorage.getItem('environment')
+    if(savedEnvironment){
+      this.environment = JSON.parse(savedEnvironment);
+    }else{
+      this.environment = this.environments[0]
+    }
   }
 
-  changeEnvironment2(){
+  emitEvent(event: any) {
+    this.environmentSubject.next(event);
+  }
+
+  getEvent() {
+    return this.environmentSubject.asObservable();
+  }
+
+
+  async changeEnvironment1(){
+    this.environmentSubject.next(this.environments[0])
+    this.environment = this.environments[0]
+    this.emitEvent(this.environments[0]);
+    localStorage.setItem('environment', JSON.stringify(this.environments[0]))
+  }
+
+  async changeEnvironment2(){
+    this.environmentSubject.next(this.environments[1])
     this.environment = this.environments[1]
+    this.emitEvent(this.environments[1]);
+    localStorage.setItem('environment', JSON.stringify(this.environments[1]))
   }
 }
