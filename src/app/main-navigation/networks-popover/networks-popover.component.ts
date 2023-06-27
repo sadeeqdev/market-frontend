@@ -70,11 +70,7 @@ export class NetworksPopoverComponent implements OnInit {
   }
 
   async onNetworkSelected(network){
-    if(network.name == 'Oasis'){
-      this.environmentService.changeEnvironment1();
-    }else{
-      this.environmentService.changeEnvironment2();
-    }
+    this.environmentService.changeEnvironment(network);
     this.isOpenNetworkMenu = false;
     await this.vaultStatsService.loadVaultStats();
   }

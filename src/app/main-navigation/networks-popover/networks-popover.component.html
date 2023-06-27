@@ -15,7 +15,7 @@
     <ul class="list-reset">
       <li 
         *ngFor="let network of networkList; index as i" 
-        (click)="onNetworkSelected(network)" 
+        (click)="onNetworkSelected(network.name)" 
         class="py-2 px-2 border-b border-gray-700 hover:bg-gray-700 hover:rounded-t-md cursor-pointer flex items-center text-sm sm:text-[16px] font-semibold gap-2 last:border-none hover:last:rounded-t-none last:rounded-b-md"
       >
         <img [src]="network.icon" class="w-6 h-6 lg:h-7 lg:w-7"/>
