@@ -26,12 +26,13 @@ export class NoProfilePopoverComponent implements OnInit {
     private router: Router,
     private wallet: WalletProviderService,
     private tokenService: TokenService,
-    private popoverController: PopoverController
+    private popoverController: PopoverController,
+    private environmentService: EnvironmentProviderService
   ) { }
 
   ngOnInit() {
-    this.cheddaContract = this.tokenService.contractAt(environment.config.contracts.Chedda)
-    this.stakedCheddaContract = this.tokenService.contractAt(environment.config.contracts.xChedda)
+    this.cheddaContract = this.tokenService.contractAt(this.environmentService.environment.config.contracts.Chedda)
+    this.stakedCheddaContract = this.tokenService.contractAt(this.environmentService.environment.config.contracts.xChedda)
     this.listenForTransfers()
     this.checkBalance()
   }

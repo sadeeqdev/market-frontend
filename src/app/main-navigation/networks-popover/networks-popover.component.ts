@@ -53,12 +53,7 @@ export class NetworksPopoverComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.netWorkChangeSubscription = this.environmentService.environmentSubject.subscribe(async network => {
-      if(network){
-        this.env = network
-        return
-      }
-    })
+    this.listenToEvents();
   }
 
   ngOnDestroy(){
@@ -73,6 +68,15 @@ export class NetworksPopoverComponent implements OnInit {
     this.environmentService.changeEnvironment(network);
     this.isOpenNetworkMenu = false;
     await this.vaultStatsService.loadVaultStats();
+  }
+
+  private async listenToEvents(){
+    this.netWorkChangeSubscription = this.environmentService.environmentSubject.subscribe(async network => {
+      if(network){
+        this.env = network
+        return
+      }
+    })
   }
 
   @HostListener('document:click', ['$event'])

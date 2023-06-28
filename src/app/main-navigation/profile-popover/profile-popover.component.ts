@@ -33,13 +33,13 @@ export class ProfilePopoverComponent implements OnInit, OnDestroy {
     this.cheddaContract = this.tokenService.contractAt(this.environment.config.contracts.Chedda)
     this.stakedCheddaContract = this.tokenService.contractAt(this.environment.config.contracts.xChedda)
     this.listenForTransfers();
+    this.listenForEvents();
     this.checkBalance();
   }
 
   async ngOnDestroy() {
     this.netWorkChangeSubscription?.unsubscribe;
   }
-
 
   copyAddress() {
     navigator.clipboard.writeText(this.address).then(() => {
@@ -79,6 +79,17 @@ export class ProfilePopoverComponent implements OnInit, OnDestroy {
     this.xCheddaBalance = ethers.utils.formatEther(sChedaBalance)
   }
 
+  private async listenForEvents() {
+    this.netWorkChangeSubscription = this.environmentService.environmentSubject.subscribe(async network => {
+      if(network){
+        this.environment = network;
+        this.cheddaContract = this.tokenService.contractAt(network.config.contracts.Chedda)
+        this.stakedCheddaContract = this.tokenService.contractAt(network.config.contracts.xChedda)
+        this.checkBalance();
+      }
+    })
+  }
+
   private async listenForTransfers() {
     this.cheddaContract.on('Transfer', (from, to, value) => {
       if (from.toLowerCase() == this.address.toLocaleLowerCase() || to.toLowerCase() == this.address.toLocaleLowerCase()) {
@@ -89,15 +100,6 @@ export class ProfilePopoverComponent implements OnInit, OnDestroy {
     this.stakedCheddaContract.on('Transfer', (from, to, value) => {
       if (from.toLowerCase() == this.address.toLocaleLowerCase() || to.toLowerCase() == this.address.toLocaleLowerCase()) {
         this.checkStakedCheddaBalance()
-      }
-    })
-
-    this.netWorkChangeSubscription = this.environmentService.environmentSubject.subscribe(async network => {
-      if(network){
-        this.environment = network;
-        this.cheddaContract = this.tokenService.contractAt(network.config.contracts.Chedda)
-        this.stakedCheddaContract = this.tokenService.contractAt(network.config.contracts.xChedda)
-        this.checkBalance();
       }
     })
   }

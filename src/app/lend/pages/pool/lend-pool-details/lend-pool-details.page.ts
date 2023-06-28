@@ -104,12 +104,6 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
       await this.checkAllowance()
       this.registerEventListeners()
     })
-
-    this.netWorkChangeSubscription = this.environmentService.environmentSubject.subscribe(async network => {
-      if(network){
-        this.navigateBack();
-      }
-    })
   }
 
   private findPoolWithId(id: string): LendingPool | null {
@@ -226,6 +220,12 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
 
     this.wallet.accountSubject.subscribe(wallet => {
       this.loadVaultStats()
+    })
+
+    this.netWorkChangeSubscription = this.environmentService.environmentSubject.subscribe(async network => {
+      if(network && (network !== this.environmentService.environment)){
+        this.navigateBack();
+      }
     })
   }
 

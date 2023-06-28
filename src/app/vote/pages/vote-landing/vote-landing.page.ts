@@ -87,7 +87,6 @@ export class VoteLandingPage implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.currency = this.environmentService.environment.config.networkParams.nativeCurrency.symbol
-
     this.vaultContract = this.vaultService.contractAt(this.environmentService.environment.config.contracts.CheddaBaseTokenVault)
     this.lendingPools = this.environmentService.environment.config.pools
     await this.loadVeChedda()
@@ -195,6 +194,7 @@ export class VoteLandingPage implements OnInit, OnDestroy {
       this.alert.showErrorAlert(error)
     }
   }
+
   async claim(pool) {
     if (!this.wallet.currentAccount) {
       this.alert.showConnectAlert()

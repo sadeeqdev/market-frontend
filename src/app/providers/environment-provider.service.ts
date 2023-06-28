@@ -10,7 +10,7 @@ export class EnvironmentProviderService {
   environment: any
   environmentSubject  : BehaviorSubject<any> = new BehaviorSubject(null)
 
-    constructor() {
+  constructor() {
     const savedEnvironment = localStorage.getItem('environment')
     if(savedEnvironment){
       this.environment = JSON.parse(savedEnvironment);

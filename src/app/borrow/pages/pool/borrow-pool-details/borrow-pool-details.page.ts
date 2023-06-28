@@ -133,12 +133,6 @@ export class BorrowPoolDetailsPage implements OnInit, OnDestroy {
       this.registerForEvents();
     });
 
-    this.netWorkChangeSubscription = this.environmentService.environmentSubject.subscribe(async network => {
-      if(network && (network !== this.environmentService.environment)){
-        this.navigateBack();
-        return
-      }
-    })
   }
 
   private findPoolWithId(id: string): LendingPool | null {
@@ -564,6 +558,13 @@ export class BorrowPoolDetailsPage implements OnInit, OnDestroy {
     this.wallet.accountSubject.subscribe(() => {
       this.loadVaultStats();
     });
+
+    this.netWorkChangeSubscription = this.environmentService.environmentSubject.subscribe(async network => {
+      if(network && (network !== this.environmentService.environment)){
+        this.navigateBack();
+        return
+      }
+    })
   }
 
   selectNFT(nft: NFTMetadata) {
