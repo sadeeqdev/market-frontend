@@ -9,9 +9,9 @@ import { EnvironmentProviderService } from 'src/app/providers/environment-provid
   providedIn: 'root'
 })
 export class VaultStatsService {
-  items = []
-  pools: LendingPool[] = []
-  lendingPoolsSubject : BehaviorSubject<any> = new BehaviorSubject(null)
+  items = [];
+  pools: LendingPool[] = [];
+  lendingPoolsSubject : BehaviorSubject<any> = new BehaviorSubject(null);
   environment;
 
 

@@ -14,9 +14,9 @@ export class EnvironmentProviderService {
     const savedEnvironment = localStorage.getItem('environment')
     if(savedEnvironment){
       this.environment = JSON.parse(savedEnvironment);
-    }else{
-      this.environment = environments[0]
+      return;
     }
+    this.environment = environments[0]
   }
 
   emitEvent(event: any) {
@@ -33,6 +33,6 @@ export class EnvironmentProviderService {
     this.environmentSubject.next(selectedNetwork);
     this.environment = selectedNetwork;
     this.emitEvent(selectedNetwork);
-    localStorage.setItem('environment', JSON.stringify(environments[0]))
+    localStorage.setItem('environment', JSON.stringify(selectedNetwork))
   }
 }

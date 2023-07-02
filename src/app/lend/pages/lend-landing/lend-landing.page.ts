@@ -21,6 +21,7 @@ export class LendLandingPage implements OnInit, OnDestroy {
   lendingPools: LendingPool[] = [];
   vaultContract;
   lendingPoolsSubscription: Subscription;
+  netWorkChangeSubscription: Subscription;
   
   constructor(
     private vaultService: CheddaBaseTokenVaultService,
@@ -52,6 +53,13 @@ export class LendLandingPage implements OnInit, OnDestroy {
   async registerEventListener(){
     this.lendingPoolsSubscription = this.vaultStatsService.lendingPoolsSubject.subscribe(lendingPools => {
       this.lendingPools = lendingPools
+    })
+
+
+    this.netWorkChangeSubscription = this.environmentService.environmentSubject.subscribe(async network => {
+      if(network){
+        await this.vaultStatsService.loadVaultStats();
+      }
     })
   }
 }

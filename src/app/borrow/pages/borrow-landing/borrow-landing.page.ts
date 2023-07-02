@@ -22,6 +22,7 @@ export class BorrowLandingPage implements OnInit, OnDestroy {
   lendingPools: LendingPool[] = []
   currency
   vaultContract
+  netWorkChangeSubscription: Subscription;
 
   constructor(
     private wallet: WalletProviderService,
@@ -55,6 +56,12 @@ export class BorrowLandingPage implements OnInit, OnDestroy {
 
     this.lendingPoolsSubscription = this.vaultStatsService.lendingPoolsSubject.subscribe(lendingPools => {
       this.lendingPools = lendingPools
+    })
+
+    this.netWorkChangeSubscription = this.environmentService.environmentSubject.subscribe(async network => {
+      if(network && (network !== this.environmentService.environment)){
+        await this.vaultStatsService.loadVaultStats();
+      }
     })
   }
 }
