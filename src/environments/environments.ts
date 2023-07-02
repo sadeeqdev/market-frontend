@@ -4,6 +4,7 @@ export const environments = [
       environmentName: "Oasis Emerald Testnet",
       identifier: "Oasis",
       jsonRpcUrl: 'https://testnet.emerald.oasis.dev',
+      webSocketUrl: 'wss://testnet.emerald.oasis.dev/ws',
       config: {
         contracts: {
           ChainlinkPriceConsumer: '',
@@ -188,6 +189,7 @@ export const environments = [
       identifier: "Polygon",
       jsonRpcUrl:
         'https://polygon-mumbai.infura.io/v3/d674ad7889a4404c960e18610cf74a3a',
+      webSocketUrl: 'wss://polygon-mumbai.g.alchemy.com/v2/-7eaLgpDD6dzJaDq2J2FlKM46uEzatAs',
       config: {
         contracts: {
           CheddaBaseTokenVault: '0x801CA2D77CC8e550883E1e649f8f4D6b94D090b5',
@@ -362,6 +364,7 @@ export const environments = [
         environmentName: "Telos EVM Testnet",
         identifier: "Telos",
         jsonRpcUrl: 'https://testnet.telos.net/evm',
+        webSocketUrl: '',
         config: {
             contracts: {
                 CheddaAddressRegistry: '',
@@ -556,6 +559,7 @@ export const environments = [
         environmentName: "IoTeX Testnet",
         identifier:'Iotex',
         jsonRpcUrl: 'https://babel-api.testnet.iotex.io',
+        webSocketUrl: '',
         config: {
             contracts: {
                 CheddaAddressRegistry: '0xc349d33292F4958d5E616035241bE2ab2dE85100',
@@ -600,6 +604,7 @@ export const environments = [
         environmentName: "Harmony ONE Testnet",
         identifier:'Harmony',
         jsonRpcUrl: 'https://api.s0.b.hmny.io',
+        webSocketUrl: '',
         config: {
             contracts: {
                 CheddaAddressRegistry: '0xD9df45A2C9A7bF313D264AB8A0D142295F9a68Cb',
@@ -794,6 +799,7 @@ export const environments = [
         environmentName: "Avalanche C-Chain Testnet",
         identifier:'Avalanche',
         jsonRpcUrl: 'https://api.avax-test.network/ext/bc/C/rpc',
+        webSocketUrl: '',
         config: {
             contracts: {
                 CheddaAddressRegistry: '0x8166D0DeFb96900075a667FFb099DE8A493A4DfD',
@@ -876,6 +882,7 @@ export const environments = [
         environmentName: 'Hardhat Network', 
         identifier:'Hardhat',
         jsonRpcUrl: 'http://localhost:8545',
+        webSocketUrl: '',
         config: {
             contracts: {
                 CheddaAddressRegistry: '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512',

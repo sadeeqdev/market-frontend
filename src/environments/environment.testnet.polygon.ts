@@ -7,6 +7,7 @@ export const environment = {
   environmentName: 'Polygon Mumbai Testnet',
   jsonRpcUrl:
     'https://polygon-mumbai.infura.io/v3/d674ad7889a4404c960e18610cf74a3a',
+  webSocketUrl: 'wss://polygon-mumbai.g.alchemy.com/v2/-7eaLgpDD6dzJaDq2J2FlKM46uEzatAs',
   config: {
     contracts: {
       CheddaBaseTokenVault: '0x801CA2D77CC8e550883E1e649f8f4D6b94D090b5',

@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   environmentName: '',
   jsonRpcUrl: '',
+  webSocketUrl:'',
   config: {
       contracts: {
           ChainlinkPriceConsumer: '',
