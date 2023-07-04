@@ -20,12 +20,16 @@ export class VaultStatsService {
     private vaultService: CheddaBaseTokenVaultService,
     private environmentService: EnvironmentProviderService
   ) {
+    this.environment = environmentService.environment
+    this.listenToevents();
+  }
+
+  listenToevents(){
     this.environmentService.getEvent().subscribe((network) => {
       if(network){
         this.environment = network
       }
     });
-    this.environment = environmentService.environment
   }
 
   async loadVaultStats() {

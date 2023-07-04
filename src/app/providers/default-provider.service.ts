@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ethers, providers } from 'ethers';
+import { ethers } from 'ethers';
 import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';
 @Injectable({
   providedIn: 'root'
@@ -14,14 +14,18 @@ export class DefaultProviderService {
   constructor(
     private environmentService: EnvironmentProviderService
   ) {
+    this.provider = new ethers.providers.WebSocketProvider(this.environmentService.environment.webSocketUrl);
+    this.listenToEvents();
+  }
+
+
+  listenToEvents(){
     this.environmentService.getEvent().subscribe((network) => {
       if(network){
         this.provider = new ethers.providers.WebSocketProvider(network.webSocketUrl);
         return
       }
     });
-    this.provider = new ethers.providers.WebSocketProvider(this.environmentService.environment.webSocketUrl);
-
     // Set up event handlers for WebSocket events
     this.provider._websocket.addEventListener('open', (event) => this.onWsOpen(event));
     this.provider._websocket.addEventListener('close', (event) => this.onWsClose(event));

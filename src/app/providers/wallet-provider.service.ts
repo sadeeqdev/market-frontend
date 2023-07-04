@@ -23,31 +23,30 @@ export class WalletProviderService {
 
   constructor(
     private environmentService: EnvironmentProviderService
-
   ) {
+    this.environment = environmentService.environment
+    this.initializeNetworkConnection()
+    this.listenToEvents();
+  }
+
+  listenToEvents(){
+    let eth:any = window.ethereum;
+    if(eth){
+      eth.on('accountsChanged', (accounts: any) => {
+        if (accounts.length > 0) {
+          this.setCurrentAccount(accounts[0])
+        }else{
+          this.setCurrentAccount(null)
+        }
+      });
+    }
+
     this.environmentService.getEvent().subscribe((network) => {
       if(network){
         this.currentConfig = network.config
         this.environment = network
       }
     });
-
-    this.environment = environmentService.environment
-    this.initializeNetworkConnection()
-
-    // Checks if acount is changed or disconnected
-    // Updates account address 
-    let eth:any = window.ethereum;
-
-    if(eth){
-      eth.on('accountsChanged', (accounts: any) => {
-        if (accounts.length > 0) {
-            this.setCurrentAccount(accounts[0])
-        }else{
-          this.setCurrentAccount(null)
-        }
-      });
-    }
   }
 
   async connect(): Promise<boolean> {
