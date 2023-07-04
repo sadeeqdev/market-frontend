@@ -27,8 +27,7 @@ export class TopNavComponent implements OnInit, OnDestroy {
   xCheddaBalance
   isCorrectNetwork = true
   isConnected = false
-  environment = {}
-  env = this.environment
+  env 
   popover: any
   profile: Profile
   title = 'Dapps'
@@ -77,7 +76,7 @@ export class TopNavComponent implements OnInit, OnDestroy {
     private popoverController: PopoverController,
     private environmentService: EnvironmentProviderService
     ) {
-      this.environment = this.environmentService.environment
+      this.env = this.environmentService.environment
       // Initialize Metamask provider
       let eth:any = window.ethereum;
   
@@ -143,6 +142,7 @@ export class TopNavComponent implements OnInit, OnDestroy {
     this.changeNetworkSubscription = this.environmentService.environmentSubject.subscribe(async network => {
       if(network){
         this.isCorrectNetwork = network.config.networkParams.chainId.toLocaleLowerCase() == this.provider.currentNetwork.chainId.toLocaleLowerCase()
+        this.env = network
       }
     })
   }
