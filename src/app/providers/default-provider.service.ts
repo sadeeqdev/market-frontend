@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ethers } from 'ethers';
-import { environment } from 'src/environments/environment';
-
+import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -12,9 +11,21 @@ export class DefaultProviderService {
   keepAliveInterval: any;
   pingTimeout: any;
 
-  constructor() {
-    this.provider = new ethers.providers.WebSocketProvider(environment.webSocketUrl);
+  constructor(
+    private environmentService: EnvironmentProviderService
+  ) {
+    this.provider = new ethers.providers.WebSocketProvider(this.environmentService.environment.webSocketUrl);
+    this.listenToEvents();
+  }
 
+
+  listenToEvents(){
+    this.environmentService.getEvent().subscribe((network) => {
+      if(network){
+        this.provider = new ethers.providers.WebSocketProvider(network.webSocketUrl);
+        return
+      }
+    });
     // Set up event handlers for WebSocket events
     this.provider._websocket.addEventListener('open', (event) => this.onWsOpen(event));
     this.provider._websocket.addEventListener('close', (event) => this.onWsClose(event));
@@ -49,7 +60,7 @@ export class DefaultProviderService {
 
   load() {
     // Reload the WebSocketProvider
-    this.provider = new ethers.providers.WebSocketProvider(environment.jsonRpcUrl);
+    this.provider = new ethers.providers.WebSocketProvider(this.environmentService.environment.webSocketUrl);
 
     // Re-set up event handlers for WebSocket events
     this.provider._websocket.addEventListener('open', (event) => this.onWsOpen(event));

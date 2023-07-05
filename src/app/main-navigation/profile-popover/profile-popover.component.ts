@@ -1,15 +1,15 @@
-import { Component, HostListener, Input, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ethers } from 'ethers';
-import { environment } from 'src/environments/environment';
-import { TokenService } from 'src/app/contracts/token.service';
+import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';import { TokenService } from 'src/app/contracts/token.service';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-profile-popover',
   templateUrl: './profile-popover.component.html',
   styleUrls: ['./profile-popover.component.scss'],
 })
-export class ProfilePopoverComponent implements OnInit {
+export class ProfilePopoverComponent implements OnInit, OnDestroy {
   @Input() address: string
   cheddaBalance: string
   xCheddaBalance: string
@@ -17,20 +17,29 @@ export class ProfilePopoverComponent implements OnInit {
   addressCopyText: string = 'Copy';
   cheddaContract: any;
   stakedCheddaContract: any;
+  environment;
+  netWorkChangeSubscription: Subscription;
 
   constructor(
     private router: Router,
     private wallet: WalletProviderService,
     private tokenService: TokenService,
-    ) { }
+    private environmentService: EnvironmentProviderService
+    ) { 
+      this.environment = this.environmentService.environment;
+    }
 
   async ngOnInit() {
-    this.cheddaContract = this.tokenService.contractAt(environment.config.contracts.Chedda)
-    this.stakedCheddaContract = this.tokenService.contractAt(environment.config.contracts.xChedda)
-    this.listenForTransfers()
-    this.checkBalance()
+    this.cheddaContract = this.tokenService.contractAt(this.environment.config.contracts.Chedda)
+    this.stakedCheddaContract = this.tokenService.contractAt(this.environment.config.contracts.xChedda)
+    this.listenForTransfers();
+    this.listenForEvents();
+    this.checkBalance();
   }
 
+  async ngOnDestroy() {
+    this.netWorkChangeSubscription?.unsubscribe;
+  }
 
   copyAddress() {
     navigator.clipboard.writeText(this.address).then(() => {
@@ -68,6 +77,17 @@ export class ProfilePopoverComponent implements OnInit {
   private async checkStakedCheddaBalance() {
     const sChedaBalance = await this.tokenService.balanceOf(this.stakedCheddaContract, this.address) 
     this.xCheddaBalance = ethers.utils.formatEther(sChedaBalance)
+  }
+
+  private async listenForEvents() {
+    this.netWorkChangeSubscription = this.environmentService.environmentSubject.subscribe(async network => {
+      if(network){
+        this.environment = network;
+        this.cheddaContract = this.tokenService.contractAt(network.config.contracts.Chedda)
+        this.stakedCheddaContract = this.tokenService.contractAt(network.config.contracts.xChedda)
+        this.checkBalance();
+      }
+    })
   }
 
   private async listenForTransfers() {

@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { BigNumber, ethers, providers, Signer,  } from 'ethers'
 import detectEthereumProvider from '@metamask/detect-provider';
 import { BehaviorSubject } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { NetworkParams } from './network-params.interface';
+import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';import { NetworkParams } from './network-params.interface';
 import { CheddaConfig } from './chedda-config.interface';
 
 @Injectable({
@@ -14,31 +13,40 @@ export class WalletProviderService {
   provider: any
   ethereum
   signer: Signer
-
+  environment
   currentAccount
   currentNetwork: NetworkParams
   currentConfig: CheddaConfig
-
   connectedSubject: BehaviorSubject<boolean> = new BehaviorSubject(false)
   accountSubject: BehaviorSubject<any> = new BehaviorSubject(null)
   networkSubject: BehaviorSubject<any> = new BehaviorSubject(null)
 
-  constructor() {
+  constructor(
+    private environmentService: EnvironmentProviderService
+  ) {
+    this.environment = environmentService.environment
     this.initializeNetworkConnection()
+    this.listenToEvents();
+  }
 
-    // Checks if acount is changed or disconnected
-    // Updates account address 
+  listenToEvents(){
     let eth:any = window.ethereum;
-
     if(eth){
       eth.on('accountsChanged', (accounts: any) => {
         if (accounts.length > 0) {
-            this.setCurrentAccount(accounts[0])
+          this.setCurrentAccount(accounts[0])
         }else{
           this.setCurrentAccount(null)
         }
       });
     }
+
+    this.environmentService.getEvent().subscribe((network) => {
+      if(network){
+        this.currentConfig = network.config
+        this.environment = network
+      }
+    });
   }
 
   async connect(): Promise<boolean> {
@@ -76,6 +84,21 @@ export class WalletProviderService {
     if (!this.provider || !this.currentNetwork) {
       return
     }
+
+    if(this.currentNetwork != this.environment.config.networkParams){
+      console.log('about to add: ', this.currentNetwork)
+      this.provider
+      .send(
+        'wallet_addEthereumChain',
+        [this.environment.config.networkParams]
+      )
+      .catch((error: any) => {
+        console.log(error)
+      })
+      this.currentNetwork = this.environment.config.networkParams;
+      return
+    }
+
     console.log('about to add: ', this.currentNetwork)
     this.provider
     .send(
@@ -205,11 +228,11 @@ export class WalletProviderService {
     } else {
       console.log('no ethereum')
     }
-    let currentNetwork: NetworkParams = environment.config.networkParams
+    let currentNetwork: NetworkParams = this.environment.config.networkParams
     if (currentNetwork && currentNetwork.chainId) {
     }
     this.currentNetwork = currentNetwork
-    this.currentConfig = environment.config
+    this.currentConfig = this.environment.config
   }
 
   private getHexString(networkCode) {
@@ -217,7 +240,7 @@ export class WalletProviderService {
   }
 
   currencyName(): string {
-    return environment.config.networkParams.nativeCurrency.symbol
+    return this.environment.config.networkParams.nativeCurrency.symbol
   }
 
   onboard() {}

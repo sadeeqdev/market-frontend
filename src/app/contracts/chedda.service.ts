@@ -4,6 +4,7 @@ import { BigNumber, ethers } from 'ethers';
 import { BehaviorSubject } from 'rxjs';
 import Chedda from '../../artifacts/Chedda.json'
 import { DefaultProviderService } from '../providers/default-provider.service';
+import { EnvironmentProviderService } from '../providers/environment-provider.service';
 import { WalletProviderService } from '../providers/wallet-provider.service';
 
 @Injectable({
@@ -15,14 +16,25 @@ export class CheddaService {
   approvalSubject: BehaviorSubject<any> = new BehaviorSubject(null)
   transferSubject: BehaviorSubject<any> = new BehaviorSubject(null)
   
-  constructor(provider: DefaultProviderService, private wallet: WalletProviderService, private http: HttpClient) {
+  constructor(provider: DefaultProviderService, private wallet: WalletProviderService, private environmentService: EnvironmentProviderService, private http: HttpClient) {
+    this.environmentService.getEvent().subscribe((network) => {
+      if(network){
+        this.cheddaContract = new ethers.Contract(
+          wallet.currentConfig.contracts.Chedda,
+          Chedda.abi,
+          provider.provider
+        );
+        this.registerEventListeners()
+      }
+    });
+
     this.cheddaContract = new ethers.Contract(
       wallet.currentConfig.contracts.Chedda,
       Chedda.abi,
       provider.provider
       );
       this.registerEventListeners()
-  }
+    }
 
   async balanceOf(address: string): Promise<BigNumber> {
     return await this.cheddaContract.balanceOf(address)

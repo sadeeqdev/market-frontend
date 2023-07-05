@@ -5,8 +5,7 @@ import { Subscription } from 'rxjs';
 import { Profile } from 'src/app/profile/profile.interface';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
-import { environment } from 'src/environments/environment';
-import { CheddaService } from 'src/app/contracts/chedda.service';
+import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';import { CheddaService } from 'src/app/contracts/chedda.service';
 import { ethers } from 'ethers';
 import { StakedCheddaService } from 'src/app/contracts/staked-chedda.service';
 
@@ -28,7 +27,7 @@ export class TopNavComponent implements OnInit, OnDestroy {
   xCheddaBalance
   isCorrectNetwork = true
   isConnected = false
-  env = environment
+  env 
   popover: any
   profile: Profile
   title = 'Dapps'
@@ -37,6 +36,7 @@ export class TopNavComponent implements OnInit, OnDestroy {
   private accountSubscription?: Subscription
   private networkSubscription?: Subscription
   private balanceSubscription?: Subscription
+  private changeNetworkSubscription?: Subscription
 
   menuItems = [
     // {
@@ -74,8 +74,9 @@ export class TopNavComponent implements OnInit, OnDestroy {
     private wallet: WalletProviderService,
     private alertService: GlobalAlertService,
     private popoverController: PopoverController,
+    private environmentService: EnvironmentProviderService
     ) {
-
+      this.env = this.environmentService.environment
       // Initialize Metamask provider
       let eth:any = window.ethereum;
   
@@ -132,9 +133,17 @@ export class TopNavComponent implements OnInit, OnDestroy {
     })
 
     this.networkSubscription = this.provider.networkSubject.subscribe(async chainId => {
-      if (chainId) {
+      if (chainId && window.ethereum) {
           this.isCorrectNetwork = chainId.toString(16).toLowerCase() == this.provider.currentNetwork.chainId.toLocaleLowerCase()
           console.log(`Networks: ${chainId} <=> ${this.provider.currentNetwork.chainId}`)
+      }
+    })
+
+    this.changeNetworkSubscription = this.environmentService.environmentSubject.subscribe(async network => {
+      if(network && window.ethereum){
+        const chainId = await (window as any).ethereum.request({ method: 'eth_chainId' });
+        this.isCorrectNetwork = network.config.networkParams.chainId.toLocaleLowerCase() == chainId;
+        this.env = network
       }
     })
   }

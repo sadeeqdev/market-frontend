@@ -1,15 +1,19 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { PopoverController } from '@ionic/angular';
-import { environment } from 'src/environments/environment';
+import { Subscription } from 'rxjs';
+import { ModalController, NavController } from '@ionic/angular';
+import { LoadingModalComponent } from 'src/app/shared/components/loading-modal/loading-modal.component';
+import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';
+import { VaultStatsService } from 'src/app/providers/vault-stats.service';
 
 @Component({
   selector: 'app-networks-popover',
   templateUrl: './networks-popover.component.html',
   styleUrls: ['./networks-popover.component.scss'],
 })
-export class NetworksPopoverComponent implements OnInit {
-  env = environment
 
+export class NetworksPopoverComponent implements OnInit {
+
+  env 
   networkList = [
     // {
     //   name: 'Avalanche Testnet',
@@ -38,12 +42,62 @@ export class NetworksPopoverComponent implements OnInit {
     // },
   ]
   isOpenNetworkMenu: boolean;
-  constructor(private popoverController: PopoverController) { }
+  netWorkChangeSubscription: Subscription;
+  selectedNetwork: string;
+  loader: any;
 
-  ngOnInit() {}
+  constructor(
+    private environmentService: EnvironmentProviderService,
+    private vaultStatsService: VaultStatsService,
+    private modalController: ModalController,
+  ) { 
+    this.env = this.environmentService.environment;
+    this.selectedNetwork = this.env.config.ui.chainName
+  }
+
+  ngOnInit() {
+    this.listenToEvents();
+  }
+
+  ngOnDestroy(){
+    this.netWorkChangeSubscription?.unsubscribe;
+  }
 
   openNetworkMenu(){
     this.isOpenNetworkMenu = !this.isOpenNetworkMenu
+  }
+
+  async onNetworkSelected(network){
+    this.showLoading("Changing network");
+    this.environmentService.changeEnvironment(network);
+    this.vaultStatsService.loadVaultStats();
+    this.isOpenNetworkMenu = false;
+    setTimeout(() => {
+      this.hideLoading();
+    },2000)
+  }
+
+  private async showLoading(message: string) {
+    this.loader = await this.modalController.create({
+      component: LoadingModalComponent,
+      componentProps:{
+        'message': message
+      }
+    })
+    return await this.loader?.present()
+  }
+
+  private async hideLoading() {
+    await this.loader?.dismiss();
+  }
+
+  private async listenToEvents(){
+    this.netWorkChangeSubscription = this.environmentService.environmentSubject.subscribe(async network => {
+      if(network){
+        this.env = network
+      }
+
+    })
   }
 
   @HostListener('document:click', ['$event'])

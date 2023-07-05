@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController, NavController } from '@ionic/angular';
 import { ethers } from 'ethers';
@@ -14,7 +14,8 @@ import { WalletProviderService } from 'src/app/providers/wallet-provider.service
 import { LoadingModalComponent } from 'src/app/shared/components/loading-modal/loading-modal.component';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
 import { NFTMetadata } from 'src/app/shared/models/nft.model';
-import { environment } from 'src/environments/environment';
+import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';
+
 
 enum BorrowMode {
   borrow = 'borrow',
@@ -31,7 +32,7 @@ enum RepayMode {
   templateUrl: './borrow-pool-details.page.html',
   styleUrls: ['./borrow-pool-details.page.scss'],
 })
-export class BorrowPoolDetailsPage implements OnInit {
+export class BorrowPoolDetailsPage implements OnInit, OnDestroy {
   @ViewChild('addCollateralInput') addCollateralInput: ElementRef;
   @ViewChild('borrowInput') borrowInput: ElementRef;
   @ViewChild('withdrawCollateralInput') withdrawCollateralInput: ElementRef;
@@ -70,6 +71,7 @@ export class BorrowPoolDetailsPage implements OnInit {
   routeSubscription: Subscription;
   pool: LendingPool;
   isBorrowCheddaTab: boolean = true;
+  netWorkChangeSubscription: Subscription;
 
   constructor(
     private tokenService: TokenService,
@@ -84,10 +86,15 @@ export class BorrowPoolDetailsPage implements OnInit {
     private alert: GlobalAlertService,
     private vaultStatsService: VaultStatsService,
     private router: Router,
+    private environmentService: EnvironmentProviderService
+
   ) {}
 
   async ngOnInit() {
     await this.setup();
+  }
+  ngOnDestroy(): void {
+    this.netWorkChangeSubscription?.unsubscribe();
   }
 
   private async setup() {
@@ -125,10 +132,11 @@ export class BorrowPoolDetailsPage implements OnInit {
       await this.checkAllowance();
       this.registerForEvents();
     });
+
   }
 
   private findPoolWithId(id: string): LendingPool | null {
-    for (const pool of environment.config.pools) {
+    for (const pool of this.environmentService.environment.config.pools) {
       if (pool.address.toLowerCase() == id.toLocaleLowerCase()) {
         return pool;
       }
@@ -550,6 +558,13 @@ export class BorrowPoolDetailsPage implements OnInit {
     this.wallet.accountSubject.subscribe(() => {
       this.loadVaultStats();
     });
+
+    this.netWorkChangeSubscription = this.environmentService.environmentSubject.subscribe(async network => {
+      if(network && (network !== this.environmentService.environment)){
+        this.navigateBack();
+        return
+      }
+    })
   }
 
   selectNFT(nft: NFTMetadata) {

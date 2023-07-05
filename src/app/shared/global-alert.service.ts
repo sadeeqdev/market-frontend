@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController, ToastController } from '@ionic/angular';
 import { WalletProviderService } from '../providers/wallet-provider.service';
-import { environment } from 'src/environments/environment';
-import { ActionModalComponent } from './components/action-modal/action-modal.component';
+import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';import { ActionModalComponent } from './components/action-modal/action-modal.component';
 import { SnackbarComponent } from './components/snackbar/snackbar.component';
 import { time } from 'console';
 
@@ -17,6 +16,7 @@ export class GlobalAlertService {
     private toastController: ToastController,
     private provider: WalletProviderService,
     private router: Router,
+    private environmentService: EnvironmentProviderService
     ) { }
 
   async presentNoConnectionAlert() {
@@ -121,7 +121,7 @@ export class GlobalAlertService {
         'message': 'The balance in your account is less than the required amount to proceed.',
         'actionText': 'Get More Tokens',
         'modalAction': () => {
-          const faucets = environment.config.faucets
+          const faucets = this.environmentService.environment.config.faucets
           if (faucets.length > 0) {
             const url = faucets[0].url
             window.open(url, '_blank').focus()
@@ -164,7 +164,7 @@ export class GlobalAlertService {
         'message': 'Your purchased NFT will show up in your owned items once the transaction is confirmed.',
         'actionText': 'View transaction',
         'modalAction': () => {
-          window.open(environment.config.ui.txUrlPrefix + txHash, '_blank').focus
+          window.open(this.environmentService.environment.config.ui.txUrlPrefix + txHash, '_blank').focus
         },
         'cancelAction': async () => {
           await alert.dismiss();
