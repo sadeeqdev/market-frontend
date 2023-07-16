@@ -266,14 +266,14 @@
         </div>
         <div class="flex space-x-3 items-center">
           <button
-            (click)="drip(token)"
+            (click)="handleDripClicked(token)"
             class="h-8 w-20 sm:h-9 sm:w-40 drip-btn rounded-md sm:rounded-lg uppercase font-bold text-white text-xs sm:text-sm hover:opacity-70"
           >
           <span *ngIf="token.isNFT">MINT</span>
           <span *ngIf="!token.isNFT">DRIP</span>
           </button>
           <button 
-            (click)="addTokenToMetamask(token)"
+            (click)="handleAddTokenClicked(token)"
             class="h-8 w-8 sm:h-9 sm:w-12 add-drip-btn rounded-md sm:rounded-lg font-bold text-xl sm:text-xl hover:opacity-50 flex justify-center items-center"
           >+</button>
         </div>

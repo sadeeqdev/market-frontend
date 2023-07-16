@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IonInput, LoadingController, NavController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 import { BigNumber, ethers } from 'ethers';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { CheddaBaseTokenVaultService } from 'src/app/contracts/chedda-base-token-vault.service';
@@ -223,8 +223,9 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
     })
 
     this.netWorkChangeSubscription = this.environmentService.environmentSubject.subscribe(async network => {
-      if(network && (network !== this.environmentService.environment)){
-        this.navigateBack();
+      const chainId = await (window as any).ethereum.request({ method: 'eth_chainId' });
+      if(network && (network.config.networkParams.chainId.toLocaleLowerCase() !== chainId)){
+        // this.navigateBack();
       }
     })
   }

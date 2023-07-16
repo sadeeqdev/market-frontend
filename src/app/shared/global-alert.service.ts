@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { ModalController, ToastController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { WalletProviderService } from '../providers/wallet-provider.service';
 import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';import { ActionModalComponent } from './components/action-modal/action-modal.component';
 import { SnackbarComponent } from './components/snackbar/snackbar.component';
-import { time } from 'console';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +12,6 @@ export class GlobalAlertService {
 
   constructor(
     private modalController: ModalController,
-    private toastController: ToastController,
     private provider: WalletProviderService,
     private router: Router,
     private environmentService: EnvironmentProviderService
@@ -205,17 +203,6 @@ export class GlobalAlertService {
 
     await alert.present(); 
   }
-  
-  // async showRewardReceivedToast(amount) {
-  //   const toast =  await this.toastController.create({
-  //     header: 'Chedda XP earned',
-  //     message: `You just earned ${amount} XP`,
-  //     position: 'bottom',
-  //     duration: 3000
-  //   })
-
-  //   await toast.present()
-  // }
 
   async showRewardReceivedToast(amount: string, timeout: number = 3000) {
     const toast = await this.modalController.create({
@@ -233,14 +220,6 @@ export class GlobalAlertService {
       await toast.dismiss()
     }, timeout)
   }
-
-  // async showToast(message: string, timeout: number = 3000) {
-  //   const toast = await this.toastController.create({
-  //     message: message,
-  //     duration: timeout,
-  //   })
-  //   await toast.present()
-  // }
 
   async showToast(message: string, timeout: number = 2500) {
     const toast = await this.modalController.create({
@@ -266,6 +245,30 @@ export class GlobalAlertService {
     } else {
       this.presentNoConnectionAlert()
     }
+  }
+
+  async showSwitchAlert() {
+    const alert = await this.modalController.create({
+      component: ActionModalComponent,
+      componentProps: {
+        heading: 'Switch network!',
+        message: 'Please switch to the correct network and try again.',
+        actionText: 'Switch network',
+        modalAction: async () => {
+          this.switchNetwork(this.environmentService.environment);
+          await alert.dismiss();
+        },
+        cancelAction: async () => {
+          await alert.dismiss();
+        },
+      },
+    });
+
+    await alert.present();
+  }
+
+  async switchNetwork(network) {
+    await this.provider.addNetwork(network);
   }
 
 }

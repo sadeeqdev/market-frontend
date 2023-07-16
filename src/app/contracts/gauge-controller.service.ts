@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BigNumber, ethers } from 'ethers';
 import { DefaultProviderService } from '../providers/default-provider.service';
@@ -16,24 +15,35 @@ export class GaugeControllerService {
   votedSubject: BehaviorSubject<any> = new BehaviorSubject(null)
   rebalanceSubject: BehaviorSubject<any> = new BehaviorSubject(null)
 
-  constructor(provider: DefaultProviderService, private wallet: WalletProviderService, 
+  constructor(
+    private provider: DefaultProviderService,
+    private wallet: WalletProviderService,
     private environmentService: EnvironmentProviderService,
-    private http: HttpClient) {
+  ) {
+    this.initializeGaugeControllerContract();
+    this.listenToEvents();
+    this.registerForEvents();
+  }
+
+  private initializeGaugeControllerContract() {
+    const gaugeControllerAddress = this.wallet.currentConfig.contracts.GaugeController;
+    const gaugeControllerAbi = GaugeController.abi;
+    const provider = this.provider.provider;
+  
+    this.gaugeControllerContract = new ethers.Contract(
+      gaugeControllerAddress,
+      gaugeControllerAbi,
+      provider
+    );
+  }
+    
+  listenToEvents(){
     this.environmentService.getEvent().subscribe((network) => {
-      if(network){
-        this.gaugeControllerContract = new ethers.Contract(
-          wallet.currentConfig.contracts.GaugeController,
-          GaugeController.abi,
-          provider.provider
-        );
+      if (network) {
+        this.initializeGaugeControllerContract();
+        this.registerForEvents();
       }
     });
-    this.gaugeControllerContract = new ethers.Contract(
-      wallet.currentConfig.contracts.GaugeController,
-      GaugeController.abi,
-      provider.provider
-    );
-    this.registerForEvents()
   }
 
   async vote(gaugeAddress: string) {

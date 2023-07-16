@@ -13,25 +13,29 @@ export class PriceOracleService {
 
   oracleContract
 
-  constructor(provider: DefaultProviderService, private wallet: WalletProviderService, 
+  constructor(
+    private provider: DefaultProviderService,
+    private wallet: WalletProviderService,
     private environmentService: EnvironmentProviderService,
-     private http: HttpClient) {
-    
+  ) {
+    this.initializeOracleContract();
+    this.listenToEvents();
+  }
+  
+  private initializeOracleContract() {
+    const priceFeedAddress = this.wallet.currentConfig.contracts.PriceFeed;
+    const priceFeedAbi = MultiAssetPriceOracle.abi;
+    const provider = this.provider.provider;
+  
+    this.oracleContract = new ethers.Contract(priceFeedAddress, priceFeedAbi, provider);
+  }
+
+  listenToEvents(){
     this.environmentService.getEvent().subscribe((network) => {
-      if(network){
-        this.oracleContract = new ethers.Contract(
-          this.wallet.currentConfig.contracts.PriceFeed,
-          MultiAssetPriceOracle.abi,
-          provider.provider
-        );
+      if (network) {
+        this.initializeOracleContract();
       }
     });
-    
-    this.oracleContract = new ethers.Contract(
-      this.wallet.currentConfig.contracts.PriceFeed,
-      MultiAssetPriceOracle.abi,
-      provider.provider
-    );
   }
 
   async getAssetPrice(address: string): Promise<BigNumber> {

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { ButtonService } from '../../button.service';
 
 @Component({
   selector: 'app-secondary-button',
@@ -10,11 +11,13 @@ export class SecondaryButtonComponent implements OnInit {
   @Input() visibility: boolean;
   @Output() clicked = new EventEmitter<void>();
 
-  constructor() {}
+  constructor(
+    private buttonService: ButtonService,
+    ) {}
 
   ngOnInit() {}
 
-  onClick() {
-    this.clicked.emit();
+  async onClick() {
+    this.buttonService.handleTransactionButton(this.clicked.emit())
   }
 }
