@@ -132,14 +132,14 @@ export class TopNavComponent implements OnInit, OnDestroy {
     })
 
     this.networkSubscription = this.provider.networkSubject.subscribe(async chainId => {
-      if (chainId && window.ethereum) {
+      if (chainId && this.account) {
           this.isCorrectNetwork = chainId.toString(16).toLowerCase() == this.provider.currentNetwork.chainId.toLocaleLowerCase()
           console.log(`Networks: ${chainId} <=> ${this.provider.currentNetwork.chainId}`)
       }
     })
 
     this.changeNetworkSubscription = this.environmentService.environmentSubject.subscribe(async network => {
-      if(network && window.ethereum){
+      if(network && this.account){
         const chainId = await (window as any).ethereum.request({ method: 'eth_chainId' });
         this.isCorrectNetwork = network.config.networkParams.chainId.toLocaleLowerCase() == chainId;
         this.env = network
