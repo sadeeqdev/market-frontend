@@ -17,7 +17,9 @@ export class PrimaryButtonComponent implements OnInit {
 
   ngOnInit() {}
 
-  async onClick() {
-    this.buttonService.handleTransactionButton(this.clicked.emit())
+  onClick() {
+    this.buttonService.handleTransactionButton(() => {
+      this.clicked.emit()
+    });
   }
 }

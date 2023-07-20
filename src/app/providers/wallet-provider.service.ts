@@ -105,6 +105,10 @@ export class WalletProviderService {
       console.log(error);
     }
   }
+
+  async getChainId(){
+    return await (window as any).ethereum.request({ method: 'eth_chainId' });
+  } 
   
   async addToken(address: string, symbol: string, decimals: number, image?: string) {
     this.provider

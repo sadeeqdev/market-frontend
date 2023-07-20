@@ -167,8 +167,16 @@ export class VoteLandingPage implements OnInit, OnDestroy {
     }
   }
 
-  async handleVoteClicked(pool){
-    this.buttonService.handleTransactionButton(await this.vote(pool))
+  async handleVoteClicked(pool) {
+    this.buttonService.handleTransactionButton(async () => {
+      await this.vote(pool);
+    });
+  }
+
+  async handleClaimClicked(pool) {
+    this.buttonService.handleTransactionButton(async () => {
+      await this.claim(pool);
+    });
   }
 
   async vote(pool) {
@@ -199,10 +207,6 @@ export class VoteLandingPage implements OnInit, OnDestroy {
       this.hideLoading()
       this.alert.showErrorAlert(error)
     }
-  }
-
-  async handleClaimClicked(pool){
-    await this.buttonService.handleTransactionButton(await this.claim(pool))
   }
 
   async claim(pool) {

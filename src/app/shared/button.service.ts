@@ -11,18 +11,18 @@ export class ButtonService {
     private alert: GlobalAlertService
   ) {}
 
-  async handleTransactionButton(clickedCallback: void) {
+  async handleTransactionButton(clickedCallback: () => void) {
     let eth: any = window.ethereum;
     if (eth) {
       let chainId = await eth.request({
         method: 'eth_chainId',
       });
-      let currentNetwork =
-        this.environmentService.environment.config.networkParams.chainId.toLocaleLowerCase();
+      let currentNetwork = this.environmentService.environment.config.networkParams.chainId.toLocaleLowerCase();
+      
       if (chainId === currentNetwork) {
-        clickedCallback;
+        clickedCallback();
       } else {
-        this.alert.showSwitchAlert();
+        this.alert.showSwitchAlert(); 
       }
     } else {
       this.alert.presentNoConnectionAlert();
