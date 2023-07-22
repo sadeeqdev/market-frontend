@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
+import { Wallet } from 'ethers';
 import { EnvironmentProviderService } from '../providers/environment-provider.service';
+import { WalletProviderService } from '../providers/wallet-provider.service';
 import { GlobalAlertService } from './global-alert.service';
 
 @Injectable({
@@ -8,15 +10,13 @@ import { GlobalAlertService } from './global-alert.service';
 export class ButtonService {
   constructor(
     private environmentService: EnvironmentProviderService,
-    private alert: GlobalAlertService
+    private alert: GlobalAlertService,
+    private wallet: WalletProviderService
   ) {}
 
   async handleTransactionButton(clickedCallback: () => void) {
-    let eth: any = window.ethereum;
-    if (eth) {
-      let chainId = await eth.request({
-        method: 'eth_chainId',
-      });
+    if (window.ethereum) {
+      let chainId = await this.wallet.getChainId();
       let currentNetwork = this.environmentService.environment.config.networkParams.chainId.toLocaleLowerCase();
       
       if (chainId === currentNetwork) {
