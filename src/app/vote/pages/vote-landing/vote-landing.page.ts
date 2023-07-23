@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { LoadingController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { ChartType } from 'chart.js';
 import { BigNumber, ethers } from 'ethers';
 import moment from 'moment';
+import { start } from 'repl';
 import { Subscription } from 'rxjs';
 import { CheddaBaseTokenVaultService } from 'src/app/contracts/chedda-base-token-vault.service';
 import { CheddaService } from 'src/app/contracts/chedda.service';
@@ -11,9 +12,10 @@ import { LiqiudityGaugeService } from 'src/app/contracts/liqiudity-gauge.service
 import { VeCheddaService } from 'src/app/contracts/ve-chedda.service';
 import { LendingPool } from 'src/app/lend/lend.models';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
+import { LoadingModalComponent } from 'src/app/shared/components/loading-modal/loading-modal.component';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
-import { environment } from 'src/environments/environment';
-
+import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';
+import { ButtonService } from 'src/app/shared/button.service';
 @Component({
   selector: 'app-vote-landing',
   templateUrl: './vote-landing.page.html',
@@ -31,12 +33,47 @@ export class VoteLandingPage implements OnInit, OnDestroy {
   epochEnd
   hasEpochEnded
   loader?
+  backgroundColor = ["#F3943D", "#FEF851", "#5DDEFA", "#6257F2", "#9C8DFF"]
   votePower
   voteEventSubscription?: Subscription
   rebalanceEventSubscription?: Subscription
   cheddaTransferSubscription?: Subscription
-
+  options = {
+    plugins: {
+      cutoutPercentage: 80,
+      legend: {
+        display: false,
+        position: "right",
+        align: "start",
+        labels: {
+          boxWidth: 90,
+          boxHeight: 25,
+          borderRadius: 10,
+          font: {
+            size: 14
+          }
+        }
+      },
+      tooltip: {
+        enabled: true
+      },
+    },
+    hover: {
+      mode: "nearest",
+      intersect: true,
+      animationDuration: 100
+    }
+  };
+   chartLabelsWithBg = [
+  //   {label: '', backgroundColor: 'bg-[#F3943D]'},
+  //   {label: '', backgroundColor: 'bg-[#FEF851]'},
+  //   {label: '', backgroundColor: 'bg-[#5DDEFA]'},
+  //   {label: '', backgroundColor: 'bg-[#6257F2]'},
+  //   {label: '', backgroundColor: 'bg-[#9C8DFF]'},
+  ]
+  
   public chartType: ChartType = 'doughnut';
+  netWorkChangeSubscription: Subscription;
   constructor(
     private wallet: WalletProviderService,
     private gaugeController: GaugeControllerService,
@@ -45,14 +82,15 @@ export class VoteLandingPage implements OnInit, OnDestroy {
     private alert: GlobalAlertService,
     private chedda: CheddaService,
     private veChedda: VeCheddaService,
-    private loadingController: LoadingController
+    private modalController: ModalController,
+    private environmentService: EnvironmentProviderService,
+    private buttonService: ButtonService,
     ) { }
 
   async ngOnInit() {
-    this.currency = environment.config.networkParams.nativeCurrency.symbol
-
-    this.vaultContract = this.vaultService.contractAt(environment.config.contracts.CheddaBaseTokenVault)
-    this.lendingPools = environment.config.pools
+    this.currency = this.environmentService.environment.config.networkParams.nativeCurrency.symbol
+    this.vaultContract = this.vaultService.contractAt(this.environmentService.environment.config.contracts.CheddaBaseTokenVault)
+    this.lendingPools = this.environmentService.environment.config.pools
     await this.loadVeChedda()
     this.loadGaugeData()
     this.registerForEvents()
@@ -62,6 +100,7 @@ export class VoteLandingPage implements OnInit, OnDestroy {
     this.voteEventSubscription?.unsubscribe()
     this.rebalanceEventSubscription?.unsubscribe()
     this.cheddaTransferSubscription?.unsubscribe()
+    this.netWorkChangeSubscription?.unsubscribe()
   }
 
   async loadVeChedda() {
@@ -72,6 +111,14 @@ export class VoteLandingPage implements OnInit, OnDestroy {
 
   async loadGaugeData() {
     this.chartLabels = this.lendingPools.map(p => p.name)
+    let mappedLabels = []
+    for(let i = 0; i<this.backgroundColor.length; i++){
+    mappedLabels.push({
+        label: this.chartLabels[i],
+        backgroundColor: `bg-[${this.backgroundColor[i]}]`
+      })
+    }
+    this.chartLabelsWithBg = mappedLabels
 
     try {
       this.lendingPools = await Promise.all(this.lendingPools.map(async p => {
@@ -107,7 +154,10 @@ export class VoteLandingPage implements OnInit, OnDestroy {
         labels: this.chartLabels,
         datasets: [
           { 
-            data: voteShare
+            data: voteShare,
+            backgroundColor: this.backgroundColor,
+            borderWidth: 0,
+            hoverOffset: 1
           },
         ]
       }
@@ -115,6 +165,18 @@ export class VoteLandingPage implements OnInit, OnDestroy {
     } catch (error) {
       console.log('error caught: ', error)
     }
+  }
+
+  async handleVoteClicked(pool) {
+    this.buttonService.handleTransactionButton(async () => {
+      await this.vote(pool);
+    });
+  }
+
+  async handleClaimClicked(pool) {
+    this.buttonService.handleTransactionButton(async () => {
+      await this.claim(pool);
+    });
   }
 
   async vote(pool) {
@@ -139,13 +201,14 @@ export class VoteLandingPage implements OnInit, OnDestroy {
       return
     }
     try {
-      await this.showLoading('rebalancing in progress')
+      await this.showLoading('Rebalancing in progress')
       await this.gaugeController.rebalance(this.wallet.currentAccount)
     } catch (error) {
       this.hideLoading()
       this.alert.showErrorAlert(error)
     }
   }
+
   async claim(pool) {
     if (!this.wallet.currentAccount) {
       this.alert.showConnectAlert()
@@ -182,13 +245,25 @@ export class VoteLandingPage implements OnInit, OnDestroy {
         await this.loadGaugeData()
       }
     })
+    this.netWorkChangeSubscription = this.environmentService.environmentSubject.subscribe(async network => {
+      if(network){
+        this.currency = this.environmentService.environment.config.networkParams.nativeCurrency.symbol
+        this.vaultContract = this.vaultService.contractAt(this.environmentService.environment.config.contracts.CheddaBaseTokenVault)
+        this.lendingPools = this.environmentService.environment.config.pools
+        await this.loadVeChedda()
+        await this.loadGaugeData()
+      }
+    })
   }
 
   private async showLoading(message: string) {
-    this.loader = await this.loadingController.create({
-      message
+    this.loader = await this.modalController.create({
+      component: LoadingModalComponent,
+      componentProps:{
+        'message': message
+      }
     })
-    await this.loader?.present()
+    return await this.loader?.present()
   }
 
   private async hideLoading() {

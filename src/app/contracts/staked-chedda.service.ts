@@ -4,6 +4,7 @@ import { BigNumber, ethers } from 'ethers';
 import { BehaviorSubject } from 'rxjs';
 import StakedChedda from '../../artifacts/StakedChedda.json'
 import { DefaultProviderService } from '../providers/default-provider.service';
+import { EnvironmentProviderService } from '../providers/environment-provider.service';
 import { WalletProviderService } from '../providers/wallet-provider.service';
 
 @Injectable({
@@ -16,13 +17,30 @@ export class StakedCheddaService {
   withdrawSubject: BehaviorSubject<any> = new BehaviorSubject(null)
   depositSubject: BehaviorSubject<any> = new BehaviorSubject(null)
   
-  constructor(provider: DefaultProviderService, private wallet: WalletProviderService, private http: HttpClient) {
-    this.stakedCheddaContract = new ethers.Contract(
-      wallet.currentConfig.contracts.xChedda,
-      StakedChedda.abi,
-      provider.provider
-      );
-      this.registerForEvents()
+  constructor(
+    private provider: DefaultProviderService,
+    private wallet: WalletProviderService,
+    private environmentService: EnvironmentProviderService,
+  ) {
+    this.initializeStakedCheddaContract();
+    this.listenToEvents();
+    this.registerForEvents();
+  }
+  
+  private initializeStakedCheddaContract() {
+    const xCheddaAddress = this.wallet.currentConfig.contracts.xChedda;
+    const stakedCheddaAbi = StakedChedda.abi;
+    const provider = this.provider.provider;
+  
+    this.stakedCheddaContract = new ethers.Contract(xCheddaAddress, stakedCheddaAbi, provider);
+  }
+
+  listenToEvents(){
+    this.environmentService.getEvent().subscribe((network) => {
+      if (network) {
+        this.initializeStakedCheddaContract();
+      }
+    });
   }
 
   async balanceOf(address: string): Promise<BigNumber> {

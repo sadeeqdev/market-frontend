@@ -5,6 +5,7 @@ import { DefaultProviderService } from '../providers/default-provider.service';
 import { WalletProviderService } from '../providers/wallet-provider.service';
 import VeChedda from '../../artifacts/VEToken.json'
 import { BehaviorSubject } from 'rxjs';
+import { EnvironmentProviderService } from '../providers/environment-provider.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,13 +16,27 @@ export class VeCheddaService {
   withdrawSubject: BehaviorSubject<any> = new BehaviorSubject(null)
   depositSubject: BehaviorSubject<any> = new BehaviorSubject(null)
   
-  constructor(provider: DefaultProviderService, private wallet: WalletProviderService, private http: HttpClient) {
-    this.veContract = new ethers.Contract(
-      wallet.currentConfig.contracts.veChedda,
-      VeChedda.abi,
-      provider.provider
-      );
-      this.registerForEvents()
+  constructor(private provider: DefaultProviderService, private wallet: WalletProviderService, private environmentService: EnvironmentProviderService, private http: HttpClient) {
+    this.initializeVeContract();
+    this.listenToEvents();
+    this.registerForEvents();
+  }
+
+  private initializeVeContract() {
+    const veCheddaAddress = this.wallet.currentConfig.contracts.veChedda;
+    const veCheddaAbi = VeChedda.abi;
+    const providerd = this.provider.provider;
+  
+    this.veContract = new ethers.Contract(veCheddaAddress, veCheddaAbi, providerd);
+  }
+
+  listenToEvents(){
+    this.environmentService.getEvent().subscribe((network) => {
+      if (network) {
+        this.initializeVeContract();
+        this.registerForEvents();
+      }
+    });
   }
 
   address(): string {

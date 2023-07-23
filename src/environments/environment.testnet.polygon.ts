@@ -7,6 +7,7 @@ export const environment = {
   environmentName: 'Polygon Mumbai Testnet',
   jsonRpcUrl:
     'https://polygon-mumbai.infura.io/v3/d674ad7889a4404c960e18610cf74a3a',
+  webSocketUrl: 'wss://polygon-mumbai.g.alchemy.com/v2/-7eaLgpDD6dzJaDq2J2FlKM46uEzatAs',
   config: {
     contracts: {
       CheddaBaseTokenVault: '0x801CA2D77CC8e550883E1e649f8f4D6b94D090b5',
@@ -46,14 +47,14 @@ export const environment = {
           name: 'USD Coin',
           symbol: 'USCD.c',
           address: '0xA485898266c91BcBBeF40F5d838423a751bb906d',
-          logo: '/assets/logos/usd-coin-logo.png',
+          logo: '/assets/logos/usdc-logo.png',
         },
         collateral: [
           {
             name: 'Wrapped MATIC',
             symbol: 'WMATIC.c',
             address: '0xe8C7867Ee32479cc7cD60DE28AB18b170cda9313',
-            logo: '/assets/logos/matic-token-icon.png',
+            logo: '/assets/logos/matic-logo.png',
           },
         ],
       },
@@ -71,7 +72,7 @@ export const environment = {
             name: 'Wrapped MATIC',
             symbol: 'WMATIC.c',
             address: '0xe8C7867Ee32479cc7cD60DE28AB18b170cda9313',
-            logo: '/assets/logos/matic-token-icon.png',
+            logo: '/assets/logos/matic-logo.png',
           },
         ],
       },
@@ -89,7 +90,7 @@ export const environment = {
             name: 'Wrapped MATIC',
             symbol: 'WMATIC.c',
             address: '0xe8C7867Ee32479cc7cD60DE28AB18b170cda9313',
-            logo: '/assets/logos/matic-token-icon.png',
+            logo: '/assets/logos/matic-logo.png',
           },
         ],
       },
@@ -100,14 +101,14 @@ export const environment = {
           name: 'Wrapped MATIC',
           symbol: 'WMATIC.c',
           address: '0xe8C7867Ee32479cc7cD60DE28AB18b170cda9313',
-          logo: '/assets/logos/matic-token-icon.png',
+          logo: '/assets/logos/matic-logo.png',
         },
         collateral: [
           {
             name: 'USD Coin',
             symbol: 'USCD.c',
             address: '0xA485898266c91BcBBeF40F5d838423a751bb906d',
-            logo: '/assets/logos/usd-coin-logo.png',
+            logo: '/assets/logos/usdc-logo.png',
           },
           {
             name: 'Dai Stalbcoin',
@@ -130,26 +131,26 @@ export const environment = {
           name: 'USD Coin',
           symbol: 'USCD.c',
           address: '0xA485898266c91BcBBeF40F5d838423a751bb906d',
-          logo: '/assets/logos/usd-coin-logo.png',
+          logo: '/assets/logos/usdc-logo.png',
         },
         collateral: [
           {
             name: 'Quickswap',
             symbol: 'QUICK',
             address: '0x997904432Be92B8f37b986a16E90aB31e4D54891',
-            logo: '/assets/logos/quickswap.png',
+            logo: '/assets/logos/quickswap-logo.png',
           },
           {
             name: 'GALA Games',
             symbol: 'GALA',
             address: '0x76DA732A6fAF51ffd7877aA645BDD456Da686144',
-            logo: '/assets/logos/gala-games-logo.png',
+            logo: '/assets/logos/gala-logo.png',
           },
           {
             name: 'MM Finance',
             symbol: 'MMF',
             address: '0x28518998DB48BEC4a1d6dFe2Dc2a288ad28CC862',
-            logo: '/assets/logos/mmfinance.png',
+            logo: '/assets/logos/mmfinance-logo.png',
           }, 
           {
             name: 'Weird geek',
@@ -171,7 +172,7 @@ export const environment = {
     ],
     ui: {
       chainName: 'Polygon',
-      logo: '/assets/logos/matic-token-icon.png',
+      logo: '/assets/logos/matic-logo.png',
       txUrlPrefix: 'https://mumbai.polygonscan.com/tx/',
     },
   },

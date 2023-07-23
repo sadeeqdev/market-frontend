@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { LendPoolDetailsPageRoutingModule } from './lend-pool-details-routing.module';
 
 import { LendPoolDetailsPage } from './lend-pool-details.page';
+import { SharedComponentsModule } from 'src/app/components/shared-components.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    LendPoolDetailsPageRoutingModule
+    LendPoolDetailsPageRoutingModule,
+    SharedComponentsModule,
   ],
   declarations: [LendPoolDetailsPage]
 })

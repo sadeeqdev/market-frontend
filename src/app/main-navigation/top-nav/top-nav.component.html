@@ -1,4 +1,4 @@
-<ion-header [translucent]="false" class="main-nav">
+ <div class="main-nav">
   <ion-toolbar *ngIf="!isCorrectNetwork" color="danger" class="centered-text text-middle">
     <ion-text class="text-middle white-text">
       <ion-icon name="warning"></ion-icon>
@@ -6,7 +6,41 @@
     </ion-text>
     <ion-button size="small" color="secondary" class="switch-button" (click)="switchNetwork()">Switch Network</ion-button>
   </ion-toolbar>
-  <ion-toolbar color="dark">
+  <!-- New Header -->
+  <div class="h-20 bg-black border-b border-gray-800 flex items-center" [class.top-nav-border]="isScrolled">
+    <div class="flex flex-row justify-between w-11/12 xl:w-11/12 2xl:w-5/6 3xl:w-9/12 mx-auto items-center">
+      <div>
+        <img src="/assets/logos/app-logo.svg" width="70px" class="w-40 md:hidden lg:flex"/>
+        <img src="/assets/logos/chedda-logo.svg" class="w-16 flex lg:hidden"/>
+      </div>
+      <div class="flex flex-row text-white space-x-10 mt-2 text-sm sm:text-lg font-semibold">
+        <button *ngFor="let item of menuItems" class="relative hover:opacity-80" [routerLink]="item.path" routerLinkActive="top-nav-active">
+          <div>
+            {{item.name}}
+          </div>
+          <div class="hidden pacman-loader">
+            <app-pacman-loader></app-pacman-loader>
+          </div>
+        </button>
+      </div>
+      <div class="flex flex-row gap-2 text-white">
+        <app-networks-popover></app-networks-popover>
+        <div *ngIf="account">
+          <app-profile-popover [address]="account"></app-profile-popover>
+        </div>
+        <div *ngIf="!account">
+          <button 
+            (click)="onConnectTapped()"
+            class="h-9 w-32 sm:h-11 sm:w-40 px-2 flex rounded-lg justify-center font-bold text-xs sm:text-lg account_button items-center hover:opacity-90"
+            >
+              Connect wallet
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Old header -->
+  <!-- <ion-toolbar color="dark">
     <ion-row>
       <ion-col></ion-col>
     </ion-row>
@@ -16,7 +50,6 @@
         <img src="/assets/images/chedda-logo-128.png" width="30px" />
       </ion-button>
       <ion-button fill="solid" #networkBtn (click)="presentNetworksPopver($event)">
-      <!-- <ion-button fill="solid" #networkBtn> -->
           <ion-img [src]="env.config.ui.logo" class="network-logo"></ion-img>
         {{ env.config.ui.chainName }}
         <ion-icon name="chevron-down"></ion-icon>
@@ -33,7 +66,6 @@
     </ion-title>
 
     <ion-buttons slot="end" *ngIf="!account">
-
       <ion-button fill="outline" color="light" (click)="onConnectTapped()">
         <ion-icon name="wallet-outline" class="connect-icon"></ion-icon>
         <ion-text>Connect Wallet</ion-text>
@@ -41,20 +73,89 @@
     </ion-buttons>
     
     <ion-buttons slot="end" *ngIf="account">
-      <!-- <ion-button routerLink="/market/create" color="primary" fill="solid">
-        Create
-      </ion-button> -->
       <ion-fab-button class="profile-button" (click)="presentProfilePopover($event)">
         <ion-avatar class="wallet-avatar">
           <ion-img [src]="imageDataUrl" class="wallet-avatar"></ion-img>
         </ion-avatar>
       </ion-fab-button>
     </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+  </ion-toolbar> -->
+</div>
 
-<div class="mobile-nav">
-  <ion-toolbar color="dark">
+<div class="mobile-nav relative">
+  <!-- New header -->
+ <div class="h-20 z-10 w-full bg-black flex items-center mobile-nav-bg">
+  <div class="h-16 w-full items-center grid grid-cols-12">
+    <div class="col-span-5 pl-3">
+      <img src="/assets/logos/chedda-logo.svg" width="50px"/>
+    </div>
+    <div class="col-span-5">
+      <app-networks-popover></app-networks-popover>
+    </div>
+    <div class="col-span-2 flex justify-end pr-5">
+      <button (click)="openMobileNav()">
+        <img src="/assets/icon/menu-icon.svg"/>
+      </button>
+    </div>
+  </div>
+ </div>
+ <!-- Mobile nav drawer -->
+ <div class="absolute text-white z-50 w-screen h-screen mobile-nav-bg top-0 transition-all" [class.mobile-translate]="isMobileNavOpen" [class.mobile-drawer]="!isMobileNavOpen">
+    <div class="flex w-full justify-between px-5 mt-6 items-start">
+      <div class="">
+        <img src="/assets/logos/chedda-logo.svg" width="60px"/>
+      </div>
+      <button class="mt-2" (click)="closeMobileNav()">
+        <img src="/assets/icon/close-icon.svg" width="17px"/>
+      </button>
+    </div>
+    <div>
+      <div class="mt-1 w-full text-white rounded-md shadow-lg z-10" *ngIf="account">
+        <ul class="list-reset text-center text-lg font-semibold">
+          <li class="flex justify-center mt-5">
+            <img [src]="address | blockie:[12, 4]" class="rounded-full" width="95px"/>
+          </li>
+          <li class="py-4 px-2 hover:opacity-70 rounded-t-md cursor-pointer border-b border-gray-700">
+            <div class="flex gap-3 justify-center items-center text-2xl">
+                {{account | truncateMiddle:[6, '...', 4 ]}}
+              <img src="/assets/icon/copy-icon.svg" width="17px"/>
+            </div>
+          </li>
+          <li class="py-2 px-2 border-b border-gray-700">{{cheddaBalance | number: '1.2-4'}} CHEDDA</li>
+          <li class="py-2 px-2 border-b border-gray-700">{{xCheddaBalance | number: '1.2-4'}} xCHEDDA</li>
+          <li class="py-4 px-5 rounded-b-md cursor-pointer flex justify-center items-center">
+            <button
+              (click)="disconnect()"
+              class="h-8 primary-button-bg w-48 rounded-lg font-bold uppercase text-xs hover:opacity-90"
+            >
+              Disconnect wallet
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div *ngIf="!account" class="flex justify-center mt-5">
+      <button
+        (click)="onConnectTapped()"
+        class="h-10 borrow-button-bg w-48 rounded-lg font-bold uppercase text-lg hover:opacity-90"
+      >
+        Connect wallet
+      </button>
+    </div>
+    <div class="mt-2">
+      <div class="flex flex-col text-white gap-y-5 mt-2 text-2xl font-semibold">
+        <button *ngFor="let item of menuItems" class="relative hover:opacity-80" [routerLink]="item.path" routerLinkActive="top-nav-active" (click)="closeMobileNav()" >
+          <div>
+            {{item.name}}
+          </div>
+          <div class="mt-2 hidden pacman-loader">
+            <app-pacman-loader></app-pacman-loader>
+          </div>
+        </button>
+      </div>
+    </div>
+ </div>
+  <!-- <ion-toolbar color="dark">
     <ion-buttons slot="start">
       <ion-menu-toggle>
         <ion-button>
@@ -121,5 +222,5 @@
         </ion-item>
       </ion-menu-toggle>
     </ion-content>
-  </ion-menu>
+  </ion-menu> -->
 </div>

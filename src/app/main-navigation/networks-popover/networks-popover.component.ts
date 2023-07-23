@@ -1,13 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { PopoverController } from '@ionic/angular';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { ModalController } from '@ionic/angular';
+import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';
+import { VaultStatsService } from 'src/app/providers/vault-stats.service';
+import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
+import { environments } from 'src/environments/environments';
 
 @Component({
   selector: 'app-networks-popover',
   templateUrl: './networks-popover.component.html',
   styleUrls: ['./networks-popover.component.scss'],
 })
+
 export class NetworksPopoverComponent implements OnInit {
 
+  env 
   networkList = [
     // {
     //   name: 'Avalanche Testnet',
@@ -20,14 +27,14 @@ export class NetworksPopoverComponent implements OnInit {
     //   icon: '/assets/logos/harmony-logo.png'
     // },
     {
-      name: 'Oasis Testnet',
+      name: 'Oasis',
       url: 'https://testnet-oasis.chedda.store',
-      icon: '/assets/logos/oasis-logo-sm.png'
+      icon: '/assets/logos/wrose-logo.png'
     },
     {
-      name: 'Polygon Testnet',
+      name: 'Polygon',
       url: 'https://testnet-polygon.chedda.store',
-      icon: '/assets/logos/polygon-logo.svg'
+      icon: '/assets/logos/matic-logo.png'
     },
     // {
     //   name: 'Telos Testnet',
@@ -35,12 +42,57 @@ export class NetworksPopoverComponent implements OnInit {
     //   icon: '/assets/logos/tlos-logo.png'
     // },
   ]
-  constructor(private popoverController: PopoverController) { }
+  isOpenNetworkMenu: boolean;
+  netWorkChangeSubscription: Subscription;
+  selectedNetwork: string;
+  loader: any;
+  networkSwitched: boolean = false
 
-  ngOnInit() {}
+  constructor(
+    private environmentService: EnvironmentProviderService,
+    private vaultStatsService: VaultStatsService,
+    private provider: WalletProviderService,
+    ) { 
+    this.env = this.environmentService.environment;
+    this.selectedNetwork = this.env.config.ui.chainName
+  }
 
-  onNetworkSelected(network: any) {
-    this.popoverController.dismiss()
-    window.open(network.url, '_self').focus()
+  ngOnInit() {
+    this.listenToEvents();
+  }
+
+  ngOnDestroy(){
+    this.netWorkChangeSubscription?.unsubscribe;
+  }
+
+  openNetworkMenu(){
+    this.isOpenNetworkMenu = !this.isOpenNetworkMenu
+  }
+
+  async onNetworkSelected(network){
+    const selectedEnvironment = environments.find(item => item.identifier === network);
+    let eth:any = window.ethereum
+    if(eth){
+      await this.provider.addNetwork(selectedEnvironment)
+    }else{
+      this.environmentService.loadEnvironment(selectedEnvironment)
+    }
+    this.isOpenNetworkMenu = false;
+  }
+
+  private async listenToEvents(){
+    this.netWorkChangeSubscription = this.environmentService.environmentSubject.subscribe(async network => {
+      if(network){
+        this.env = network
+        this.vaultStatsService.loadVaultStats();
+      }
+    })
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (!(event.target as HTMLElement).closest('.network-menu-container')) {
+      this.isOpenNetworkMenu = false;
+    }
   }
 }

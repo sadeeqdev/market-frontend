@@ -1,6 +1,5 @@
-<ion-content>
+<!-- <ion-content>
   <ion-grid class="default-background">
-    <!-- main -->
     <ion-row>
       <ion-col size-xs="12" size-sm="10" offset-sm="1" size-md="8" offset-md="2" size-lg="8" offset-lg="2" size-xl="6" offset-xl="3">        <ion-card class="light-background">
           <ion-card-title>
@@ -79,6 +78,7 @@
                   </ion-select>
                 </ion-col>
               </ion-row>
+              NFT code -------------------------------------
               <ion-row *ngIf="collateralContract && !collateralContract.isNFT">
                 <ion-col class="align-items-center">
                   <ion-text>Add {{collateralTokenSymbol}} Collateral</ion-text>&nbsp;
@@ -111,7 +111,7 @@
                   <ion-icon name="exit-outline"></ion-icon>
                 </ion-col>
                 <ion-col class="justify-content-end">
-                  <ion-button size="small" color="primary" fill="clear" (click)="fillMaxBorrow()">Max {{maxBorrowAmount | number:'1.2'}}</ion-button>
+                  <ion-button size="small" color="primary" fill="clear" (click)="fillMaxBorrow()">Max {{maxBorrowAmount  | number:'1.2' | number:'1.2'}}</ion-button>
                 </ion-col>
               </ion-row>
               <ion-row>
@@ -193,7 +193,6 @@
       </ion-col>
     </ion-row>
 
-    <!-- Pool details -->
     <ion-row>
       <ion-col>
         <ion-card>
@@ -203,4 +202,287 @@
     </ion-row>
   </ion-grid>
 
+</ion-content> -->
+
+<ion-content>
+  <ion-grid>
+    <app-page-title
+      heading="Borrow Assets"
+      subHeading="Borrow and Repay assets against your collaterals even in NFTs."
+    ></app-page-title>
+    <div class="w-11/12 xl:w-11/12 2xl:w-5/6 3xl:w-9/12 mx-auto">
+      <button class="flex items-center mt-6 text-[#5DDEFA] text-xs font-semibold hover:opacity-80" (click)="navigateToMarkets()">
+        <img src="/assets/icon/back-icon.png" class="w-2 mr-1.5">
+        Back to Market
+      </button>
+    </div>
+    <div
+      class="w-11/12 md:w-[540px] h-auto mx-auto rounded-[30px] my-10 text-white card-bg"
+    >
+      <div
+        class="h-16 sm:h-20 border-b flex items-center space-x-2 justify-center border-gray-700"
+      >
+        <div class="w-7 h-7" *ngIf="pool">
+          <img [src]="pool.asset.logo">
+        </div>
+        <div *ngIf="pool" class="text-lg sm:text-xl">Borrow {{ pool.asset.name }}</div>
+      </div>
+      <div class="pt-3 pb-8 px-6 sm:px-8">
+        <div class="h-auto w-full flex text-[#B5C2EB]">
+          <div
+            [class.activeTab]="isBorrowCheddaTab"
+            class="py-3 w-full text-center hover:opacity-75 uppercase hover:bg-transparent"
+          >
+            <button
+              class="text-sm w-full font-semibold uppercase"
+              (click)="switchBorrowCheddaTab(true)"
+            >
+              Borrow
+            </button>
+          </div>
+          <div
+            [class.activeTab]="!isBorrowCheddaTab"
+            class="py-3 w-full text-center hover:opacity-75 uppercase font-semibold"
+          >
+            <button 
+              class="text-sm w-full font-semibold uppercase" 
+              (click)="switchBorrowCheddaTab(false)"
+            >
+              Repay
+            </button>
+          </div>
+        </div>
+        <div *ngIf="isBorrowCheddaTab">
+          <div class="mt-4 flex justify-between items-center">
+            <div class="opacity-50 text-sm sm:text-lg font-semibold">Deposit Collateral</div>
+            <app-select-popover 
+              [collaterals]="collaterals" 
+              [selectedCollateral]="collateralTokenSymbol" 
+              (changed)="onCollateralTypeChanged($event)">
+            </app-select-popover>
+          </div>
+          <div
+            *ngIf="collateralContract && !collateralContract.isNFT"
+            class="text-xs mt-6 flex justify-between text-lavendar-purple"
+          >
+            <div class="opacity-50 ">Add Collateral</div>
+            <div class="font-semibold">Balance: {{myCollateralTokenBalance | number:'1.2-4'}} {{collateralTokenSymbol}}</div>
+          </div>
+          <div
+            *ngIf="collateralContract && !collateralContract.isNFT"
+            class="relative"
+          >
+            <input
+              type="number"
+              placeholder="Amount"
+              (input)="setBorrowMode('collateral')"
+              #addCollateralInput
+              class="bg-black w-full rounded mt-2 h-10 sm:h-14 px-4 font-semibold text-white text-xs sm:text-sm focus:outline-none focus:shadow-outline"
+            />
+            <div class="absolute top-0 right-0 mt-3 sm:mt-4 mr-1 sm:mr-2">
+              <button
+                (click)="fillMaxDeposit()"
+                class="w-auto px-4 h-[31px] sm:h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-xs sm:text-sm text-[#ffffff50] hover:text-white uppercase"
+              >
+                Max
+              </button>
+            </div>
+          </div>
+          <div *ngIf="collateralContract && collateralContract.isNFT">
+            <div *ngIf="ownedNFTs.length === 0">
+              <div class="text-sm opacity-50 mt-5">
+                No matching NFTs in wallet
+              </div>
+            </div>
+            <div *ngIf="ownedNFTs.length !== 0">
+              <div class="text-sm opacity-50 mt-5">
+                Select NFTs to be deposited
+              </div>
+              <div class="flex gap-x-4 flex-wrap" >
+                <div *ngFor="let nft of ownedNFTs" 
+                  class="w-24 h-36 mt-5 bg-black rounded-sm nft-container" 
+                  [ngClass]="nft.isSelected ? 'selected-nft' : ''"
+                  (click)="selectNFT(nft)"
+                >
+                  <img
+                    [src]="nft.image"
+                    class="img-collateral rounded-t-sm "
+                  >
+                  <div class="p-1 text-xs">{{nft.description}}</div>
+                  <div class="px-1 text-xs">{{nft.name}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="opacity-50 mt-4 text-sm sm:text-lg font-semibold">Borrow</div>
+          <div
+            *ngIf="collateralContract && !collateralContract.isNFT"
+            class="text-xs mt-4 flex justify-between text-lavendar-purple"
+          >
+            <div class="opacity-50 ">Borrow {{assetSymbol}}</div>
+            <div class="font-semibold">Max: {{maxBorrowAmount | number:'1.2'}} {{assetSymbol}}</div>
+          </div>
+          <div class="relative">
+            <input
+              type="number"
+              placeholder="Amount"
+              (input)="setBorrowMode('borrow')"
+              #borrowInput
+              class="bg-black w-full rounded mt-2 h-10 sm:h-14 px-4 font-semibold text-white text-xs sm:text-sm focus:outline-none focus:shadow-outline"
+            />
+            <div class="absolute top-0 right-0 mt-3 sm:mt-4 mr-1 sm:mr-2">
+              <button
+                (click)="fillMaxBorrow()"
+                class="w-auto px-3 sm:px-4 h-[31px] sm:h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-xs sm:text-sm text-[#ffffff50] hover:text-white uppercase"
+              >
+                Max
+              </button>
+            </div>
+          </div>
+          <app-primary-button
+            [buttonText]="'Approve ' + collateralTokenSymbol"
+            [visibility]="!isApproved"
+            (clicked)="approveCollateral()"
+          ></app-primary-button>
+          <app-primary-button
+            [buttonText]="'Deposit ' + collateralTokenSymbol"
+            [visibility]="isApproved && borrowMode == 'collateral'"
+            (clicked)="addCollateral()"
+          ></app-primary-button>
+          <app-primary-button
+            [buttonText]="'Borrow ' + assetSymbol"
+            [visibility]="isApproved && borrowMode == 'borrow'"
+            (clicked)="borrowAsset()"
+          ></app-primary-button>
+        </div>
+        <!-- Repay -->
+        <div *ngIf="!isBorrowCheddaTab">
+          <div class="mt-4 flex justify-between items-center">
+            <div class="opacity-50 text-sm sm:text-lg font-semibold">Withdraw Collateral</div>
+            <app-select-popover 
+              [collaterals]="collaterals" 
+              [selectedCollateral]="collateralTokenSymbol" 
+              (changed)="onCollateralTypeChanged($event)">
+            </app-select-popover>
+          </div>
+          <div
+            *ngIf="collateralContract && !collateralContract.isNFT"
+            class="text-xs mt-6 flex justify-between text-lavendar-purple"
+          >
+            <div class="opacity-50 ">Withdraw {{collateralTokenSymbol}}</div>
+            <div class="font-semibold">Balance: {{myCollateralDeposited | number:'1.2'}} {{collateralTokenSymbol}}</div>
+          </div>
+          <div
+            *ngIf="collateralContract && !collateralContract.isNFT"
+            class="relative"
+          >
+            <input
+              type="number"
+              placeholder="Amount"
+              (input)="setRepayMode('collateral')"
+              #withdrawCollateralInput
+              class="bg-black w-full rounded mt-2 h-10 sm:h-14 px-4 font-semibold text-white text-xs sm:text-sm focus:outline-none focus:shadow-outline"
+            />
+            <div class="absolute top-0 right-0 mt-3 mr-1 sm:mt-4 sm:mr-2">
+              <button
+                (click)="fillMaxWithdraw()"
+                class="w-auto px-4 h-[31px] sm:h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-xs sm:text-sm text-[#ffffff50] hover:text-white uppercase"
+              >
+                Max
+              </button>
+            </div>
+          </div>
+          <div *ngIf="collateralContract && collateralContract.isNFT">
+            <div *ngIf="myNftsCollateral.length === 0">
+              <div class="text-sm opacity-50 mt-5">
+                No matching NFTs in wallet
+              </div>
+            </div>
+            <div *ngIf="myNftsCollateral.length !== 0">
+              <div class="text-sm opacity-50 mt-5">
+                Select NFTs to be deposited
+              </div>
+              <div class="flex gap-x-4 flex-wrap" >
+                <div *ngFor="let nft of myNftsCollateral" 
+                  class="w-24 h-36 mt-5 bg-black rounded-sm nft-container" 
+                  [ngClass]="nft.isSelected ? 'selected-nft' : ''"
+                  (click)="selectNFT(nft)"
+                >
+                  <img
+                    [src]="nft.image"
+                    class="img-collateral rounded-t-sm "
+                  >
+                  <div class="p-1 text-xs">{{nft.description}}</div>
+                  <div class="px-1 text-xs">{{nft.name}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="opacity-50 mt-4 text-sm sm:text-lg font-semibold">Repay</div>
+          <div
+            class="text-xs mt-4 flex justify-between text-lavendar-purple"
+          >
+            <div class="opacity-50 ">Repay {{assetSymbol}}</div>
+            <div class="font-semibold">Max: {{myAmountOwed | number:'1.2'}} {{assetSymbol}}</div>
+          </div>
+          <div class="relative">
+            <input
+              type="number"
+              placeholder="Amount"
+              (input)="setRepayMode('repay')"
+              #repayInput
+              class="bg-black w-full rounded mt-2 h-10 sm:h-14 px-4 font-semibold text-white text-xs sm:text-sm focus:outline-none focus:shadow-outline"
+            />
+            <div class="absolute top-0 right-0 mt-3 mr-1 sm:mt-4 sm:mr-2">
+              <button
+                (click)="fillMaxRepay()"
+                class="w-auto px-3 sm:px-4 h-[31px] sm:h-[41px] bg-[#20173F] rounded flex justify-center items-center hover:bg-[#4e26e0] text-xs sm:text-sm text-[#ffffff50] hover:text-white uppercase"
+              >
+                Max
+              </button>
+            </div>
+          </div>
+          <app-secondary-button
+            [buttonText]="'Repay ' + assetSymbol"
+            [visibility]="repayMode == 'repay'"
+            (clicked)="repay()"
+          ></app-secondary-button>
+          <app-secondary-button
+            [buttonText]="'Withdraw ' + collateralTokenSymbol"
+            [visibility]="repayMode == 'collateral'"
+            (clicked)="removeCollateral()"
+          ></app-secondary-button>
+        </div>
+        <div
+          class="w-full flex justify-between h-auto mt-4 rounded-[20px] border-[1px] border-[#bab9bb] text-white px-5 py-4 sm:px-8 sm:py-6"
+        >
+          <div class="flex flex-col gap-y-4 justify-between text-xs sm:text-sm text-[#999898] font-bold">
+            <div>My Collateral</div>
+            <div>Available Liquidity</div>
+            <div>Utilization</div>
+            <div>Deposit APY</div>
+            <div>Rewards APY</div>
+          </div>
+          <div class="flex flex-col gap-y-4 justify-between font-bold text-xs sm:text-sm">
+            <div>
+              {{ myCollateralDeposited | number:'1.2-4'}}
+              {{collateralTokenSymbol}}
+            </div>
+            <div>
+              {{totalVaultAssets | number:'1.2-6'}} {{ assetSymbol }}
+            </div>
+            <div>
+              {{utilizationRate | number:'1.2-3'}}%
+            </div>
+            <div>
+              {{depositApy | number:'1.2-3'}}%
+            </div>
+            <div>
+              {{rewardsApy | number:'1.2-3'}}%
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-grid>
 </ion-content>

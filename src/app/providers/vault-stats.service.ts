@@ -3,29 +3,41 @@ import { BigNumber, ethers } from 'ethers';
 import { BehaviorSubject } from 'rxjs';
 import { CheddaBaseTokenVaultService } from 'src/app/contracts/chedda-base-token-vault.service';
 import { PriceOracleService } from 'src/app/contracts/price-oracle.service';
-import { LendingPool, Loan } from 'src/app/lend/lend.models';
-import { environment } from 'src/environments/environment';
-
+import { LendingPool } from 'src/app/lend/lend.models';
+import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';
 @Injectable({
   providedIn: 'root'
 })
 export class VaultStatsService {
-  items = []
-  pools: LendingPool[] = []
-  lendingPoolsSubject : BehaviorSubject<any> = new BehaviorSubject(null)
+  items = [];
+  pools: LendingPool[] = [];
+  lendingPoolsSubject : BehaviorSubject<any> = new BehaviorSubject(null);
+  environment;
+
 
   constructor(
     private priceFeed: PriceOracleService,
     private vaultService: CheddaBaseTokenVaultService,
-  ) { }
+    private environmentService: EnvironmentProviderService
+  ) {
+    this.environment = environmentService.environment
+    this.listenToevents();
+  }
+
+  listenToevents(){
+    this.environmentService.getEvent().subscribe((network) => {
+      if(network){
+        this.environment = network
+      }
+    });
+  }
 
   async loadVaultStats() {
-    this.pools = environment.config.pools
+    this.pools = this.environment.config.pools
     this.lendingPoolsSubject.next(this.pools)
     try {
       this.pools.forEach(async pool => {
-        await this.loadStats(pool)
-
+        await this.loadStats(pool);
       }); 
     } catch (error) {
       console.error('caught error: ', error)

@@ -1,7 +1,26 @@
-<ion-item *ngFor="let network of networkList; index as i" (click)="onNetworkSelected(network)" class="network-item">
-  <ion-avatar>
-    <ion-img [src]="network.icon" class="network-icon"></ion-img>
-  </ion-avatar>
-  <ion-text class="network-text">{{ network.name }}</ion-text>
-  <!-- <ion-item-divider *ngIf="i != networkList.length - 1"></ion-item-divider> -->
-</ion-item>
+<div class="relative network-menu-container">
+  <button 
+    (click)="openNetworkMenu()"
+    class="h-10 w-36 sm:h-11 lg:w-32 p-2 rounded sm:rounded-lg network_button flex justify-evenly items-center text-sm lg:text-[16px] font-semibold hover:opacity-90"
+    >
+      <div><img [src]="env.config.ui.logo" class="w-6 h-6 lg:h-7 lg:w-7"/></div>
+      <div>{{ env.config.ui.chainName }}</div>
+      <div><img src="/assets/icon/arrow-down.svg" class="w-2.5 h-2.5"/></div>
+  </button>
+  <div 
+    [class.hidden]="!isOpenNetworkMenu"
+    id="mySelectMenu" 
+    class="absolute mt-1 w-full bg-[#13161F] text-white menu-bg rounded-[10px] shadow-lg z-10"
+  >
+    <ul class="list-reset">
+      <li 
+        *ngFor="let network of networkList; index as i" 
+        (click)="onNetworkSelected(network.name)" 
+        class="py-2 px-2 border-b border-gray-700 hover:bg-gray-700 hover:rounded-t-md cursor-pointer flex items-center text-sm sm:text-[16px] font-semibold gap-2 last:border-none hover:last:rounded-t-none last:rounded-b-md"
+      >
+        <img [src]="network.icon" class="w-6 h-6 lg:h-7 lg:w-7"/>
+        {{ network.name }}
+      </li>
+    </ul>
+  </div>
+</div>

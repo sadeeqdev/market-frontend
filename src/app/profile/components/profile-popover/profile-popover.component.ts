@@ -4,16 +4,15 @@ import { PopoverController } from '@ionic/angular';
 import { ethers } from 'ethers';
 import { TokenService } from 'src/app/contracts/token.service';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
-import { environment } from 'src/environments/environment';
-import { Profile } from '../../profile.interface';
+import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';import { Profile } from '../../profile.interface';
 
 @Component({
-  selector: 'app-profile-popover',
+  selector: 'app-no-profile-popover',
   templateUrl: './profile-popover.component.html',
   styleUrls: ['./profile-popover.component.scss'],
 })
 
-export class ProfilePopoverComponent implements OnInit {
+export class NoProfilePopoverComponent implements OnInit {
 
   address: string
   profile: Profile
@@ -27,12 +26,13 @@ export class ProfilePopoverComponent implements OnInit {
     private router: Router,
     private wallet: WalletProviderService,
     private tokenService: TokenService,
-    private popoverController: PopoverController
+    private popoverController: PopoverController,
+    private environmentService: EnvironmentProviderService
   ) { }
 
   ngOnInit() {
-    this.cheddaContract = this.tokenService.contractAt(environment.config.contracts.Chedda)
-    this.stakedCheddaContract = this.tokenService.contractAt(environment.config.contracts.xChedda)
+    this.cheddaContract = this.tokenService.contractAt(this.environmentService.environment.config.contracts.Chedda)
+    this.stakedCheddaContract = this.tokenService.contractAt(this.environmentService.environment.config.contracts.xChedda)
     this.listenForTransfers()
     this.checkBalance()
   }

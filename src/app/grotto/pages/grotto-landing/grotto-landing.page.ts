@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { IonInput, IonRange, LoadingController } from '@ionic/angular';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { BigNumber, ethers } from 'ethers';
 import moment from 'moment';
 import { Subscription } from 'rxjs';
@@ -8,9 +8,10 @@ import { FaucetService } from 'src/app/contracts/faucet.service';
 import { StakedCheddaService } from 'src/app/contracts/staked-chedda.service';
 import { VeCheddaService } from 'src/app/contracts/ve-chedda.service';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
+import { LoadingModalComponent } from 'src/app/shared/components/loading-modal/loading-modal.component';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
-import { environment } from 'src/environments/environment';
-
+import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';
+import { ButtonService } from 'src/app/shared/button.service';
 interface Token {
   name: string
   logo: string
@@ -25,19 +26,17 @@ interface Token {
 })
 export class GrottoLandingPage implements OnInit, OnDestroy {
 
-  @ViewChild('stakeInput') stakeInput: IonInput
-  @ViewChild('unstakeInput') unstakeInput: IonInput
-  @ViewChild('lockInput') lockInput: IonInput
-  @ViewChild('unlockInput') unlockInput: IonInput
-  @ViewChild('lockRange')lockRange: IonRange
+  @ViewChild('stakeInput') stakeInput: ElementRef
+  @ViewChild('unstakeInput') unstakeInput: ElementRef
+  @ViewChild('lockInput') lockInput: ElementRef
+  @ViewChild('unlockInput') unlockInput: ElementRef
+  @ViewChild('lockRange')lockRange: ElementRef
   cheddaTotalSupply
   myCheddaBalance = '0'
   myStakedCheddaBalance = '0'
   myVeCheddaBalance = '0'
   myXCheddaLocked = '0'
   cheddaStakingAPR
-  currentStakeSegment = 'stake'
-  currentLockSegment = 'lock'
   loader?
   isCheddaApproved = false
   isXCheddaApproved = false
@@ -48,40 +47,13 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
   veCheddaDepositSubscription?: Subscription
   withdrawSubscription?: Subscription
   lockExpiry: string
+  isStakeTab: boolean = true;
+  isLockCheddaTab: boolean = true
+  lockRangeValue: any = 1
+  environment: any = []
+  tokens: Token[]; 
+  netWorkChangeSubscription: Subscription;
 
-  tokens: Token[] = [
-    {
-      name: 'CHEDDA',
-      logo: '/assets/logos/chedda-logo-square.png',
-      address: environment.config.contracts.Chedda
-    },
-    {
-      name: 'USDC.c',
-      logo: '/assets/logos/usd-coin-logo.png',
-      address: environment.config.contracts.USDC
-    },
-    {
-      name: 'DAI.c',
-      logo: '/assets/logos/dai-logo.png',
-      address: environment.config.contracts.DAI
-    },
-    {
-      name: 'UXD',
-      logo: '/assets/logos/uxd-logo.png',
-      address: environment.config.contracts.UXD
-    },
-    {
-      name: environment.config.pools[0].collateral[0].symbol,
-      logo: environment.config.pools[0].collateral[0].logo,
-      address: environment.config.pools[0].collateral[0].address
-    },
-    {
-      name: 'WGK',
-      logo: '/assets/logos/wgk-logo.png',
-      address: environment.config.contracts.NFT,
-      isNFT: true 
-    }
-  ]
   constructor(
     private faucet: FaucetService,
     private wallet: WalletProviderService,
@@ -89,16 +61,58 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     private xChedda: StakedCheddaService,
     private veChedda: VeCheddaService,
     private alert: GlobalAlertService,
-    private loadingController: LoadingController) {
+    private modalController: ModalController,
+    private environmentService: EnvironmentProviderService,
+    private buttonService: ButtonService,
+
+    ) {
 
       // Checks if acount is changed or disconnected
       // Updates chedda balance according to account selected 
-      let eth:any = window.ethereum
+    this.environment = this.environmentService.environment
+    let eth:any = window.ethereum
+
+    if(eth){
       eth.on('accountsChanged', (accounts: any) => {
-          this.loadCheddaStats()
-          this.loadVeCheddaStats()
+        this.loadCheddaStats()
+        this.loadVeCheddaStats()
       });
     }
+
+    this.tokens = [
+      {
+        name: 'CHEDDA',
+        logo: '/assets/logos/chedda-3d-logo.png',
+        address: this.environment.config.contracts.Chedda
+      },
+      {
+        name: 'USDC.c',
+        logo: '/assets/logos/usdc-logo.png',
+        address: this.environment.config.contracts.USDC
+      },
+      {
+        name: 'DAI.c',
+        logo: '/assets/logos/dai-logo.png',
+        address: this.environment.config.contracts.DAI
+      },
+      {
+        name: 'FRAX',
+        logo: '/assets/logos/frax-logo.png',
+        address: this.environment.config.contracts.UXD
+      },
+      {
+        name: this.environment.config.pools[0].collateral[0].symbol,
+        logo: this.environment.config.pools[0].collateral[0].logo,
+        address: this.environment.config.pools[0].collateral[0].address
+      },
+      {
+        name: 'WGK',
+        logo: '/assets/logos/wgk-logo.png',
+        address: this.environment.config.contracts.NFT,
+        isNFT: true 
+      }
+    ]
+  }
 
 
   async ngOnInit() {
@@ -106,6 +120,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     await this.loadVeCheddaStats()
     await this.checkAllowance()
     await this.listenForEvents()
+    this.environment = this.environmentService.environment
   }
 
   ngOnDestroy(): void {
@@ -114,6 +129,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     this.cheddaTransferSubscription?.unsubscribe()
     this.xCheddaDepositSubscription?.unsubscribe()
     this.withdrawSubscription?.unsubscribe()
+    this.netWorkChangeSubscription?.unsubscribe()
   }
 
   async loadCheddaStats() {
@@ -148,6 +164,18 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     } catch (error) {
       this.alert.showErrorAlert(error) 
     }
+  }
+
+  async handleAddTokenClicked(token){
+    this.buttonService.handleTransactionButton(async() => {
+      await this.addTokenToMetamask(token)
+    });
+  }
+
+  async handleDripClicked(token){
+    this.buttonService.handleTransactionButton(async() => {
+      await this.drip(token)
+    });
   }
 
   async addTokenToMetamask(token) {
@@ -189,7 +217,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       this.alert.showConnectAlert()
       return
     }
-    const amount = ethers.utils.parseEther(this.stakeInput.value.toString() ?? '0')
+    const amount = ethers.utils.parseEther(this.stakeInput.nativeElement.value.toString() ?? '0')
     const cheddaBalance = ethers.utils.parseEther(this.myCheddaBalance)
     console.log('amount to stake: ', amount)
     if (amount.gt(cheddaBalance)){
@@ -197,9 +225,9 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       return
     }
     try {
-      await this.showLoading('Waiting for confirmation')
+      await this.showLoading('Waiting for Confirmation')
       await this.xChedda.stake(amount)
-      this.stakeInput.value = ''
+      this.stakeInput.nativeElement.value = ''
     } catch (error) {
       await this.hideLoading()
       this.alert.showErrorAlert(error)
@@ -211,16 +239,16 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       this.alert.showConnectAlert()
       return
     }
-    const amount = ethers.utils.parseEther(this.unstakeInput.value.toString() ?? '0')
+    const amount = ethers.utils.parseEther(this.unstakeInput.nativeElement.value.toString() ?? '0')
     const stakedBalance = ethers.utils.parseEther(this.myStakedCheddaBalance)
     if (amount.gt(stakedBalance)){
       this.alert.showMessageAlert('Can not unstake', 'Insufficient sCHEDDA balance')
       return
     }
     try {
-      this.showLoading('Waiting for confirmation')
+      this.showLoading('Waiting for Confirmation')
       await this.xChedda.unstake(amount)
-      this.unstakeInput.value = ''
+      this.unstakeInput.nativeElement.value = ''
     } catch (error) {
       this.alert.showErrorAlert(error)
     }
@@ -232,13 +260,13 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       return
     }
     try {
-      const lockInputValue = this.lockInput.value
+      const lockInputValue = this.lockInput.nativeElement.value
       if (!lockInputValue) {
         this.alert.showToast('Invalid lock time')
         return
       }
       const amount = ethers.utils.parseEther(lockInputValue.toString())
-      const weeks = this.lockRange.value.toString()
+      const weeks = this.lockRange.nativeElement.value.toString()
       const unlockTime = moment().add(weeks, 'weeks').unix()
       console.log('unlock time = ', unlockTime)
       console.log('amount = ', amount)
@@ -261,13 +289,21 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     }
   }
 
+  switchStakeTab(isStakeTab:boolean) {
+    this.isStakeTab = isStakeTab;
+  }
+
+  switchLockCheddaTab(isLockTab:boolean){
+    this.isLockCheddaTab = isLockTab
+  }
+
   async approveChedda() {
     if (!this.wallet.currentAccount) {
       this.alert.showConnectAlert()
       return
     }
     try {
-      await this.showLoading('Waiting for approval')
+      await this.showLoading('Waiting for Approval')
       await this.chedda.approve(this.xChedda.address())
     } catch (error) {
       this.isCheddaApproved = false
@@ -282,7 +318,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       return
     }
     try {
-      await this.showLoading('Waiting for approval')
+      await this.showLoading('Waiting for Approval')
       await this.xChedda.approve(this.veChedda.address())
     } catch (error) {
       this.isXCheddaApproved = false
@@ -291,35 +327,30 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     }
   } 
 
-  onStakeSegmentChanged($event) {
-    this.currentStakeSegment = $event.target.value
-  }
-
-  onLockSegmentChanged($event) {
-    this.currentLockSegment = $event.target.value
-  }
-
   fillMaxStake() {
-    this.stakeInput.value = this.myCheddaBalance
+    this.stakeInput.nativeElement.value = this.myCheddaBalance
   }
 
   fillMaxUnstake() {
-    this.unstakeInput.value = this.myStakedCheddaBalance
+    this.unstakeInput.nativeElement.value = this.myStakedCheddaBalance
   }
 
   fillMaxLock() {
-    this.lockInput.value = this.myStakedCheddaBalance
+    this.lockInput.nativeElement.value = this.myStakedCheddaBalance
   }
 
   fillMaxUnlock() {
-    this.unlockInput.value = ''
+    this.unlockInput.nativeElement.value = ''
   }
 
   private async showLoading(message: string) {
-    this.loader = await this.loadingController.create({
-      message
+    this.loader = await this.modalController.create({
+      component: LoadingModalComponent,
+      componentProps:{
+        'message': message
+      }
     })
-    await this.loader?.present()
+    return await this.loader?.present()
   }
 
   private async hideLoading() {
@@ -379,9 +410,18 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     this.withdrawSubscription = this.xChedda.withdrawSubject.subscribe(async res => {
       console.log('withdraw received: ', res)
       if (this.wallet && this.wallet.currentAccount && res && res.from.toLowerCase() == this.wallet.currentAccount.toLowerCase()) {
-        await this.hideLoading()
-        await this.alert.showToast('Withdrawal confirmed')
-        await this.loadCheddaStats()
+        await this.hideLoading();
+        await this.alert.showToast('Withdrawal confirmed');
+        await this.loadCheddaStats();
+      }
+    })
+
+    this.netWorkChangeSubscription = this.environmentService.environmentSubject.subscribe(async network => {
+      if(network){
+        await this.loadCheddaStats();
+        await this.loadVeCheddaStats();
+        await this.checkAllowance();
+        return;
       }
     })
   }

@@ -1,0 +1,17 @@
+<div class="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center text-white">
+  <div class="inner-card-bg p-[0.4px] rounded-lg w-10/12 sm:w-[370px]">
+    <div class="card-bg rounded-lg p-6 sm:py-7 sm:px-12 shadow-md flex flex-col items-center">
+      <h2 class="text-xl sm:text-2xl font-semibold text-white">{{heading}}</h2>
+      <div class="text-center mt-3 sm:mt-4 text-sm sm:text-sm text-ellipsis flex-wrap w-10/12 sm:w-[355px]">
+        {{message | slice:0:200}}
+      </div>  
+      <div class="flex text-sm flex-col-reverse gap-y-2 sm:gap-y-0 sm:flex-row gap-x-12 mt-3 sm:mt-5 items-center justify-center" *ngIf="actionText">
+        <button class="reset text-lavendar-purple font-semibold hover:opacity-80 uppercase" (click)="cancelAction()">Cancel</button>
+        <button class="gradient-text font-semibold hover:opacity-80 uppercase" (click)="modalAction()">{{actionText}}</button>
+      </div>    
+      <div class="flex text-sm gap-x-4 mt-3 sm:mt-5" (click)="cancelAction()" *ngIf="!actionText">
+        <button class="gradient-text font-semibold hover:opacity-80 uppercase">Close</button>
+      </div>    
+    </div>
+  </div>
+</div>

@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IonInput, LoadingController, NavController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 import { BigNumber, ethers } from 'ethers';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { CheddaBaseTokenVaultService } from 'src/app/contracts/chedda-base-token-vault.service';
@@ -8,8 +8,9 @@ import { TokenService } from 'src/app/contracts/token.service';
 import { LendingPool } from 'src/app/lend/lend.models';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
-import { environment } from 'src/environments/environment';
-import { VaultStatsService } from 'src/app/providers/vault-stats.service';
+import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';import { VaultStatsService } from 'src/app/providers/vault-stats.service';
+import { ModalController } from '@ionic/angular';
+import { LoadingModalComponent } from 'src/app/shared/components/loading-modal/loading-modal.component';
 
 export interface VaultStats {
   borrowApr: number
@@ -25,10 +26,9 @@ export interface VaultStats {
 })
 export class LendPoolDetailsPage implements OnInit, OnDestroy {
 
-  @ViewChild('depositInput') depositInput: IonInput
-  @ViewChild('withdrawInput') withdrawInput: IonInput
+  @ViewChild('depositInput') depositInput:ElementRef;
+  @ViewChild('withdrawInput') withdrawInput:ElementRef;
   isApproved = false
-  currentSegment = 'deposit'
   asset
   vaultContract
   stats?: VaultStats
@@ -43,7 +43,6 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
   assetSymbol
   vaultTokenSymbol
   loader?
-
   utilizationRate = '0'
   depositApy = '0'
   rewardsApy = '0'
@@ -51,24 +50,27 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
   aprPrecision = BigNumber.from(100000000000)
   routeSubscription: Subscription
   pool: LendingPool
+  isDepositCheddaTab: boolean = true;
 
   constructor(
     private tokenService: TokenService, 
     private vaultService: CheddaBaseTokenVaultService,
     private vaultStatsService: VaultStatsService,
     private wallet: WalletProviderService,
-    private loadingController: LoadingController,
     private route: ActivatedRoute,
     private router: Router,
     private navController: NavController,
-    private alert: GlobalAlertService) { }
+    private alert: GlobalAlertService,
+    private modalController: ModalController, 
+    private environmentService: EnvironmentProviderService
+    ) { }
 
   async ngOnInit() {
     await this.setup()
   }
 
   ngOnDestroy(): void {
-    this.walletSubscription?.unsubscribe()
+    this.walletSubscription?.unsubscribe();
   }
 
   private async setup() {
@@ -103,16 +105,12 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
   }
 
   private findPoolWithId(id: string): LendingPool | null {
-    for (const pool of environment.config.pools) {
+    for (const pool of this.environmentService.environment.config.pools) {
       if (pool.address.toLowerCase() == id.toLocaleLowerCase()) {
         return pool
       }
     }
     return null
-  }
-  
-  onSegmentChanged($event) {
-    this.currentSegment = $event.target.value
   }
 
   private async loadVaultStats() {
@@ -138,7 +136,7 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
       return
     }
     try {
-      this.showLoading('Waiting for approval')
+      this.showLoading('Waiting for Approval')
       const totalSupply = await this.tokenService.totalSupply(this.asset)
       await this.tokenService.approve(this.asset, this.vaultContract.address, totalSupply)
     } catch (error) {
@@ -153,9 +151,9 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
       return
     }
     try {
-      await this.showLoading('Waiting for confirmation')
-      const amount = ethers.utils.parseUnits(this.depositInput.value.toString() ?? '0')
-      this.depositInput.value = ''
+      await this.showLoading('Waiting for Confirmation')
+      const amount = ethers.utils.parseUnits(this.depositInput.nativeElement.value.toString() ?? '0')
+      this.depositInput.nativeElement.value = ''
       await this.vaultService.depositAsset(this.vaultContract, amount, this.wallet.currentAccount) 
     } catch (error) {
       await this.hideLoading()
@@ -169,9 +167,9 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
       return
     }
     try {
-      await this.showLoading('Waiting for confirmation')
-      const amount = ethers.utils.parseUnits(this.withdrawInput.value.toString() ?? '0')
-      this.withdrawInput.value = ''
+      await this.showLoading('Waiting for Confirmation')
+      const amount = ethers.utils.parseUnits(this.withdrawInput.nativeElement.value.toString() ?? '0')
+      this.withdrawInput.nativeElement.value = ''
       await this.vaultService.redeem(this.vaultContract, amount, this.wallet.currentAccount) 
     } catch (error) {
       await this.hideLoading()
@@ -180,11 +178,15 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
   }  
 
   fillMaxDeposit() {
-    this.depositInput.value = this.myAssetBalance
+    this.depositInput.nativeElement.value = this.myAssetBalance
   }
 
   fillMaxWithdraw() {
-    this.withdrawInput.value = this.myVaultSharesBalance
+    this.withdrawInput.nativeElement.value = this.myVaultSharesBalance
+  }
+
+  navigateToMarkets(){
+    this.router.navigate(['/lend']);
   }
 
   private async registerEventListeners() {
@@ -219,6 +221,10 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
     })
   }
 
+  async switchDepositCheddaTab(isDepositTab:boolean){
+    this.isDepositCheddaTab = isDepositTab
+  }
+
   private async checkAllowance() {
     if (!this.wallet || !this.wallet.currentAccount) {
       return
@@ -228,10 +234,13 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
   }
 
   private async showLoading(message: string) {
-    this.loader = await this.loadingController.create({
-      message
+    this.loader = await this.modalController.create({
+      component: LoadingModalComponent,
+      componentProps:{
+        'message': message
+      }
     })
-    await this.loader?.present()
+    return await this.loader?.present()
   }
 
   private async hideLoading() {
