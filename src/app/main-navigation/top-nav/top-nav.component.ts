@@ -1,6 +1,5 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { PopoverController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { Profile } from 'src/app/profile/profile.interface';
 import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
@@ -73,7 +72,6 @@ export class TopNavComponent implements OnInit, OnDestroy {
     private xChedda: StakedCheddaService,
     private wallet: WalletProviderService,
     private alertService: GlobalAlertService,
-    private popoverController: PopoverController,
     private environmentService: EnvironmentProviderService
     ) {
       this.env = this.environmentService.environment
@@ -111,6 +109,7 @@ export class TopNavComponent implements OnInit, OnDestroy {
       this.accountSubscription?.unsubscribe()
       this.networkSubscription?.unsubscribe()
       this.balanceSubscription?.unsubscribe()
+      this.changeNetworkSubscription?.unsubscribe()
   }
 
   async onConnectTapped() {
@@ -133,15 +132,15 @@ export class TopNavComponent implements OnInit, OnDestroy {
     })
 
     this.networkSubscription = this.provider.networkSubject.subscribe(async chainId => {
-      if (chainId && window.ethereum) {
+      if (chainId && this.account) {
           this.isCorrectNetwork = chainId.toString(16).toLowerCase() == this.provider.currentNetwork.chainId.toLocaleLowerCase()
           console.log(`Networks: ${chainId} <=> ${this.provider.currentNetwork.chainId}`)
       }
     })
 
     this.changeNetworkSubscription = this.environmentService.environmentSubject.subscribe(async network => {
-      if(network && window.ethereum){
-        const chainId = await (window as any).ethereum.request({ method: 'eth_chainId' });
+      if(network && this.account){
+        const chainId = await this.wallet.getChainId();
         this.isCorrectNetwork = network.config.networkParams.chainId.toLocaleLowerCase() == chainId;
         this.env = network
       }
@@ -173,7 +172,11 @@ export class TopNavComponent implements OnInit, OnDestroy {
   }
 
   async switchNetwork() {
-    await this.provider.addNetwork()
+    try{
+      await this.provider.addNetwork(this.environmentService.environment)
+    } catch(e){
+      console.log("rejected", e)
+    }
   }
 
   setTitle(title) {
@@ -196,11 +199,6 @@ export class TopNavComponent implements OnInit, OnDestroy {
 
   async disconnect() {
     await this.wallet.disconnect()
-  }
-
-  onNetworkSelected(network: any) {
-    this.popoverController.dismiss()
-    window.open(network.url, '_self').focus()
   }
 
   closeMobileNav(){

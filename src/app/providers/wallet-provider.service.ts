@@ -80,36 +80,36 @@ export class WalletProviderService {
 
   }
 
-  async addNetwork() {
+  async addNetwork(network) {
     if (!this.provider || !this.currentNetwork) {
-      return
+      return;
     }
-
-    if(this.currentNetwork != this.environment.config.networkParams){
-      console.log('about to add: ', this.currentNetwork)
-      this.provider
-      .send(
-        'wallet_addEthereumChain',
-        [this.environment.config.networkParams]
-      )
-      .catch((error: any) => {
-        console.log(error)
-      })
-      this.currentNetwork = this.environment.config.networkParams;
-      return
+  
+    const networkParams = network.config.networkParams;
+  
+    if (this.currentNetwork !== networkParams) {
+      console.log('about to add:', this.currentNetwork);
+      try {
+        await this.provider.send('wallet_addEthereumChain', [networkParams]);
+      } catch (error) {
+        console.log(error);
+      }
+      this.currentNetwork = networkParams;
+      return;
     }
-
-    console.log('about to add: ', this.currentNetwork)
-    this.provider
-    .send(
-      'wallet_addEthereumChain',
-      [this.currentNetwork]
-    )
-    .catch((error: any) => {
-      console.log(error)
-    })
+  
+    console.log('about to add:', this.currentNetwork);
+    try {
+      await this.provider.send('wallet_addEthereumChain', [this.currentNetwork]);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
+  async getChainId(){
+    return await (window as any).ethereum.request({ method: 'eth_chainId' });
+  } 
+  
   async addToken(address: string, symbol: string, decimals: number, image?: string) {
     this.provider
   .send(

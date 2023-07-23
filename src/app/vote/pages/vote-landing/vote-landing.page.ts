@@ -15,6 +15,7 @@ import { WalletProviderService } from 'src/app/providers/wallet-provider.service
 import { LoadingModalComponent } from 'src/app/shared/components/loading-modal/loading-modal.component';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
 import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';
+import { ButtonService } from 'src/app/shared/button.service';
 @Component({
   selector: 'app-vote-landing',
   templateUrl: './vote-landing.page.html',
@@ -82,7 +83,8 @@ export class VoteLandingPage implements OnInit, OnDestroy {
     private chedda: CheddaService,
     private veChedda: VeCheddaService,
     private modalController: ModalController,
-    private environmentService: EnvironmentProviderService
+    private environmentService: EnvironmentProviderService,
+    private buttonService: ButtonService,
     ) { }
 
   async ngOnInit() {
@@ -163,6 +165,18 @@ export class VoteLandingPage implements OnInit, OnDestroy {
     } catch (error) {
       console.log('error caught: ', error)
     }
+  }
+
+  async handleVoteClicked(pool) {
+    this.buttonService.handleTransactionButton(async () => {
+      await this.vote(pool);
+    });
+  }
+
+  async handleClaimClicked(pool) {
+    this.buttonService.handleTransactionButton(async () => {
+      await this.claim(pool);
+    });
   }
 
   async vote(pool) {

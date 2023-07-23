@@ -11,6 +11,7 @@ import { WalletProviderService } from 'src/app/providers/wallet-provider.service
 import { LoadingModalComponent } from 'src/app/shared/components/loading-modal/loading-modal.component';
 import { GlobalAlertService } from 'src/app/shared/global-alert.service';
 import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';
+import { ButtonService } from 'src/app/shared/button.service';
 interface Token {
   name: string
   logo: string
@@ -61,7 +62,8 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     private veChedda: VeCheddaService,
     private alert: GlobalAlertService,
     private modalController: ModalController,
-    private environmentService: EnvironmentProviderService
+    private environmentService: EnvironmentProviderService,
+    private buttonService: ButtonService,
 
     ) {
 
@@ -162,6 +164,18 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     } catch (error) {
       this.alert.showErrorAlert(error) 
     }
+  }
+
+  async handleAddTokenClicked(token){
+    this.buttonService.handleTransactionButton(async() => {
+      await this.addTokenToMetamask(token)
+    });
+  }
+
+  async handleDripClicked(token){
+    this.buttonService.handleTransactionButton(async() => {
+      await this.drip(token)
+    });
   }
 
   async addTokenToMetamask(token) {
@@ -396,18 +410,18 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     this.withdrawSubscription = this.xChedda.withdrawSubject.subscribe(async res => {
       console.log('withdraw received: ', res)
       if (this.wallet && this.wallet.currentAccount && res && res.from.toLowerCase() == this.wallet.currentAccount.toLowerCase()) {
-        await this.hideLoading()
-        await this.alert.showToast('Withdrawal confirmed')
-        await this.loadCheddaStats()
+        await this.hideLoading();
+        await this.alert.showToast('Withdrawal confirmed');
+        await this.loadCheddaStats();
       }
     })
 
     this.netWorkChangeSubscription = this.environmentService.environmentSubject.subscribe(async network => {
       if(network){
-        await this.loadCheddaStats()
-        await this.loadVeCheddaStats()
-        await this.checkAllowance()
-        return
+        await this.loadCheddaStats();
+        await this.loadVeCheddaStats();
+        await this.checkAllowance();
+        return;
       }
     })
   }

@@ -212,7 +212,7 @@
           <div class="col-span-3 flex justify-center">
             <button
               [disabled]="!canVote" 
-              (click)="vote(pool)"
+              (click)="handleVoteClicked(pool)"
               class="h-9 w-52 primary-button-bg text-white rounded-lg font-bold uppercase text-xs hover:opacity-90"
             >
               Vote
@@ -221,7 +221,7 @@
           <div class="col-span-3 flex justify-center">
             <button
               [disabled]="!pool.claimAmount || pool.claimAmount.amount.isZero()"
-              (click)="claim(pool)"
+              (click)="handleClaimClicked(pool)"
               class="h-9 w-52 secondary-button flex justify-center items-center gap-1 rounded-lg font-bold text-xs uppercase hover:opacity-90 disabled:hover:opacity-70"
             >
               Claim  
@@ -266,14 +266,14 @@
           <div class="flex flex-col mt-5 items-center justify-center gap-4 pb-4" >
             <button
               [disabled]="!canVote" 
-              (click)="vote(pool)"
+              (click)="handleVoteClicked(pool)"
               class="h-10 w-60 primary-button-bg text-white rounded-lg font-bold uppercase text-lg hover:opacity-90"
             >
               Vote
             </button>
             <button
               [disabled]="!pool.claimAmount || pool.claimAmount.amount.isZero()"
-              (click)="claim(pool)"
+              (click)="handleClaimClicked(pool)"
               class="h-10 w-60 secondary-button flex justify-center items-center gap-1 rounded-lg secondary-button font-bold text-md uppercase"
             >
               Claim  

@@ -1,9 +1,10 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ModalController, NavController } from '@ionic/angular';
-import { LoadingModalComponent } from 'src/app/shared/components/loading-modal/loading-modal.component';
+import { ModalController } from '@ionic/angular';
 import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';
 import { VaultStatsService } from 'src/app/providers/vault-stats.service';
+import { WalletProviderService } from 'src/app/providers/wallet-provider.service';
+import { environments } from 'src/environments/environments';
 
 @Component({
   selector: 'app-networks-popover',
@@ -45,12 +46,13 @@ export class NetworksPopoverComponent implements OnInit {
   netWorkChangeSubscription: Subscription;
   selectedNetwork: string;
   loader: any;
+  networkSwitched: boolean = false
 
   constructor(
     private environmentService: EnvironmentProviderService,
     private vaultStatsService: VaultStatsService,
-    private modalController: ModalController,
-  ) { 
+    private provider: WalletProviderService,
+    ) { 
     this.env = this.environmentService.environment;
     this.selectedNetwork = this.env.config.ui.chainName
   }
@@ -68,35 +70,22 @@ export class NetworksPopoverComponent implements OnInit {
   }
 
   async onNetworkSelected(network){
-    this.showLoading("Changing network");
-    this.environmentService.changeEnvironment(network);
-    this.vaultStatsService.loadVaultStats();
+    const selectedEnvironment = environments.find(item => item.identifier === network);
+    let eth:any = window.ethereum
+    if(eth){
+      await this.provider.addNetwork(selectedEnvironment)
+    }else{
+      this.environmentService.loadEnvironment(selectedEnvironment)
+    }
     this.isOpenNetworkMenu = false;
-    setTimeout(() => {
-      this.hideLoading();
-    },2000)
-  }
-
-  private async showLoading(message: string) {
-    this.loader = await this.modalController.create({
-      component: LoadingModalComponent,
-      componentProps:{
-        'message': message
-      }
-    })
-    return await this.loader?.present()
-  }
-
-  private async hideLoading() {
-    await this.loader?.dismiss();
   }
 
   private async listenToEvents(){
     this.netWorkChangeSubscription = this.environmentService.environmentSubject.subscribe(async network => {
       if(network){
         this.env = network
+        this.vaultStatsService.loadVaultStats();
       }
-
     })
   }
 

@@ -16,25 +16,33 @@ export class CheddaService {
   approvalSubject: BehaviorSubject<any> = new BehaviorSubject(null)
   transferSubject: BehaviorSubject<any> = new BehaviorSubject(null)
   
-  constructor(provider: DefaultProviderService, private wallet: WalletProviderService, private environmentService: EnvironmentProviderService, private http: HttpClient) {
+  constructor(
+    private provider: DefaultProviderService,
+    private wallet: WalletProviderService,
+    private environmentService: EnvironmentProviderService,
+    private http: HttpClient
+  ) {
+    this.listenToEvents()
+    this.initializeCheddaContract();
+    this.registerEventListeners();
+  }
+  
+  private initializeCheddaContract() {
+    const cheddaAddress = this.wallet.currentConfig.contracts.Chedda;
+    const cheddaAbi = Chedda.abi;
+    const provider = this.provider.provider;
+  
+    this.cheddaContract = new ethers.Contract(cheddaAddress, cheddaAbi, provider);
+  }
+
+  listenToEvents(){
     this.environmentService.getEvent().subscribe((network) => {
-      if(network){
-        this.cheddaContract = new ethers.Contract(
-          wallet.currentConfig.contracts.Chedda,
-          Chedda.abi,
-          provider.provider
-        );
-        this.registerEventListeners()
+      if (network) {
+        this.initializeCheddaContract();
+        this.registerEventListeners();
       }
     });
-
-    this.cheddaContract = new ethers.Contract(
-      wallet.currentConfig.contracts.Chedda,
-      Chedda.abi,
-      provider.provider
-      );
-      this.registerEventListeners()
-    }
+  }
 
   async balanceOf(address: string): Promise<BigNumber> {
     return await this.cheddaContract.balanceOf(address)
