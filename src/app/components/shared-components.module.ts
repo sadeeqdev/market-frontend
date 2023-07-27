@@ -22,6 +22,7 @@ import { PrimaryButtonComponent } from '../shared/components/primary-button/prim
 import { SecondaryButtonComponent } from '../shared/components/secondary-button/secondary-button.component';
 import { SnackbarComponent } from '../shared/components/snackbar/snackbar.component';
 import { SelectPopoverComponent } from '../shared/components/select-popover/select-popover.component';
+import { ConfirmationModalComponent } from '../shared/components/confirmation-modal/confirmation-modal.component';
 @NgModule({
   declarations: [
     TruncateMiddlePipe, 
@@ -43,6 +44,7 @@ import { SelectPopoverComponent } from '../shared/components/select-popover/sele
     SecondaryButtonComponent,
     SnackbarComponent,
     SelectPopoverComponent,
+    ConfirmationModalComponent,
   ],
   imports: [
     CommonModule,
@@ -70,6 +72,7 @@ import { SelectPopoverComponent } from '../shared/components/select-popover/sele
     SecondaryButtonComponent,
     SnackbarComponent,
     SelectPopoverComponent,
+    ConfirmationModalComponent,
   ]
 })
 export class SharedComponentsModule { }

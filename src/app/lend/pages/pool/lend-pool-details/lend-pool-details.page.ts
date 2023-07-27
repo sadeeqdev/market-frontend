@@ -138,7 +138,9 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
     try {
       this.showLoading('Waiting for Approval')
       const totalSupply = await this.tokenService.totalSupply(this.asset)
-      await this.tokenService.approve(this.asset, this.vaultContract.address, totalSupply)
+      const txHash = await this.tokenService.approve(this.asset, this.vaultContract.address, totalSupply)
+      console.log("Event", txHash)
+
     } catch (error) {
       this.alert.showErrorAlert(error)
       this.hideLoading()
@@ -190,28 +192,30 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
   }
 
   private async registerEventListeners() {
-    this.assetApprovalSubjet = this.asset.on('Approval', async (account, spender, amount) => {
-      console.log('Approval: ', account, spender, amount)
+    this.assetApprovalSubjet = this.asset.on('Approval', async (account, spender, amount, event) => {
+      console.log('Approval: ', account, spender, amount, event)
       if (account.toLowerCase() === this.wallet.currentAccount.toLowerCase()) {
+        this.showConfirmationModal(event)
         this.hideLoading()
         this.isApproved = true
       }
     }) 
 
-    this.depositEventListener = this.vaultContract.on('Deposit', async (from, to, amount, shares) => {
+    this.depositEventListener = this.vaultContract.on('Deposit', async (from, to, amount, shares, event) => {
       console.log('deposit posted: ', from, to, amount, shares)
       if (from.toLowerCase() == this.wallet.currentAccount.toLowerCase()) {
         this.hideLoading()
-        this.alert.showToast('Deposit confirmed')
+        this.showConfirmationModal(event)
         await this.loadVaultStats()
         await this.vaultStatsService.loadStats(this.pool)
       }
     })
-    this.withdrawEventListener = this.vaultContract.on('Withdraw', async (from, to, amount, shares) => {
+    
+    this.withdrawEventListener = this.vaultContract.on('Withdraw', async (from, to, amount, shares, event) => {
       if (from.toLowerCase() == this.wallet.currentAccount.toLowerCase()) {
         this.hideLoading()
-        this.alert.showToast('Withdrawal confirmed')
-        await this.loadVaultStats()
+        this.showConfirmationModal(event)
+        await this.loadVaultStats();
         await this.vaultStatsService.loadStats(this.pool)
       }
     })
@@ -223,6 +227,13 @@ export class LendPoolDetailsPage implements OnInit, OnDestroy {
 
   async switchDepositCheddaTab(isDepositTab:boolean){
     this.isDepositCheddaTab = isDepositTab
+  }
+
+  showConfirmationModal(event) {
+    if (event) {
+      const txHash = event.transactionHash;
+      this.alert.showConfirmationModal(txHash);
+    }
   }
 
   private async checkAllowance() {
