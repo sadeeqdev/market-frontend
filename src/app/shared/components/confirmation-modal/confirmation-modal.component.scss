@@ -1,0 +1,26 @@
+.border-gradient {
+    border-image-slice: 1;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 10px !important;
+    box-sizing: content-box;
+    border-image-source: linear-gradient(to right, red, orange);
+}
+
+.inner-card-bg{
+    background: linear-gradient(252.74deg, #F3943D 18.99%, rgba(72, 65, 158, 0.81) 58.87%);
+}
+
+.gradient-text {
+    background: linear-gradient(to right, #F3943D, #FDE34D);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.tx-hash-text {
+    background: linear-gradient(to right, #E88838, #E5C03A);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}

@@ -355,7 +355,7 @@ export const environments = [
             ui: {
               chainName: 'Oasis',
               logo: '/assets/logos/wrose-logo.png',
-              txUrlPrefix: 'https://testnet.explorer.emerald.oasis.dev/txs/'
+              txUrlPrefix: 'https://testnet.explorer.emerald.oasis.dev/tx/'
             }
       },
     },
