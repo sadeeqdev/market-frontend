@@ -67,7 +67,6 @@ export class StakedCheddaService {
     return await this.stakedCheddaContract.allowance(account, spender)
   }
 
-
   async approve(spender: string, amount?: string) {
     if (!amount) {
       amount = await this.stakedCheddaContract.totalSupply();
@@ -80,30 +79,34 @@ export class StakedCheddaService {
   }
 
   registerForEvents() {
-    this.stakedCheddaContract.on('Approval', async (account, spender, amount) => {
-      console.log('Approval: ', account, spender, amount)
+    this.stakedCheddaContract.on('Approval', async (account, spender, amount, shares, event) => {
+      console.log('Approval: ', account, spender, amount);
+      
       this.approvalSubject?.next({
         account,
         spender,
-        amount
+        amount,
+        event
       })
     })
-    this.stakedCheddaContract.on('Deposit', (from, to, amount, shares) => {
+    this.stakedCheddaContract.on('Deposit', (from, to, amount, shares, event) => {
       this.depositSubject.next({
         from,
         to,
         amount,
-        shares
+        shares,
+        event
       })
     })
 
-    this.stakedCheddaContract.on('Withdraw', (from, to, amount, shares) => {
+    this.stakedCheddaContract.on('Withdraw', (from, to, amount, shares, event) => {
       console.log('Withdraw event: ', from, to, amount, shares)
       this.withdrawSubject.next({
         from,
         to,
         amount,
-        shares
+        shares,
+        event
       })
     })
   }

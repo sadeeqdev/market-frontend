@@ -198,14 +198,13 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     }
     try {
       // if isNFT, mint
+      let tx:any
       if (token.isNFT) {
-        const tx = await this.faucet.mint(token.address)
-        console.log('mint tx = ', tx)
+        tx = await this.faucet.mint(token.address)
       } else {
-        const tx = await this.faucet.drip(token.address)
-        console.log('drip tx = ', tx)
+        tx = await this.faucet.drip(token.address)
       }
-      await this.alert.showToast('Drip request sent to faucet')
+      this.alert.showConfirmationModal(tx.hash)
     } catch (error) {
       await this.hideLoading()
       await this.alert.showErrorAlert(error)
@@ -366,11 +365,20 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     this.isCheddaApproved = allowance.gt(ethers.utils.parseUnits("1000"))
   }
 
+  showConfirmationModal(event) {
+    if (event) {
+      const txHash = event.transactionHash;
+      this.alert.showConfirmationModal(txHash);
+    }
+  }
+
   private async listenForEvents() {
     this.cheddaApprovalSubscription = this.chedda.approvalSubject.subscribe(async res => {
       if (res && res.account && res.account.toLowerCase() === this.wallet.currentAccount.toLowerCase()) {
         this.isCheddaApproved = true
+        console.log(res)
         await this.hideLoading()
+        console.log(res)
       }
     })
 
@@ -384,7 +392,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
     this.cheddaTransferSubscription = this.chedda.transferSubject.subscribe(async res => {
       if (res && res.to.toLowerCase() === this.wallet.currentAccount.toLowerCase()) {
         await this.hideLoading()
-        await this.alert.showToast('CHEDDA transfer received')
+        this.showConfirmationModal(res.event)
         await this.loadCheddaStats()
       }
     })
@@ -393,7 +401,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       console.log('deposit received: ', res)
       if (this.wallet && this.wallet.currentAccount && res && res.from.toLowerCase() == this.wallet.currentAccount.toLowerCase()) {
         await this.hideLoading()
-        await this.alert.showToast('Stake confirmed')
+        this.showConfirmationModal(res.event)
         await this.loadCheddaStats()
       }
     })
@@ -402,7 +410,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       console.log('deposit received: ', res)
       if (this.wallet && this.wallet.currentAccount && res && res.address.toLowerCase() == this.wallet.currentAccount.toLowerCase()) {
         await this.hideLoading()
-        await this.alert.showToast('Lock created')
+        this.showConfirmationModal(res.event)
         await this.loadVeCheddaStats()
       }
     }) 
@@ -411,7 +419,7 @@ export class GrottoLandingPage implements OnInit, OnDestroy {
       console.log('withdraw received: ', res)
       if (this.wallet && this.wallet.currentAccount && res && res.from.toLowerCase() == this.wallet.currentAccount.toLowerCase()) {
         await this.hideLoading();
-        await this.alert.showToast('Withdrawal confirmed');
+        this.showConfirmationModal(res.event)
         await this.loadCheddaStats();
       }
     })

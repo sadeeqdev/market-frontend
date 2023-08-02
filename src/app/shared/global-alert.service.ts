@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { WalletProviderService } from '../providers/wallet-provider.service';
-import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';import { ActionModalComponent } from './components/action-modal/action-modal.component';
+import { EnvironmentProviderService } from 'src/app/providers/environment-provider.service';
+import { ActionModalComponent } from './components/action-modal/action-modal.component';
+import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
 import { SnackbarComponent } from './components/snackbar/snackbar.component';
 
 @Injectable({
@@ -266,6 +268,22 @@ export class GlobalAlertService {
 
     await alert.present();
   }
+
+  async showConfirmationModal(txHash){
+    const alert = await this.modalController.create({
+      component: ConfirmationModalComponent,
+      componentProps: {
+        heading: 'Success!',
+        message: "Your transaction has been submitted",
+        txLink: this.environmentService.environment.config.ui.txUrlPrefix + txHash,
+        closeModal: async () => {
+          await alert.dismiss();
+        },
+      },
+    });
+
+    await alert.present();
+  } 
 
   async switchNetwork(network) {
     await this.provider.addNetwork(network);

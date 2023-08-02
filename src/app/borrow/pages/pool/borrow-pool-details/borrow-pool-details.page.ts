@@ -472,11 +472,12 @@ export class BorrowPoolDetailsPage implements OnInit {
     try {
       this.collateralApprovalListener = this.collateralContract.on(
         'Approval',
-        async (account, spender, amount) => {
+        async (account, spender, amount, event) => {
           if (
             account.toLowerCase() === this.wallet.currentAccount.toLowerCase()
           ) {
             this.hideLoading();
+            this.showConfirmationModal(event)
             this.isApproved = true;
           }
         }
@@ -485,6 +486,7 @@ export class BorrowPoolDetailsPage implements OnInit {
         'ApprovalForAll', async (account, spender, approved) => {
           if (account.toLowerCase() === this.wallet.currentAccount.toLowerCase() && approved) {
             this.hideLoading();
+            
             this.isApproved = true;
           }
         }
@@ -498,10 +500,10 @@ export class BorrowPoolDetailsPage implements OnInit {
     await this.registerCollateralEvents();
     this.depositListener = this.vaultContract.on(
       'OnCollateralAdded',
-      async (token, by, amount, shares) => {
+      async (token, by, amount, shares, event) => {
         if (by.toLowerCase() == this.wallet.currentAccount.toLowerCase()) {
           this.hideLoading();
-          this.alert.showToast('Deposit confirmed');
+          this.showConfirmationModal(event)
           if (this.collateralContract.isNFT) {
             await this.fetchOwnedTokens()
             await this.fetchDepositedNfts()
@@ -514,10 +516,10 @@ export class BorrowPoolDetailsPage implements OnInit {
 
     this.withdrawListener = this.vaultContract.on(
       'OnCollateralRemoved',
-      async (token, address, type, amount) => {
+      async (token, address, type, amount, event) => {
         if (address.toLowerCase() == this.wallet.currentAccount.toLowerCase()) {
           this.hideLoading();
-          this.alert.showToast('Withdrawal confirmed');
+          this.showConfirmationModal(event)
           if (this.collateralContract.isNFT) {
             await this.fetchDepositedNfts()
             await this.fetchOwnedTokens()
@@ -528,23 +530,20 @@ export class BorrowPoolDetailsPage implements OnInit {
       }
     );
 
-    this.borrowListener = this.vaultContract.on(
-      'OnLoanOpened',
-      async (from, to, amount, shares) => {
-        if (from.toLowerCase() == this.wallet.currentAccount.toLowerCase()) {
-          this.hideLoading();
-          this.alert.showToast('Borrow confirmed');
-          await this.loadVaultStats();
-          await this.vaultStatsService.loadStats(this.pool);
-        }
+    this.borrowListener = this.vaultContract.on('OnLoanOpened', async (from, to, amount, shares, event) => {
+      if (from.toLowerCase() === this.wallet.currentAccount.toLowerCase()) {
+        this.hideLoading();
+        this.showConfirmationModal(event)
+        await this.loadVaultStats();
+        await this.vaultStatsService.loadStats(this.pool);
       }
-    );
+    });
     this.repayListener = this.vaultContract.on(
       'OnLoanRepaid',
-      async (from, to, amount, shares) => {
+      async (from, to, amount, shares, event) => {
         if (from.toLowerCase() == this.wallet.currentAccount.toLowerCase()) {
           this.hideLoading();
-          this.alert.showToast('Repayment confirmed');
+          this.showConfirmationModal(event)
           await this.loadVaultStats();
           await this.vaultStatsService.loadStats(this.pool);
     }
@@ -554,6 +553,13 @@ export class BorrowPoolDetailsPage implements OnInit {
     this.wallet.accountSubject.subscribe(() => {
       this.loadVaultStats();
     });
+  }
+
+  showConfirmationModal(event) {
+    if (event) {
+      const txHash = event.transactionHash;
+      this.alert.showConfirmationModal(txHash);
+    }
   }
 
   selectNFT(nft: NFTMetadata) {

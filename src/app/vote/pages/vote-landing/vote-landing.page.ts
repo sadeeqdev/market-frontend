@@ -188,7 +188,8 @@ export class VoteLandingPage implements OnInit, OnDestroy {
       const vaultContract = this.vaultService.contractAt(pool.address)
       const gaugeAddress = await this.vaultService.gauge(vaultContract)
       console.log('voting for gauge: ', gaugeAddress)
-      await this.gaugeController.vote(gaugeAddress)
+      const txHash = await this.gaugeController.vote(gaugeAddress)
+      this.alert.showConfirmationModal(txHash)
       this.canVote = false
     } catch (error) {
       this.alert.showErrorAlert(error)
@@ -218,10 +219,11 @@ export class VoteLandingPage implements OnInit, OnDestroy {
       const vaultContract = this.vaultService.contractAt(pool.address)
       const gaugeAddress = await this.vaultService.gauge(vaultContract)
       const gaugeContract = this.liquidityGauge.contractAt(gaugeAddress)
-      await this.liquidityGauge.claim(gaugeContract)
       this.showLoading('Claiming rewards')
-    } catch (error) {
+      const txHash = await this.liquidityGauge.claim(gaugeContract)
       this.hideLoading()
+      this.alert.showConfirmationModal(txHash)
+    } catch (error) {
       this.alert.showErrorAlert(error)
     }
   }
